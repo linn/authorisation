@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Authorisation</title>
+    <link href="/authorisation/assets/kaboom/kaboom.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="kaboom"></div>
+    <div class="container ticker-container"></div>
+    <div id="root"></div>
+    <script type="text/javascript">
+        window.APPLICATION_SETTINGS = {
+            authorityUri: '@Model.AuthorityUri',
+            appRoot: '@Model.AppRoot',
+            proxyRoot: '@Model.ProxyRoot'
+        };
+    </script>
+    <script src="/authorisation/assets/kaboom/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <script src="/authorisation/assets/kaboom/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/authorisation/assets/kaboom/kaboom.js" type="text/javascript" data-section="sales"></script>
+    <script src="/authorisation/build/app.js"></script>
+</body>
+</html>
