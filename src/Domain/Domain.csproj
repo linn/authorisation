@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>Linn.Authorisation.Domain</AssemblyName>
+    <RootNamespace>Linn.Authorisation.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,6 @@
+export DATABASE_HOST=localhost
+export DATABASE_NAME=authorisation
+export DATABASE_USER_ID=authorisation
+export DATABASE_PASSWORD=authorisation
+
+dotnet ef database update
