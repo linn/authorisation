@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Linn.Common.Messaging.RabbitMQ.Autofac" Version="1.1.2" />
+    <PackageReference Include="Linn.Common.Messaging.RabbitMQ.Autofac" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,6 @@ import { Route, Redirect } from 'react-router';
 import { OidcProvider } from 'redux-oidc';
 import { Router } from 'react-router-dom';
 import history from '../history';
-import Navigation from './Navigation';
 import App from './App';
 import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
@@ -18,7 +17,6 @@ class Root extends Component {
                 <OidcProvider store={store} userManager={userManager}>
                     <Router history={history}>
                         <div>
-                            <Navigation />
 
                             <Route path="/" render={() => { document.title = 'Authorisation'; return false; }} />
                             <Route exact path="/" render={() => <Redirect to="/authorisation" />} />
