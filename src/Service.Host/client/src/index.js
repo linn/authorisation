@@ -5,9 +5,7 @@ import Root from './components/Root';
 import { AppContainer } from 'react-hot-loader';
 import userManager from './helpers/userManager';
 
-import 'bootstrap/dist/css/bootstrap.css';
 import './css/index.scss';
-import '../assets/kaboom/kaboom.css';
 
 const initialState = {};
 const store = configureStore(initialState);
