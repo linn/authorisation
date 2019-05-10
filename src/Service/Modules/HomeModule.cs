@@ -1,29 +1,31 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
     using Linn.Authorisation.Service.Models;
+    using Carter;
+    using Carter.Response;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Routing;
+    using System.Threading.Tasks;
 
-    using Nancy;
-    using Nancy.Responses;
-
-    public sealed class HomeModule : NancyModule
+    public sealed class HomeModule : CarterModule
     {
         public HomeModule()
         {
-            this.Get("/", args => new RedirectResponse("/authorisation"));
-            this.Get("/authorisation", _ => this.GetApp());
+            //this.Get("/", args => new RedirectResponse("/authorisation"));
+            this.Get("/authorisation", this.GetApp);
 
-            this.Get("/authorisation/signin-oidc-client", _ => this.GetApp());
-            this.Get("/authorisation/signin-oidc-silent", _ => this.SilentRenew());
+            this.Get("/authorisation/signin-oidc-client", this.GetApp);
+            this.Get("/authorisation/signin-oidc-silent", this.GetSilentRenew);
         }
 
-        private object SilentRenew()
+        private async Task GetApp(HttpRequest req, HttpResponse res, RouteData routeData)
         {
-            return this.Negotiate.WithView("silent-renew");
+            await res.Negotiate(new ViewResponse { ViewName = "Index.html" });
         }
 
-        private object GetApp()
+        private async Task GetSilentRenew(HttpRequest req, HttpResponse res, RouteData routeData)
         {
-            return this.Negotiate.WithModel(ApplicationSettings.Get()).WithView("Index");
+            await res.Negotiate(new ViewResponse { ViewName = "SilentRenew.html" });
         }
     }
 }

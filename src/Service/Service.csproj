@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ResponseProcessors\**" />
+    <EmbeddedResource Remove="ResponseProcessors\**" />
+    <None Remove="ResponseProcessors\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Carter" Version="4.1.0" />
+    <PackageReference Include="Handlebars.Net" Version="1.10.1" />
     <PackageReference Include="Linn.Common.Configuration" Version="2.0.0" />
-    <PackageReference Include="Linn.Common.Nancy.Facade" Version="2.0.2" />
-    <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
+    <PackageReference Include="Linn.Common.Facade.Carter" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +24,6 @@
     <ProjectReference Include="..\Facade\Facade.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ResponseProcessors\" />
   </ItemGroup>
 
 </Project>
