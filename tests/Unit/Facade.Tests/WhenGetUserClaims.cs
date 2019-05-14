@@ -39,7 +39,6 @@ namespace Linn.Authorisation.Facade.Tests
                                       {
                                           Claims = new List<Claim> { new Claim("update.vatcode") }
                                       }
-
                               };
 
             this.RoleRepository.FilterBy(Arg.Any<Expression<Func<Role, bool>>>()).Returns(this.roles.AsQueryable());
@@ -54,6 +53,5 @@ namespace Linn.Authorisation.Facade.Tests
             var claims = ((SuccessResult<IEnumerable<Claim>>)this.result).Data;
             claims.Count().Should().Be(3);
         }
-
     }
 }
