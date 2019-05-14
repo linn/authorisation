@@ -12,9 +12,8 @@ fi
 # c# tests
 dotnet test ./tests/Unit/Domain.Tests/Domain.Tests.csproj
 dotnet test ./tests/Unit/Facade.Tests/Facade.Tests.csproj
-# dotnet test ./tests/Unit/Messaging.Tests/Messaging.Tests.csproj
 dotnet test ./tests/Unit/Proxy.Tests/Proxy.Tests.csproj
-dotnet test ./tests/Integration/Service.Tests/Service.Tests.csproj
+dotnet test ./tests/Integration/Integration.Tests/Integration.Tests.csproj
 
 echo $?
 if [ $? -eq 1 ]; then
