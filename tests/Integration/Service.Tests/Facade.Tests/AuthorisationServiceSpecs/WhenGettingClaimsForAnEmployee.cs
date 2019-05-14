@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
+namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
 {
     using System;
     using System.Collections.Generic;
@@ -34,15 +34,16 @@
                     {
                         new Claim("create.sernos"),
                         new Claim("update.tariff")
-                    }
+                    },
+                    Members = new List<string>()
                 },
                 new Role
                 {
-                    Claims = new List<Claim> { new Claim("update.vatcode") }
+                    Claims = new List<Claim> { new Claim("update.vatcode") },
+                    Members = new List<string>()
                 }
             };
 
-            this.RoleRepository.FilterBy(Arg.Any<Expression<Func<Role, bool>>>()).Returns(this.roles.AsQueryable());
             this.result = this.Sut.GetClaims("employees/1");
         }
 

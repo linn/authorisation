@@ -33,11 +33,13 @@ namespace Linn.Authorisation.Facade.Tests
                                         {
                                             new Claim("create.sernos"),
                                             new Claim("update.tariff")
-                                        }
+                                        },
+                                        Members = new List<string>()                             
                                       },
                                   new Role
                                       {
-                                          Claims = new List<Claim> { new Claim("update.vatcode") }
+                                          Claims = new List<Claim> { new Claim("update.vatcode") },
+                                          Members = new List<string>()
                                       }
                               };
 
