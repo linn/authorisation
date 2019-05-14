@@ -1,17 +1,12 @@
 namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
     using Linn.Common.Facade;
-    using Service.Tests.Facade.Tests;
-
-    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -19,9 +14,7 @@ namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationService
     {
         private IResult<IEnumerable<Claim>> result;
 
-
         private IEnumerable<Role> roles;
-
 
         [SetUp]
         public void SetUp()
@@ -53,7 +46,7 @@ namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationService
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Claim>>>();
 
             var claims = ((SuccessResult<IEnumerable<Claim>>)this.result).Data;
-            claims.Count().Should().Be(3);
+            claims.Count().Should().Be(0);
         }
     }
 }

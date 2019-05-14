@@ -1,11 +1,10 @@
-﻿namespace Linn.Authorisation.Service.Tests.Facade.Tests
+namespace Linn.Authorisation.Integration.Tests.Facade.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Common.Persistence;
-    using Domain;
+
+    using Linn.Authorisation.Integration.Tests.Facade.Tests;
 
     public class TestRoleRepository : IRepository<Domain.Role, int>
     {

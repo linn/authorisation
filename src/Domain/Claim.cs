@@ -1,7 +1,5 @@
 namespace Linn.Authorisation.Domain
 {
-    using System.Collections.Generic;
-
     public class Claim
     {
         public Claim(string name)
@@ -11,6 +9,4 @@ namespace Linn.Authorisation.Domain
 
         public string Name { get; set; }
     }
-
-
 }

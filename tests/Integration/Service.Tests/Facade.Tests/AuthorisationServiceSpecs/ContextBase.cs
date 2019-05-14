@@ -1,10 +1,10 @@
-﻿namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
+namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
 {
-    using Common.Persistence;
-    using Domain;
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Facade;
+    using Linn.Common.Persistence;
+
     using NUnit.Framework;
-    using Service.Tests.Facade.Tests;
-    using Authorisation.Facade;
 
     public abstract class ContextBase
     {
