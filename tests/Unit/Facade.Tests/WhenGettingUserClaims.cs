@@ -14,13 +14,11 @@ namespace Linn.Authorisation.Facade.Tests
 
     using NUnit.Framework;
 
-    public class WhenGetUserClaims : ContextBase
+    public class WhenGettingUserClaims : ContextBase
     {
         private IResult<IEnumerable<Claim>> result;
 
-
         private IEnumerable<Role> roles;
-
 
         [SetUp]
         public void SetUp()
