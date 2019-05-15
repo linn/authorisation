@@ -12,7 +12,7 @@ var oidcConfig = {
     post_logout_redirect_uri: `${host}`,
     silent_redirect_uri: `${host}/authorisation/signin-oidc-silent`,
     automaticSilentRenew: true,
-    filterProtocolPermissions: true,
+    filterProtocolClaims: true,
     loadUserInfo: true
 };
 
