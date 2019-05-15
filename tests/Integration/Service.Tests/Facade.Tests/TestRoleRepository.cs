@@ -4,36 +4,37 @@ namespace Linn.Authorisation.Integration.Tests.Facade.Tests
     using System.Linq;
     using Common.Persistence;
 
-    using Linn.Authorisation.Integration.Tests.Facade.Tests;
+    using System.Linq.Expressions;
+    using Domain;
 
-    public class TestRoleRepository : IRepository<Domain.Role, int>
+    public class TestRoleRepository : IRepository<Role, int>
     {
-        public Domain.Role FindById(int key)
+        public Role FindById(int key)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.IQueryable<Domain.Role> FindAll()
+        public IQueryable<Role> FindAll()
         {
             throw new NotImplementedException();
         }
 
-        public void Add(Domain.Role entity)
+        public void Add(Role entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Domain.Role entity)
+        public void Remove(Role entity)
         {
             throw new NotImplementedException();
         }
 
-        public Domain.Role FindBy(System.Linq.Expressions.Expression<Func<Domain.Role, bool>> expression)
+        public Role FindBy(Expression<Func<Role, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.IQueryable<Domain.Role> FilterBy(System.Linq.Expressions.Expression<Func<Domain.Role, bool>> expression)
+        public IQueryable<Role> FilterBy(Expression<Func<Role, bool>> expression)
         {
             return TestDbContext.Roles.AsQueryable().Where(expression);
         }
