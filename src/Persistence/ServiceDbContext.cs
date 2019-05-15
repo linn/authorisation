@@ -33,7 +33,7 @@ namespace Linn.Authorisation.Persistence
         {
             builder.Entity<Role>().HasKey(role => role.Id);
             builder.Entity<Role>().Property(role => role.Name);
-            builder.Entity<Role>().HasMany(role => role.Claims);
+            builder.Entity<Role>().HasMany(role => role.Permissions);
             builder.Entity<Role>().HasMany(role => role.Members);
         }
     }

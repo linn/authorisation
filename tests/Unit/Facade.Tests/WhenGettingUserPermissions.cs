@@ -14,9 +14,9 @@ namespace Linn.Authorisation.Facade.Tests
 
     using NUnit.Framework;
 
-    public class WhenGettingUserClaims : ContextBase
+    public class WhenGettingUserPermissions : ContextBase
     {
-        private IResult<IEnumerable<Claim>> result;
+        private IResult<IEnumerable<Permission>> result;
 
         private IEnumerable<Role> roles;
 
@@ -27,31 +27,31 @@ namespace Linn.Authorisation.Facade.Tests
                               {
                                   new Role
                                       {
-                                        Claims = new List<Claim>
+                                        Permissions = new List<Permission>
                                         {
-                                            new Claim("create.sernos"),
-                                            new Claim("update.tariff")
+                                            new Permission("create.sernos"),
+                                            new Permission("update.tariff")
                                         },
                                         Members = new List<string>()                             
                                       },
                                   new Role
                                       {
-                                          Claims = new List<Claim> { new Claim("update.vatcode") },
+                                          Permissions = new List<Permission> { new Permission("update.vatcode") },
                                           Members = new List<string>()
                                       }
                               };
 
             this.RoleRepository.FilterBy(Arg.Any<Expression<Func<Role, bool>>>()).Returns(this.roles.AsQueryable());
-            this.result = this.Sut.GetClaims("employees/1");
+            this.result = this.Sut.GetPermissions("employees/1");
         }
 
         [Test]
         public void ShouldReturnSuccess()
         {
-            this.result.Should().BeOfType<SuccessResult<IEnumerable<Claim>>>();
+            this.result.Should().BeOfType<SuccessResult<IEnumerable<Permission>>>();
 
-            var claims = ((SuccessResult<IEnumerable<Claim>>)this.result).Data;
-            claims.Count().Should().Be(3);
+            var Permissions = ((SuccessResult<IEnumerable<Permission>>)this.result).Data;
+            Permissions.Count().Should().Be(3);
         }
     }
 }

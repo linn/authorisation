@@ -25,7 +25,7 @@ namespace Linn.Authorisation.Service.Host
         {
             services.AddCors();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundPermissionTypeMap.Clear();
 
             services.AddLinnAuthentication(
                 options =>

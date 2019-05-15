@@ -8,7 +8,7 @@ namespace Linn.Authorisation.Domain
 
         public string Name { get; set; }
 
-        public IEnumerable<Claim> Claims { get; set; }
+        public IEnumerable<Permission> Permissions { get; set; }
 
         public IEnumerable<string> Members { get; set; }
     }
