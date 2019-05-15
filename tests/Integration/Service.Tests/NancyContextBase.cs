@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Service.Tests
+namespace Linn.Authorisation.Service.Tests
 {
     using Nancy.Testing;
 

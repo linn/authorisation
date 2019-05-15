@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Messaging.Tests
+namespace Linn.Authorisation.Messaging.Tests
 {
     using Linn.Common.Messaging.RabbitMQ;
 
