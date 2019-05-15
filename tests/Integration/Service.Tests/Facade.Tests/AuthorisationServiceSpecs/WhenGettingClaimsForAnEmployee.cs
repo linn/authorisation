@@ -1,5 +1,5 @@
-namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
-{
+namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpecs
+{ 
     using System.Collections.Generic;
     using System.Linq;
 

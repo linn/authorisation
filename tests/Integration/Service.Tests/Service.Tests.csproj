@@ -2,17 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>Linn.Authorisation.Integration.Tests</AssemblyName>
-    <RootNamespace>Linn.Authorisation.Integration.Tests</RootNamespace>
+    <AssemblyName>Linn.Authorisation.Service.Tests</AssemblyName>
+    <RootNamespace>Linn.Authorisation.Service.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
-    <PackageReference Include="Linn.Core.Persistence" Version="2.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
-    <PackageReference Include="Nancy.Testing" Version="2.0.0-clinteastwood" />
+    <PackageReference Include="FluentValidation" Version="8.2.0" />
+    <PackageReference Include="Nancy.Testing" Version="2.0.0" />
     <PackageReference Include="NSubstitute" Version="4.1.0" />
     <PackageReference Include="NUnit" Version="3.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
@@ -20,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\..\src\Facade\Facade.csproj" />
     <ProjectReference Include="..\..\..\src\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\src\Service\Service.csproj" />
   </ItemGroup>

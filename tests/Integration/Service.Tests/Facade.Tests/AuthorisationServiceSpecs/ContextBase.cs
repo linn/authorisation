@@ -1,7 +1,8 @@
-namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationServiceSpecs
+namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpecs
 {
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Facade;
+    using Linn.Authorisation.Service.Tests.Facade.Tests;
     using Linn.Common.Persistence;
 
     using NUnit.Framework;
@@ -20,4 +21,4 @@ namespace Linn.Authorisation.Integration.Tests.Facade.Tests.AuthorisationService
             this.Sut = new AuthorisationService(this.RoleRepository);
         }
     }
-}
+} 
