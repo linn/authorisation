@@ -32,7 +32,7 @@ namespace Linn.Authorisation.Facade
                 privileges.AddRange(groupPrivileges);
             }
 
-            return new SuccessResult<IEnumerable<Privilege>>(privileges.Distinct());
+            return new SuccessResult<IEnumerable<Privilege>>(privileges.Where(p => p.Active).Distinct());
         }
     }
 }

@@ -4,9 +4,10 @@ namespace Linn.Authorisation.Domain
 
     public class Privilege : Entity
     {
-        public Privilege(string name)
+        public Privilege(string name, bool active = true)
         {
             this.Name = name;
+            this.Active = active;
         }
 
         public string Name { get; set; }

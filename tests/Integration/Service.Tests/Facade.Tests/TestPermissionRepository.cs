@@ -5,6 +5,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
     using System.Linq;
     using Domain;
     using Domain.Groups;
+    using Domain.Permissions;
     using Domain.Repositories;
 
     public class TestPermissionRepository : IPermissionRepository

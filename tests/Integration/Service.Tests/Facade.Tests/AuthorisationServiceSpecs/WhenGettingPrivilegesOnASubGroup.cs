@@ -7,7 +7,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
     using FluentAssertions;
     using NUnit.Framework;
 
-    public class WhenGettingPrivilegesWithSamePrivilegeOnASubGroup : ContextBase
+    public class WhenGettingPrivilegesOnASubGroup : ContextBase
     {
         private IResult<IEnumerable<Privilege>> result;
 

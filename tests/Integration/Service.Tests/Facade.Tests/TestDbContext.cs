@@ -22,9 +22,9 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
             Groups = new List<Group>();
         }
 
-        public static void BuildPrivilege(string name)
+        public static void BuildPrivilege(string name, bool active = true)
         {
-            Privileges.Add(new Privilege(name));
+            Privileges.Add(new Privilege(name, active));
         }
 
         public static void BuildPermission(string granteeUri, string privilegeName)

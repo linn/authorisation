@@ -6,6 +6,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using Common.Facade;
     using Domain;
     using Domain.Groups;
+    using Domain.Permissions;
     using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;
