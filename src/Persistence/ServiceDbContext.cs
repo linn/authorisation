@@ -8,8 +8,6 @@ namespace Linn.Authorisation.Persistence
 
     public class ServiceDbContext : DbContext
     {
-        public DbSet<Role> Role { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var host = ConfigurationManager.Configuration["DATABASE_HOST"];
@@ -24,17 +22,8 @@ namespace Linn.Authorisation.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            this.BuildRole(builder);
-
             base.OnModelCreating(builder);
         }
 
-        private void BuildRole(ModelBuilder builder)
-        {
-            builder.Entity<Role>().HasKey(role => role.Id);
-            builder.Entity<Role>().Property(role => role.Name);
-            builder.Entity<Role>().HasMany(role => role.Permissions);
-            builder.Entity<Role>().HasMany(role => role.Members);
-        }
     }
 }
