@@ -2,22 +2,21 @@ namespace Linn.Authorisation.Domain.Groups
 {
     using System;
     using System.Collections.Generic;
-    using Groups;
 
-    public class GroupGroupMember : GroupMember
+    public class IndividualMember : Member
     {
-        public GroupGroupMember(Group group, string addedByUri)
+        public IndividualMember(string uri, string addedByUri)
         {
-            this.Group = group;
+            this.MemberUri = uri;
             this.AddedByUri = addedByUri;
             this.DateAdded = DateTime.UtcNow;
         }
 
-        public Group Group { get; set; }
+        public string MemberUri { get; set; }
 
         public override IEnumerable<string> MemberUris()
         {
-            return this.Group.MemberUris();
+            return new List<string>() {this.MemberUri};
         }
     }
 }
