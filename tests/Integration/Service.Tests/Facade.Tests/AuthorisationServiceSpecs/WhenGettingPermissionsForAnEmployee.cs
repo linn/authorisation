@@ -10,9 +10,9 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
 
     using NUnit.Framework;
 
-    public class WhenGettingClaimsForAnEmployee : ContextBase
+    public class WhenGettingPermissionsForAnEmployee : ContextBase
     {
-        private IResult<IEnumerable<Claim>> result;
+        private IResult<IEnumerable<Permission>> result;
 
         private IEnumerable<Role> roles;
 
@@ -23,30 +23,30 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             {
                 new Role
                 {
-                    Claims = new List<Claim>
+                    Permissions = new List<Permission>
                     {
-                        new Claim("create.sernos"),
-                        new Claim("update.tariff")
+                        new Permission("create.sernos"),
+                        new Permission("update.tariff")
                     },
                     Members = new List<string>()
                 },
                 new Role
                 {
-                    Claims = new List<Claim> { new Claim("update.vatcode") },
+                    Permissions = new List<Permission> { new Permission("update.vatcode") },
                     Members = new List<string>()
                 }
             };
 
-            this.result = this.Sut.GetClaims("employees/1");
+            this.result = this.Sut.GetPermissions("employees/1");
         }
 
         [Test]
         public void ShouldReturnSuccess()
         {
-            this.result.Should().BeOfType<SuccessResult<IEnumerable<Claim>>>();
+            this.result.Should().BeOfType<SuccessResult<IEnumerable<Permission>>>();
 
-            var claims = ((SuccessResult<IEnumerable<Claim>>)this.result).Data;
-            claims.Count().Should().Be(0);
+            var Permissions = ((SuccessResult<IEnumerable<Permission>>)this.result).Data;
+            Permissions.Count().Should().Be(0);
         }
     }
 }

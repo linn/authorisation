@@ -16,11 +16,11 @@ namespace Linn.Authorisation.Facade
             this.roleRepository = roleRepository;
         }
 
-        public IResult<IEnumerable<Claim>> GetClaims(string who)
+        public IResult<IEnumerable<Permission>> GetPermissions(string who)
         {
             var roles = this.roleRepository.FilterBy(role => role.Members.Any(uri => uri.Equals(who)));
-            var claims = roles.SelectMany(role => role.Claims).ToList();
-            return new SuccessResult<IEnumerable<Claim>>(claims);
+            var Permissions = roles.SelectMany(role => role.Permissions).ToList();
+            return new SuccessResult<IEnumerable<Permission>>(Permissions);
         }
     }
 }

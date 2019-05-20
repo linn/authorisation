@@ -1,8 +1,8 @@
 namespace Linn.Authorisation.Domain
 {
-    public class Claim
+    public class Permission
     {
-        public Claim(string name)
+        public Permission(string name)
         {
             this.Name = name;
         }
