@@ -19,7 +19,7 @@ namespace Linn.Authorisation.Facade
         {
             // not sure how you can write an expression to find all groups who is a member of if
             // you allow the possibility of groups on groups so bringing them all back is easier.
-            var groups = groupRepository.FindAll().ToList();
+            var groups = this.groupRepository.FindAll().ToList();
             return groups.Where(g => g.IsMemberOf(who));
         }
     }

@@ -23,15 +23,15 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
                 new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
                 new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" )
             };
-            var groups = new List<Group>() {new Group("Test", true)};
+            var groups = new List<Group> { new Group("Test", true) };
             var groupPermissions = new List<Permission>()
             {
-                new GroupPermission(groups[0],new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004" )
+                new GroupPermission(groups.FirstOrDefault(),new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004" )
             };
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);
             this.GroupService.GetGroups("/employees/1").Returns(groups);
-            this.PermissionRepository.GetGroupsPermissions(groups).Returns(groupPermissions);
+            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(groupPermissions);
 
             this.result = this.Sut.GetPrivileges("/employees/1");
         }
@@ -42,8 +42,9 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Privilege>>>();
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data;
-            privileges.Count().Should().Be(3);
-            privileges.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
+            var enumerable = privileges.ToList();
+            enumerable.Count().Should().Be(3);
+            enumerable.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
         }
     }
 }
