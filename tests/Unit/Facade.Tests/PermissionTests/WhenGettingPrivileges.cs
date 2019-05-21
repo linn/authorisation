@@ -11,7 +11,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using NSubstitute;
     using NUnit.Framework;
 
-    public class WhenGettingEmpPrivilegesInclAGroup : ContextBase
+    public class WhenGettingPrivileges : ContextBase
     {
         private IResult<IEnumerable<Privilege>> result;
 
@@ -19,19 +19,14 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         public void SetUp()
         {
             var individualPermissions = new List<Permission>
-            {
-                new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
-                new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" )
-            };
-            var groups = new List<Group>() {new Group("Test", true)};
-            var groupPermissions = new List<Permission>()
-            {
-                new GroupPermission(groups[0],new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004" )
-            };
+                              {
+                                  new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
+                                  new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" ),
+                                  new IndividualPermission("/employees/1", new Privilege("tariffs.created"), DateTime.UtcNow, "/employees/7004" ),
+                              };
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);
-            this.GroupService.GetGroups("/employees/1").Returns(groups);
-            this.PermissionRepository.GetGroupsPermissions(groups).Returns(groupPermissions);
+            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(new List<Permission>());
 
             this.result = this.Sut.GetPrivileges("/employees/1");
         }
@@ -43,7 +38,6 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data;
             privileges.Count().Should().Be(3);
-            privileges.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
         }
     }
 }

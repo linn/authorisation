@@ -6,6 +6,7 @@ namespace Linn.Authorisation.IoC
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // TODO - register Repositories as IRepositories when they are written
         }
     }
 }

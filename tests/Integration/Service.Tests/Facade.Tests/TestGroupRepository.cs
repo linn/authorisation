@@ -1,42 +1,20 @@
 namespace Linn.Authorisation.Service.Tests.Facade.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Common.Persistence;
     using Domain;
     using Domain.Groups;
 
-    public class TestGroupRepository : IRepository<Group, int>
-    {
-        public Group FindById(int key)
-        {
-            throw new NotImplementedException();
-        }
+    using Linn.Authorisation.Domain.Repositories;
 
-        public IQueryable<Group> FindAll()
+    public class TestGroupRepository : IGroupRepository
+    {
+        public IEnumerable<Group> GetGroups()
         {
             return TestDbContext.Groups.AsQueryable();
-        }
-
-        public void Add(Group entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(Group entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Group FindBy(Expression<Func<Group, bool>> expression)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Group> FilterBy(Expression<Func<Group, bool>> expression)
-        {
-            throw new NotImplementedException();
         }
     }
 }

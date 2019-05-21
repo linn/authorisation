@@ -3,7 +3,6 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using Common.Facade;
     using Domain;
     using Domain.Groups;
@@ -11,25 +10,31 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;
-    using PermissionTests;
 
-    public class WhenGettingEmpPrivileges : ContextBase
+    public class WhenGettingPrivilegesInclAGroup : ContextBase
     {
         private IResult<IEnumerable<Privilege>> result;
 
         [SetUp]
         public void SetUp()
         {
+            var group = new Group("Test", true);
+            group.AddIndividualMember("/employees/1", "/employees/7004");
+   
             var individualPermissions = new List<Permission>
-                              {
-                                  new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
-                                  new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" ),
-                                  new IndividualPermission("/employees/1", new Privilege("tariffs.created"), DateTime.UtcNow, "/employees/7004" ),
-                              };
-            var groupPermissions = new List<Permission>();
+            {
+                new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
+                new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" )
+            };
+
+            var groups = new List<Group> { group };
+            this.GroupRepository.GetGroups().Returns(groups.AsQueryable());
+            var groupPermissions = new List<Permission>
+            {
+                new GroupPermission(groups.FirstOrDefault(), new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004")
+            };
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);
-            this.GroupService.GetGroups("/employees/1").Returns(Enumerable.Empty<Group>());
             this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(groupPermissions);
 
             this.result = this.Sut.GetPrivileges("/employees/1");
@@ -41,7 +46,9 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Privilege>>>();
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data;
-            privileges.Count().Should().Be(3);
+            var enumerable = privileges.ToList();
+            enumerable.Count.Should().Be(3);
+            enumerable.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
         }
     }
 }
