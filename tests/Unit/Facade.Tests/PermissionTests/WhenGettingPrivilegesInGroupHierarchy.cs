@@ -18,27 +18,36 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         [SetUp]
         public void SetUp()
         {
-            var groups = new List<Group> { new Group("Test", true) };
-            var groupPermissions = new List<Permission>()
-            {
-                new GroupPermission(groups[0],new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004" )
-            };
+            var subGroup = new Group("Group 1", true);
+            subGroup.AddIndividualMember("/employees/1", "/employees/7004");
+
+            var group = new Group("Group 2", true);
+            group.AddGroupMember(subGroup, "/employees/7004");
+
+            this.GroupRepository.FindAll().Returns(
+                new List<Group> { subGroup, group }.AsQueryable());
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(new List<Permission>());
-            this.GroupService.GetGroups("/employees/1").Returns(groups);
-            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(groupPermissions);
+
+            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>())
+                .Returns(new List<Permission> 
+                    {
+                        new GroupPermission(group,new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004"),
+                        new GroupPermission(subGroup,new Privilege("sernos.created"),DateTime.UtcNow, "/employees/7004"),
+                    });
 
             this.result = this.Sut.GetPrivileges("/employees/1");
         }
 
         [Test]
-        public void ShouldReturnSuccess()
+        public void ShouldReturnPrivileges()
         {
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Privilege>>>();
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data;
             var enumerable = privileges.ToList();
-            enumerable.Count().Should().Be(1);
+            enumerable.Count.Should().Be(2);
+            enumerable.First().Name.Should().Be("tariffs.created");
             enumerable.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
         }
     }

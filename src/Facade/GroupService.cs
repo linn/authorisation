@@ -3,8 +3,9 @@ namespace Linn.Authorisation.Facade
     using System.Collections.Generic;
     using System.Linq;
     using Common.Persistence;
-    using Domain;
     using Domain.Groups;
+
+    using Linn.Common.Facade;
 
     public class GroupService : IGroupService
     {
@@ -15,12 +16,11 @@ namespace Linn.Authorisation.Facade
             this.groupRepository = groupRepository;
         }
 
-        public IEnumerable<Group> GetGroups(string who)
+        public IResult<IEnumerable<Group>> GetGroups(string who)
         {
-            // not sure how you can write an expression to find all groups who is a member of if
-            // you allow the possibility of groups on groups so bringing them all back is easier.
-            var groups = this.groupRepository.FindAll().ToList();
-            return groups.Where(g => g.IsMemberOf(who));
+            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
+            return new SuccessResult<IEnumerable<Group>>(groups);
         }
+
     }
 }

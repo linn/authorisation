@@ -26,7 +26,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             this.PermissionRepository = new TestPermissionRepository();
             this.GroupRepository = new TestGroupRepository();
             this.GroupService = new GroupService(this.GroupRepository);
-            this.Sut = new AuthorisationService(this.PermissionRepository, this.GroupService);
+            this.Sut = new AuthorisationService(this.PermissionRepository, this.GroupRepository);
         }
     }
 } 

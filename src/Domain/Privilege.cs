@@ -1,3 +1,4 @@
+
 namespace Linn.Authorisation.Domain
 {
     using System.Collections.Generic;
