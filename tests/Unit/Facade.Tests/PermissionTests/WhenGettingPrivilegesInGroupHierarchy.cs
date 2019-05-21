@@ -11,7 +11,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using NSubstitute;
     using NUnit.Framework;
 
-    public class WhenGettingEmpPrivilegesJustInGroup : ContextBase
+    public class WhenGettingPrivilegesInGroupHierarchy : ContextBase
     {
         private IResult<IEnumerable<Privilege>> result;
 

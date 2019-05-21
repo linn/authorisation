@@ -1,12 +1,11 @@
 namespace Linn.Authorisation.Facade
 {
     using System.Collections.Generic;
-    using Domain;
     using Domain.Groups;
     using Linn.Common.Facade;
 
-    public interface IGroupService
+    public interface IGroupFacadeService
     {
-        IResult<IEnumerable<Group>> GetGroups(string who);
+        IResult<IEnumerable<Group>> GetGroupMemberships(string who);
     }
 }

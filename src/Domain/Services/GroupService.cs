@@ -1,11 +1,10 @@
-namespace Linn.Authorisation.Facade
+﻿namespace Linn.Authorisation.Domain.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Common.Persistence;
-    using Domain.Groups;
 
-    using Linn.Common.Facade;
+    using Linn.Authorisation.Domain.Groups;
+    using Linn.Common.Persistence;
 
     public class GroupService : IGroupService
     {
@@ -16,11 +15,9 @@ namespace Linn.Authorisation.Facade
             this.groupRepository = groupRepository;
         }
 
-        public IResult<IEnumerable<Group>> GetGroups(string who)
+        public IEnumerable<Group> GetGroupMemberships(string who)
         {
-            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
-            return new SuccessResult<IEnumerable<Group>>(groups);
+            return this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
         }
-
     }
 }
