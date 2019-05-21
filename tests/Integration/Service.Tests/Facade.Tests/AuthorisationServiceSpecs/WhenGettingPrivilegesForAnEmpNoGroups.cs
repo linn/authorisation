@@ -25,7 +25,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             TestDbContext.BuildPermission("/employees/2", "update.tariff");
             TestDbContext.BuildPermission("/employees/2", "update.vatcode");
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

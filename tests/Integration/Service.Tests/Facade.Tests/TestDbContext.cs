@@ -30,7 +30,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
         public static void BuildPermission(string granteeUri, string privilegeName)
         {
             var privilege = Privileges.SingleOrDefault(p => p.Name == privilegeName);
-            Permissions.Add(new IndividualPermission(granteeUri, privilege, DateTime.UtcNow, "/employees/7004"));
+            Permissions.Add(new IndividualPermission(granteeUri, privilege, "/employees/7004"));
         }
 
         public static void BuildPermission(Group group, string privilegeName)

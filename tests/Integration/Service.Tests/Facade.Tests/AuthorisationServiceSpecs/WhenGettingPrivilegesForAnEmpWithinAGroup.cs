@@ -24,7 +24,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             var group = TestDbContext.BuildGroup("test", true).BuildGroupMember("/employees/1");
             TestDbContext.BuildPermission(group, "create.sernos");
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

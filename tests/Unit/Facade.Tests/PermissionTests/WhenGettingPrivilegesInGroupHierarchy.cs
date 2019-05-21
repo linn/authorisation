@@ -36,7 +36,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
                         new GroupPermission(subGroup,new Privilege("sernos.created"),DateTime.UtcNow, "/employees/7004"),
                     });
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

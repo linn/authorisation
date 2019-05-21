@@ -23,8 +23,8 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
    
             var individualPermissions = new List<Permission>
             {
-                new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
-                new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" )
+                new IndividualPermission("/employees/1", new Privilege("sernos.created"), "/employees/7004"),
+                new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), "/employees/7004")
             };
 
             var groups = new List<Group> { group };
@@ -37,7 +37,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);
             this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(groupPermissions);
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

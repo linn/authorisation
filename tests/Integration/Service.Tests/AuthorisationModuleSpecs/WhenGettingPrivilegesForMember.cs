@@ -1,20 +1,19 @@
-﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
+﻿namespace Linn.Authorisation.Service.Tests.AuthorisationModuleSpecs
 {
     using FluentAssertions;
     using Nancy;
-    using Nancy.Testing;
 
     using NSubstitute;
 
     using NUnit.Framework;
 
-    public class WhenGettingPrivileges : ContextBase
+    public class WhenGettingPrivilegesForMember : ContextBase
     {
         [SetUp]
         public void SetUp()
         {
             this.Response = this.Browser.Get(
-                "/privileges/1234",
+                "/privileges/employees/1234",
                 with =>
                     {
                         with.Header("Accept", "application/json");
@@ -31,7 +30,7 @@
         [Test]
         public void ShouldCallService()
         {
-            this.AuthorisationService.GetPrivileges("1234").ReceivedCalls();
+            this.AuthorisationService.GetPrivilegesForMember("/employees/1234").ReceivedCalls();
         }
     }
 }

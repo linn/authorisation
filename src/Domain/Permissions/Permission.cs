@@ -4,10 +4,10 @@ namespace Linn.Authorisation.Domain.Permissions
 
     public abstract class Permission : Entity
     {
-        protected Permission(Privilege privilege, DateTime dateGranted, string grantedByUri)
+        protected Permission(Privilege privilege, string grantedByUri)
         {
             this.Privilege = privilege;
-            this.DateGranted = dateGranted;
+            this.DateGranted = DateTime.UtcNow;
             this.GrantedByUri = grantedByUri;
         }
 

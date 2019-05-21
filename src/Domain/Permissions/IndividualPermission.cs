@@ -4,7 +4,7 @@ namespace Linn.Authorisation.Domain.Permissions
 
     public class IndividualPermission : Permission
     {
-        public IndividualPermission(string granteeUri, Privilege privilege, DateTime dateGranted, string grantedByUri) : base(privilege, dateGranted, grantedByUri)
+        public IndividualPermission(string granteeUri, Privilege privilege, string grantedByUri) : base(privilege, grantedByUri)
         {
             this.GranteeUri = granteeUri;
         }

@@ -22,7 +22,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             TestDbContext.BuildPermission("/employees/2", "update.vatcode");
             TestDbContext.BuildPermission("/employees/1", "create.sernos");
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

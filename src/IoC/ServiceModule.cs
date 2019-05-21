@@ -5,6 +5,8 @@ namespace Linn.Authorisation.IoC
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade;
+    using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
 
     public class ServiceModule : Module
     {
@@ -15,6 +17,8 @@ namespace Linn.Authorisation.IoC
 
             // facade services
             builder.RegisterType<AuthorisationService>().As<IAuthorisationService>();
+            builder.RegisterType<PrivilegeFacadeService>()
+                .As<IFacadeService<PrivilegeService, int, PrivilegeResource, PrivilegeResource>>();
         }
     }
 }

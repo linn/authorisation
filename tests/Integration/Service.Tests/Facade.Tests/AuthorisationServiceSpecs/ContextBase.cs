@@ -1,14 +1,9 @@
 namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpecs
 {
-    using Domain.Groups;
     using Domain.Repositories;
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Service.Tests.Facade.Tests;
-    using Linn.Common.Persistence;
-
-    using NSubstitute;
 
     using NUnit.Framework;
 

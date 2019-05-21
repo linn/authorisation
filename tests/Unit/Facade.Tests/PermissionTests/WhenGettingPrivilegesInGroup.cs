@@ -29,7 +29,7 @@
                         new GroupPermission(group, new Privilege("tariffs.created"), DateTime.UtcNow, "/employees/7004"),
                     });
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]

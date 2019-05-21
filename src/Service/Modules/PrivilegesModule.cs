@@ -1,26 +1,28 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
-    using Linn.Authorisation.Facade;
-    using Linn.Authorisation.Service.Models;
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
 
     using Nancy;
+    using Nancy.ModelBinding;
 
     public sealed class PrivilegesModule : NancyModule
     {
-        private readonly IAuthorisationService authorisationService;
+        private readonly IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource> privilegeService;
 
-        public PrivilegesModule(IAuthorisationService authorisationService)
+        public PrivilegesModule(IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource> privilegeService)
         {
-            this.authorisationService = authorisationService;
+            this.privilegeService = privilegeService;
 
-            this.Get("/privileges/{who}", parameters => this.GetPrivileges(parameters.who));
+            this.Post("/privileges", _ => this.CreatePrivilege());
         }
 
-        private object GetPrivileges(string who)
+        private object CreatePrivilege()
         {
-            var result = this.authorisationService.GetPrivileges(who);
-            return this.Negotiate.WithModel(result).WithMediaRangeModel("text/html", ApplicationSettings.Get)
-                .WithView("Index");
+            var resource = this.Bind<PrivilegeResource>();
+            var result = this.privilegeService.Add(resource);
+            return this.Negotiate.WithModel(result);
         }
     }
 }
