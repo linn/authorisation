@@ -12,7 +12,6 @@
         private readonly IRepository<Group, int> groupRepository;
         private readonly IPermissionRepository permissionRepository;
 
-
         public PrivilegeService(IRepository<Group, int> groupRepository, IPermissionRepository permissionRepository)
         {
             this.groupRepository = groupRepository;

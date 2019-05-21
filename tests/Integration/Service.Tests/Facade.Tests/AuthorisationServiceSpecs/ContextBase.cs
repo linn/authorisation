@@ -3,9 +3,12 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
     using Domain.Groups;
     using Domain.Repositories;
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Service.Tests.Facade.Tests;
     using Linn.Common.Persistence;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -19,6 +22,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
 
         protected GroupService GroupService { get; private set; }
 
+        protected PrivilegeService PrivilegeService { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
@@ -26,7 +31,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             this.PermissionRepository = new TestPermissionRepository();
             this.GroupRepository = new TestGroupRepository();
             this.GroupService = new GroupService(this.GroupRepository);
-            this.Sut = new AuthorisationService(this.PermissionRepository, this.GroupRepository);
+            this.PrivilegeService = new PrivilegeService(this.GroupRepository, this.PermissionRepository);
+            this.Sut = new AuthorisationService(this.PrivilegeService);
         }
     }
 } 

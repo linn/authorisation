@@ -2,6 +2,8 @@ namespace Linn.Authorisation.Facade
 {
     using System.Collections.Generic;
     using Domain.Groups;
+
+    using Linn.Authorisation.Domain.Services;
     using Linn.Common.Facade;
 
     public class GroupFacadeService : IGroupFacadeService
