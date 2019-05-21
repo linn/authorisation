@@ -18,7 +18,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
 
         protected IPermissionRepository PermissionRepository{ get; private set; }
 
-        protected IRepository<Group, int> GroupRepository { get; private set; }
+        protected IGroupRepository GroupRepository { get; private set; }
 
         protected GroupService GroupService { get; private set; }
 

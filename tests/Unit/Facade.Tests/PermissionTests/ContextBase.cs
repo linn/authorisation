@@ -15,7 +15,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
 
         protected IPermissionRepository PermissionRepository { get; private set; }
 
-        protected IRepository<Group, int> GroupRepository { get; private set; }
+        protected IGroupRepository GroupRepository { get; private set; }
 
         protected IPrivilegeService PrivilegeService { get; private set; }
 
@@ -23,7 +23,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         public void SetUpContext()
         {
             this.PermissionRepository = Substitute.For<IPermissionRepository>();
-            this.GroupRepository = Substitute.For<IRepository<Group, int>>();
+            this.GroupRepository = Substitute.For<IGroupRepository>();
             this.PrivilegeService = new PrivilegeService(this.GroupRepository, this.PermissionRepository);
 
             this.Sut = new AuthorisationService(this.PrivilegeService);

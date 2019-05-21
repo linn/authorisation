@@ -20,7 +20,7 @@
         {
             var group = new Group("Test", true);
             group.AddIndividualMember("/employees/1", "/employees/7004");
-            this.GroupRepository.FindAll().Returns(
+            this.GroupRepository.GetGroups().Returns(
                 new List<Group> { group }.AsQueryable());
 
             this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>())

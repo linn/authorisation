@@ -6,8 +6,4 @@
     <RootNamespace>Linn.Authorisation.Domain</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Linn.Common.Persistence" Version="2.0.1" />
-  </ItemGroup>
-
 </Project>

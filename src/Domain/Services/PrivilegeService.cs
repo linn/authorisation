@@ -2,17 +2,14 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Repositories;
-    using Linn.Common.Persistence;
 
     public class PrivilegeService : IPrivilegeService
     {
-        private readonly IRepository<Group, int> groupRepository;
+        private readonly IGroupRepository groupRepository;
         private readonly IPermissionRepository permissionRepository;
 
-        public PrivilegeService(IRepository<Group, int> groupRepository, IPermissionRepository permissionRepository)
+        public PrivilegeService(IGroupRepository groupRepository, IPermissionRepository permissionRepository)
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
@@ -23,7 +20,7 @@
             var privileges = this.permissionRepository.GetIndividualPermissions(who)
                 .Select(p => p.Privilege).ToList();
 
-            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
+            var groups = this.groupRepository.GetGroups().Where(g => g.IsMemberOf(who));
             if (!groups.Any())
             {
                 return privileges.Where(p => p.Active).Distinct();

@@ -24,7 +24,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             var group = new Group("Group 2", true);
             group.AddGroupMember(subGroup, "/employees/7004");
 
-            this.GroupRepository.FindAll().Returns(
+            this.GroupRepository.GetGroups().Returns(
                 new List<Group> { subGroup, group }.AsQueryable());
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(new List<Permission>());
