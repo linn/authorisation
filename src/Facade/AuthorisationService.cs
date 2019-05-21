@@ -1,13 +1,9 @@
 namespace Linn.Authorisation.Facade
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using Domain.Repositories;
     using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Services;
     using Linn.Common.Facade;
-    using Linn.Common.Persistence;
 
     public class AuthorisationService : IAuthorisationService
     {
