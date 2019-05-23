@@ -4,20 +4,20 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
-    using Linn.Authorisation.Domain.Repositories;
     using Linn.Authorisation.Resources;
-    using Linn.Common.Domain.Exceptions;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
     public class PermissionService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionService
     {
-        private readonly IPrivilegeRepository privilegeRepository;
+        private readonly IRepository<Privilege, int> privilegeRepository;
 
-        private readonly IGroupRepository groupRepository;
+        private readonly IRepository<Group, int> groupRepository;
 
-        public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IPrivilegeRepository privilegeRepository, IGroupRepository groupRepository )
+        public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository )
             : base(repository, transactionManager)
         {
             this.privilegeRepository = privilegeRepository;
@@ -26,14 +26,14 @@
 
         protected override Permission CreateFromResource(PermissionResource resource)
         {
-            var privilege = this.privilegeRepository.FindByName(resource.Privilege);
+            var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
 
             if (resource.GranteeUri != null)
             {
                 return new IndividualPermission(resource.GranteeUri, privilege, resource.GrantedByUri);
             }
 
-            var group = this.groupRepository.GetGroups().FirstOrDefault(g => g.Name == resource.GroupName);
+            var group = this.groupRepository.FilterBy(g => g.Name == resource.GroupName).FirstOrDefault();
             return new GroupPermission(group, privilege, resource.GrantedByUri);
         }
 
@@ -59,8 +59,8 @@
             {
                 return result;
             }
-            var privilege = this.privilegeRepository.FindByName(resource.Privilege);
-            var group = this.groupRepository.GetGroups().FirstOrDefault(g => g.Name == resource.GroupName);
+            var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
+            var group = this.groupRepository.FindAll().FirstOrDefault(g => g.Name == resource.GroupName);
 
             if (resource.GranteeUri != null && resource.GroupName == null)
             {

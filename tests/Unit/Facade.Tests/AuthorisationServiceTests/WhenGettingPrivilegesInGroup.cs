@@ -3,11 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+
     using Common.Facade;
     using Domain;
     using Domain.Groups;
     using Domain.Permissions;
     using FluentAssertions;
+
+    using Linn.Authorisation.Facade.Tests.AuthorisationServiceTests;
+
     using NSubstitute;
     using NUnit.Framework;
 
@@ -20,14 +25,14 @@
         {
             var group = new Group("Test", true);
             group.AddIndividualMember("/employees/1", "/employees/7004");
-            this.GroupRepository.GetGroups().Returns(
+            this.GroupRepository.FindAll().Returns(
                 new List<Group> { group }.AsQueryable());
 
-            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>())
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(new List<Permission>
                     {
                         new GroupPermission(group, new Privilege("tariffs.created"), "/employees/7004"),
-                    });
+                    }.AsQueryable());
 
             this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }

@@ -1,29 +1,14 @@
-namespace Linn.Authorisation.Service.Tests.Facade.Tests
+﻿namespace Linn.Authorisation.Persistence
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Domain;
-    using Domain.Groups;
-    using Domain.Permissions;
-
+    using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
 
-    public class TestPermissionRepository : IRepository<Permission, int>
+    public class PermissionsRepository : IRepository<Permission, int>
     {
-        public IEnumerable<Permission> GetIndividualPermissions(string who)
-        {
-            return TestDbContext.Permissions.Where(p => p is IndividualPermission && (((IndividualPermission) p).GranteeUri == who));
-        }
-
-        public IEnumerable<Permission> GetGroupsPermissions(IEnumerable<Group> groups)
-        {
-            return TestDbContext.Permissions.Where(p =>
-                p is GroupPermission && groups.Contains(((GroupPermission) p).GranteeGroup));
-        }
-
         public Permission FindById(int key)
         {
             throw new NotImplementedException();
@@ -51,7 +36,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
 
         public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
         {
-            return TestDbContext.Permissions.AsQueryable().Where(expression);
+            throw new NotImplementedException();
         }
     }
 }

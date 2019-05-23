@@ -1,15 +1,14 @@
-namespace Linn.Authorisation.Service.Tests.Facade.Tests
+﻿namespace Linn.Authorisation.Persistence
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using Common.Persistence;
-    using Domain.Groups;
 
+    using Linn.Authorisation.Domain.Groups;
+    using Linn.Common.Persistence;
 
-    public class TestGroupRepository : IRepository<Group, int>
+    public class GroupRepository : IRepository<Group, int>
     {
-      
         public Group FindById(int key)
         {
             throw new NotImplementedException();
@@ -17,7 +16,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
 
         public IQueryable<Group> FindAll()
         {
-            return TestDbContext.Groups.AsQueryable();
+            throw new NotImplementedException();
         }
 
         public void Add(Group entity)

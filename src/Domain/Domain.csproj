@@ -6,4 +6,10 @@
     <RootNamespace>Linn.Authorisation.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Linn.Common.Persistence">
+      <HintPath>..\..\..\..\.nuget\packages\linn.common.persistence\2.0.1\lib\netstandard2.0\Linn.Common.Persistence.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

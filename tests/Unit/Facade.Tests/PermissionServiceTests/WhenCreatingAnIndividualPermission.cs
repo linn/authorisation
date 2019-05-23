@@ -1,5 +1,10 @@
 ﻿namespace Linn.Authorisation.Facade.Tests.PermissionServiceTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
@@ -25,7 +30,7 @@
 
             var privilege = new Privilege("create");
 
-            this.PrivilegeRepository.FindByName("create").Returns(privilege);
+            this.PrivilegeRepository.FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>()).Returns(new List<Privilege> { privilege}.AsQueryable());
 
             this.result = this.Sut.Add(permission);
         }

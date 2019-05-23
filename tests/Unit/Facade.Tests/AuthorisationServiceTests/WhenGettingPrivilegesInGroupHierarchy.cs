@@ -3,11 +3,16 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+
     using Common.Facade;
     using Domain;
     using Domain.Groups;
     using Domain.Permissions;
     using FluentAssertions;
+
+    using Linn.Authorisation.Facade.Tests.AuthorisationServiceTests;
+
     using NSubstitute;
     using NUnit.Framework;
 
@@ -24,17 +29,17 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             var group = new Group("Group 2", true);
             group.AddGroupMember(subGroup, "/employees/7004");
 
-            this.GroupRepository.GetGroups().Returns(
+            this.GroupRepository.FindAll().Returns(
                 new List<Group> { subGroup, group }.AsQueryable());
 
-            this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(new List<Permission>());
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>()).Returns(new List<Permission>().AsQueryable());
 
-            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>())
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(new List<Permission> 
                     {
                         new GroupPermission(group,new Privilege("tariffs.created"), "/employees/7004"),
                         new GroupPermission(subGroup,new Privilege("sernos.created"), "/employees/7004"),
-                    });
+                    }.AsQueryable());
 
             this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
