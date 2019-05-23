@@ -1,7 +1,6 @@
 
 namespace Linn.Authorisation.Persistence
 {
-    using Linn.Authorisation.Domain;
     using Linn.Common.Configuration;
 
     using Microsoft.EntityFrameworkCore;

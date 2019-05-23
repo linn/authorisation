@@ -1,12 +1,9 @@
 namespace Linn.Authorisation.Service.Tests.Facade.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Domain;
-    using Domain.Groups;
     using Domain.Permissions;
 
     using Linn.Common.Persistence;

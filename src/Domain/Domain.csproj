@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Linn.Authorisation.Domain</AssemblyName>
     <RootNamespace>Linn.Authorisation.Domain</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Linn.Common.Persistence" Version="2.0.1" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Linn.Common.Persistence">
