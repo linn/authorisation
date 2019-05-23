@@ -12,6 +12,11 @@ namespace Linn.Authorisation.Domain.Groups
             this.DateAdded = DateTime.UtcNow;
         }
 
+        public IndividualMember()
+        {
+            // empty args constructor needed for ef
+        }
+
         public string MemberUri { get; set; }
 
         public override IEnumerable<string> MemberUris()

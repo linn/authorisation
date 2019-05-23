@@ -58,11 +58,9 @@ namespace Linn.Authorisation.Persistence
             builder.Entity<IndividualMember>().HasBaseType<Member>();
             builder.Entity<GroupMember>().HasBaseType<Member>();
 
-            builder.Entity<GroupMember>().HasMany(a => a.MemberUris());
             builder.Entity<GroupMember>().HasOne<Group>(a => a.Group);
 
             builder.Entity<IndividualMember>().Property(a => a.MemberUri);
-            builder.Entity<IndividualMember>().HasMany(a => a.MemberUris());
         }
 
         private void BuildPermissions(ModelBuilder builder)
