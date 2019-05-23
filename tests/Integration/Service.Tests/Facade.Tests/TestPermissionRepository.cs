@@ -13,17 +13,6 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
 
     public class TestPermissionRepository : IRepository<Permission, int>
     {
-        public IEnumerable<Permission> GetIndividualPermissions(string who)
-        {
-            return TestDbContext.Permissions.Where(p => p is IndividualPermission && (((IndividualPermission) p).GranteeUri == who));
-        }
-
-        public IEnumerable<Permission> GetGroupsPermissions(IEnumerable<Group> groups)
-        {
-            return TestDbContext.Permissions.Where(p =>
-                p is GroupPermission && groups.Contains(((GroupPermission) p).GranteeGroup));
-        }
-
         public Permission FindById(int key)
         {
             throw new NotImplementedException();
