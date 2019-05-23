@@ -4,12 +4,18 @@ namespace Linn.Authorisation.Domain.Permissions
 
     public abstract class Permission : Entity
     {
+        protected Permission()
+        {
+            // empty args constructor needed for ef
+        }
+
         protected Permission(Privilege privilege, DateTime dateGranted, string grantedByUri)
         {
             this.Privilege = privilege;
             this.DateGranted = dateGranted;
             this.GrantedByUri = grantedByUri;
         }
+
 
         public Privilege Privilege { get; set; }
 

@@ -1,13 +1,16 @@
 namespace Linn.Authorisation.Domain
 {
-    using System.Collections.Generic;
-
     public class Privilege : Entity
     {
         public Privilege(string name, bool active = true)
         {
             this.Name = name;
             this.Active = active;
+        }
+
+        public Privilege()
+        {
+            // empty args constructor needed for ef      
         }
 
         public string Name { get; set; }
