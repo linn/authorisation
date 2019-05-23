@@ -32,8 +32,8 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>())
                 .Returns(new List<Permission> 
                     {
-                        new GroupPermission(group,new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004"),
-                        new GroupPermission(subGroup,new Privilege("sernos.created"),DateTime.UtcNow, "/employees/7004"),
+                        new GroupPermission(group,new Privilege("tariffs.created"), "/employees/7004"),
+                        new GroupPermission(subGroup,new Privilege("sernos.created"), "/employees/7004"),
                     });
 
             this.result = this.Sut.GetPrivilegesForMember("/employees/1");

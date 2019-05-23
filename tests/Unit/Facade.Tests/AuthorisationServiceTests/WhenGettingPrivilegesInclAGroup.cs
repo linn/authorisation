@@ -31,7 +31,7 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
             this.GroupRepository.GetGroups().Returns(groups.AsQueryable());
             var groupPermissions = new List<Permission>
             {
-                new GroupPermission(groups.FirstOrDefault(), new Privilege("tariffs.created"),DateTime.UtcNow, "/employees/7004")
+                new GroupPermission(groups.FirstOrDefault(), new Privilege("tariffs.created"), "/employees/7004")
             };
 
             this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);

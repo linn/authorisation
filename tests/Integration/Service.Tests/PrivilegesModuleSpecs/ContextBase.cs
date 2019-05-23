@@ -1,10 +1,12 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
 {
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
     using Linn.Authorisation.Service.Tests;
     using Linn.Common.Facade;
+    using Linn.Products.Service.ResponseProcessors;
 
     using Nancy.Testing;
 
@@ -26,6 +28,8 @@
                     {
                         with.Dependency(this.PrivilegeService);
                         with.Module<PrivilegesModule>();
+                        with.ResponseProcessor<PrivilegeResponseProcessor>();
+                        with.Dependency<IResourceBuilder<Privilege>>(new PrivilegeResourceBuilder());
                     });
 
             this.Browser = new Browser(bootstrapper);

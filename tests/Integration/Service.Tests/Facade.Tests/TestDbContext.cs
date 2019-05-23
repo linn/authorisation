@@ -36,7 +36,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
         public static void BuildPermission(Group group, string privilegeName)
         {
             var privilege = Privileges.SingleOrDefault(p => p.Name == privilegeName);
-            Permissions.Add(new GroupPermission(group, privilege, DateTime.UtcNow, "/employees/7004"));
+            Permissions.Add(new GroupPermission(group, privilege, "/employees/7004"));
         }
 
         public static Group BuildGroup(string groupName, bool active)

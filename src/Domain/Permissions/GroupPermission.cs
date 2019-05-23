@@ -6,7 +6,7 @@ namespace Linn.Authorisation.Domain.Permissions
 
     public class GroupPermission : Permission
     {
-        public GroupPermission(Group granteeGroup, Privilege privilege, DateTime dateGranted, string grantedByUri) : base(privilege, grantedByUri)
+        public GroupPermission(Group granteeGroup, Privilege privilege, string grantedByUri) : base(privilege, grantedByUri)
         {
             this.GranteeGroup = granteeGroup;
         }

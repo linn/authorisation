@@ -1,7 +1,5 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
-    using System;
-
     public class IndividualPermission : Permission
     {
         public IndividualPermission(string granteeUri, Privilege privilege, string grantedByUri) : base(privilege, grantedByUri)

@@ -15,7 +15,7 @@
         {
             this.privilegeService = privilegeService;
 
-            this.Post("/privileges", _ => this.CreatePrivilege());
+            this.Post("/authorisation/privileges", _ => this.CreatePrivilege());
         }
 
         private object CreatePrivilege()

@@ -19,6 +19,7 @@ namespace Linn.Authorisation.IoC
             builder.RegisterType<AuthorisationService>().As<IAuthorisationService>();
             builder.RegisterType<PrivilegeFacadeService>()
                 .As<IFacadeService<PrivilegeService, int, PrivilegeResource, PrivilegeResource>>();
+            builder.RegisterType<IPermissionService>().As<PermissionService>();
         }
     }
 }

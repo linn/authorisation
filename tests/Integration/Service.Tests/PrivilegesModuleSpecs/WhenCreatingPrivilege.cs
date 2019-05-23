@@ -2,7 +2,9 @@
 {
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
 
     using Nancy;
     using Nancy.Testing;
@@ -18,8 +20,11 @@
         public void SetUp()
         {
             var resource = new PrivilegeResource { Name = "Test" };
+            var privilege = new Privilege("Test", true);
+            this.PrivilegeService.Add(Arg.Any<PrivilegeResource>())
+                .Returns(new CreatedResult<Privilege>(privilege));
             this.Response = this.Browser.Post(
-                "/privileges",
+                "/authorisation/privileges",
                 with =>
                     {
                         with.Header("Accept", "application/json");
@@ -29,15 +34,22 @@
         }
 
         [Test]
-        public void ShouldReturnOk()
+        public void ShouldReturnCreated()
         {
-            this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Test]
         public void ShouldCallService()
         {
             this.PrivilegeService.Add(Arg.Any<PrivilegeResource>()).ReceivedCalls();
+        }
+
+        [Test]
+        public void ShouldReturnResource()
+        {
+            var resource = this.Response.Body.DeserializeJson<PrivilegeResource>();
+            resource.Active.Should().Be(true);
         }
     }
 }
