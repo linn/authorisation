@@ -21,7 +21,7 @@
 
         private object CreatePermission()
         {
-            var resource = this.Bind<PermissionCreateResource>();
+            var resource = this.Bind<PermissionResource>();
             var result = this.permissionService.CreatePermission(resource);
             return this.Negotiate.WithModel(result);
         }

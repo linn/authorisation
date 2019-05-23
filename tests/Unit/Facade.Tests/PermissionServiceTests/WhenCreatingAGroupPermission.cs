@@ -21,7 +21,7 @@
         [SetUp]
         public void SetUp()
         {
-            var permission = new PermissionCreateResource
+            var permission = new PermissionResource
                                  {
                                      GrantedByUri = "/employees/1",
                                      GroupName = "group",

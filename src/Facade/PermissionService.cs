@@ -11,7 +11,7 @@
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
-    public class PermissionService : FacadeService<Permission, int, PermissionCreateResource, PermissionResource>, IPermissionService
+    public class PermissionService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionService
     {
         private readonly IPrivilegeRepository privilegeRepository;
 
@@ -24,7 +24,7 @@
             this.groupRepository = groupRepository;
         }
 
-        protected override Permission CreateFromResource(PermissionCreateResource resource)
+        protected override Permission CreateFromResource(PermissionResource resource)
         {
             var privilege = this.privilegeRepository.FindByName(resource.Privilege);
 
@@ -47,7 +47,7 @@
             throw new NotImplementedException();
         }
 
-        public IResult<Permission> CreatePermission(PermissionCreateResource resource)
+        public IResult<Permission> CreatePermission(PermissionResource resource)
         {
             if ((resource.GranteeUri == null && resource.GroupName == null) || (resource.GranteeUri != null && resource.GroupName != null))
             {

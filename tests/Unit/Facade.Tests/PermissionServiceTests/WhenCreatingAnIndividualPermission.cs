@@ -18,7 +18,7 @@
         [SetUp]
         public void SetUp()
         {
-            var permission = new PermissionCreateResource
+            var permission = new PermissionResource
                                  {
                                      GrantedByUri = "/employees/1", GranteeUri = "/employees/3306", Privilege = "create"
                                  };

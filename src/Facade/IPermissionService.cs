@@ -4,8 +4,8 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
-    public interface IPermissionService : IFacadeService<Permission, int, PermissionCreateResource, PermissionResource>
+    public interface IPermissionService : IFacadeService<Permission, int, PermissionResource, PermissionResource>
     {
-        IResult<Permission> CreatePermission(PermissionCreateResource permission);
+        IResult<Permission> CreatePermission(PermissionResource permission);
     }
 }

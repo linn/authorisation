@@ -12,7 +12,7 @@
         {
             if (permission is IndividualPermission individualPermission)
             {
-                return new PermissionCreateResource
+                return new PermissionResource
                            {
                                GrantedByUri = individualPermission.GrantedByUri,
                                GranteeUri = individualPermission.GranteeUri,
@@ -21,7 +21,7 @@
             }
 
             var groupPermission = (GroupPermission)permission;
-            return new PermissionCreateResource
+            return new PermissionResource
                        {
                            GrantedByUri = groupPermission.GrantedByUri,
                            GroupName = groupPermission.GranteeGroup.Name,
