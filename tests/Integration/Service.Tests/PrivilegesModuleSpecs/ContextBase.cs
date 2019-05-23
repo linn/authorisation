@@ -4,9 +4,9 @@
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
+    using Linn.Authorisation.Service.ResponseProcessors;
     using Linn.Authorisation.Service.Tests;
     using Linn.Common.Facade;
-    using Linn.Products.Service.ResponseProcessors;
 
     using Nancy.Testing;
 
