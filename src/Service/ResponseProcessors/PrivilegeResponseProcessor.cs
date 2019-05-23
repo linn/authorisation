@@ -1,4 +1,4 @@
-﻿namespace Linn.Products.Service.ResponseProcessors
+﻿namespace Linn.Authorisation.Service.ResponseProcessors
 {
     using Linn.Authorisation.Domain;
     using Linn.Common.Facade;

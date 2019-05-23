@@ -3,8 +3,6 @@ namespace Linn.Authorisation.IoC
     using Autofac;
 
     using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Resources;

@@ -1,6 +1,5 @@
 ﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
-
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;

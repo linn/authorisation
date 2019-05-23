@@ -1,4 +1,3 @@
-
 namespace Linn.Authorisation.Persistence
 {
     using Linn.Common.Configuration;

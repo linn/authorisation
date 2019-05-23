@@ -1,9 +1,7 @@
-﻿namespace Linn.Authorisation.Service
+﻿namespace Linn.Authorisation.Service.Modules
 {
-    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Resources;
-    using Linn.Common.Facade;
 
     using Nancy;
     using Nancy.ModelBinding;
