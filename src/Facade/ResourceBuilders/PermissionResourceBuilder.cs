@@ -1,6 +1,5 @@
 ﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
-    using System;
 
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
@@ -8,7 +7,7 @@
 
     public class PermissionResourceBuilder : IResourceBuilder<Permission>
     {
-        private object Build(Permission permission)
+        public PermissionResource Build(Permission permission)
         {
             if (permission is IndividualPermission individualPermission)
             {

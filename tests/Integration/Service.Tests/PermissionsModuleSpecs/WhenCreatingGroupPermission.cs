@@ -3,6 +3,7 @@
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
@@ -15,14 +16,14 @@
 
     using NUnit.Framework;
 
-    public class WhenCreatingPermission : ContextBase
+    public class WhenCreatingGroupPermission : ContextBase
     {
         [SetUp]
         public void SetUp()
         {
-            var resource = new PermissionResource { GranteeUri = "/employee/1", GrantedByUri = "/employee/33087", Privilege = "Name"};
+            var resource = new PermissionResource { GroupName = "group", GrantedByUri = "/employee/33087", Privilege = "Name" };
 
-            var p = new IndividualPermission("/employee/1", new Privilege("Name"), "/employee/33087");
+            var p = new GroupPermission(new Group("group", true), new Privilege("Name"), "/employee/33087");
 
             this.PermissionService.CreatePermission(Arg.Any<PermissionResource>())
                 .Returns(new CreatedResult<Permission>(p));
@@ -53,7 +54,7 @@
         public void ShouldReturnResource()
         {
             var resource = this.Response.Body.DeserializeJson<PermissionResource>();
-            resource.GranteeUri.Should().Be("/employee/1");
+            resource.GroupName.Should().Be("group");
         }
     }
 }
