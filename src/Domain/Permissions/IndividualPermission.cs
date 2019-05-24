@@ -7,6 +7,11 @@ namespace Linn.Authorisation.Domain.Permissions
             this.GranteeUri = granteeUri;
         }
 
+        public IndividualPermission()
+        {
+            // empty args constructor needed for ef
+        }
+
         public string GranteeUri { get; set; }       
     }
 }
