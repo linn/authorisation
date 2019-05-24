@@ -1,5 +1,7 @@
 ﻿namespace Linn.Authorisation.IoC
 {
+    using System.Collections.Generic;
+
     using Autofac;
 
     using Linn.Authorisation.Domain;
@@ -12,6 +14,7 @@
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<PrivilegeResourceBuilder>().As<IResourceBuilder<Privilege>>();
+            builder.RegisterType<PrivilegesResourceBuilder>().As<IResourceBuilder<IEnumerable<Privilege>>>();
             builder.RegisterType<PermissionResourceBuilder>().As<IResourceBuilder<Permission>>();
         }
     }
