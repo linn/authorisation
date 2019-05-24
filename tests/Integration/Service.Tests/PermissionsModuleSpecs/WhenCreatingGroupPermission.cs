@@ -7,7 +7,6 @@
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-    using Linn.Permission.Service.Tests.PermissionsModuleSpecs;
 
     using Nancy;
     using Nancy.Testing;

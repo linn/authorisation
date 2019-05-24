@@ -6,14 +6,13 @@
     using Nancy;
     using Nancy.ModelBinding;
 
-    public class PermissionsModule : NancyModule
+    public sealed class PermissionsModule : NancyModule
     {
         private readonly IPermissionService permissionService;
 
         public PermissionsModule(IPermissionService permissionService)
         {
             this.permissionService = permissionService;
-
             this.Post("/authorisation/permissions", _ => this.CreatePermission());
         }
 

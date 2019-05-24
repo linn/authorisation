@@ -1,9 +1,9 @@
-﻿namespace Linn.Permission.Service.Tests.PermissionsModuleSpecs
+﻿namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
 {
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Facade.ResourceBuilders;
-    using Linn.Authorisation.Service;
+    using Linn.Authorisation.Service.Modules;
     using Linn.Authorisation.Service.ResponseProcessors;
     using Linn.Authorisation.Service.Tests;
     using Linn.Common.Facade;
