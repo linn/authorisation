@@ -14,7 +14,9 @@
         {
             return new PrivilegeResource
                        {
-                           Name = privilege.Name, Active = privilege.Active, Links = this.BuildLinks(privilege).ToArray()
+                           Name = privilege.Name,
+                           Active = privilege.Active,
+                           Links = this.BuildLinks(privilege).ToArray()
                        };
         }
         
@@ -27,7 +29,11 @@
 
         public IEnumerable<LinkResource> BuildLinks(Privilege privilege)
         {
-            yield return new LinkResource { Rel = "self", Href = $"/privileges/{privilege.Name}" };
+            yield return new LinkResource
+                             {
+                                 Rel = "self",
+                                 Href = $"/privileges/{privilege.Name}"
+                             };
         }
     }
 }
