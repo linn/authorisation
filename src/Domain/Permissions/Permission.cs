@@ -9,7 +9,7 @@ namespace Linn.Authorisation.Domain.Permissions
             // empty args constructor needed for ef
         }
 
-        protected Permission(Privilege privilege, DateTime dateGranted, string grantedByUri)
+        protected Permission(Privilege privilege, string grantedByUri)
         {
             this.Privilege = privilege;
             this.DateGranted = DateTime.UtcNow;
