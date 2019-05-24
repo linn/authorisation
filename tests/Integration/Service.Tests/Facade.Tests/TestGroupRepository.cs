@@ -6,10 +6,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
     using Common.Persistence;
     using Domain.Groups;
 
-
     public class TestGroupRepository : IRepository<Group, int>
     {
-      
         public Group FindById(int key)
         {
             throw new NotImplementedException();

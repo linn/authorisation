@@ -24,6 +24,29 @@
             this.groupRepository = groupRepository;
         }
 
+        public IResult<Permission> CreatePermission(PermissionResource resource)
+        {
+            if ((resource.GranteeUri == null && resource.GroupName == null) || (resource.GranteeUri != null && resource.GroupName != null))
+            {
+                return new BadRequestResult<Permission>();
+            }
+
+            var result = this.Add(resource);
+            if (result is BadRequestResult<Permission>)
+            {
+                return result;
+            }
+            var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
+            var group = this.groupRepository.FindAll().FirstOrDefault(g => g.Name == resource.GroupName);
+
+            if (resource.GranteeUri != null && resource.GroupName == null)
+            {
+                return new CreatedResult<Permission>(new IndividualPermission(resource.GranteeUri, privilege, resource.GrantedByUri));
+            }
+
+            return new CreatedResult<Permission>(new GroupPermission(group, privilege, resource.GrantedByUri));
+        }
+
         protected override Permission CreateFromResource(PermissionResource resource)
         {
             var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
@@ -45,29 +68,6 @@
         protected override Expression<Func<Permission, bool>> SearchExpression(string searchTerm)
         {
             throw new NotImplementedException();
-        }
-
-        public IResult<Permission> CreatePermission(PermissionResource resource)
-        {
-            if ((resource.GranteeUri == null && resource.GroupName == null) || (resource.GranteeUri != null && resource.GroupName != null))
-            {
-                return new BadRequestResult<Permission>();
-            }
-
-            var result = this.Add(resource);
-            if (result is BadRequestResult<Permission>)
-            {
-                return result;
-            }
-            var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
-            var group = this.groupRepository.FindAll().FirstOrDefault(g => g.Name == resource.GroupName);
-
-            if (resource.GranteeUri != null && resource.GroupName == null)
-            {
-                return new CreatedResult<Permission>(new IndividualPermission(resource.GranteeUri, privilege, resource.GrantedByUri));
-            }
-            return new CreatedResult<Permission>(new GroupPermission(group, privilege, resource.GrantedByUri));
-
         }
     }
 }
