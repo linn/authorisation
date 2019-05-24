@@ -4,7 +4,6 @@
     using Linn.Authorisation.Service.Models;
 
     using Nancy;
-    using Nancy.ModelBinding;
 
     public sealed class AuthorisationModule : NancyModule
     {
