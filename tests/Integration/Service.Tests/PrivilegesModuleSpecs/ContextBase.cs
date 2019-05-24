@@ -34,6 +34,5 @@
 
             this.Browser = new Browser(bootstrapper);
         }
-
     }
 }
