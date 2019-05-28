@@ -7,7 +7,7 @@
 
     using NUnit.Framework;
 
-    public class WhenRemovingWithAmbiguousResource : ContextBase
+    public class WhenRemovingAmbiguousPermission : ContextBase
     {
         private IResult<Permission> result;
 

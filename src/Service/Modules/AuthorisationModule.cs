@@ -1,9 +1,11 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
     using Linn.Authorisation.Facade;
+    using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Models;
 
     using Nancy;
+    using Nancy.ModelBinding;
 
     public sealed class AuthorisationModule : NancyModule
     {
@@ -13,12 +15,13 @@
         {
             this.authorisationService = authorisationService;
 
-            this.Get("/privileges/{who*}", parameters => this.GetPrivilegesForMember(parameters.who));
+            this.Get("/privileges", _ => this.GetPrivilegesForMember());
         }
 
-        private object GetPrivilegesForMember(string who)
+        private object GetPrivilegesForMember()
         {
-            var result = this.authorisationService.GetPrivilegesForMember(who);
+            var resource = this.Bind<AuthorisationRequestResource>();
+            var result = this.authorisationService.GetPrivilegesForMember(resource.Who);
             return this.Negotiate.WithModel(result).WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");
         }
