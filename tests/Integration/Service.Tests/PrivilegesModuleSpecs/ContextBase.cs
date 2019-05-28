@@ -1,7 +1,12 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
 {
-    using Linn.Authorisation.Facade;
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Facade.ResourceBuilders;
+    using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
+    using Linn.Authorisation.Service.ResponseProcessors;
+    using Linn.Authorisation.Service.Tests;
+    using Linn.Common.Facade;
 
     using Nancy.Testing;
 
@@ -11,22 +16,23 @@
 
     public abstract class ContextBase : NancyContextBase
     {
-        protected IAuthorisationService AuthorisationService { get; set; }
+        protected IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource> PrivilegeService { get; set; }
 
         [SetUp]
         public void EstablishContext()
         {
-            this.AuthorisationService = Substitute.For<IAuthorisationService>();
+            this.PrivilegeService = Substitute.For<IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource>>();
 
             var bootstrapper = new ConfigurableBootstrapper(
                 with =>
                     {
-                        with.Dependency(this.AuthorisationService);
+                        with.Dependency(this.PrivilegeService);
                         with.Module<PrivilegesModule>();
+                        with.ResponseProcessor<PrivilegeResponseProcessor>();
+                        with.Dependency<IResourceBuilder<Privilege>>(new PrivilegeResourceBuilder());
                     });
 
             this.Browser = new Browser(bootstrapper);
         }
-            
     }
 }

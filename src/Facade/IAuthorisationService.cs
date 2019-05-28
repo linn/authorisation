@@ -7,6 +7,6 @@ namespace Linn.Authorisation.Facade
 
     public interface IAuthorisationService
     {
-        IResult<IEnumerable<Privilege>> GetPrivileges(string who);
+        IResult<IEnumerable<Privilege>> GetPrivilegesForMember(string who);
     }
 }

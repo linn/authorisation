@@ -14,7 +14,7 @@ namespace Linn.Authorisation.Facade
             this.privilegeService = privilegeService;
         }
 
-        public IResult<IEnumerable<Privilege>> GetPrivileges(string who)
+        public IResult<IEnumerable<Privilege>> GetPrivilegesForMember(string who)
         {
             return new SuccessResult<IEnumerable<Privilege>>(this.privilegeService.GetPrivileges(who));
         }

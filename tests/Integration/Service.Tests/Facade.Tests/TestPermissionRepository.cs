@@ -1,24 +1,43 @@
 namespace Linn.Authorisation.Service.Tests.Facade.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using Domain;
-    using Domain.Groups;
-    using Domain.Permissions;
-    using Domain.Repositories;
+    using System.Linq.Expressions;
 
-    public class TestPermissionRepository : IPermissionRepository
+    using Domain.Permissions;
+
+    using Linn.Common.Persistence;
+
+    public class TestPermissionRepository : IRepository<Permission, int>
     {
-        public IEnumerable<Permission> GetIndividualPermissions(string who)
+        public Permission FindById(int key)
         {
-            return TestDbContext.Permissions.Where(p => p is IndividualPermission && (((IndividualPermission) p).GranteeUri == who));
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Permission> GetGroupsPermissions(IEnumerable<Group> groups)
+        public IQueryable<Permission> FindAll()
         {
-            return TestDbContext.Permissions.Where(p =>
-                p is GroupPermission && groups.Contains(((GroupPermission) p).GranteeGroup));
+            throw new NotImplementedException();
+        }
+
+        public void Add(Permission entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Permission entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permission FindBy(Expression<Func<Permission, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
+        {
+            return TestDbContext.Permissions.AsQueryable().Where(expression);
         }
     }
 }

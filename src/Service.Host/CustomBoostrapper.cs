@@ -59,6 +59,8 @@
                     builder.RegisterModule<AmazonCredentialsModule>();
                     builder.RegisterModule<AmazonSqsModule>();
                     builder.RegisterModule<LoggingModule>();
+                    builder.RegisterModule<ResponsesModule>();
+                    builder.RegisterModule<PersistenceModule>();
                 });
 
             base.ConfigureApplicationContainer(existingContainer);

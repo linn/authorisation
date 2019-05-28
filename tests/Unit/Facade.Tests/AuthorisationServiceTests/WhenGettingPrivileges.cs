@@ -3,11 +3,16 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+
     using Common.Facade;
     using Domain;
     using Domain.Groups;
     using Domain.Permissions;
     using FluentAssertions;
+
+    using Linn.Authorisation.Facade.Tests.AuthorisationServiceTests;
+
     using NSubstitute;
     using NUnit.Framework;
 
@@ -20,15 +25,14 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         {
             var individualPermissions = new List<Permission>
                               {
-                                  new IndividualPermission("/employees/1", new Privilege("sernos.created"), DateTime.UtcNow, "/employees/7004" ),
-                                  new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), DateTime.UtcNow, "/employees/7004" ),
-                                  new IndividualPermission("/employees/1", new Privilege("tariffs.created"), DateTime.UtcNow, "/employees/7004" ),
+                                  new IndividualPermission("/employees/1", new Privilege("sernos.created"), "/employees/7004"),
+                                  new IndividualPermission("/employees/1", new Privilege("vatcodes.created"), "/employees/7004"),
+                                  new IndividualPermission("/employees/1", new Privilege("tariffs.created"), "/employees/7004"),
                               };
 
-            this.PermissionRepository.GetIndividualPermissions("/employees/1").Returns(individualPermissions);
-            this.PermissionRepository.GetGroupsPermissions(Arg.Any<IEnumerable<Group>>()).Returns(new List<Permission>());
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>()).Returns(individualPermissions.AsQueryable(), new List<Permission>().AsQueryable());
 
-            this.result = this.Sut.GetPrivileges("/employees/1");
+            this.result = this.Sut.GetPrivilegesForMember("/employees/1");
         }
 
         [Test]
