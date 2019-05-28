@@ -1,13 +1,16 @@
-﻿namespace Linn.Authorisation.Persistence
+namespace Linn.Authorisation.Service.Tests.Facade.Tests
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Linn.Authorisation.Domain.Permissions;
+    using Domain.Permissions;
+
+    using global::Facade.Integration.Tests.Facade.Tests;
+
     using Linn.Common.Persistence;
 
-    public class PermissionsRepository : IRepository<Permission, int>
+    public class TestPermissionRepository : IRepository<Permission, int>
     {
         public Permission FindById(int key)
         {
@@ -26,6 +29,7 @@
 
         public void Remove(Permission entity)
         {
+            throw new NotImplementedException();
         }
 
         public Permission FindBy(Expression<Func<Permission, bool>> expression)
@@ -35,7 +39,7 @@
 
         public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
         {
-            throw new NotImplementedException();
+            return TestDbContext.Permissions.AsQueryable().Where(expression);
         }
     }
 }

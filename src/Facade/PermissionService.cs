@@ -19,7 +19,7 @@
 
         private readonly IRepository<Permission, int> permissionRepository;
 
-        public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository )
+        public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository)
             : base(repository, transactionManager)
         {
             this.privilegeRepository = privilegeRepository;
