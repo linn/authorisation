@@ -7,5 +7,7 @@
     public interface IPermissionService : IFacadeService<Permission, int, PermissionResource, PermissionResource>
     {
         IResult<Permission> CreatePermission(PermissionResource permission);
+
+        IResult<Permission> RemovePermission(PermissionResource permission);
     }
 }

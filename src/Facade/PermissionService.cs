@@ -17,11 +17,14 @@
 
         private readonly IRepository<Group, int> groupRepository;
 
+        private readonly IRepository<Permission, int> permissionRepository;
+
         public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository )
             : base(repository, transactionManager)
         {
             this.privilegeRepository = privilegeRepository;
             this.groupRepository = groupRepository;
+            this.permissionRepository = repository;
         }
 
         public IResult<Permission> CreatePermission(PermissionResource resource)
@@ -45,6 +48,19 @@
             }
 
             return new CreatedResult<Permission>(new GroupPermission(group, privilege, resource.GrantedByUri));
+        }
+
+        public IResult<Permission> RemovePermission(PermissionResource resource)
+        {
+            var permission = this.CreateFromResource(resource);
+            if ((resource.GranteeUri == null && resource.GroupName == null) || (resource.GranteeUri != null && resource.GroupName != null))
+            {
+                return new BadRequestResult<Permission>();
+            }
+
+            this.permissionRepository.Remove(permission);
+            
+            return new SuccessResult<Permission>(permission);
         }
 
         protected override Permission CreateFromResource(PermissionResource resource)

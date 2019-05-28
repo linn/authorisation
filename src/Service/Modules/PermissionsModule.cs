@@ -14,12 +14,20 @@
         {
             this.permissionService = permissionService;
             this.Post("/authorisation/permissions", _ => this.CreatePermission());
+            this.Delete("/authorisation/permissions", _ => this.RemovePermission());
         }
 
         private object CreatePermission()
         {
             var resource = this.Bind<PermissionResource>();
             var result = this.permissionService.CreatePermission(resource);
+            return this.Negotiate.WithModel(result);
+        }
+
+        private object RemovePermission()
+        {
+            var resource = this.Bind<PermissionResource>();
+            var result = this.permissionService.RemovePermission(resource);
             return this.Negotiate.WithModel(result);
         }
     }
