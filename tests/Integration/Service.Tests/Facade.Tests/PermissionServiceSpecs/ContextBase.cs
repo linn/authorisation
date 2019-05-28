@@ -1,5 +1,8 @@
 ﻿namespace Linn.Authorisation.Service.Tests.Facade.Tests.PermissionServiceSpecs
 {
+    using System;
+    using System.Linq.Expressions;
+
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
@@ -7,6 +10,7 @@
     using Linn.Common.Persistence;
 
     using NSubstitute;
+    using NSubstitute.ReturnsExtensions;
 
     using NUnit.Framework;
 
@@ -30,6 +34,7 @@
             this.PermissionRepository = Substitute.For<IRepository<Permission, int>>();
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
+
             this.Sut = new PermissionService(this.PermissionRepository, this.TransactionManager, this.PrivilegeRepository, this.GroupRepository);
         }
     }
