@@ -35,21 +35,7 @@
                 return new BadRequestResult<Permission>();
             }
 
-            var result = this.Add(resource);
-            if (result is BadRequestResult<Permission>)
-            {
-                return result;
-            }
-
-            var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
-            var group = this.groupRepository.FindAll().FirstOrDefault(g => g.Name == resource.GroupName);
-
-            if (resource.GranteeUri != null && resource.GroupName == null)
-            {
-                return new CreatedResult<Permission>(new IndividualPermission(resource.GranteeUri, privilege, resource.GrantedByUri));
-            }
-
-            return new CreatedResult<Permission>(new GroupPermission(group, privilege, resource.GrantedByUri));
+            return this.Add(resource);
         }
 
         public IResult<Permission> RemovePermission(PermissionResource resource)
@@ -79,6 +65,10 @@
             }
 
             var group = this.groupRepository.FilterBy(g => g.Name == resource.GroupName).FirstOrDefault();
+            if (group == null)
+            {
+                throw new GroupNotFoundException("Group Not Found");
+            }
             return new GroupPermission(group, privilege, resource.GrantedByUri);
         }
 

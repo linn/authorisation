@@ -9,6 +9,12 @@
 
     public class PrivilegeRepository : IRepository<Privilege, int>
     {
+        private readonly ServiceDbContext serviceDbContext;
+        public PrivilegeRepository(ServiceDbContext serviceDbContext)
+        {
+            this.serviceDbContext = serviceDbContext;
+        }
+
         public Privilege FindByName(string name)
         {
             throw new NotImplementedException();
@@ -26,7 +32,7 @@
 
         public void Add(Privilege entity)
         {
-            throw new NotImplementedException();
+ 
         }
 
         public void Remove(Privilege entity)
