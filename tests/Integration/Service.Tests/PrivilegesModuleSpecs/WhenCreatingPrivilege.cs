@@ -15,7 +15,6 @@
 
     public class WhenCreatingPrivilege : ContextBase
     {
-
         [SetUp]
         public void SetUp()
         {

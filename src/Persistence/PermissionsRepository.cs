@@ -26,6 +26,7 @@
 
         public void Remove(Permission entity)
         {
+            throw new NotImplementedException();
         }
 
         public Permission FindBy(Expression<Func<Permission, bool>> expression)

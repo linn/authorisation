@@ -9,7 +9,6 @@
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade.Exceptions;
     using Linn.Authorisation.Resources;
-    using Linn.Common.Domain.Exceptions;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
@@ -41,6 +40,7 @@
             {
                 return result;
             }
+
             var privilege = this.privilegeRepository.FilterBy(p => p.Name == resource.Privilege).FirstOrDefault();
             var group = this.groupRepository.FindAll().FirstOrDefault(g => g.Name == resource.GroupName);
 
