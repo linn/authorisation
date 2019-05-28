@@ -15,11 +15,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
         public void SetUp()
         {
             TestDbContext.BuildPrivilege("create.sernos");
-            TestDbContext.BuildPrivilege("update.tariff");
-            TestDbContext.BuildPrivilege("update.vatcode");
 
             TestDbContext.BuildPermission("/employees/1", "create.sernos");
-            TestDbContext.BuildPermission("/employees/2", "update.vatcode");
 
             var group = TestDbContext.BuildGroup("test", true).BuildGroupMember("/employees/1");
             TestDbContext.BuildPermission(group, "create.sernos");

@@ -32,7 +32,7 @@
             yield return new LinkResource
                              {
                                  Rel = "self",
-                                 Href = $"/privileges/{privilege.Name}"
+                                 Href = $"/privileges/{privilege.Id}"
                              };
         }
     }

@@ -17,9 +17,9 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
 
         protected IRepository<Group, int> GroupRepository { get; private set; }
 
-        protected GroupService GroupService { get; private set; }
+        protected IGroupService GroupService { get; private set; }
 
-        protected PrivilegeService PrivilegeService { get; private set; }
+        protected IPrivilegeService PrivilegeService { get; private set; }
 
         [SetUp]
         public void SetUpContext()

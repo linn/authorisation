@@ -15,11 +15,6 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
         public void SetUp()
         {
             TestDbContext.BuildPrivilege("create.sernos");
-            TestDbContext.BuildPrivilege("update.tariff");
-            TestDbContext.BuildPrivilege("update.vatcode");
-
-            TestDbContext.BuildPermission("/employees/2", "update.tariff");
-            TestDbContext.BuildPermission("/employees/2", "update.vatcode");
             TestDbContext.BuildPermission("/employees/1", "create.sernos");
 
             this.result = this.Sut.GetPrivilegesForMember("/employees/1");
@@ -31,7 +26,7 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Privilege>>>();
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data.ToList();
-            privileges.Count().Should().Be(1);
+            privileges.Count.Should().Be(1);
             privileges.First().Name.Should().Be("create.sernos");
         }
     }
