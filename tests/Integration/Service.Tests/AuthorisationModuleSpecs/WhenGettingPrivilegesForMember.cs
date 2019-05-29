@@ -25,7 +25,7 @@
             this.AuthorisationService.GetPrivilegesForMember("/employees/1234")
                 .Returns(new SuccessResult<IEnumerable<Privilege>>(result));
             this.Response = this.Browser.Get(
-                "/privileges",
+                "/authorisation/privileges",
                 with =>
                     {
                         with.Header("Accept", "application/json");

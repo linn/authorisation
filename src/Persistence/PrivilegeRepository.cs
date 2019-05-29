@@ -10,6 +10,7 @@
     public class PrivilegeRepository : IRepository<Privilege, int>
     {
         private readonly ServiceDbContext serviceDbContext;
+
         public PrivilegeRepository(ServiceDbContext serviceDbContext)
         {
             this.serviceDbContext = serviceDbContext;
@@ -17,37 +18,37 @@
 
         public Privilege FindByName(string name)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(p => p.Name == name);
         }
 
-        public Privilege FindById(int key)
+        public Privilege FindById(int id)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(p => p.Id == id);
         }
 
         public IQueryable<Privilege> FindAll()
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges;
         }
 
-        public void Add(Privilege entity)
+        public void Add(Privilege privilege)
         {
- 
+            this.serviceDbContext.Privileges.Add(privilege);
         }
 
-        public void Remove(Privilege entity)
+        public void Remove(Privilege privilege)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Privileges.Remove(privilege);
         }
 
         public Privilege FindBy(Expression<Func<Privilege, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(expression);
         }
 
         public IQueryable<Privilege> FilterBy(Expression<Func<Privilege, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.Where(expression);
         }
     }
 }

@@ -20,6 +20,8 @@
 
         public IEnumerable<Privilege> GetPrivileges(string who)
         {
+            // TODO what if who is string.Empty ?
+
             var privileges = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission) p).GranteeUri == who)
                 .Select(p => p.Privilege).ToList();
 
