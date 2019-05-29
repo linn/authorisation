@@ -17,22 +17,22 @@
 
         public Privilege FindByName(string name)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(p => p.Name == name);
         }
 
-        public Privilege FindById(int key)
+        public Privilege FindById(int id)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(p => p.Id == id);
         }
 
         public IQueryable<Privilege> FindAll()
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges;
         }
 
-        public void Add(Privilege entity)
+        public void Add(Privilege privilege)
         {
- 
+            this.serviceDbContext.Privileges.Add(privilege);
         }
 
         public void Remove(Privilege entity)
@@ -42,12 +42,12 @@
 
         public Privilege FindBy(Expression<Func<Privilege, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.SingleOrDefault(expression);
         }
 
         public IQueryable<Privilege> FilterBy(Expression<Func<Privilege, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Privileges.Where(expression);
         }
     }
 }
