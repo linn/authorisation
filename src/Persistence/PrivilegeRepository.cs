@@ -10,6 +10,7 @@
     public class PrivilegeRepository : IRepository<Privilege, int>
     {
         private readonly ServiceDbContext serviceDbContext;
+
         public PrivilegeRepository(ServiceDbContext serviceDbContext)
         {
             this.serviceDbContext = serviceDbContext;

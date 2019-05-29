@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
+    using Domain.Services;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Models;
@@ -15,15 +16,14 @@
         {
             this.authorisationService = authorisationService;
 
-            this.Get("/privileges", _ => this.GetPrivilegesForMember());
+            this.Get("/authorisation/privileges", _ => this.GetPrivileges());
         }
 
-        private object GetPrivilegesForMember()
+        private object GetPrivileges()
         {
             var resource = this.Bind<AuthorisationRequestResource>();
             var result = this.authorisationService.GetPrivilegesForMember(resource.Who);
-            return this.Negotiate.WithModel(result).WithMediaRangeModel("text/html", ApplicationSettings.Get)
-                .WithView("Index");
+            return this.Negotiate.WithModel(result);
         }
     }
 }

@@ -9,34 +9,41 @@
 
     public class GroupRepository : IRepository<Group, int>
     {
-        public Group FindById(int key)
+        private readonly ServiceDbContext serviceDbContext;
+
+        public GroupRepository(ServiceDbContext serviceDbContext)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext = serviceDbContext;
+        }
+
+        public Group FindById(int id)
+        {
+            return this.serviceDbContext.Groups.SingleOrDefault(p => p.Id == id);
         }
 
         public IQueryable<Group> FindAll()
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Groups;
         }
 
-        public void Add(Group entity)
+        public void Add(Group group)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Groups.Add(group);
         }
 
-        public void Remove(Group entity)
+        public void Remove(Group group)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Groups.Add(group);
         }
 
         public Group FindBy(Expression<Func<Group, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Groups.SingleOrDefault(expression);
         }
 
         public IQueryable<Group> FilterBy(Expression<Func<Group, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Groups.Where(expression);
         }
     }
 }

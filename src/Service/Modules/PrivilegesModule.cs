@@ -16,7 +16,6 @@
             this.privilegeService = privilegeService;
 
             this.Post("/authorisation/privileges", _ => this.CreatePrivilege());
-            this.Get("/authorisation/privileges", _ => this.GetPrivileges());
             this.Get("/authorisation/privileges/{id:int}", parameters => this.GetPrivilege(parameters.id));
         }
 
@@ -25,12 +24,6 @@
             var resource = this.Bind<PrivilegeResource>();
             var result = this.privilegeService.Add(resource);
             return this.Negotiate.WithModel(result);
-        }
-
-        private object GetPrivileges()
-        {
-            var privileges = this.privilegeService.GetAll();
-            return this.Negotiate.WithModel(privileges);
         }
 
         private object GetPrivilege(int id)
