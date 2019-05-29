@@ -35,9 +35,9 @@
             this.serviceDbContext.Privileges.Add(privilege);
         }
 
-        public void Remove(Privilege entity)
+        public void Remove(Privilege privilege)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Privileges.Remove(privilege);
         }
 
         public Privilege FindBy(Expression<Func<Privilege, bool>> expression)

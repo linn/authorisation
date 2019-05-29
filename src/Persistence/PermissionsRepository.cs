@@ -9,34 +9,41 @@
 
     public class PermissionsRepository : IRepository<Permission, int>
     {
-        public Permission FindById(int key)
+        private readonly ServiceDbContext serviceDbContext;
+
+        public PermissionsRepository(ServiceDbContext serviceDbContext)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext = serviceDbContext;
+        }
+
+        public Permission FindById(int id)
+        {
+            return this.serviceDbContext.Permissions.SingleOrDefault(p => p.Id == id);
         }
 
         public IQueryable<Permission> FindAll()
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Permissions;
         }
 
-        public void Add(Permission entity)
+        public void Add(Permission permission)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Permissions.Add(permission);
         }
 
-        public void Remove(Permission entity)
+        public void Remove(Permission permission)
         {
-            throw new NotImplementedException();
+            this.serviceDbContext.Permissions.Remove(permission);
         }
 
         public Permission FindBy(Expression<Func<Permission, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Permissions.SingleOrDefault(expression);
         }
 
         public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
         {
-            throw new NotImplementedException();
+            return this.serviceDbContext.Permissions.Where(expression);
         }
     }
 }
