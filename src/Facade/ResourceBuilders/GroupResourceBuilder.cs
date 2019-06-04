@@ -20,6 +20,27 @@
             };
         }
 
+        private GroupMemberResource Build(Member member)
+        {
+            if (member is IndividualMember individualMember)
+            {
+                return new GroupMemberResource
+                {
+                    MemberUri = individualMember.MemberUri,
+                    AddedByUri = member.AddedByUri
+                };
+            }
+            if (member is GroupMember groupMember)
+            {
+                return new GroupMemberResource
+                {
+                    GroupName =  groupMember.Group.Name,
+                    AddedByUri = member.AddedByUri
+                };
+            }
+            return null;
+        }
+
         object IResourceBuilder<Group>.Build(Group g) => this.Build(g);
 
         public string GetLocation(Group group)
@@ -35,5 +56,5 @@
                 Href = $"/authorisation/groups/{group.Id}"
             };
         }
-    }
+    }   
 }

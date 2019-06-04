@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Service.Tests.GroupModuleSpecs
 {
+    using Authorisation.Facade;
     using Authorisation.Facade.ResourceBuilders;
     using Common.Facade;
     using Domain;
@@ -13,12 +14,12 @@
 
     public abstract class ContextBase : NancyContextBase
     {
-        protected IFacadeService<Group, int, GroupResource, GroupResource> GroupService { get; set; }
+        protected IGroupService GroupService { get; set; }
 
         [SetUp]
         public void EstablishContext()
         {
-            this.GroupService = Substitute.For<IFacadeService<Group, int, GroupResource, GroupResource>>();
+            this.GroupService = Substitute.For<IGroupService>();
 
             var bootstrapper = new ConfigurableBootstrapper(
                 with =>

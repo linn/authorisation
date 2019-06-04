@@ -13,18 +13,16 @@ namespace Linn.Authorisation.IoC
         protected override void Load(ContainerBuilder builder)
         {
             // domain services
-            builder.RegisterType<GroupService>().As<IGroupService>();
             builder.RegisterType<PrivilegeService>().As<IPrivilegeService>();
             builder.RegisterType<PermissionService>().As<IPermissionService>();
-            builder.RegisterType<GroupService>().As<IGroupService>();
 
             // facade services
             builder.RegisterType<AuthorisationService>().As<IAuthorisationService>();
             builder.RegisterType<PrivilegeFacadeService>()
                 .As<IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource>>();
             builder.RegisterType<PermissionService>().As<IPermissionService>();
-            builder.RegisterType<GroupFacadeService>()
-                .As<IFacadeService<Group, int, GroupResource, GroupResource>>();
+            builder.RegisterType<GroupService>()
+                .As<IGroupService>();
         }
     }
 }

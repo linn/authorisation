@@ -14,7 +14,7 @@ namespace Linn.Authorisation.Domain.Groups
 
         public Group()
         {
-            // empty args constructor needed for ef
+            this.Members = new List<Member>();
         }
 
         public string Name { get; set; }
