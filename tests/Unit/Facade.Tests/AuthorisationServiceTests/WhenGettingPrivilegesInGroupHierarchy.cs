@@ -23,10 +23,10 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         [SetUp]
         public void SetUp()
         {
-            var subGroup = new Group("Group 1", true);
+            var subGroup = new Group("Group 1", true) { Id = 1 };
             subGroup.AddIndividualMember("/employees/1", "/employees/7004");
 
-            var group = new Group("Group 2", true);
+            var group = new Group("Group 2", true) { Id = 2 };
             group.AddGroupMember(subGroup, "/employees/7004");
 
             this.GroupRepository.FindAll().Returns(

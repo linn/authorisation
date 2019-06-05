@@ -18,8 +18,8 @@
         [SetUp]
         public void SetUp()
         {
-            var group = new Group("Test", true);
-            var subGroup = new Group("Sub", true);
+            var group = new Group("Test", true) { Id = 1 };
+            var subGroup = new Group("Sub", true) { Id = 2 };
 
             var resource = new GroupMemberResource()
             {

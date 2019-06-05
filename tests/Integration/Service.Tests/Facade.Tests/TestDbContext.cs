@@ -14,6 +14,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
 
         public static List<Group> Groups { get; set; }
 
+        private static int id = 0;
+
         public static void SetUp()
         {
             Privileges = new List<Privilege>();
@@ -40,7 +42,8 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
 
         public static Group BuildGroup(string groupName, bool active)
         {
-            var group = new Group(groupName, active);
+            var group = new Group(groupName, active) { Id = TestDbContext.NextId() };
+
             Groups.Add(group);
             return group;
         }
@@ -55,6 +58,12 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests
         {
             group.AddGroupMember(memberGroup, "/employees/7004");
             return group;
+        }
+
+        private static int NextId()
+        {
+            TestDbContext.id += 1;
+            return TestDbContext.id;
         }
     }
 }
