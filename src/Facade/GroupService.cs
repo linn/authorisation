@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using Domain.Exceptions;
     using Domain.Groups;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
@@ -53,7 +54,14 @@
 
             if (!string.IsNullOrEmpty(resource.MemberUri))
             {
-                group.AddIndividualMember(resource.MemberUri, resource.AddedByUri);
+                try
+                {
+                    group.AddIndividualMember(resource.MemberUri, resource.AddedByUri);
+                }
+                catch (MemberAlreadyInGroupException e)
+                {
+                    return new BadRequestResult<Group>(e.Message);
+                }
             }
 
             if (!string.IsNullOrEmpty(resource.GroupName))

@@ -16,6 +16,7 @@
             {
                 Name = group.Name,
                 Active = group.Active,
+                Members = group.Members.Select(this.Build),
                 Links = this.BuildLinks(group).ToArray()
             };
         }
