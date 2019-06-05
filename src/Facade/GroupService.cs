@@ -13,10 +13,13 @@
     {
         private readonly IRepository<Group, int> groupRepository;
 
+        private readonly ITransactionManager transactionManager;
+
         public GroupService(IRepository<Group, int> groupRepository, ITransactionManager transactionManager) 
             : base(groupRepository, transactionManager)
         {
             this.groupRepository = groupRepository;
+            this.transactionManager = transactionManager;
         }
 
         protected override Group CreateFromResource(GroupResource resource)
@@ -63,6 +66,8 @@
 
                 group.AddGroupMember(subGroup, resource.AddedByUri);
             }
+
+            this.transactionManager.Commit();
 
             return new SuccessResult<Group>(group);
         }

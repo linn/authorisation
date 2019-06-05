@@ -2,6 +2,7 @@ namespace Linn.Authorisation.Domain.Groups
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Exceptions;
 
     public class Group : Entity
     {
@@ -25,6 +26,14 @@ namespace Linn.Authorisation.Domain.Groups
 
         public void AddIndividualMember(string uri, string addedBy)
         {
+            var existingIndividualMember =
+                this.Members.SingleOrDefault(m => m is IndividualMember && (((IndividualMember) m).MemberUri == uri));
+
+            if (existingIndividualMember != null)
+            {
+                throw new MemberAlreadyInGroupException($"{uri} already exists in group {this.Name}");
+            }
+
             this.Members.Add(new IndividualMember(uri, addedBy));
         }
 
