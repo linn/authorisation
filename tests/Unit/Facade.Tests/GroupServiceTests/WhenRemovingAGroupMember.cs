@@ -10,7 +10,7 @@
     using NUnit.Framework;
     using Resources;
 
-    public class WhenAddingAGroupMember : ContextBase
+    public class WhenRemovingAGroupMember : ContextBase
     {
         private IResult<Group> result;
 
@@ -19,17 +19,13 @@
         {
             var group = new Group("Test", true) { Id = 1 };
             var subGroup = new Group("Sub", true) { Id = 2 };
-
-            var resource = new GroupMemberResource()
-            {
-                GroupName = "Sub",
-                AddedByUri = "/employees/7004"
-            };
+            
+            group.AddGroupMember(subGroup, "/employees/7004");
+            group.Members[0].Id = 1;
 
             this.GroupRepository.FindById(1).Returns(group);
-            this.GroupRepository.FindBy(Arg.Any<Expression<Func<Group, bool>>>()).Returns(subGroup);
 
-            this.result = this.Sut.AddGroupMember(1, resource);
+            this.result = this.Sut.RemoveGroupMember(1, 1);
         }
 
         [Test]
@@ -43,13 +39,10 @@
         }
 
         [Test]
-        public void ShouldHaveAddedGroupMember()
+        public void ShouldHaveRemovedGroupMember()
         {
             var group = ((SuccessResult<Group>)this.result).Data;
-            group.Members.Count.Should().Be(1);
-            var groupMember = group.Members.First();
-            groupMember.Should().BeOfType<GroupMember>();
-            ((GroupMember) groupMember).Group.Name.Should().Be("Sub");
+            group.Members.Count.Should().Be(0);
         }
     }
 }

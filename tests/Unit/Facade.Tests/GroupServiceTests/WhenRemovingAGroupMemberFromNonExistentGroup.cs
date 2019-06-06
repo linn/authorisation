@@ -7,31 +7,30 @@
     using NUnit.Framework;
     using Resources;
 
-    public class WhenAddingAGroupMemberWithoutMemberUriOrGroup : ContextBase
+    public class WhenRemovingAGroupMemberFromNonExistentGroup : ContextBase
     {
         private IResult<Group> result;
 
         [SetUp]
         public void SetUp()
         {
-            var group = new Group("Test", true);
-
             var resource = new GroupMemberResource()
             {
+                MemberUri = "/employees/7004",
                 AddedByUri = "/employees/7004"
             };
 
-            this.GroupRepository.FindById(1).Returns(group);
+            this.GroupRepository.FindById(1).Returns((Group)null);
 
-            this.result = this.Sut.AddGroupMember(1, resource);
+            this.result = this.Sut.RemoveGroupMember(1, 1);
         }
 
         [Test]
-        public void ShouldReturnBadRequest()
+        public void ShouldReturnNotFound()
         {
-            this.result.Should().BeOfType<BadRequestResult<Group>>();
+            this.result.Should().BeOfType<NotFoundResult<Group>>();
 
-            ((BadRequestResult<Group>)this.result).Message.Should().Be("No member or group supplied");
+            ((NotFoundResult<Group>)this.result).Message.Should().Be("group 1 not found");
         }
     }
 }
