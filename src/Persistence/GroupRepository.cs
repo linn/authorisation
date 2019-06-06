@@ -6,6 +6,7 @@
 
     using Linn.Authorisation.Domain.Groups;
     using Linn.Common.Persistence;
+    using Microsoft.EntityFrameworkCore;
 
     public class GroupRepository : IRepository<Group, int>
     {
@@ -18,7 +19,7 @@
 
         public Group FindById(int id)
         {
-            return this.serviceDbContext.Groups.SingleOrDefault(p => p.Id == id);
+            return this.serviceDbContext.Groups.Include(g => g.Members).SingleOrDefault(p => p.Id == id);
         }
 
         public IQueryable<Group> FindAll()

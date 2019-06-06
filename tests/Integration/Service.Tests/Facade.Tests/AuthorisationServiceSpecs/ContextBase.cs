@@ -17,8 +17,6 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
 
         protected IRepository<Group, int> GroupRepository { get; private set; }
 
-        protected IGroupService GroupService { get; private set; }
-
         protected IPrivilegeService PrivilegeService { get; private set; }
 
         [SetUp]
@@ -27,7 +25,6 @@ namespace Linn.Authorisation.Service.Tests.Facade.Tests.AuthorisationServiceSpec
             TestDbContext.SetUp();
             this.PermissionRepository = new TestPermissionRepository();
             this.GroupRepository = new TestGroupRepository();
-            this.GroupService = new GroupService(this.GroupRepository);
             this.PrivilegeService = new PrivilegeService(this.GroupRepository, this.PermissionRepository);
             this.Sut = new AuthorisationService(this.PrivilegeService);
         }

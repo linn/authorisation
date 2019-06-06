@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PrivilegeServiceTests\**" />
+    <EmbeddedResource Remove="PrivilegeServiceTests\**" />
+    <None Remove="PrivilegeServiceTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Linn.Common.Facade" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
@@ -21,10 +27,6 @@
     <ProjectReference Include="..\..\..\src\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\..\src\Facade\Facade.csproj" />
     <ProjectReference Include="..\..\..\src\Persistence\Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PrivilegeServiceTests\" />
   </ItemGroup>
 
 </Project>

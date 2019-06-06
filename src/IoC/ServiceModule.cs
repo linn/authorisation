@@ -1,7 +1,7 @@
 namespace Linn.Authorisation.IoC
 {
     using Autofac;
-
+    using Domain.Groups;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade;
@@ -13,17 +13,16 @@ namespace Linn.Authorisation.IoC
         protected override void Load(ContainerBuilder builder)
         {
             // domain services
-            builder.RegisterType<GroupService>().As<IGroupService>();
             builder.RegisterType<PrivilegeService>().As<IPrivilegeService>();
             builder.RegisterType<PermissionService>().As<IPermissionService>();
-            builder.RegisterType<GroupService>().As<IGroupService>();
 
             // facade services
             builder.RegisterType<AuthorisationService>().As<IAuthorisationService>();
             builder.RegisterType<PrivilegeFacadeService>()
                 .As<IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource>>();
             builder.RegisterType<PermissionService>().As<IPermissionService>();
-
+            builder.RegisterType<GroupService>()
+                .As<IGroupService>();
         }
     }
 }

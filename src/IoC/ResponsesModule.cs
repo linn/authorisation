@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using Autofac;
-
+    using Domain.Groups;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade.ResourceBuilders;
@@ -16,6 +16,7 @@
             builder.RegisterType<PrivilegeResourceBuilder>().As<IResourceBuilder<Privilege>>();
             builder.RegisterType<PrivilegesResourceBuilder>().As<IResourceBuilder<IEnumerable<Privilege>>>();
             builder.RegisterType<PermissionResourceBuilder>().As<IResourceBuilder<Permission>>();
+            builder.RegisterType<GroupResourceBuilder>().As<IResourceBuilder<Group>>();
         }
     }
 }

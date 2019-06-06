@@ -3,10 +3,10 @@
     using Groups;
     using NUnit.Framework;
 
-    public class ContextBase
+    public abstract class ContextBase
     {
         protected Group Sut { get; private set; }
-       
+
         [SetUp]
         public void SetUpContext()
         {
