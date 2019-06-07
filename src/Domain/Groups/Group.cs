@@ -55,6 +55,11 @@ namespace Linn.Authorisation.Domain.Groups
             this.Members.Add(new GroupMember(group, addedBy));
         }
 
+        public void RemoveMember(Member member)
+        {
+            this.Members.Remove(member);
+        }
+
         public IEnumerable<string> MemberUris()
         {
             return this.Members.SelectMany(s => s.MemberUris());

@@ -16,19 +16,20 @@
             {
                 Name = group.Name,
                 Active = group.Active,
-                Members = group.Members.Select(this.Build),
+                Members = group.Members.Select(m => this.Build(m, group)),
                 Links = this.BuildLinks(group).ToArray()
             };
         }
 
-        private GroupMemberResource Build(Member member)
+        private GroupMemberResource Build(Member member, Group group)
         {
             if (member is IndividualMember individualMember)
             {
                 return new GroupMemberResource
                 {
                     MemberUri = individualMember.MemberUri,
-                    AddedByUri = member.AddedByUri
+                    AddedByUri = member.AddedByUri,
+                    Links = this.BuildLinks(member, group).ToArray()
                 };
             }
             if (member is GroupMember groupMember)
@@ -36,7 +37,8 @@
                 return new GroupMemberResource
                 {
                     GroupName =  groupMember.Group.Name,
-                    AddedByUri = member.AddedByUri
+                    AddedByUri = member.AddedByUri,
+                    Links = this.BuildLinks(member, group).ToArray()
                 };
             }
             return null;
@@ -55,6 +57,15 @@
             {
                 Rel = "self",
                 Href = $"/authorisation/groups/{group.Id}"
+            };
+        }
+
+        public IEnumerable<LinkResource> BuildLinks(Member member, Group group)
+        {
+            yield return new LinkResource
+            {
+                Rel = "self",
+                Href = $"/authorisation/groups/{group.Id}/members/{member.Id}"
             };
         }
     }   

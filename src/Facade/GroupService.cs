@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using Domain.Exceptions;
     using Domain.Groups;
@@ -75,6 +76,26 @@
                 group.AddGroupMember(subGroup, resource.AddedByUri);
             }
 
+            this.transactionManager.Commit();
+
+            return new SuccessResult<Group>(group);
+        }
+
+        public IResult<Group> RemoveGroupMember(int groupId, int memberId)
+        {
+            var group = this.groupRepository.FindById(groupId);
+            if (group == null)
+            {
+                return new NotFoundResult<Group>($"group {groupId} not found");
+            }
+
+            var member = group.Members.SingleOrDefault(m => m.Id == memberId);
+            if (member == null)
+            {
+                return new NotFoundResult<Group>($"member {memberId} not found on group {group.Name}");
+            }
+
+            group.RemoveMember(member);
             this.transactionManager.Commit();
 
             return new SuccessResult<Group>(group);

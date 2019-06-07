@@ -1,5 +1,7 @@
 ﻿namespace Linn.Authorisation.Facade.Tests.GroupServiceTests
 {
+    using System;
+    using System.Linq.Expressions;
     using Common.Facade;
     using Domain.Groups;
     using FluentAssertions;
@@ -7,7 +9,7 @@
     using NUnit.Framework;
     using Resources;
 
-    public class WhenAddingAGroupMemberWithoutMemberUriOrGroup : ContextBase
+    public class WhenAddingAGroupMemberForNonExistentGroup : ContextBase
     {
         private IResult<Group> result;
 
@@ -18,10 +20,12 @@
 
             var resource = new GroupMemberResource()
             {
+                GroupName = "Michael Gove Fan Club",
                 AddedByUri = "/employees/7004"
             };
 
             this.GroupRepository.FindById(1).Returns(group);
+            this.GroupRepository.FindBy(Arg.Any<Expression<Func<Group, bool>>>()).Returns((Group) null);
 
             this.result = this.Sut.AddGroupMember(1, resource);
         }
@@ -31,7 +35,7 @@
         {
             this.result.Should().BeOfType<BadRequestResult<Group>>();
 
-            ((BadRequestResult<Group>)this.result).Message.Should().Be("No member or group supplied");
+            ((BadRequestResult<Group>) this.result).Message.Should().Be("Group Michael Gove Fan Club does not exist");
         }
     }
 }

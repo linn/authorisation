@@ -7,5 +7,7 @@ namespace Linn.Authorisation.Facade
     public interface IGroupService : IFacadeService<Group, int, GroupResource, GroupResource>
     {
         IResult<Group> AddGroupMember(int groupId, GroupMemberResource resource);
+
+        IResult<Group> RemoveGroupMember(int groupId, int memberId);
     }
 }
