@@ -13,6 +13,7 @@
     using NSubstitute;
 
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     public abstract class ContextBase : NancyContextBase
     {
@@ -30,6 +31,8 @@
                         with.Module<PrivilegesModule>();
                         with.ResponseProcessor<PrivilegeResponseProcessor>();
                         with.Dependency<IResourceBuilder<Privilege>>(new PrivilegeResourceBuilder());
+                        with.ResponseProcessor<PrivilegesResponseProcessor>();
+                        with.Dependency<IResourceBuilder<IEnumerable<Privilege>>>(new PrivilegesResourceBuilder());
                     });
 
             this.Browser = new Browser(bootstrapper);
