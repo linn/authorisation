@@ -1,3 +1,4 @@
 ﻿const config = window.APPLICATION_SETTINGS;
+const defaultConfig = { appRoot: '' };
 
-export default config;
+export default { ...defaultConfig, ...config };

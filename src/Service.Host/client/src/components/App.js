@@ -1,12 +1,29 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { List, ListItem, Paper, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-class App extends Component {
-    render() {
-        return (
-            <div> App
-            </div>
-        );
+const styles = () => ({
+    root: {
+        margin: '40px',
+        padding: '40px'
     }
-}
+});
 
-export default App;
+const App = ({ classes }) => (
+    <Paper className={classes.root}>
+        <Typography variant="h6">Authorisation</Typography>
+      
+    </Paper>
+);
+
+App.propTypes = {
+    classes: PropTypes.shape({})
+};
+
+App.defaultProps = {
+    classes: {}
+};
+
+export default withStyles(styles)(App);

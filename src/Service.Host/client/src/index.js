@@ -5,7 +5,7 @@ import Root from './components/Root';
 import { AppContainer } from 'react-hot-loader';
 import userManager from './helpers/userManager';
 
-import './css/index.scss';
+import 'typeface-roboto';
 
 const initialState = {};
 const store = configureStore(initialState);
