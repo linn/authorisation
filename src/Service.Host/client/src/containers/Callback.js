@@ -1,6 +1,6 @@
 ﻿import { connect } from 'react-redux';
-import Callback from '../components/Callback';
 import { loadUser } from 'redux-oidc';
+import Callback from '../components/Callback';
 import history from '../history';
 
 function mapDispatchToProps(dispatch) {
@@ -11,4 +11,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Callback);
+export default connect(
+    null,
+    mapDispatchToProps
+)(Callback);

@@ -1,8 +1,9 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import { List, ListItem, Paper, Typography } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { Title } from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -13,8 +14,12 @@ const styles = () => ({
 
 const App = ({ classes }) => (
     <Paper className={classes.root}>
-        <Typography variant="h6">Authorisation</Typography>
-      
+        <Title text="Authorisation" />
+        <Link to="../authorisation/viewprivileges">
+            <Button type="button" variant="outlined">
+                View Privileges
+            </Button>
+        </Link>
     </Paper>
 );
 

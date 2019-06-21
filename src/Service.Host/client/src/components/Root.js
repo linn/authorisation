@@ -3,27 +3,25 @@ import { Provider } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router';
 import { OidcProvider } from 'redux-oidc';
 import { Router } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import history from '../history';
 import App from './App';
 import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
-import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import Privileges from '../containers/Privileges';
+import Privilege from '../containers/Privilege';
 
 const Root = ({ store }) => (
     <div>
         <div style={{ paddingTop: '40px' }}>
             <Provider store={store}>
                 <OidcProvider store={store} userManager={userManager}>
-                    <Router history={history}>
+                    <Router store={store} history={history}>
                         <div>
                             <CssBaseline />
 
-                            <Route
-                                exact
-                                path="/"
-                                render={() => <Redirect to="/authorisation" />}
-                            />
+                            <Route exact path="/" render={() => <Redirect to="/authorisation" />} />
 
                             <Route
                                 path="/"
@@ -33,7 +31,7 @@ const Root = ({ store }) => (
                                 }}
                             />
 
-                            <Switch>
+                            <Switch store={store}>
                                 <Route exact path="/authorisation" component={App} />
 
                                 <Route
@@ -42,7 +40,19 @@ const Root = ({ store }) => (
                                     component={Callback}
                                 />
 
-                                
+                                <Route
+                                    exact
+                                    path="/authorisation/viewprivileges"
+                                    render={() => <Privileges store={store} />}
+                                    store={store}
+                                />
+
+                                <Route
+                                    exact
+                                    path="/authorisation/privileges/:id"
+                                    render={() => <Privilege store={store} />}
+                                    store={store}
+                                />
                             </Switch>
                         </div>
                     </Router>
