@@ -26,8 +26,17 @@ const ViewPrivilege = ({ classes, initialise, privilege }) => {
         initialise();
     }, [initialise]);
 
+    const handleSaveClick = () => {
+        // addItem(vatCode);
+        // setEditStatus('view');
+    };
     return (
         <div>
+            <Link to="../viewprivileges">
+                <Button type="button" variant="outlined">
+                    Back to all privileges
+                </Button>
+            </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Privilege" />
                 {privilege ? (
@@ -66,11 +75,9 @@ const ViewPrivilege = ({ classes, initialise, privilege }) => {
                 ) : (
                     <Loading />
                 )}
-                <Link to="../viewprivileges">
-                    <Button type="button" variant="outlined">
-                        Back to all privileges
-                    </Button>
-                </Link>
+                <Button type="button" variant="outlined" onClick={handleSaveClick}>
+                    Save
+                </Button>
             </Paper>
         </div>
     );
@@ -93,8 +100,7 @@ ViewPrivilege.defaultProps = {
 
 export default withStyles(styles)(ViewPrivilege);
 
-{
-    /* 
+/* 
   <Table>
                         <TableHead>
                             <TableRow>
@@ -114,4 +120,3 @@ export default withStyles(styles)(ViewPrivilege);
                         </TableBody>
                     </Table>
 */
-}

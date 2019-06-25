@@ -13,3 +13,15 @@ function Privilege(state = initialState, action) {
 }
 
 export default Privilege;
+
+// import { itemStoreFactory } from '@linn-it/linn-form-components-library';
+// import * as actionTypes from '../actions/actionTypes';
+// import * as itemTypes from '../itemTypes';
+
+// const defaultState = {
+//     loading: false,
+//     item: null,
+//     editStatus: 'view'
+// };
+
+// export default itemStoreFactory(itemTypes.privilege.actionType, actionTypes, defaultState);

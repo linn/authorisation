@@ -1,16 +1,27 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Privileges from '../components/Privileges';
-import { getPrivileges } from '../selectors/privilegeSelectors';
+import { getPrivileges, getNewPrivilegeForCreation } from '../selectors/privilegeSelectors';
 
-import { fetchPrivileges } from '../actions/privilegeActions';
+import {
+    fetchPrivileges,
+    createPrivilege,
+    updateNewPrivilegeName
+} from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
-    privileges: getPrivileges(state)
+    privileges: getPrivileges(state),
+    newprivilege: getNewPrivilegeForCreation(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    initialise: () => dispatch(fetchPrivileges())
+    initialise: () => dispatch(fetchPrivileges()),
+    createPrivilege: name => {
+        dispatch(createPrivilege(name, false));
+    },
+    updateNewPrivilegeText: name => {
+        dispatch(updateNewPrivilegeName(name));
+    }
 });
 
 export default withRouter(

@@ -14,7 +14,8 @@ const mapStateToProps = (state, { match }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         initialise: () => dispatch(fetchPrivilege(getId(ownProps)))
-}};
+    };
+};
 
 export default withRouter(
     connect(

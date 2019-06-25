@@ -4,6 +4,8 @@ import { Paper, Button, Table, TableHead, TableBody, TableCell, TableRow } from 
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title } from '@linn-it/linn-form-components-library';
+import { create } from 'jss';
+// import { Save } from '@material-ui/icons';
 
 const styles = () => ({
     root: {
@@ -12,10 +14,29 @@ const styles = () => ({
     }
 });
 
-const ViewPrivileges = ({ classes, initialise, privileges }) => {
+const ViewPrivileges = ({
+    classes,
+    initialise,
+    createPrivilege,
+    updateNewPrivilegeText,
+    privileges,
+    newprivilege
+}) => {
     useEffect(() => {
         initialise();
     }, [initialise]);
+
+    let initialName = '';
+    let initialStatus = false;
+    if (newprivilege) {
+        initialName = newprivilege.name;
+        initialStatus = newprivilege.active;
+    }
+
+    const handleNameChange = e => {
+        updateNewPrivilegeText(e.target.value);
+    };
+    const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
     return privileges ? (
         <div>
@@ -41,11 +62,23 @@ const ViewPrivileges = ({ classes, initialise, privileges }) => {
                         ))}
                         <TableRow key="New privilege">
                             <TableCell component="th" scope="row">
-                                <input type="text" placeholder="new privilege" />
+                                <input
+                                    type="text"
+                                    placeholder="new privilege"
+                                    value={initialName}
+                                    id="newPrivilegeName"
+                                    onChange={handleNameChange}
+                                />
                             </TableCell>
                             <TableCell align="right">
-                                <input type="checkbox" />
-                                <Button spacing type="button" variant="outlined">
+                                <input type="checkbox" checked={initialStatus} />
+                                <Button
+                                    spacing
+                                    type="button"
+                                    variant="outlined"
+                                    onClick={dispatchcreatePrivilege}
+                                    id="newPrivilegeStatus"
+                                >
                                     Create
                                 </Button>
                             </TableCell>
@@ -68,18 +101,25 @@ const ViewPrivileges = ({ classes, initialise, privileges }) => {
 ViewPrivileges.propTypes = {
     classes: PropTypes.shape({}),
     initialise: PropTypes.func.isRequired,
+    createPrivilege: PropTypes.func.isRequired,
+    updateNewPrivilegeText: PropTypes.func.isRequired,
     privileges: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,
             Id: PropTypes.number,
             active: PropTypes.bool
         })
-    )
+    ),
+    newprivilege: PropTypes.shape({
+        name: PropTypes.string,
+        active: PropTypes.bool
+    })
 };
 
 ViewPrivileges.defaultProps = {
     classes: {},
-    privileges: null
+    privileges: null,
+    newprivilege: { name: '', active: false }
 };
 
 export default withStyles(styles)(ViewPrivileges);
