@@ -8,8 +8,10 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Grid
+    Grid,
+    Switch
 } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, InputField } from '@linn-it/linn-form-components-library';
@@ -21,15 +23,32 @@ const styles = () => ({
     }
 });
 
-const ViewPrivilege = ({ classes, initialise, privilege }) => {
+const ViewPrivilege = ({
+    classes,
+    initialise,
+    updatePrivilegeName,
+    togglePrivilegeStatus,
+    savePrivilege,
+    privilege
+}) => {
     useEffect(() => {
         initialise();
     }, [initialise]);
 
     const handleSaveClick = () => {
-        // addItem(vatCode);
-        // setEditStatus('view');
+        savePrivilege(privilege.name, privilege.active);
     };
+
+    const handleUpdatePrivilegeName = (propertyName, newValue) => {
+        updatePrivilegeName(newValue);
+    };
+    const handleTogglePrivilegeStatus = () => {
+        togglePrivilegeStatus();
+    };
+
+    const privilegename = privilege.name;
+    const privilegeactive = privilege.active;
+
     return (
         <div>
             <Link to="../viewprivileges">
@@ -49,20 +68,24 @@ const ViewPrivilege = ({ classes, initialise, privilege }) => {
                                             <InputField
                                                 fullWidth
                                                 disabled={false}
-                                                value={privilege.name}
+                                                value={privilegename}
                                                 label="Privilege"
                                                 maxLength={100}
-                                                propertyName="code"
+                                                propertyName="name"
+                                                onChange={handleUpdatePrivilegeName}
                                             />
                                         </Grid>
                                         <Grid item xs={8}>
-                                            <InputField
-                                                fullWidth
-                                                disabled={false}
-                                                value={`${privilege.active}`}
-                                                label="Active"
-                                                maxLength={5}
-                                                propertyName="code"
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        checked={privilegeactive}
+                                                        onChange={handleTogglePrivilegeStatus}
+                                                        color="primary"
+                                                    />
+                                                }
+                                                label="Active Status"
+                                                labelPlacement="start"
                                             />
                                         </Grid>
                                     </div>
@@ -75,7 +98,7 @@ const ViewPrivilege = ({ classes, initialise, privilege }) => {
                 ) : (
                     <Loading />
                 )}
-                <Button type="button" variant="outlined" onClick={handleSaveClick}>
+                <Button type="button" variant="outlined" disabled>
                     Save
                 </Button>
             </Paper>
@@ -86,6 +109,9 @@ const ViewPrivilege = ({ classes, initialise, privilege }) => {
 ViewPrivilege.propTypes = {
     classes: PropTypes.shape({}),
     initialise: PropTypes.func.isRequired,
+    updatePrivilegeName: PropTypes.func.isRequired,
+    togglePrivilegeStatus: PropTypes.func.isRequired,
+    savePrivilege: PropTypes.func.isRequired,
     privilege: PropTypes.shape({
         name: PropTypes.string,
         Id: PropTypes.number,
@@ -99,24 +125,3 @@ ViewPrivilege.defaultProps = {
 };
 
 export default withStyles(styles)(ViewPrivilege);
-
-/* 
-  <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Privilege</TableCell>
-                                <TableCell align="right">Active Status</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow key={privilege.name}>
-                                <TableCell component="th" scope="row">
-                                    <span>{privilege.name}</span>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <span>{`${privilege.active}`}</span>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-*/

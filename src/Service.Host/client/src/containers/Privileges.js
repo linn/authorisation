@@ -3,11 +3,7 @@ import { withRouter } from 'react-router';
 import Privileges from '../components/Privileges';
 import { getPrivileges, getNewPrivilegeForCreation } from '../selectors/privilegeSelectors';
 
-import {
-    fetchPrivileges,
-    createPrivilege,
-    updateNewPrivilegeName
-} from '../actions/privilegeActions';
+import { fetchPrivileges, createPrivilege, updateNewPrivilege } from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
     privileges: getPrivileges(state),
@@ -19,8 +15,8 @@ const mapDispatchToProps = dispatch => ({
     createPrivilege: name => {
         dispatch(createPrivilege(name, false));
     },
-    updateNewPrivilegeText: name => {
-        dispatch(updateNewPrivilegeName(name));
+    updateNewPrivilege: name => {
+        dispatch(updateNewPrivilege(name));
     }
 });
 

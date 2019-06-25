@@ -79,38 +79,42 @@ export const createPrivilege = (name, active) => ({
     }
 });
 
-// export function updateNewPrivilegeName(name) {
-//     return { type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME, data: name };
-// }
-
-export const updateNewPrivilegeName = name => ({
+export const updateNewPrivilege = name => ({
     type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name
 });
 
-// export const editPrivilege = id => ({
-//     [RSAA]: {
-//         endpoint: `${config.appRoot}/authorisation/privileges/`,
-//         method: 'GET',
-//         options: { requiresAuth: false },
-//         headers: {
-//             Accept: 'application/json'
-//         },
-//         body: { name: 'IainTest', active: true },
-//         types: [
-//             {
-//                 type: actionTypes.REQUEST_PRIVILEGE,
-//                 payload: {}
-//             },
-//             {
-//                 type: actionTypes.RECEIVE_PRIVILEGE,
-//                 payload: async (action, state, res) => ({ data: await res.json() })
-//             },
-//             {
-//                 type: actionTypes.FETCH_ERROR,
-//                 payload: (action, state, res) =>
-//                     res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-//             }
-//         ]
-//     }
-// });
+export const updatePrivilegeName = name => ({
+    type: actionTypes.UPDATE_PRIVILEGE_NAME,
+    data: name
+});
+
+export const togglePrivilegeStatus = () => ({
+    type: actionTypes.TOGGLE_PRIVILEGE_STATUS
+});
+export const savePrivilege = (name, active) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges/`,
+        method: 'POST',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json'
+        },
+        body: { name, active },
+        types: [
+            {
+                type: actionTypes.REQUEST_SAVE_PRIVILEGE,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_PRIVILEGE,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});

@@ -1,6 +1,15 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Table, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
+import {
+    Paper,
+    Button,
+    Table,
+    TableHead,
+    TableBody,
+    TableCell,
+    TableRow,
+    TextField
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title } from '@linn-it/linn-form-components-library';
@@ -14,11 +23,17 @@ const styles = () => ({
     }
 });
 
+const hoverStyle = {
+    // `:hover`{
+        'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)';
+    // }    
+};
+
 const ViewPrivileges = ({
     classes,
     initialise,
     createPrivilege,
-    updateNewPrivilegeText,
+    updateNewPrivilege,
     privileges,
     newprivilege
 }) => {
@@ -27,19 +42,22 @@ const ViewPrivileges = ({
     }, [initialise]);
 
     let initialName = '';
-    let initialStatus = false;
     if (newprivilege) {
         initialName = newprivilege.name;
-        initialStatus = newprivilege.active;
     }
 
     const handleNameChange = e => {
-        updateNewPrivilegeText(e.target.value);
+        updateNewPrivilege(e.target.value);
     };
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
     return privileges ? (
         <div>
+            <Link to="../authorisation">
+                <Button type="button" variant="outlined">
+                    Home
+                </Button>
+            </Link>
             <Paper className={classes.root}>
                 <Title text="All Privileges" />
                 <Table>
@@ -51,29 +69,30 @@ const ViewPrivileges = ({
                     </TableHead>
                     <TableBody>
                         {privileges.map(privilege => (
-                            <TableRow key={privilege.name}>
+                            <TableRow
+                                key={privilege.name}
+                                component={Link}
+                                to={privilege.links[0].href.slice(1)}
+                                style={hoverStyle}
+                            >
                                 <TableCell component="th" scope="row">
-                                    <Link to={privilege.links[0].href.slice(1)}>
-                                        {privilege.name}
-                                    </Link>
+                                    {privilege.name}
                                 </TableCell>
                                 <TableCell align="right">{privilege.active.toString()}</TableCell>
                             </TableRow>
                         ))}
                         <TableRow key="New privilege">
                             <TableCell component="th" scope="row">
-                                <input
-                                    type="text"
+                                <TextField
                                     placeholder="new privilege"
                                     value={initialName}
                                     id="newPrivilegeName"
                                     onChange={handleNameChange}
+                                    label="New Privilege"
                                 />
                             </TableCell>
                             <TableCell align="right">
-                                <input type="checkbox" checked={initialStatus} />
                                 <Button
-                                    spacing
                                     type="button"
                                     variant="outlined"
                                     onClick={dispatchcreatePrivilege}
@@ -85,12 +104,6 @@ const ViewPrivileges = ({
                         </TableRow>
                     </TableBody>
                 </Table>
-                <br />
-                <Link to="../authorisation">
-                    <Button spacing type="button" variant="outlined">
-                        Home
-                    </Button>
-                </Link>
             </Paper>
         </div>
     ) : (
@@ -102,7 +115,7 @@ ViewPrivileges.propTypes = {
     classes: PropTypes.shape({}),
     initialise: PropTypes.func.isRequired,
     createPrivilege: PropTypes.func.isRequired,
-    updateNewPrivilegeText: PropTypes.func.isRequired,
+    updateNewPrivilege: PropTypes.func.isRequired,
     privileges: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,

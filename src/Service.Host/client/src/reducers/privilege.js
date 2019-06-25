@@ -7,6 +7,18 @@ function Privilege(state = initialState, action) {
     switch (action.type) {
         case actionTypes.RECEIVE_PRIVILEGE:
             return { ...state, ...action.payload };
+        case actionTypes.UPDATE_PRIVILEGE_NAME: {
+            return {
+                ...state.data,
+                data: { ...state.data, name: action.data }
+            };
+        }
+        case actionTypes.TOGGLE_PRIVILEGE_STATUS: {
+            return {
+                ...state.data,
+                data: { ...state.data, active: !state.data.active }
+            };
+        }
         default:
             return state;
     }
