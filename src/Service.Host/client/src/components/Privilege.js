@@ -37,7 +37,7 @@ const ViewPrivilege = ({
     };
 
     const privilegename = privilege.name;
-    const privilegeactive = privilege.active;
+    const privilegeactive = privilege.active || false;
 
     return (
         <div>
