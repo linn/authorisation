@@ -13,8 +13,6 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title } from '@linn-it/linn-form-components-library';
-import { create } from 'jss';
-// import { Save } from '@material-ui/icons';
 
 const styles = () => ({
     root: {
@@ -23,11 +21,9 @@ const styles = () => ({
     }
 });
 
-const hoverStyle = {
-    // `:hover`{
-        'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)';
-    // }    
-};
+// const hoverStyle = {
+//     'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+// };
 
 const ViewPrivileges = ({
     classes,
@@ -58,6 +54,7 @@ const ViewPrivileges = ({
                     Home
                 </Button>
             </Link>
+
             <Paper className={classes.root}>
                 <Title text="All Privileges" />
                 <Table>
@@ -73,7 +70,6 @@ const ViewPrivileges = ({
                                 key={privilege.name}
                                 component={Link}
                                 to={privilege.links[0].href.slice(1)}
-                                style={hoverStyle}
                             >
                                 <TableCell component="th" scope="row">
                                     {privilege.name}

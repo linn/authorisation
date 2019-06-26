@@ -1,5 +1,4 @@
 ﻿import { connect } from 'react-redux';
-import { loadUser } from 'redux-oidc';
 import Callback from '../components/Callback';
 import history from '../history';
 

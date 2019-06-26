@@ -1,16 +1,6 @@
 ﻿import React, { useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Paper,
-    Button,
-    Table,
-    TableHead,
-    TableBody,
-    TableCell,
-    TableRow,
-    Grid,
-    Switch
-} from '@material-ui/core';
+import { Paper, Button, Grid, Switch } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -35,9 +25,9 @@ const ViewPrivilege = ({
         initialise();
     }, [initialise]);
 
-    const handleSaveClick = () => {
-        savePrivilege(privilege.name, privilege.active);
-    };
+    // const handleSaveClick = () => {
+    //     savePrivilege(privilege.name, privilege.active);
+    // };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
         updatePrivilegeName(newValue);
