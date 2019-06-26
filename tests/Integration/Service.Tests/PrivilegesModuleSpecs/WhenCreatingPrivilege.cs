@@ -48,6 +48,7 @@
         public void ShouldReturnResource()
         {
             var resource = this.Response.Body.DeserializeJson<PrivilegeResource>();
+            resource.Name.Should().Be("Test");
             resource.Active.Should().Be(true);
         }
     }
