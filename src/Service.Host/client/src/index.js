@@ -5,11 +5,11 @@ import Root from './components/Root';
 import { AppContainer } from 'react-hot-loader';
 import userManager from './helpers/userManager';
 
-import './css/index.scss';
+import 'typeface-roboto';
 
 const initialState = {};
 const store = configureStore(initialState);
-const user = store.getState().oidc.user;
+const { user } = store.getState().oidc;
 
 const render = Component => {
     ReactDOM.render(
@@ -21,7 +21,9 @@ const render = Component => {
 };
 
 if ((!user || user.expired) && window.location.pathname !== '/authorisation/signin-oidc-client') {
-    userManager.signinRedirect({ data: { redirect: window.location.pathname + window.location.search } });
+    userManager.signinRedirect({
+        data: { redirect: window.location.pathname + window.location.search }
+    });
 } else {
     render(Root);
 

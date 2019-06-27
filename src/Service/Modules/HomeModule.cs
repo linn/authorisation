@@ -12,8 +12,11 @@
             this.Get("/", args => new RedirectResponse("/authorisation"));
             this.Get("/authorisation", _ => this.GetApp());
 
+            this.Get("/authorisation/privileges/{.*}", _ => this.GetApp());
+
             this.Get("/authorisation/signin-oidc-client", _ => this.GetApp());
             this.Get("/authorisation/signin-oidc-silent", _ => this.SilentRenew());
+            this.Get(@"^(.*)$", _ => this.GetApp());
         }
 
         private object SilentRenew()

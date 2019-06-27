@@ -1,12 +1,36 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { Paper, Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Title } from '@linn-it/linn-form-components-library';
 
-class App extends Component {
-    render() {
-        return (
-            <div> App
-            </div>
-        );
+const styles = () => ({
+    root: {
+        margin: '40px',
+        padding: '40px'
     }
+});
+
+function App({ classes }) {
+    return (
+        <Paper className={classes.root}>
+            <Title text="Authorisation" />
+            <Link to="../authorisation/viewprivileges">
+                <Button type="button" variant="outlined">
+                    View Privileges
+                </Button>
+            </Link>
+        </Paper>
+    );
 }
 
-export default App;
+App.propTypes = {
+    classes: PropTypes.shape({})
+};
+
+App.defaultProps = {
+    classes: {}
+};
+
+export default withStyles(styles)(App);

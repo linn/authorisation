@@ -1,19 +1,21 @@
 ﻿import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
+import { Loading } from '@linn-it/linn-form-components-library';
+import PropTypes from 'prop-types';
 import userManager from '../helpers/userManager';
 
-class Callback extends React.Component {
-    render() {
-        // TODO: handle error case appropriately
-        return (
-            <CallbackComponent
-                userManager={userManager}
-                successCallback={this.props.onSuccess}
-                errorCallback={err => console.error(err)}
-            >
-            </CallbackComponent>
-        );
-    }
-}
+const Callback = ({ onSuccess }) => (
+    <CallbackComponent
+        userManager={userManager}
+        successCallback={onSuccess}
+        errorCallback={err => console.error(err)}
+    >
+        <Loading />
+    </CallbackComponent>
+);
+
+Callback.propTypes = {
+    onSuccess: PropTypes.func.isRequired
+};
 
 export default Callback;
