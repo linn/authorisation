@@ -107,7 +107,6 @@ const ViewPrivileges = ({
                         </TableBody>
                     </Table>
                 )}
-                ;
             </Paper>
         </div>
     );
