@@ -12,16 +12,18 @@ const styles = () => ({
     }
 });
 
-const App = ({ classes }) => (
-    <Paper className={classes.root}>
-        <Title text="Authorisation" />
-        <Link to="../authorisation/viewprivileges">
-            <Button type="button" variant="outlined">
-                View Privileges
-            </Button>
-        </Link>
-    </Paper>
-);
+function App({ classes }) {
+    return (
+        <Paper className={classes.root}>
+            <Title text="Authorisation" />
+            <Link to="../authorisation/viewprivileges">
+                <Button type="button" variant="outlined">
+                    View Privileges
+                </Button>
+            </Link>
+        </Paper>
+    );
+}
 
 App.propTypes = {
     classes: PropTypes.shape({})

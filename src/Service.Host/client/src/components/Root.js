@@ -31,7 +31,7 @@ const Root = ({ store }) => (
                                 }}
                             />
 
-                            <Switch store={store}>
+                            <Switch>
                                 <Route exact path="/authorisation" component={App} />
 
                                 <Route

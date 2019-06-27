@@ -36,8 +36,8 @@ const ViewPrivilege = ({
         togglePrivilegeStatus();
     };
 
-    const privilegename = privilege.name;
-    const privilegeactive = privilege.active || false;
+    const privilegeName = privilege.name;
+    const privilegeActive = privilege.active || false;
 
     return (
         <div>
@@ -58,7 +58,7 @@ const ViewPrivilege = ({
                                             <InputField
                                                 fullWidth
                                                 disabled={false}
-                                                value={privilegename}
+                                                value={privilegeName}
                                                 label="Privilege"
                                                 maxLength={100}
                                                 propertyName="name"
@@ -69,7 +69,7 @@ const ViewPrivilege = ({
                                             <FormControlLabel
                                                 control={
                                                     <Switch
-                                                        checked={privilegeactive}
+                                                        checked={privilegeActive}
                                                         onChange={handleTogglePrivilegeStatus}
                                                         color="primary"
                                                     />
