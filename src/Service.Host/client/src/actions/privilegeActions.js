@@ -55,12 +55,14 @@ export const fetchPrivilege = id => ({
 });
 export const createPrivilege = (name, active) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges?Name=${name}&Active=${active}`,
+        endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'POST',
         options: { requiresAuth: false },
         headers: {
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         },
+        body: JSON.stringify({ name, active }),
         types: [
             {
                 type: actionTypes.REQUEST_CREATE_PRIVILEGE,
@@ -92,15 +94,17 @@ export const updatePrivilegeName = name => ({
 export const togglePrivilegeStatus = () => ({
     type: actionTypes.TOGGLE_PRIVILEGE_STATUS
 });
-export const savePrivilege = (name, active) => ({
+
+export const savePrivilege = (name, active, uri) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/`,
-        method: 'POST',
+        endpoint: `${config.appRoot}/authorisation${uri}`,
+        method: 'PUT',
         options: { requiresAuth: false },
         headers: {
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: { name, active },
+        body: JSON.stringify({ name, active }),
         types: [
             {
                 type: actionTypes.REQUEST_SAVE_PRIVILEGE,

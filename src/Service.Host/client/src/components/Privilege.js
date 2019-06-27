@@ -26,9 +26,9 @@ const ViewPrivilege = ({
         initialise();
     }, [initialise]);
 
-    // const handleSaveClick = () => {
-    //     savePrivilege(privilege.name, privilege.active);
-    // };
+    const handleSaveClick = () => {
+        savePrivilege(privilege.name, privilege.active, privilege.links[0].href);
+    };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
         updatePrivilegeName(newValue);
@@ -85,7 +85,7 @@ const ViewPrivilege = ({
                         </Grid>
                     </Grid>
                 )}
-                <Button type="button" variant="outlined" disabled>
+                <Button type="button" variant="outlined" onClick={handleSaveClick}>
                     Save
                 </Button>
             </Paper>

@@ -26,8 +26,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         togglePrivilegeStatus: () => {
             dispatch(togglePrivilegeStatus());
         },
-        savePrivilege: (name, active) => {
-            dispatch(savePrivilege(name, active));
+        savePrivilege: (name, active, uri) => {
+            dispatch(savePrivilege(name, active, uri));
         }
     };
 };
