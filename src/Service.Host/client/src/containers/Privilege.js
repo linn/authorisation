@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Privilege from '../components/Privilege';
-import { getPrivilege } from '../selectors/privilegeSelectors';
+import { getPrivilege, getPrivilegeLoading } from '../selectors/privilegeSelectors';
 import {
     fetchPrivilege,
     updatePrivilegeName,
@@ -13,7 +13,8 @@ const getId = ownProps => ownProps.match.params.id;
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
-    privilege: getPrivilege(state)
+    privilege: getPrivilege(state),
+    loading: getPrivilegeLoading(state)
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {

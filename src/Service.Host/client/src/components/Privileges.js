@@ -31,7 +31,8 @@ const ViewPrivileges = ({
     createPrivilege,
     updateNewPrivilege,
     privileges,
-    newprivilege
+    newprivilege,
+    loading
 }) => {
     useEffect(() => {
         initialise();
@@ -47,7 +48,7 @@ const ViewPrivileges = ({
     };
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
-    return privileges ? (
+    return (
         <div>
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
@@ -57,53 +58,58 @@ const ViewPrivileges = ({
 
             <Paper className={classes.root}>
                 <Title text="All Privileges" />
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Privilege</TableCell>
-                            <TableCell align="right">Active status</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {privileges.map(privilege => (
-                            <TableRow
-                                key={privilege.name}
-                                component={Link}
-                                to={privilege.links[0].href.slice(1)}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {privilege.name}
-                                </TableCell>
-                                <TableCell align="right">{privilege.active.toString()}</TableCell>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Privilege</TableCell>
+                                <TableCell align="right">Active status</TableCell>
                             </TableRow>
-                        ))}
-                        <TableRow key="New privilege">
-                            <TableCell component="th" scope="row">
-                                <TextField
-                                    placeholder="new privilege"
-                                    value={initialName}
-                                    id="newPrivilegeName"
-                                    onChange={handleNameChange}
-                                    label="New Privilege"
-                                />
-                            </TableCell>
-                            <TableCell align="right">
-                                <Button
-                                    type="button"
-                                    variant="outlined"
-                                    onClick={dispatchcreatePrivilege}
-                                    id="newPrivilegeStatus"
+                        </TableHead>
+                        <TableBody>
+                            {privileges.map(privilege => (
+                                <TableRow
+                                    key={privilege.name}
+                                    component={Link}
+                                    to={privilege.links[0].href.slice(1)}
                                 >
-                                    Create
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+                                    <TableCell component="th" scope="row">
+                                        {privilege.name}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {privilege.active.toString()}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            <TableRow key="New privilege">
+                                <TableCell component="th" scope="row">
+                                    <TextField
+                                        placeholder="new privilege"
+                                        value={initialName}
+                                        id="newPrivilegeName"
+                                        onChange={handleNameChange}
+                                        label="New Privilege"
+                                    />
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        type="button"
+                                        variant="outlined"
+                                        onClick={dispatchcreatePrivilege}
+                                        id="newPrivilegeStatus"
+                                    >
+                                        Create
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                )}
+                ;
             </Paper>
         </div>
-    ) : (
-        <Loading />
     );
 };
 
@@ -122,7 +128,8 @@ ViewPrivileges.propTypes = {
     newprivilege: PropTypes.shape({
         name: PropTypes.string,
         active: PropTypes.bool
-    })
+    }),
+    loading: PropTypes.bool.isRequired
 };
 
 ViewPrivileges.defaultProps = {

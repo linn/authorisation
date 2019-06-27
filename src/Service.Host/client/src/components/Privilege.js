@@ -19,7 +19,8 @@ const ViewPrivilege = ({
     updatePrivilegeName,
     togglePrivilegeStatus,
     savePrivilege,
-    privilege
+    privilege,
+    loading
 }) => {
     useEffect(() => {
         initialise();
@@ -48,45 +49,41 @@ const ViewPrivilege = ({
             </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Privilege" />
-                {privilege ? (
+                {loading ? (
+                    <Loading />
+                ) : (
                     <Grid container spacing={24}>
                         <Grid item xs={12}>
                             <Fragment>
-                                {privilege ? (
-                                    <div>
-                                        <Grid item xs={8}>
-                                            <InputField
-                                                fullWidth
-                                                disabled={false}
-                                                value={privilegeName}
-                                                label="Privilege"
-                                                maxLength={100}
-                                                propertyName="name"
-                                                onChange={handleUpdatePrivilegeName}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Switch
-                                                        checked={privilegeActive}
-                                                        onChange={handleTogglePrivilegeStatus}
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="Active Status"
-                                                labelPlacement="start"
-                                            />
-                                        </Grid>
-                                    </div>
-                                ) : (
-                                    <Loading />
-                                )}
+                                <div>
+                                    <Grid item xs={8}>
+                                        <InputField
+                                            fullWidth
+                                            disabled={false}
+                                            value={privilegeName}
+                                            label="Privilege"
+                                            maxLength={100}
+                                            propertyName="name"
+                                            onChange={handleUpdatePrivilegeName}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    checked={privilegeActive}
+                                                    onChange={handleTogglePrivilegeStatus}
+                                                    color="primary"
+                                                />
+                                            }
+                                            label="Active Status"
+                                            labelPlacement="start"
+                                        />
+                                    </Grid>
+                                </div>
                             </Fragment>
                         </Grid>
                     </Grid>
-                ) : (
-                    <Loading />
                 )}
                 <Button type="button" variant="outlined" disabled>
                     Save
@@ -106,7 +103,8 @@ ViewPrivilege.propTypes = {
         name: PropTypes.string,
         Id: PropTypes.number,
         active: PropTypes.bool
-    })
+    }),
+    loading: PropTypes.bool.isRequired
 };
 
 ViewPrivilege.defaultProps = {

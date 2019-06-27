@@ -5,8 +5,10 @@ const initialState = { data: {}, loading: false };
 //define a reducer with an initialized state action
 function Privilege(state = initialState, action) {
     switch (action.type) {
+        case actionTypes.REQUEST_PRIVILEGE:
+            return { ...state, loading: true };
         case actionTypes.RECEIVE_PRIVILEGE:
-            return { ...state, ...action.payload };
+            return { ...state, loading: false, ...action.payload };
         case actionTypes.UPDATE_PRIVILEGE_NAME: {
             return {
                 ...state.data,

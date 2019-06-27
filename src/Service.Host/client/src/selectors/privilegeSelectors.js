@@ -13,3 +13,15 @@ export const getPrivilege = state => {
     const { privilege } = state;
     return privilege.data;
 };
+
+export const getPrivilegeLoading = state => {
+    const { privilege } = state;
+    const { loading } = privilege;
+    return loading || false;
+};
+
+export const getPrivilegesLoading = state => {
+    const { privileges } = state;
+    const { loading } = privileges;
+    return loading || false;
+};
