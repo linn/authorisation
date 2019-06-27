@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title } from '@linn-it/linn-form-components-library';
+import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -73,7 +73,7 @@ const ViewPrivileges = ({
                                 <TableRow
                                     key={privilege.name}
                                     component={Link}
-                                    to={privilege.links[0].href.slice(1)}
+                                    to={getHref(privilege, 'self').slice(1)}
                                 >
                                     <TableCell component="th" scope="row">
                                         {privilege.name}

@@ -4,7 +4,7 @@ import { Paper, Button, Grid, Switch } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, InputField } from '@linn-it/linn-form-components-library';
+import { Loading, Title, InputField, getHref } from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -27,7 +27,7 @@ const ViewPrivilege = ({
     }, [initialise]);
 
     const handleSaveClick = () => {
-        savePrivilege(privilege.name, privilege.active, privilege.links[0].href);
+        savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
     };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
