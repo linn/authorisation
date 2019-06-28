@@ -4,7 +4,7 @@ import { Paper, Button, Grid, Switch } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, InputField } from '@linn-it/linn-form-components-library';
+import { Loading, Title, InputField, getHref } from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -26,9 +26,9 @@ const ViewPrivilege = ({
         initialise();
     }, [initialise]);
 
-    // const handleSaveClick = () => {
-    //     savePrivilege(privilege.name, privilege.active);
-    // };
+    const handleSaveClick = () => {
+        savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
+    };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
         updatePrivilegeName(newValue);
@@ -85,7 +85,7 @@ const ViewPrivilege = ({
                         </Grid>
                     </Grid>
                 )}
-                <Button type="button" variant="outlined" disabled>
+                <Button type="button" variant="outlined" onClick={handleSaveClick}>
                     Save
                 </Button>
             </Paper>
