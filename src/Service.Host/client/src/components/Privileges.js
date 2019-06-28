@@ -12,7 +12,8 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
+import { Loading, Title, getHref, Dropdown } from '@linn-it/linn-form-components-library';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 const styles = () => ({
     root: {
@@ -32,7 +33,8 @@ const ViewPrivileges = ({
     updateNewPrivilege,
     privileges,
     newprivilege,
-    loading
+    loading,
+    users
 }) => {
     useEffect(() => {
         initialise();
@@ -58,6 +60,17 @@ const ViewPrivileges = ({
 
             <Paper className={classes.root}>
                 <Title text="All Privileges" />
+
+                <Dropdown align="right" items={users} helpText="Filter by specific user" />
+
+                {/* <label id="userSelectLabel"> View Privileges By user </label>
+
+                <select>
+                    {users.map(user => (
+                        <option value={user.name}>{user.name}</option>
+                    ))}
+                </select> */}
+
                 {loading ? (
                     <Loading />
                 ) : (
@@ -128,13 +141,17 @@ ViewPrivileges.propTypes = {
         name: PropTypes.string,
         active: PropTypes.bool
     }),
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    users: PropTypes.arrayOf(
+        PropTypes.shape({ displayText: PropTypes.string, id: PropTypes.number })
+    )
 };
 
 ViewPrivileges.defaultProps = {
     classes: {},
     privileges: null,
-    newprivilege: { name: '', active: false }
+    newprivilege: { name: '', active: false },
+    users: [{ displayText: 'All users', id: -1 }, { displayText: 'test user', id: 12 }]
 };
 
 export default withStyles(styles)(ViewPrivileges);

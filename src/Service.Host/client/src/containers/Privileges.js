@@ -4,14 +4,16 @@ import Privileges from '../components/Privileges';
 import {
     getPrivileges,
     getNewPrivilegeForCreation,
-    getPrivilegesLoading
+    getPrivilegesLoading,
+    getUsers
 } from '../selectors/privilegeSelectors';
 import { fetchPrivileges, createPrivilege, updateNewPrivilege } from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
     privileges: getPrivileges(state),
     newprivilege: getNewPrivilegeForCreation(state),
-    loading: getPrivilegesLoading(state)
+    loading: getPrivilegesLoading(state),
+    users: getUsers(state)
 });
 
 const mapDispatchToProps = dispatch => ({
