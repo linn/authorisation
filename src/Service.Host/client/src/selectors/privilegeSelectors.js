@@ -30,4 +30,10 @@ export const getUpdatedMessageVisibility = state => {
     const { privilege } = state;
     const { updatedMessageVisibility } = privilege;
     return updatedMessageVisibility || false;
-}
+};
+
+export const getSaveEnabled = state => {
+    const { privilege } = state;
+    const { enableSave } = privilege;
+    return enableSave || false;
+};

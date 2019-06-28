@@ -4,7 +4,8 @@ import Privilege from '../components/Privilege';
 import {
     getPrivilege,
     getPrivilegeLoading,
-    getUpdatedMessageVisibility
+    getUpdatedMessageVisibility,
+    getSaveEnabled
 } from '../selectors/privilegeSelectors';
 import {
     fetchPrivilege,
@@ -20,7 +21,8 @@ const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     privilege: getPrivilege(state),
     loading: getPrivilegeLoading(state),
-    showUpdatedMessage: getUpdatedMessageVisibility(state)
+    showUpdatedMessage: getUpdatedMessageVisibility(state),
+    enableSave: getSaveEnabled(state)
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {

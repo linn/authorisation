@@ -88,7 +88,12 @@ const ViewPrivilege = ({
                         </Fragment>
                     </Grid>
                 </Grid>
-                <Button type="button" variant="outlined" onClick={handleSaveClick}>
+                <Button
+                    type="button"
+                    variant="outlined"
+                    disabled={!enableSave}
+                    onClick={handleSaveClick}
+                >
                     Save
                 </Button>
             </div>
@@ -104,7 +109,7 @@ const ViewPrivilege = ({
             </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Privilege" />
-            {elementsToDisplay}
+                {elementsToDisplay}
             </Paper>
             <SnackbarMessage
                 visible={showUpdatedMessage}
@@ -126,7 +131,10 @@ ViewPrivilege.propTypes = {
         Id: PropTypes.number,
         active: PropTypes.bool
     }),
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    showUpdatedMessage: PropTypes.bool.isRequired,
+    setUpdatedMessageVisible: PropTypes.func.isRequired,
+    enableSave: PropTypes.bool.isRequired
 };
 
 ViewPrivilege.defaultProps = {
