@@ -1,12 +1,17 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Privilege from '../components/Privilege';
-import { getPrivilege, getPrivilegeLoading } from '../selectors/privilegeSelectors';
+import {
+    getPrivilege,
+    getPrivilegeLoading,
+    getUpdatedMessageVisibility
+} from '../selectors/privilegeSelectors';
 import {
     fetchPrivilege,
     updatePrivilegeName,
     savePrivilege,
-    togglePrivilegeStatus
+    togglePrivilegeStatus,
+    setUpdatedMessageVisible
 } from '../actions/privilegeActions';
 
 const getId = ownProps => ownProps.match.params.id;
@@ -14,7 +19,8 @@ const getId = ownProps => ownProps.match.params.id;
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     privilege: getPrivilege(state),
-    loading: getPrivilegeLoading(state)
+    loading: getPrivilegeLoading(state),
+    showUpdatedMessage: getUpdatedMessageVisibility(state)
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -28,6 +34,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         savePrivilege: (name, active, uri) => {
             dispatch(savePrivilege(name, active, uri));
+        },
+        setUpdatedMessageVisible: visible => {
+            dispatch(setUpdatedMessageVisible(visible));
         }
     };
 };

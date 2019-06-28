@@ -111,7 +111,7 @@ export const savePrivilege = (name, active, uri) => ({
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGE,
+                type: actionTypes.RECEIVE_UPDATED_PRIVILEGE,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -121,4 +121,36 @@ export const savePrivilege = (name, active, uri) => ({
             }
         ]
     }
+});
+
+export const removePrivilege = uri => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation${uri}`,
+        method: 'PUT',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_PRIVILEGE_DELETED,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const setUpdatedMessageVisible = visible => ({
+    type: actionTypes.SET_UPDATE_MESSAGE_VISIBILITY,
+    data: visible
 });

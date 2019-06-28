@@ -7,8 +7,13 @@ function Privilege(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_PRIVILEGE:
             return { ...state, loading: true };
+        case actionTypes.REQUEST_SAVE_PRIVILEGE: {
+            return { ...state, loading: true };
+        }
         case actionTypes.RECEIVE_PRIVILEGE:
             return { ...state, loading: false, ...action.payload };
+        case actionTypes.RECEIVE_UPDATED_PRIVILEGE:
+            return { ...state, loading: false, updatedMessageVisibility: true, ...action.payload };
         case actionTypes.UPDATE_PRIVILEGE_NAME: {
             return {
                 ...state.data,
@@ -19,6 +24,12 @@ function Privilege(state = initialState, action) {
             return {
                 ...state.data,
                 data: { ...state.data, active: !state.data.active }
+            };
+        }
+        case actionTypes.SET_UPDATE_MESSAGE_VISIBILITY: {
+            return {
+                ...state,
+                updatedMessageVisibility: action.data
             };
         }
         default:

@@ -25,3 +25,9 @@ export const getPrivilegesLoading = state => {
     const { loading } = privileges;
     return loading || false;
 };
+
+export const getUpdatedMessageVisibility = state => {
+    const { privilege } = state;
+    const { updatedMessageVisibility } = privilege;
+    return updatedMessageVisibility || false;
+}

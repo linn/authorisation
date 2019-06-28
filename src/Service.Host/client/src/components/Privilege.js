@@ -4,7 +4,13 @@ import { Paper, Button, Grid, Switch } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, InputField, getHref } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Title,
+    InputField,
+    getHref,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -20,7 +26,10 @@ const ViewPrivilege = ({
     togglePrivilegeStatus,
     savePrivilege,
     privilege,
-    loading
+    loading,
+    showUpdatedMessage,
+    setUpdatedMessageVisible,
+    enableSave
 }) => {
     useEffect(() => {
         initialise();
@@ -40,6 +49,52 @@ const ViewPrivilege = ({
     const privilegeName = privilege.name;
     const privilegeActive = privilege.active || false;
 
+    let elementsToDisplay;
+
+    if (loading) {
+        elementsToDisplay = <Loading />;
+    } else {
+        elementsToDisplay = (
+            <div>
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>
+                        <Fragment>
+                            <div>
+                                <Grid item xs={8}>
+                                    <InputField
+                                        fullWidth
+                                        disabled={false}
+                                        value={privilegeName}
+                                        label="Privilege"
+                                        maxLength={100}
+                                        propertyName="name"
+                                        onChange={handleUpdatePrivilegeName}
+                                    />
+                                </Grid>
+                                <Grid item xs={8}>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={privilegeActive}
+                                                onChange={handleTogglePrivilegeStatus}
+                                                color="primary"
+                                            />
+                                        }
+                                        label="Active Status"
+                                        labelPlacement="start"
+                                    />
+                                </Grid>
+                            </div>
+                        </Fragment>
+                    </Grid>
+                </Grid>
+                <Button type="button" variant="outlined" onClick={handleSaveClick}>
+                    Save
+                </Button>
+            </div>
+        );
+    }
+
     return (
         <div>
             <Link to="../viewprivileges">
@@ -49,46 +104,13 @@ const ViewPrivilege = ({
             </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Privilege" />
-                {loading ? (
-                    <Loading />
-                ) : (
-                    <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                            <Fragment>
-                                <div>
-                                    <Grid item xs={8}>
-                                        <InputField
-                                            fullWidth
-                                            disabled={false}
-                                            value={privilegeName}
-                                            label="Privilege"
-                                            maxLength={100}
-                                            propertyName="name"
-                                            onChange={handleUpdatePrivilegeName}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={privilegeActive}
-                                                    onChange={handleTogglePrivilegeStatus}
-                                                    color="primary"
-                                                />
-                                            }
-                                            label="Active Status"
-                                            labelPlacement="start"
-                                        />
-                                    </Grid>
-                                </div>
-                            </Fragment>
-                        </Grid>
-                    </Grid>
-                )}
-                <Button type="button" variant="outlined" onClick={handleSaveClick}>
-                    Save
-                </Button>
+            {elementsToDisplay}
             </Paper>
+            <SnackbarMessage
+                visible={showUpdatedMessage}
+                onClose={() => setUpdatedMessageVisible(false)}
+                message="Save Successful"
+            />
         </div>
     );
 };
@@ -111,5 +133,4 @@ ViewPrivilege.defaultProps = {
     classes: {},
     privilege: null
 };
-
 export default withStyles(styles)(ViewPrivilege);
