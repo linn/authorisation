@@ -38,12 +38,26 @@ export const getSaveEnabled = state => {
     return enableSave || false;
 };
 
-const allUsersObj = { displayText: `All Users`, id: -1 };
 export const getUsers = state => {
     const { privileges } = state;
     const { users } = privileges;
     if (users) {
-        return users.unshift(allUsersObj);
+        return users.data.items;
     }
-    return [allUsersObj];
+    return [];
+};
+
+export const getSelectedUser = state => {
+    const { privileges } = state;
+    const { selectedUser } = privileges;
+    if (selectedUser) {
+        return selectedUser;
+    }
+    return -1;
+};
+
+export const getShouldShowCreate = state => {
+    const { privileges } = state;
+    const { enableSave } = privileges;
+    return enableSave || true;
 };

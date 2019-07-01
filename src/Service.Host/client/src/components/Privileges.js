@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+﻿import React, { useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Paper,
@@ -8,7 +8,11 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    TextField
+    TextField,
+    List,
+    ListItem,
+    ListItemGraphic,
+    ListItemText
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -22,6 +26,10 @@ const styles = () => ({
     }
 });
 
+const backgroundImage = id => {
+    backgroundImage: `url(http://app.linn.co.uk/images/staff/${id}.jpg)`;
+};
+
 // const hoverStyle = {
 //     'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
 // };
@@ -31,10 +39,13 @@ const ViewPrivileges = ({
     initialise,
     createPrivilege,
     updateNewPrivilege,
+    selectUser,
     privileges,
     newprivilege,
     loading,
-    users
+    users,
+    selectedUser,
+    showCreate
 }) => {
     useEffect(() => {
         initialise();
@@ -50,6 +61,11 @@ const ViewPrivileges = ({
     };
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
+    const changeUser = e => {
+        console.info(e.target.value);
+        selectUser(e.target.value);
+    };
+
     return (
         <div>
             <Link to="../authorisation">
@@ -61,16 +77,71 @@ const ViewPrivileges = ({
             <Paper className={classes.root}>
                 <Title text="All Privileges" />
 
-                <Dropdown align="right" items={users} helpText="Filter by specific user" />
+                {/*'../images/staff/33067.jpg'*/
+                /* <Dropdown align="right" items={users} helpText="Filter by specific user" />*/}
+                <div>
+                    <select
+                        selected={selectedUser}
+                        onChange={changeUser}
+                        style={{
+                            height: '75px',
+                            width: '66.66667%',
+                            display: 'inline-block',
+                            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                            borderColor: 'rgba(0, 0, 0, 0.23)',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <option value={-1}>All Users</option>
+                        {users.map(user => (
+                            //TODO replace hardcoded app.linn image url with ../images etc
+                            <option
+                                value={user.id}
+                                style={{
+                                    backgroundImage: `url(http://app.linn.co.uk/images/staff/${user.id}.jpg)`
+                                }}
+                            >
+                                {user.firstName} {user.lastName}
+                            </option>
+                        ))}
+                    </select>
+                    <div
+                        style={{
+                            height: '70px',
+                            maxWidth: '100px',
+                            borderRadius: '10px',
+                            overflow: 'hidden',
+                            display: 'inline-block',
+                            position: 'relative',
+                            left: '-120px',
+                            top: '30px'
+                        }}
+                    >
+                        <img
+                            style={{
+                                height: '100%'
+                            }}
+                            src={`http://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
+                        />
+                    </div>
+                </div>
 
-                {/* <label id="userSelectLabel"> View Privileges By user </label>
-
-                <select>
+                {/* <List>
+                    <ListItem>
+                        <ListItemText primaryText="All Users" />
+                    </ListItem>
                     {users.map(user => (
-                        <option value={user.name}>{user.name}</option>
+                        <ListItem>
+                            <img
+                                src={`http://app.linn.co.uk/images/staff/${user.id}.jpg`}
+                                style={imageStyle.dropdown}
+                            />
+                            <span>{user.firstName} {user.lastName}</span>
+                            <span> {user.emailAddress} </span>
+                        </ListItem>
                     ))}
-                </select> */}
-
+                </List> */}
                 {loading ? (
                     <Loading />
                 ) : (
@@ -96,27 +167,51 @@ const ViewPrivileges = ({
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            <TableRow key="New privilege">
-                                <TableCell component="th" scope="row">
-                                    <TextField
-                                        placeholder="new privilege"
-                                        value={initialName}
-                                        id="newPrivilegeName"
-                                        onChange={handleNameChange}
-                                        label="New Privilege"
-                                    />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button
-                                        type="button"
-                                        variant="outlined"
-                                        onClick={dispatchcreatePrivilege}
-                                        id="newPrivilegeStatus"
-                                    >
-                                        Create
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
+                            {showCreate ? (
+                                <TableRow key="New privilege">
+                                    <TableCell component="th" scope="row">
+                                        <TextField
+                                            placeholder="new privilege"
+                                            value={initialName}
+                                            id="newPrivilegeName"
+                                            onChange={handleNameChange}
+                                            label="New Privilege"
+                                        />
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button
+                                            type="button"
+                                            variant="outlined"
+                                            onClick={dispatchcreatePrivilege}
+                                            id="newPrivilegeStatus"
+                                        >
+                                            Create
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                <TableRow key="New privilege">
+                                    <TableCell component="th" scope="row">
+                                        <TextField
+                                            placeholder="new privilege"
+                                            value={initialName}
+                                            id="newPrivilegeName"
+                                            onChange={handleNameChange}
+                                            label="New Privilege"
+                                        />
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button
+                                            type="button"
+                                            variant="outlined"
+                                            onClick={dispatchcreatePrivilege}
+                                            id="newPrivilegeStatus"
+                                        >
+                                            Give to user
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 )}

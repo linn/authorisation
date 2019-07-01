@@ -53,6 +53,66 @@ export const fetchPrivilege = id => ({
         ]
     }
 });
+
+export const fetchPrivilegesForUser = userUri => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            Who: userUri
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_PRIVILEGES_FOR_USER,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_PRIVILEGES_FOR_USER,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const fetchUsers = () => ({
+    // TODO: remove app.linn and use config.appRoot again for end point
+    //   endpoint: `${config.appRoot}/authorisation/employees?currentEmployees=true`,
+    [RSAA]: {
+        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_USERS,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_USERS,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
 export const createPrivilege = (name, active) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges`,
@@ -84,6 +144,11 @@ export const createPrivilege = (name, active) => ({
 export const updateNewPrivilege = name => ({
     type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name
+});
+
+export const selectUser = id => ({
+    type: actionTypes.UPDATE_SELECTED_USER,
+    data: id
 });
 
 export const updatePrivilegeName = name => ({

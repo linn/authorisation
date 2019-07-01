@@ -6,6 +6,8 @@ const initialState = { data: [], loading: false };
 function Privileges(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_PRIVILEGES:
+        case actionTypes.REQUEST_PRIVILEGES_FOR_USER:
+        case actionTypes.REQUEST_USERS:
             return { ...state, loading: true };
         case actionTypes.REQUEST_CREATE_PRIVILEGE:
             return { ...state, loading: true };
@@ -18,6 +20,26 @@ function Privileges(state = initialState, action) {
             };
         case actionTypes.UPDATE_NEW_PRIVILEGE_NAME: {
             return { ...state, newPrivilege: { active: true, name: action.data } };
+        }
+        case actionTypes.RECEIVE_PRIVILEGES_FOR_USER: {
+            return {
+                ...state,
+                ...action.payload,
+                newPrivilege: { active: false, name: '' },
+                loading: false,
+                disableCreate: true
+            };
+        }
+        case actionTypes.RECEIVE_USERS: {
+            return {
+                ...state,
+                users: action.payload,
+                newPrivilege: { active: false, name: '' },
+                loading: false
+            };
+        }
+        case actionTypes.UPDATE_SELECTED_USER: {
+            return { ...state, selectedUser: action.data, enableSave: false };
         }
         default:
             return state;

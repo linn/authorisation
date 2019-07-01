@@ -5,24 +5,40 @@ import {
     getPrivileges,
     getNewPrivilegeForCreation,
     getPrivilegesLoading,
-    getUsers
+    getUsers,
+    getSelectedUser,
+    getShouldShowCreate
 } from '../selectors/privilegeSelectors';
-import { fetchPrivileges, createPrivilege, updateNewPrivilege } from '../actions/privilegeActions';
+import {
+    fetchPrivileges,
+    createPrivilege,
+    updateNewPrivilege,
+    fetchUsers,
+    selectUser
+} from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
     privileges: getPrivileges(state),
     newprivilege: getNewPrivilegeForCreation(state),
     loading: getPrivilegesLoading(state),
-    users: getUsers(state)
+    users: getUsers(state),
+    selectedUser: getSelectedUser(state),
+    showCreate: getShouldShowCreate(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    initialise: () => dispatch(fetchPrivileges()),
+    initialise: () => {
+        dispatch(fetchPrivileges());
+        dispatch(fetchUsers());
+    },
     createPrivilege: name => {
         dispatch(createPrivilege(name, false));
     },
     updateNewPrivilege: name => {
         dispatch(updateNewPrivilege(name));
+    },
+    selectUser: id => {
+        dispatch(selectUser(id));
     }
 });
 
