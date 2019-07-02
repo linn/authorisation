@@ -58,6 +58,6 @@ export const getSelectedUser = state => {
 
 export const getShouldShowCreate = state => {
     const { privileges } = state;
-    const { enableSave } = privileges;
-    return enableSave || true;
+    const { selectedUser } = privileges;
+    return selectedUser === -1;
 };

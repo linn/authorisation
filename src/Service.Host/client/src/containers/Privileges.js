@@ -14,7 +14,8 @@ import {
     createPrivilege,
     updateNewPrivilege,
     fetchUsers,
-    selectUser
+    selectUser,
+    fetchPrivilegesForUser
 } from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
@@ -39,6 +40,11 @@ const mapDispatchToProps = dispatch => ({
     },
     selectUser: id => {
         dispatch(selectUser(id));
+        if (id !== -1) {
+            //dispatch(fetchPrivilegesForUser(id));
+        } else {
+            dispatch(fetchPrivileges());
+        }
     }
 });
 

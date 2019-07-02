@@ -26,8 +26,7 @@ function Privileges(state = initialState, action) {
                 ...state,
                 ...action.payload,
                 newPrivilege: { active: false, name: '' },
-                loading: false,
-                disableCreate: true
+                loading: false
             };
         }
         case actionTypes.RECEIVE_USERS: {

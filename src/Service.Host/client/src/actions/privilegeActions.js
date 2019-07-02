@@ -54,7 +54,7 @@ export const fetchPrivilege = id => ({
     }
 });
 
-export const fetchPrivilegesForUser = userUri => ({
+export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'GET',
@@ -64,7 +64,7 @@ export const fetchPrivilegesForUser = userUri => ({
             'Content-Type': 'application/json'
         },
         body: {
-            Who: userUri
+            Who: `/members/${userId}`
         },
         types: [
             {

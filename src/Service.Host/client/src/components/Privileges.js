@@ -8,16 +8,11 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    TextField,
-    List,
-    ListItem,
-    ListItemGraphic,
-    ListItemText
+    TextField
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, getHref, Dropdown } from '@linn-it/linn-form-components-library';
-import SelectInput from '@material-ui/core/Select/SelectInput';
+import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
 
 const styles = () => ({
     root: {
@@ -62,12 +57,30 @@ const ViewPrivileges = ({
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
     const changeUser = e => {
-        console.info(e.target.value);
         selectUser(e.target.value);
     };
 
+    let image;
+
+    if (selectedUser !== -1) {
+        image = (
+            <img
+                alt=""
+                style={{
+                    height: '100%'
+                }}
+                src={`http://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
+            />
+        );
+    }
+
     return (
-        <div>
+        <div
+            style={{
+                width: '66.66667%',
+                margin: '0 auto'
+            }}
+        >
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
                     Home
@@ -75,17 +88,23 @@ const ViewPrivileges = ({
             </Link>
 
             <Paper className={classes.root}>
-                <Title text="All Privileges" />
-
-                {/*'../images/staff/33067.jpg'*/
-                /* <Dropdown align="right" items={users} helpText="Filter by specific user" />*/}
-                <div>
+                <Title text="Privileges" style={{ textAlign: 'center' }} />
+                <div style={{ marginBottom: '10px' }}>
+                    <span
+                        style={{
+                            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                            marginRight: '20px'
+                        }}
+                    >
+                        View privileges for:
+                    </span>
                     <select
+                        defaultValue={selectedUser}
                         selected={selectedUser}
                         onChange={changeUser}
                         style={{
                             height: '75px',
-                            width: '66.66667%',
+                            width: '300px',
                             display: 'inline-block',
                             fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                             borderColor: 'rgba(0, 0, 0, 0.23)',
@@ -108,40 +127,20 @@ const ViewPrivileges = ({
                     </select>
                     <div
                         style={{
-                            height: '70px',
+                            height: '75px',
                             maxWidth: '100px',
                             borderRadius: '10px',
                             overflow: 'hidden',
                             display: 'inline-block',
                             position: 'relative',
-                            left: '-120px',
-                            top: '30px'
+                            left: '20px',
+                            top: '32px'
                         }}
                     >
-                        <img
-                            style={{
-                                height: '100%'
-                            }}
-                            src={`http://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
-                        />
+                        {image}
                     </div>
                 </div>
 
-                {/* <List>
-                    <ListItem>
-                        <ListItemText primaryText="All Users" />
-                    </ListItem>
-                    {users.map(user => (
-                        <ListItem>
-                            <img
-                                src={`http://app.linn.co.uk/images/staff/${user.id}.jpg`}
-                                style={imageStyle.dropdown}
-                            />
-                            <span>{user.firstName} {user.lastName}</span>
-                            <span> {user.emailAddress} </span>
-                        </ListItem>
-                    ))}
-                </List> */}
                 {loading ? (
                     <Loading />
                 ) : (
@@ -239,7 +238,10 @@ ViewPrivileges.propTypes = {
     loading: PropTypes.bool.isRequired,
     users: PropTypes.arrayOf(
         PropTypes.shape({ displayText: PropTypes.string, id: PropTypes.number })
-    )
+    ),
+    selectUser: PropTypes.func.isRequired,
+    selectedUser: PropTypes.string.isRequired,
+    showCreate: PropTypes.bool.isRequired
 };
 
 ViewPrivileges.defaultProps = {
