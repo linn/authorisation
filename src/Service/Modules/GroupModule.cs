@@ -15,6 +15,7 @@
         {
             this.groupService = groupService;
             this.Post("/authorisation/groups", _ => this.CreateGroup());
+            this.Get("/authorisation/groups", _ => this.GetGroups());
             this.Get("/authorisation/groups/{id:int}", parameters => this.GetGroup(parameters.id));
             this.Post("/authorisation/groups/{id:int}/members", parameters => this.AddGroupMember(parameters.id));
             this.Delete("/authorisation/groups/{id:int}/members/{memberId:int}", parameters => this.RemoveGroupMember(parameters.id, parameters.memberId));
@@ -33,6 +34,12 @@
             return this.Negotiate.WithModel(group);
         }
 
+        private object GetGroups()
+        {
+            var groups = this.groupService.GetAll();
+            return this.Negotiate.WithModel(groups);
+        }
+        
         private object AddGroupMember(int id)
         {
             var resource = this.Bind<GroupMemberResource>();
