@@ -18,10 +18,10 @@
         {
             this.requestResource = new PrivilegeResource { Name = "New privilege", Active = false };
             var privilege = new Privilege("New privilege", false);
-
+          
             this.PrivilegeService.Update(19, Arg.Any<PrivilegeResource>())
                 .Returns(new SuccessResult<Privilege>(privilege));
-
+            
             this.Response = this.Browser.Put(  
                 "/authorisation/privileges/19",
                  with =>
