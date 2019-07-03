@@ -28,9 +28,9 @@ export const fetchGroups = () => ({
     }
 });
 
-export const fetchPrivilege = id => ({
+export const fetchGroup = id => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/${id}`,
+        endpoint: `${config.appRoot}/authorisation/groups/${id}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -38,11 +38,11 @@ export const fetchPrivilege = id => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_PRIVILEGE,
+                type: actionTypes.REQUEST_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGE,
+                type: actionTypes.RECEIVE_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -113,9 +113,9 @@ export const fetchUsers = () => ({
     }
 });
 
-export const createPrivilege = (name, active) => ({
+export const createGroup = (name, active) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
+        endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'POST',
         options: { requiresAuth: false },
         headers: {
@@ -125,11 +125,11 @@ export const createPrivilege = (name, active) => ({
         body: JSON.stringify({ name, active }),
         types: [
             {
-                type: actionTypes.REQUEST_CREATE_PRIVILEGE,
+                type: actionTypes.REQUEST_CREATE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_NEW_PRIVILEGE,
+                type: actionTypes.RECEIVE_NEW_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -141,7 +141,7 @@ export const createPrivilege = (name, active) => ({
     }
 });
 
-export const updateNewPrivilege = name => ({
+export const updateNewGroup = name => ({
     type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name
 });
@@ -151,16 +151,16 @@ export const selectUser = id => ({
     data: id
 });
 
-export const updatePrivilegeName = name => ({
-    type: actionTypes.UPDATE_PRIVILEGE_NAME,
+export const updateGroupName = name => ({
+    type: actionTypes.UPDATE_GROUP_NAME,
     data: name
 });
 
-export const togglePrivilegeStatus = () => ({
-    type: actionTypes.TOGGLE_PRIVILEGE_STATUS
+export const toggleGroupStatus = () => ({
+    type: actionTypes.TOGGLE_GROUP_STATUS
 });
 
-export const savePrivilege = (name, active, uri) => ({
+export const saveGroup = (name, active, uri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation${uri}`,
         method: 'PUT',
@@ -172,11 +172,11 @@ export const savePrivilege = (name, active, uri) => ({
         body: JSON.stringify({ name, active }),
         types: [
             {
-                type: actionTypes.REQUEST_SAVE_PRIVILEGE,
+                type: actionTypes.REQUEST_SAVE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_UPDATED_PRIVILEGE,
+                type: actionTypes.RECEIVE_UPDATED_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -188,7 +188,7 @@ export const savePrivilege = (name, active, uri) => ({
     }
 });
 
-export const removePrivilege = uri => ({
+export const removeGroup = uri => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation${uri}`,
         method: 'PUT',
@@ -199,11 +199,11 @@ export const removePrivilege = uri => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
+                type: actionTypes.REQUEST_DELETE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGE_DELETED,
+                type: actionTypes.RECEIVE_GROUP_DELETED,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {

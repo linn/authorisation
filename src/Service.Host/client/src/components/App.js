@@ -21,6 +21,11 @@ function App({ classes }) {
                     View Privileges
                 </Button>
             </Link>
+            <Link to="../authorisation/groups">
+                <Button type="button" variant="outlined">
+                    View Groups
+                </Button>
+            </Link>
         </Paper>
     );
 }
