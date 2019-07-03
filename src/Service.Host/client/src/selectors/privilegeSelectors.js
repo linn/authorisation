@@ -51,7 +51,7 @@ export const getSelectedUser = state => {
     const { privileges } = state;
     const { selectedUser } = privileges;
     if (selectedUser) {
-        return selectedUser;
+        return parseInt(selectedUser, 10);
     }
     return -1;
 };
@@ -59,5 +59,5 @@ export const getSelectedUser = state => {
 export const getShouldShowCreate = state => {
     const { privileges } = state;
     const { selectedUser } = privileges;
-    return selectedUser === -1;
+    return selectedUser == -1;
 };

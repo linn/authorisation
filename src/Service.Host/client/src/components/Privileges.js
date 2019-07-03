@@ -43,7 +43,7 @@ const ViewPrivileges = ({
     showCreate
 }) => {
     useEffect(() => {
-        initialise();
+        initialise(selectedUser);
     }, [initialise]);
 
     let initialName = '';

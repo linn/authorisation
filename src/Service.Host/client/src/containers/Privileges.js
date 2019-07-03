@@ -28,8 +28,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    initialise: () => {
-        dispatch(fetchPrivileges());
+    initialise: id => {
+        if (id != -1) {
+            dispatch(fetchPrivilegesForUser(id));
+        } else {
+            dispatch(fetchPrivileges());
+        }
         dispatch(fetchUsers());
     },
     createPrivilege: name => {
@@ -40,8 +44,8 @@ const mapDispatchToProps = dispatch => ({
     },
     selectUser: id => {
         dispatch(selectUser(id));
-        if (id !== -1) {
-            //dispatch(fetchPrivilegesForUser(id));
+        if (id != -1) {
+            dispatch(fetchPrivilegesForUser(id));
         } else {
             dispatch(fetchPrivileges());
         }

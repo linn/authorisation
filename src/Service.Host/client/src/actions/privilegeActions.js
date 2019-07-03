@@ -56,15 +56,13 @@ export const fetchPrivilege = id => ({
 
 export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
+        //TODO set back to ${config.appRoot}
+        endpoint: `https://app.linn.co.uk/authorisation/privileges?Who=/employees/${userId}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
-        },
-        body: {
-            Who: `/members/${userId}`
         },
         types: [
             {

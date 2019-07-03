@@ -4,6 +4,7 @@ import privileges from './privileges';
 import privilege from './privilege';
 import groups from './groups';
 import group from './group';
+
 const rootReducer = combineReducers({
     oidc,
     privileges,
