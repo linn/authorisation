@@ -2,7 +2,6 @@
 //define the initial state
 const initialState = { data: [], loading: false };
 
-//define a reducer with an initialized state action
 function Groups(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_GROUPS:
