@@ -162,7 +162,7 @@ export const toggleGroupStatus = () => ({
 
 export const saveGroup = (name, active, uri) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation${uri}`,
+        endpoint: `${config.appRoot}/${uri}`,
         method: 'PUT',
         options: { requiresAuth: false },
         headers: {

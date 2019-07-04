@@ -10,7 +10,7 @@ function Groups(state = initialState, action) {
         case actionTypes.RECEIVE_GROUPS:
             return {
                 ...state,
-                ...action.payload.data,
+                ...action.payload,
                 newGroup: { active: false, name: '' },
                 loading: false
             };

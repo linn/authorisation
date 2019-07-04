@@ -11,17 +11,17 @@
 
     public class GroupsResourceBuilder : IResourceBuilder<IEnumerable<Group>>
     {
-        private readonly GroupResourceBuilder privilegeResourceBuilder = new GroupResourceBuilder();
+        private readonly GroupResourceBuilder groupResourceBuilder = new GroupResourceBuilder();
 
-        public IEnumerable<GroupResource> Build(IEnumerable<Group> privileges)
+        public IEnumerable<GroupResource> Build(IEnumerable<Group> groups)
         {
-            return privileges.Select(a => this.privilegeResourceBuilder.Build(a));
+            return groups.Select(a => this.groupResourceBuilder.Build(a));
         }
 
-        object IResourceBuilder<IEnumerable<Group>>.Build(IEnumerable<Group> privilege) =>
-            this.Build(privilege);
+        object IResourceBuilder<IEnumerable<Group>>.Build(IEnumerable<Group> groups) =>
+            this.Build(groups);
 
-        public string GetLocation(IEnumerable<Group> privileges)
+        public string GetLocation(IEnumerable<Group> groups)
         {
             throw new NotImplementedException();
         }

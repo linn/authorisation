@@ -56,8 +56,7 @@ export const fetchPrivilege = id => ({
 
 export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
-        //TODO set back to ${config.appRoot}
-        endpoint: `https://app.linn.co.uk/authorisation/privileges?Who=/employees/${userId}`,
+        endpoint: `${config.appRoot}/authorisation/privileges?Who=/employees/${userId}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -83,10 +82,8 @@ export const fetchPrivilegesForUser = userId => ({
 });
 
 export const fetchUsers = () => ({
-    // TODO: remove app.linn and use config.appRoot again for end point
-    //   endpoint: `${config.appRoot}/authorisation/employees?currentEmployees=true`,
     [RSAA]: {
-        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
+        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {

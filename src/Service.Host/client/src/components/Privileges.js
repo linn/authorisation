@@ -1,4 +1,4 @@
-﻿import React, { useEffect, Fragment } from 'react';
+﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Paper,
@@ -13,6 +13,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
+import config from '../config';
 
 const styles = () => ({
     root: {
@@ -20,14 +21,6 @@ const styles = () => ({
         padding: '40px'
     }
 });
-
-const backgroundImage = id => {
-    backgroundImage: `url(http://app.linn.co.uk/images/staff/${id}.jpg)`;
-};
-
-// const hoverStyle = {
-//     'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-// };
 
 const ViewPrivileges = ({
     classes,
@@ -69,7 +62,7 @@ const ViewPrivileges = ({
                 style={{
                     height: '100%'
                 }}
-                src={`http://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
+                src={`${config.appRoot}/images/staff/${selectedUser}.jpg`}
             />
         );
     }
@@ -114,13 +107,7 @@ const ViewPrivileges = ({
                     >
                         <option value={-1}>All Users</option>
                         {users.map(user => (
-                            //TODO replace hardcoded app.linn image url with ../images etc
-                            <option
-                                value={user.id}
-                                style={{
-                                    backgroundImage: `url(http://app.linn.co.uk/images/staff/${user.id}.jpg)`
-                                }}
-                            >
+                            <option value={user.id}>
                                 {user.firstName} {user.lastName}
                             </option>
                         ))}
