@@ -2,7 +2,7 @@
 import { reducer as oidc } from 'redux-oidc';
 import privileges from './privileges';
 import privilege from './privilege';
-import groups from './groupsreducer';
+import groups from './groups';
 import group from './group';
 
 const rootReducer = combineReducers({
