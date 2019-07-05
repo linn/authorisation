@@ -9,6 +9,12 @@ export const getNewPrivilegeForCreation = state => {
     return newPrivilege || null;
 };
 
+export const getPrivilegesForAssignment = state => {
+    const { privileges } = state;
+    const { privilegesForAssignment } = privileges;
+    return privilegesForAssignment || [{ name: 'No Privileges Available' }];
+};
+
 export const getPrivilege = state => {
     const { privilege } = state;
     return privilege.data;
@@ -51,13 +57,13 @@ export const getSelectedUser = state => {
     const { privileges } = state;
     const { selectedUser } = privileges;
     if (selectedUser) {
-        return parseInt(selectedUser, 10);
+        return selectedUser;
     }
-    return -1;
+    return '-1';
 };
 
 export const getShouldShowCreate = state => {
     const { privileges } = state;
     const { selectedUser } = privileges;
-    return selectedUser == -1;
+    return selectedUser == null || selectedUser == -1;
 };

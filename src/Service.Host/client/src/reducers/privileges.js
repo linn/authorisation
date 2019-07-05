@@ -8,7 +8,11 @@ function Privileges(state = initialState, action) {
         case actionTypes.REQUEST_PRIVILEGES:
         case actionTypes.REQUEST_PRIVILEGES_FOR_USER:
         case actionTypes.REQUEST_USERS:
+        case actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT:
             return { ...state, loading: true };
+        case actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT: {
+            return { ...state, loading: false, privilegesForAssignment: action.payload.data };
+        }
         case actionTypes.REQUEST_CREATE_PRIVILEGE:
             return { ...state, loading: true };
         case actionTypes.RECEIVE_PRIVILEGES:

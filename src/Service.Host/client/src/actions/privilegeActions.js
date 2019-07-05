@@ -28,6 +28,32 @@ export const fetchPrivileges = () => ({
     }
 });
 
+export const fetchPrivilegesForAssignment = () => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges/all`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
 export const fetchPrivilege = id => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges/${id}`,
@@ -56,6 +82,7 @@ export const fetchPrivilege = id => ({
 
 export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
+        //TODO set back to 
         endpoint: `${config.appRoot}/authorisation/privileges?Who=/employees/${userId}`,
         method: 'GET',
         options: { requiresAuth: false },
@@ -83,7 +110,8 @@ export const fetchPrivilegesForUser = userId => ({
 
 export const fetchUsers = () => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
+        //TODO change back to ${config.appRoot}
+        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {

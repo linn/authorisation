@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Paper,
@@ -33,7 +33,8 @@ const ViewPrivileges = ({
     loading,
     users,
     selectedUser,
-    showCreate
+    showCreate,
+    privilegesForAssignment
 }) => {
     useEffect(() => {
         initialise(selectedUser);
@@ -53,6 +54,16 @@ const ViewPrivileges = ({
         selectUser(e.target.value);
     };
 
+    const dispatchcreatePermission = () => {
+        createPermission()
+    };
+
+    const [privilegeToAssign, setPrivilegeToAssign] = useState({});
+
+    const setPrivilegeForAssignment = e => {
+    setPrivilegeToAssign(e.target.value);
+    }
+    
     let image;
 
     if (selectedUser !== -1) {
@@ -62,7 +73,8 @@ const ViewPrivileges = ({
                 style={{
                     height: '100%'
                 }}
-                src={`${config.appRoot}/images/staff/${selectedUser}.jpg`}
+                // TODO SWAP BACK TO ${config.appRoot}
+                src={`https://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
             />
         );
     }
@@ -178,22 +190,39 @@ const ViewPrivileges = ({
                             ) : (
                                 <TableRow key="New privilege">
                                     <TableCell component="th" scope="row">
-                                        <TextField
-                                            placeholder="new privilege"
-                                            value={initialName}
-                                            id="newPrivilegeName"
-                                            onChange={handleNameChange}
-                                            label="New Privilege"
-                                        />
+                                        <select
+                                            defaultValue={-1}
+                                            selected={-1}
+                                            onChange={setPrivilegeForAssignment}
+                                            style={{
+                                                height: '36px',
+                                                width: '300px',
+                                                display: 'inline-block',
+                                                fontFamily:
+                                                    '"Roboto", "Helvetica", "Arial", sans-serif',
+                                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer'
+                                            }}
+                                            privilegesForAssignment ? (
+                                                <option value={p.name}>{p.name}</option>
+                                                {privilegesForAssignment.map(p => (
+                                                    <option value={p.name}>{p.name}</option>
+                                                ))}
+                                            )
+                                            :
+                                            ()
+                                           
+                                        </select>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Button
                                             type="button"
                                             variant="outlined"
-                                            onClick={dispatchcreatePrivilege}
-                                            id="newPrivilegeStatus"
+                                            onClick={dispatchcreatePermission}
+                                            id="creareNewPermission"
                                         >
-                                            Give to user
+                                            Assign to user
                                         </Button>
                                     </TableCell>
                                 </TableRow>
