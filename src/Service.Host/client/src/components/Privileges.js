@@ -191,44 +191,43 @@ const ViewPrivileges = ({
                                 </TableRow>
                             ) : (
                                 <TableRow key="New privilege">
-                                    <div>
-                                        <TableCell component="th" scope="row">
-                                            <select
-                                                value={privilegeToAssign}
-                                                onChange={setPrivilegeForAssignment}
-                                                style={{
-                                                    height: '36px',
-                                                    width: '300px',
-                                                    display: 'inline-block',
-                                                    fontFamily:
-                                                        '"Roboto", "Helvetica", "Arial", sans-serif',
-                                                    borderColor: 'rgba(0, 0, 0, 0.23)',
-                                                    borderRadius: '5px',
-                                                    cursor: 'pointer'
-                                                }}
-                                            >
-                                                {showPrivilegesForAssignment ? (
-                                                    privilegesForAssignment.map(p => (
-                                                        <option value={p.name}>{p.name}</option>
-                                                    ))
-                                                ) : (
-                                                    <option value="no privileges to assign">
-                                                        no privileges to assign
-                                                    </option>
-                                                )}
-                                            </select>
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <Button
-                                                type="button"
-                                                variant="outlined"
-                                                onClick={dispatchcreatePermission}
-                                                id="createNewPermission"
-                                            >
-                                                Assign to user
-                                            </Button>
-                                        </TableCell>
-                                    </div>
+                                    <TableCell component="th" scope="row">
+                                        <select
+                                            value={privilegeToAssign}
+                                            onChange={setPrivilegeForAssignment}
+                                            style={{
+                                                height: '36px',
+                                                width: '300px',
+                                                display: 'inline-block',
+                                                fontFamily:
+                                                    '"Roboto", "Helvetica", "Arial", sans-serif',
+                                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            <option value="-1">Select Privilege</option>
+                                            {showPrivilegesForAssignment ? (
+                                                privilegesForAssignment.map(p => (
+                                                    <option value={p.name}>{p.name}</option>
+                                                ))
+                                            ) : (
+                                                <option value="no privileges to assign">
+                                                    no privileges to assign
+                                                </option>
+                                            )}
+                                        </select>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button
+                                            type="button"
+                                            variant="outlined"
+                                            onClick={dispatchcreatePermission}
+                                            id="createNewPermission"
+                                        >
+                                            Assign to user
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
