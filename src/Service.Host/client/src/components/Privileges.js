@@ -34,7 +34,9 @@ const ViewPrivileges = ({
     users,
     selectedUser,
     showCreate,
-    privilegesForAssignment
+    privilegesForAssignment,
+    createPermission,
+    currentUserUri
 }) => {
     useEffect(() => {
         initialise(selectedUser);
@@ -45,6 +47,8 @@ const ViewPrivileges = ({
         initialName = newprivilege.name;
     }
 
+    const showPrivilegesForAssignment = privilegesForAssignment.length || false;
+
     const handleNameChange = e => {
         updateNewPrivilege(e.target.value);
     };
@@ -54,16 +58,15 @@ const ViewPrivileges = ({
         selectUser(e.target.value);
     };
 
-    const dispatchcreatePermission = () => {
-        createPermission()
-    };
-
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
 
+    const dispatchcreatePermission = () => {
+        createPermission(privilegeToAssign, selectedUser, currentUserUri);
+    };
     const setPrivilegeForAssignment = e => {
-    setPrivilegeToAssign(e.target.value);
-    }
-    
+        setPrivilegeToAssign(e.target.value);
+    };
+
     let image;
 
     if (selectedUser !== -1) {
@@ -73,8 +76,7 @@ const ViewPrivileges = ({
                 style={{
                     height: '100%'
                 }}
-                // TODO SWAP BACK TO ${config.appRoot}
-                src={`https://app.linn.co.uk/images/staff/${selectedUser}.jpg`}
+                src={`${config.appRoot}/images/staff/${selectedUser}.jpg`}
             />
         );
     }
@@ -189,42 +191,44 @@ const ViewPrivileges = ({
                                 </TableRow>
                             ) : (
                                 <TableRow key="New privilege">
-                                    <TableCell component="th" scope="row">
-                                        <select
-                                            defaultValue={-1}
-                                            selected={-1}
-                                            onChange={setPrivilegeForAssignment}
-                                            style={{
-                                                height: '36px',
-                                                width: '300px',
-                                                display: 'inline-block',
-                                                fontFamily:
-                                                    '"Roboto", "Helvetica", "Arial", sans-serif',
-                                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                                                borderRadius: '5px',
-                                                cursor: 'pointer'
-                                            }}
-                                            privilegesForAssignment ? (
-                                                <option value={p.name}>{p.name}</option>
-                                                {privilegesForAssignment.map(p => (
-                                                    <option value={p.name}>{p.name}</option>
-                                                ))}
-                                            )
-                                            :
-                                            ()
-                                           
-                                        </select>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Button
-                                            type="button"
-                                            variant="outlined"
-                                            onClick={dispatchcreatePermission}
-                                            id="creareNewPermission"
-                                        >
-                                            Assign to user
-                                        </Button>
-                                    </TableCell>
+                                    <div>
+                                        <TableCell component="th" scope="row">
+                                            <select
+                                                value={privilegeToAssign}
+                                                onChange={setPrivilegeForAssignment}
+                                                style={{
+                                                    height: '36px',
+                                                    width: '300px',
+                                                    display: 'inline-block',
+                                                    fontFamily:
+                                                        '"Roboto", "Helvetica", "Arial", sans-serif',
+                                                    borderColor: 'rgba(0, 0, 0, 0.23)',
+                                                    borderRadius: '5px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                {showPrivilegesForAssignment ? (
+                                                    privilegesForAssignment.map(p => (
+                                                        <option value={p.name}>{p.name}</option>
+                                                    ))
+                                                ) : (
+                                                    <option value="no privileges to assign">
+                                                        no privileges to assign
+                                                    </option>
+                                                )}
+                                            </select>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Button
+                                                type="button"
+                                                variant="outlined"
+                                                onClick={dispatchcreatePermission}
+                                                id="createNewPermission"
+                                            >
+                                                Assign to user
+                                            </Button>
+                                        </TableCell>
+                                    </div>
                                 </TableRow>
                             )}
                         </TableBody>
@@ -257,7 +261,16 @@ ViewPrivileges.propTypes = {
     ),
     selectUser: PropTypes.func.isRequired,
     selectedUser: PropTypes.string.isRequired,
-    showCreate: PropTypes.bool.isRequired
+    showCreate: PropTypes.bool.isRequired,
+    privilegesForAssignment: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            Id: PropTypes.number,
+            active: PropTypes.bool
+        })
+    ).isRequired,
+    createPermission: PropTypes.func.isRequired,
+    currentUserUri: PropTypes.string.isRequired
 };
 
 ViewPrivileges.defaultProps = {

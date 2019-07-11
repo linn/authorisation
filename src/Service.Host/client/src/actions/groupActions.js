@@ -85,10 +85,8 @@ export const fetchPrivilegesForUser = userId => ({
 });
 
 export const fetchUsers = () => ({
-    // TODO: remove app.linn and use config.appRoot again for end point
-    //   endpoint: `${config.appRoot}/authorisation/employees?currentEmployees=true`,
     [RSAA]: {
-        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
+        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {

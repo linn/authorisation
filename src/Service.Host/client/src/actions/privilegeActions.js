@@ -82,7 +82,6 @@ export const fetchPrivilege = id => ({
 
 export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
-        //TODO set back to 
         endpoint: `${config.appRoot}/authorisation/privileges?Who=/employees/${userId}`,
         method: 'GET',
         options: { requiresAuth: false },
@@ -110,8 +109,7 @@ export const fetchPrivilegesForUser = userId => ({
 
 export const fetchUsers = () => ({
     [RSAA]: {
-        //TODO change back to ${config.appRoot}
-        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
+        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -153,6 +151,38 @@ export const createPrivilege = (name, active) => ({
             },
             {
                 type: actionTypes.RECEIVE_NEW_PRIVILEGE,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const createPermission = (privilege, user, currentUserUri) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/permissions`,
+        method: 'POST',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Privilege: privilege,
+            GrantedByUri: currentUserUri,
+            GranteeUri: `/employees/${user}`
+        }),
+        types: [
+            {
+                type: actionTypes.REQUEST_CREATE_PERMISSION,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_CREATE_PERMISSION,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {

@@ -8,7 +8,8 @@ import {
     getUsers,
     getSelectedUser,
     getShouldShowCreate,
-    getPrivilegesForAssignment
+    getPrivilegesForAssignment,
+    getCurrentUser
 } from '../selectors/privilegeSelectors';
 import {
     fetchPrivileges,
@@ -17,7 +18,8 @@ import {
     fetchUsers,
     selectUser,
     fetchPrivilegesForUser,
-    fetchPrivilegesForAssignment
+    fetchPrivilegesForAssignment,
+    createPermission
 } from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
@@ -27,7 +29,8 @@ const mapStateToProps = state => ({
     users: getUsers(state),
     selectedUser: getSelectedUser(state),
     showCreate: getShouldShowCreate(state),
-    privilegesForAssignment: getPrivilegesForAssignment(state)
+    privilegesForAssignment: getPrivilegesForAssignment(state),
+    currentUserUri: getCurrentUser(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -54,6 +57,11 @@ const mapDispatchToProps = dispatch => ({
         } else {
             dispatch(fetchPrivileges());
         }
+    },
+    createPermission: (privilegeId, userId, currentUserUri) => {
+        dispatch(createPermission(privilegeId, userId, currentUserUri));
+        dispatch(fetchPrivilegesForUser(userId));
+        dispatch(fetchPrivilegesForAssignment());
     }
 });
 

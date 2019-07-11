@@ -67,3 +67,11 @@ export const getShouldShowCreate = state => {
     const { selectedUser } = privileges;
     return selectedUser == null || selectedUser == -1;
 };
+
+export const getCurrentUser = state => {
+    const { oidc } = state;
+    const { user } = oidc;
+    const { profile } = user;
+    const { employee } = profile;
+    return employee;
+};
