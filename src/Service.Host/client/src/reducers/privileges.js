@@ -35,7 +35,6 @@ function Privileges(state = initialState, action) {
             };
         }
         case actionTypes.RECEIVE_USERS: {
-            console.info(action);
             return {
                 ...state,
                 users: action.payload,

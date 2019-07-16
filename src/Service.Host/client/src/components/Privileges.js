@@ -24,7 +24,9 @@ const styles = () => ({
 
 const ViewPrivileges = ({
     classes,
-    initialise,
+    getAllPrivileges,
+    getPrivilegesForUser,
+    getUsers,
     createPrivilege,
     updateNewPrivilege,
     selectUser,
@@ -36,11 +38,17 @@ const ViewPrivileges = ({
     showCreate,
     privilegesForAssignment,
     createPermission,
-    currentUserUri
+    currentUserUri,
+    deletePermission
 }) => {
     useEffect(() => {
-        initialise(selectedUser);
-    }, [initialise]);
+        if (selectedUser == -1) {
+            getAllPrivileges();
+        } else {
+            getPrivilegesForUser(selectedUser);
+        }
+        getUsers();
+    }, [getAllPrivileges, getPrivilegesForUser, selectedUser, getUsers]);
 
     let initialName = '';
     if (newprivilege) {
@@ -65,6 +73,10 @@ const ViewPrivileges = ({
     };
     const setPrivilegeForAssignment = e => {
         setPrivilegeToAssign(e.target.value);
+    };
+
+    const deleteThisPermission = e => {
+        deletePermission(e.target.value, selectedUser, currentUserUri);
     };
 
     let image;
@@ -119,9 +131,11 @@ const ViewPrivileges = ({
                             cursor: 'pointer'
                         }}
                     >
-                        <option value={-1}>All Users</option>
+                        <option value={-1} key="-1">
+                            All Users
+                        </option>
                         {users.map(user => (
-                            <option value={user.id}>
+                            <option value={user.id} key={user.id}>
                                 {user.firstName} {user.lastName}
                             </option>
                         ))}
@@ -150,6 +164,7 @@ const ViewPrivileges = ({
                             <TableRow>
                                 <TableCell>Privilege</TableCell>
                                 <TableCell align="right">Active status</TableCell>
+                                <TableCell align="right" />
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -164,6 +179,14 @@ const ViewPrivileges = ({
                                     </TableCell>
                                     <TableCell align="right">
                                         {privilege.active.toString()}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {/* <Button
+                                            onClick={() => deleteThisPermission(privilege.name)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            X
+                                        </Button> */}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -206,13 +229,17 @@ const ViewPrivileges = ({
                                                 cursor: 'pointer'
                                             }}
                                         >
-                                            <option value="-1">Select Privilege</option>
+                                            <option value="-1" key="-1">
+                                                Select Privilege
+                                            </option>
                                             {showPrivilegesForAssignment ? (
                                                 privilegesForAssignment.map(p => (
-                                                    <option value={p.name}>{p.name}</option>
+                                                    <option value={p.name} key={p.name}>
+                                                        {p.name}
+                                                    </option>
                                                 ))
                                             ) : (
-                                                <option value="no privileges to assign">
+                                                <option value="no privileges to assign" key="-1">
                                                     no privileges to assign
                                                 </option>
                                             )}
@@ -269,14 +296,15 @@ ViewPrivileges.propTypes = {
         })
     ).isRequired,
     createPermission: PropTypes.func.isRequired,
-    currentUserUri: PropTypes.string.isRequired
+    currentUserUri: PropTypes.string.isRequired,
+    deletePermission: PropTypes.func.isRequired
 };
 
 ViewPrivileges.defaultProps = {
     classes: {},
     privileges: null,
-    newprivilege: { name: '', active: false },
-    users: [{ displayText: 'All users', id: -1 }, { displayText: 'test user', id: 12 }]
+    newprivilege: null,
+    users: [{ displayText: 'No users to display', id: -5 }]
 };
 
 export default withStyles(styles)(ViewPrivileges);

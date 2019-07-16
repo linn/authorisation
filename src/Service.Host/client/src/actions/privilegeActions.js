@@ -194,6 +194,38 @@ export const createPermission = (privilege, user, currentUserUri) => ({
     }
 });
 
+export const deletePermission = (privilege, user, currentUserUri) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/permissions`,
+        method: 'DELETE',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Privilege: privilege,
+            GrantedByUri: currentUserUri,
+            GranteeUri: `/employees/${user}`
+        }),
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_PERMISSION,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_PERMISSION,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
 export const updateNewPrivilege = name => ({
     type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name

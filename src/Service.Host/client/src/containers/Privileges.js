@@ -19,7 +19,8 @@ import {
     selectUser,
     fetchPrivilegesForUser,
     fetchPrivilegesForAssignment,
-    createPermission
+    createPermission,
+    deletePermission
 } from '../actions/privilegeActions';
 
 const mapStateToProps = state => ({
@@ -34,13 +35,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    initialise: id => {
-        if (id != -1) {
-            dispatch(fetchPrivilegesForUser(id));
-            dispatch(fetchPrivilegesForAssignment());
-        } else {
-            dispatch(fetchPrivileges());
-        }
+    getAllPrivileges: () => {
+        dispatch(fetchPrivileges());
+    },
+    getPrivilegesForUser: id => {
+        dispatch(fetchPrivilegesForUser(id));
+        dispatch(fetchPrivilegesForAssignment());
+    },
+    getUsers: () => {
         dispatch(fetchUsers());
     },
     createPrivilege: name => {
@@ -51,15 +53,14 @@ const mapDispatchToProps = dispatch => ({
     },
     selectUser: id => {
         dispatch(selectUser(id));
-        if (id != -1) {
-            dispatch(fetchPrivilegesForUser(id));
-            dispatch(fetchPrivilegesForAssignment());
-        } else {
-            dispatch(fetchPrivileges());
-        }
     },
     createPermission: (privilegeId, userId, currentUserUri) => {
         dispatch(createPermission(privilegeId, userId, currentUserUri));
+        dispatch(fetchPrivilegesForUser(userId));
+        dispatch(fetchPrivilegesForAssignment());
+    },
+    deletePermission: (privilegeId, userId, currentUserUri) => {
+        dispatch(deletePermission(privilegeId, userId, currentUserUri));
         dispatch(fetchPrivilegesForUser(userId));
         dispatch(fetchPrivilegesForAssignment());
     }
