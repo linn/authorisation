@@ -49,11 +49,17 @@ function Privileges(state = initialState, action) {
             const permission = state.privilegesForAssignment.find(
                 obj => obj.name == action.payload.data.privilege
             );
-            console.info(permission);
             return {
                 ...state,
                 data: [...state.data, permission],
-                loading: false
+                loading: false,
+                permissionMessageVisibility: true
+            };
+        }
+        case actionTypes.SET_PERMISSION_MESSAGE_VISIBILITY: {
+            return {
+                ...state,
+                permissionMessageVisibility: action.data
             };
         }
         default:

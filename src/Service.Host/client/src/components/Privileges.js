@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
+import { Loading, Title, getHref, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import config from '../config';
 
 const useStyles = makeStyles({
@@ -77,7 +77,9 @@ const ViewPrivileges = ({
     privilegesForAssignment,
     createPermission,
     currentUserUri,
-    deletePermission
+    //deletePermission,
+    showPrivilegeMessage,
+    setPrivilegeMessageVisible
 }) => {
     useEffect(() => {
         if (selectedUser == -1) {
@@ -87,7 +89,13 @@ const ViewPrivileges = ({
             getPrivilegesForAssignment(selectedUser);
         }
         getUsers();
-    }, [getAllPrivileges, getPrivilegesForUser, selectedUser, getUsers]);
+    }, [
+        getAllPrivileges,
+        getPrivilegesForUser,
+        getPrivilegesForAssignment,
+        selectedUser,
+        getUsers
+    ]);
 
     let initialName = '';
     if (newprivilege) {
@@ -116,9 +124,9 @@ const ViewPrivileges = ({
         setPrivilegeToAssign(e.target.value);
     };
 
-    const deleteThisPermission = e => {
-        deletePermission(e.target.value, selectedUser, currentUserUri);
-    };
+    // const deleteThisPermission = e => {
+    //     deletePermission(e.target.value, selectedUser, currentUserUri);
+    // };
 
     let image;
 
@@ -260,12 +268,20 @@ const ViewPrivileges = ({
                     </Table>
                 )}
             </Paper>
+            <SnackbarMessage
+                visible={showPrivilegeMessage}
+                onClose={() => setPrivilegeMessageVisible(false)}
+                message="Permission created"
+            />
         </div>
     );
 };
 
 ViewPrivileges.propTypes = {
-    initialise: PropTypes.func.isRequired,
+    getAllPrivileges: PropTypes.func.isRequired,
+    getPrivilegesForUser: PropTypes.func.isRequired,
+    getPrivilegesForAssignment: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired,
     createPrivilege: PropTypes.func.isRequired,
     updateNewPrivilege: PropTypes.func.isRequired,
     privileges: PropTypes.arrayOf(
@@ -295,7 +311,9 @@ ViewPrivileges.propTypes = {
     ).isRequired,
     createPermission: PropTypes.func.isRequired,
     currentUserUri: PropTypes.string.isRequired,
-    deletePermission: PropTypes.func.isRequired
+    //deletePermission: PropTypes.func.isRequired,
+    showPrivilegeMessage: PropTypes.func.isRequired,
+    setPrivilegeMessageVisible: PropTypes.func.isRequired
 };
 
 ViewPrivileges.defaultProps = {

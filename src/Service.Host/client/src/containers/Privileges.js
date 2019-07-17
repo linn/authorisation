@@ -9,7 +9,8 @@ import {
     getSelectedUser,
     getShouldShowCreate,
     getPrivilegesForAssignment,
-    getCurrentUser
+    getCurrentUser,
+    getPermissionMessageVisibility
 } from '../selectors/privilegeSelectors';
 import {
     fetchPrivileges,
@@ -20,6 +21,7 @@ import {
     fetchPrivilegesForUser,
     fetchPrivilegesForAssignment,
     createPermission,
+    setPrivilegeMessageVisible,
     deletePermission
 } from '../actions/privilegeActions';
 
@@ -31,7 +33,8 @@ const mapStateToProps = state => ({
     selectedUser: getSelectedUser(state),
     showCreate: getShouldShowCreate(state),
     privilegesForAssignment: getPrivilegesForAssignment(state),
-    currentUserUri: getCurrentUser(state)
+    currentUserUri: getCurrentUser(state),
+    showPrivilegeMessage: getPermissionMessageVisibility(state)
 });
 
 const mapDispatchToProps = {
@@ -42,7 +45,8 @@ const mapDispatchToProps = {
     createPrivilege,
     updateNewPrivilege,
     selectUser,
-    createPermission
+    createPermission,
+    setPrivilegeMessageVisible
 
     // deletePermission: (privilegeId, userId, currentUserUri) => {
     //     dispatch(deletePermission(privilegeId, userId, currentUserUri));

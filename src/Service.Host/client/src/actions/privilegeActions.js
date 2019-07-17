@@ -304,3 +304,8 @@ export const setUpdatedMessageVisible = visible => ({
     type: actionTypes.SET_UPDATE_MESSAGE_VISIBILITY,
     data: visible
 });
+
+export const setPrivilegeMessageVisible = visible => ({
+    type: actionTypes.SET_PERMISSION_MESSAGE_VISIBILITY,
+    data: visible
+});

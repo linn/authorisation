@@ -38,6 +38,12 @@ export const getUpdatedMessageVisibility = state => {
     return updatedMessageVisibility || false;
 };
 
+export const getPermissionMessageVisibility = state => {
+    const { privileges } = state;
+    const { permissionMessageVisibility } = privileges;
+    return permissionMessageVisibility || false;
+};
+
 export const getSaveEnabled = state => {
     const { privilege } = state;
     const { enableSave } = privilege;
