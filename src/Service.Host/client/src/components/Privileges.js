@@ -10,22 +10,60 @@ import {
     TableRow,
     TextField
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
 import config from '../config';
 
-const styles = () => ({
+const useStyles = makeStyles({
     root: {
         margin: '40px',
         padding: '40px'
-    }
+    },
+    widthTwoThirds: {
+        width: '66.66667%',
+        margin: '0 auto'
+    },
+    bottomMargin: { marginBottom: '10px' },
+    dropDownLabel: {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        marginRight: '20px'
+    },
+    privilegesSelectList: {
+        height: '75px',
+        width: '300px',
+        display: 'inline-block',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        borderColor: 'rgba(0, 0, 0, 0.23)',
+        borderRadius: '5px',
+        cursor: 'pointer'
+    },
+    thinPrivilegesSelectList: {
+        height: '36px',
+        width: '300px',
+        display: 'inline-block',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        borderColor: 'rgba(0, 0, 0, 0.23)',
+        borderRadius: '5px',
+        cursor: 'pointer'
+    },
+    employeeImageContainer: {
+        height: '75px',
+        maxWidth: '100px',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        display: 'inline-block',
+        position: 'relative',
+        left: '20px',
+        top: '32px'
+    },
+    centerText: { textAlign: 'center' }
 });
 
 const ViewPrivileges = ({
-    classes,
     getAllPrivileges,
     getPrivilegesForUser,
+    getPrivilegesForAssignment,
     getUsers,
     createPrivilege,
     updateNewPrivilege,
@@ -46,6 +84,7 @@ const ViewPrivileges = ({
             getAllPrivileges();
         } else {
             getPrivilegesForUser(selectedUser);
+            getPrivilegesForAssignment(selectedUser);
         }
         getUsers();
     }, [getAllPrivileges, getPrivilegesForUser, selectedUser, getUsers]);
@@ -55,12 +94,14 @@ const ViewPrivileges = ({
         initialName = newprivilege.name;
     }
 
+    const classes = useStyles();
+
     const showPrivilegesForAssignment = privilegesForAssignment.length || false;
 
     const handleNameChange = e => {
         updateNewPrivilege(e.target.value);
     };
-    const dispatchcreatePrivilege = () => createPrivilege(initialName);
+    const dispatchcreatePrivilege = () => createPrivilege(initialName, false);
 
     const changeUser = e => {
         selectUser(e.target.value);
@@ -94,12 +135,7 @@ const ViewPrivileges = ({
     }
 
     return (
-        <div
-            style={{
-                width: '66.66667%',
-                margin: '0 auto'
-            }}
-        >
+        <div className={classes.widthTwoThirds}>
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
                     Home
@@ -107,29 +143,14 @@ const ViewPrivileges = ({
             </Link>
 
             <Paper className={classes.root}>
-                <Title text="Privileges" style={{ textAlign: 'center' }} />
-                <div style={{ marginBottom: '10px' }}>
-                    <span
-                        style={{
-                            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                            marginRight: '20px'
-                        }}
-                    >
-                        View privileges for:
-                    </span>
+                <Title text="Privileges" className={classes.centerText} />
+                <div className={classes.bottomMargin}>
+                    <span className={classes.dropDownLabel}>View privileges for:</span>
                     <select
                         defaultValue={selectedUser}
                         selected={selectedUser}
                         onChange={changeUser}
-                        style={{
-                            height: '75px',
-                            width: '300px',
-                            display: 'inline-block',
-                            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                            borderColor: 'rgba(0, 0, 0, 0.23)',
-                            borderRadius: '5px',
-                            cursor: 'pointer'
-                        }}
+                        className={classes.privilegesSelectList}
                     >
                         <option value={-1} key="-1">
                             All Users
@@ -140,20 +161,7 @@ const ViewPrivileges = ({
                             </option>
                         ))}
                     </select>
-                    <div
-                        style={{
-                            height: '75px',
-                            maxWidth: '100px',
-                            borderRadius: '10px',
-                            overflow: 'hidden',
-                            display: 'inline-block',
-                            position: 'relative',
-                            left: '20px',
-                            top: '32px'
-                        }}
-                    >
-                        {image}
-                    </div>
+                    <div className={classes.employeeImageContainer}>{image}</div>
                 </div>
 
                 {loading ? (
@@ -218,16 +226,7 @@ const ViewPrivileges = ({
                                         <select
                                             value={privilegeToAssign}
                                             onChange={setPrivilegeForAssignment}
-                                            style={{
-                                                height: '36px',
-                                                width: '300px',
-                                                display: 'inline-block',
-                                                fontFamily:
-                                                    '"Roboto", "Helvetica", "Arial", sans-serif',
-                                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                                                borderRadius: '5px',
-                                                cursor: 'pointer'
-                                            }}
+                                            className={classes.thinPrivilegesSelectList}
                                         >
                                             <option value="-1" key="-1">
                                                 Select Privilege
@@ -266,7 +265,6 @@ const ViewPrivileges = ({
 };
 
 ViewPrivileges.propTypes = {
-    classes: PropTypes.shape({}),
     initialise: PropTypes.func.isRequired,
     createPrivilege: PropTypes.func.isRequired,
     updateNewPrivilege: PropTypes.func.isRequired,
@@ -301,10 +299,9 @@ ViewPrivileges.propTypes = {
 };
 
 ViewPrivileges.defaultProps = {
-    classes: {},
     privileges: null,
     newprivilege: null,
     users: [{ displayText: 'No users to display', id: -5 }]
 };
 
-export default withStyles(styles)(ViewPrivileges);
+export default ViewPrivileges;

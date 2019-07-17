@@ -34,37 +34,22 @@ const mapStateToProps = state => ({
     currentUserUri: getCurrentUser(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-    getAllPrivileges: () => {
-        dispatch(fetchPrivileges());
-    },
-    getPrivilegesForUser: id => {
-        dispatch(fetchPrivilegesForUser(id));
-        dispatch(fetchPrivilegesForAssignment());
-    },
-    getUsers: () => {
-        dispatch(fetchUsers());
-    },
-    createPrivilege: name => {
-        dispatch(createPrivilege(name, false));
-    },
-    updateNewPrivilege: name => {
-        dispatch(updateNewPrivilege(name));
-    },
-    selectUser: id => {
-        dispatch(selectUser(id));
-    },
-    createPermission: (privilegeId, userId, currentUserUri) => {
-        dispatch(createPermission(privilegeId, userId, currentUserUri));
-        dispatch(fetchPrivilegesForUser(userId));
-        dispatch(fetchPrivilegesForAssignment());
-    },
-    deletePermission: (privilegeId, userId, currentUserUri) => {
-        dispatch(deletePermission(privilegeId, userId, currentUserUri));
-        dispatch(fetchPrivilegesForUser(userId));
-        dispatch(fetchPrivilegesForAssignment());
-    }
-});
+const mapDispatchToProps = {
+    getAllPrivileges: fetchPrivileges,
+    getPrivilegesForUser: fetchPrivilegesForUser,
+    getPrivilegesForAssignment: fetchPrivilegesForAssignment,
+    getUsers: fetchUsers,
+    createPrivilege,
+    updateNewPrivilege,
+    selectUser,
+    createPermission
+
+    // deletePermission: (privilegeId, userId, currentUserUri) => {
+    //     dispatch(deletePermission(privilegeId, userId, currentUserUri));
+    //     dispatch(fetchPrivilegesForUser(userId));
+    //     dispatch(fetchPrivilegesForAssignment());
+    // }
+};
 
 export default withRouter(
     connect(

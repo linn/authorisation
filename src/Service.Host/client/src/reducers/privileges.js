@@ -37,13 +37,24 @@ function Privileges(state = initialState, action) {
         case actionTypes.RECEIVE_USERS: {
             return {
                 ...state,
+                loading: false,
                 users: action.payload,
-                newPrivilege: { active: false, name: '' },
-                loading: false
+                newPrivilege: { active: false, name: '' }
             };
         }
         case actionTypes.UPDATE_SELECTED_USER: {
             return { ...state, selectedUser: action.data, enableSave: false };
+        }
+        case actionTypes.RECEIVE_CREATE_PERMISSION: {
+            const permission = state.privilegesForAssignment.find(
+                obj => obj.name == action.payload.data.privilege
+            );
+            console.info(permission);
+            return {
+                ...state,
+                data: [...state.data, permission],
+                loading: false
+            };
         }
         default:
             return state;
