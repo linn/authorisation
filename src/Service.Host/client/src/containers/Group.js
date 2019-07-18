@@ -1,41 +1,41 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import Privilege from '../components/Privilege';
+import Group from '../components/Group';
 import {
-    getPrivilege,
-    getPrivilegeLoading,
+    getGroup,
+    getGroupLoading,
     getUpdatedMessageVisibility,
     getSaveEnabled
-} from '../selectors/privilegeSelectors';
+} from '../selectors/groupSelectors';
 import {
-    fetchPrivilege,
-    updatePrivilegeName,
-    savePrivilege,
-    togglePrivilegeStatus,
+    fetchGroup,
+    updateGroupName,
+    saveGroup,
+    toggleGroupStatus,
     setUpdatedMessageVisible
-} from '../actions/privilegeActions';
+} from '../actions/groupActions';
 
 const getId = ownProps => ownProps.match.params.id;
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
-    privilege: getPrivilege(state),
-    loading: getPrivilegeLoading(state),
+    group: getGroup(state),
+    loading: getGroupLoading(state),
     showUpdatedMessage: getUpdatedMessageVisibility(state),
     enableSave: getSaveEnabled(state)
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        initialise: () => dispatch(fetchPrivilege(getId(ownProps))),
-        updatePrivilegeName: name => {
-            dispatch(updatePrivilegeName(name));
+        initialise: () => dispatch(fetchGroup(getId(ownProps))),
+        updateGroupName: name => {
+            dispatch(updateGroupName(name));
         },
-        togglePrivilegeStatus: () => {
-            dispatch(togglePrivilegeStatus());
+        toggleGroupStatus: () => {
+            dispatch(toggleGroupStatus());
         },
-        savePrivilege: (name, active, uri) => {
-            dispatch(savePrivilege(name, active, uri));
+        saveGroup: (name, active, uri) => {
+            dispatch(saveGroup(name, active, uri));
         },
         setUpdatedMessageVisible: visible => {
             dispatch(setUpdatedMessageVisible(visible));
@@ -47,5 +47,5 @@ export default withRouter(
     connect(
         mapStateToProps,
         mapDispatchToProps
-    )(Privilege)
+    )(Group)
 );

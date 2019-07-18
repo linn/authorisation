@@ -19,13 +19,13 @@ const styles = () => ({
     }
 });
 
-const ViewPrivilege = ({
+const ViewGroup = ({
     classes,
     initialise,
-    updatePrivilegeName,
-    togglePrivilegeStatus,
-    savePrivilege,
-    privilege,
+    updateGroupName,
+    toggleGroupStatus,
+    saveGroup,
+    group,
     loading,
     showUpdatedMessage,
     setUpdatedMessageVisible,
@@ -36,18 +36,18 @@ const ViewPrivilege = ({
     }, [initialise]);
 
     const handleSaveClick = () => {
-        savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
+        saveGroup(group.name, group.active, getHref(group, 'self'));
     };
 
-    const handleUpdatePrivilegeName = (propertyName, newValue) => {
-        updatePrivilegeName(newValue);
+    const handleUpdateGroupName = (propertyName, newValue) => {
+        updateGroupName(newValue);
     };
-    const handleTogglePrivilegeStatus = () => {
-        togglePrivilegeStatus();
+    const handleToggleGroupStatus = () => {
+        toggleGroupStatus();
     };
 
-    const privilegeName = privilege.name;
-    const privilegeActive = privilege.active || false;
+    const groupName = group.name;
+    const groupActive = group.active || false;
 
     let elementsToDisplay;
 
@@ -64,19 +64,19 @@ const ViewPrivilege = ({
                                     <InputField
                                         fullWidth
                                         disabled={false}
-                                        value={privilegeName}
-                                        label="Privilege"
+                                        value={groupName}
+                                        label="Group"
                                         maxLength={100}
                                         propertyName="name"
-                                        onChange={handleUpdatePrivilegeName}
+                                        onChange={handleUpdateGroupName}
                                     />
                                 </Grid>
                                 <Grid item xs={8}>
                                     <FormControlLabel
                                         control={
                                             <Switch
-                                                checked={privilegeActive}
-                                                onChange={handleTogglePrivilegeStatus}
+                                                checked={groupActive}
+                                                onChange={handleToggleGroupStatus}
                                                 color="primary"
                                             />
                                         }
@@ -102,13 +102,13 @@ const ViewPrivilege = ({
 
     return (
         <div>
-            <Link to="../viewprivileges">
+            <Link to="../groups">
                 <Button type="button" variant="outlined">
-                    Back to all privileges
+                    Back to all groups
                 </Button>
             </Link>
             <Paper className={classes.root}>
-                <Title text="View/Edit Privilege" />
+                <Title text="View/Edit Group" />
                 {elementsToDisplay}
             </Paper>
             <SnackbarMessage
@@ -120,13 +120,13 @@ const ViewPrivilege = ({
     );
 };
 
-ViewPrivilege.propTypes = {
+ViewGroup.propTypes = {
     classes: PropTypes.shape({}),
     initialise: PropTypes.func.isRequired,
-    updatePrivilegeName: PropTypes.func.isRequired,
-    togglePrivilegeStatus: PropTypes.func.isRequired,
-    savePrivilege: PropTypes.func.isRequired,
-    privilege: PropTypes.shape({
+    updateGroupName: PropTypes.func.isRequired,
+    toggleGroupStatus: PropTypes.func.isRequired,
+    saveGroup: PropTypes.func.isRequired,
+    group: PropTypes.shape({
         name: PropTypes.string,
         Id: PropTypes.number,
         active: PropTypes.bool
@@ -137,8 +137,8 @@ ViewPrivilege.propTypes = {
     enableSave: PropTypes.bool.isRequired
 };
 
-ViewPrivilege.defaultProps = {
+ViewGroup.defaultProps = {
     classes: {},
-    privilege: null
+    group: null
 };
-export default withStyles(styles)(ViewPrivilege);
+export default withStyles(styles)(ViewGroup);

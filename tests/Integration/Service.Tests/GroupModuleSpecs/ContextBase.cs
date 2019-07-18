@@ -1,5 +1,7 @@
 ﻿namespace Linn.Authorisation.Service.Tests.GroupModuleSpecs
 {
+    using System.Collections.Generic;
+
     using Authorisation.Facade;
     using Authorisation.Facade.ResourceBuilders;
     using Common.Facade;
@@ -28,6 +30,8 @@
                     with.Module<GroupModule>();
                     with.ResponseProcessor<GroupResponseProcessor>();
                     with.Dependency<IResourceBuilder<Group>>(new GroupResourceBuilder());
+                    with.ResponseProcessor<GroupsResponseProcessor>();
+                    with.Dependency<IResourceBuilder<IEnumerable<Group>>>(new GroupsResourceBuilder());
                 });
 
             this.Browser = new Browser(bootstrapper);

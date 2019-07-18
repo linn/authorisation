@@ -1,29 +1,31 @@
-﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
+﻿namespace Linn.Authorisation.Service.Tests.GroupsModuleSpecs
 {
     using FluentAssertions;
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
+    using Linn.Authorisation.Service.Tests.GroupModuleSpecs;
     using Linn.Common.Facade;
     using Nancy;
     using Nancy.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
-    class WhenUpdatingPrivilege : ContextBase
+    class WhenUpdatingGroup : ContextBase
     {
-        private PrivilegeResource requestResource;
+        private GroupResource requestResource;
 
         [SetUp]
         public void SetUp()
         {
-            this.requestResource = new PrivilegeResource { Name = "New privilege", Active = false };
-            var privilege = new Privilege("New privilege", false);
+            this.requestResource = new GroupResource { Name = "New group", Active = false };
+            var group = new Group("New group", false);
           
-            this.PrivilegeService.Update(19, Arg.Any<PrivilegeResource>())
-                .Returns(new SuccessResult<Privilege>(privilege));
+            this.GroupService.Update(19, Arg.Any<GroupResource>())
+                .Returns(new SuccessResult<Group>(group));
             
             this.Response = this.Browser.Put(  
-                "/authorisation/privileges/19",
+                "/authorisation/groups/19",
                  with =>
                 {
                     with.Header("Accept", "application/json");
@@ -41,16 +43,16 @@
         [Test]
         public void ShouldCallService()
         {
-            this.PrivilegeService.Received().Update(
+            this.GroupService.Received().Update(
                 19,
-                Arg.Is<PrivilegeResource>(r => r.Name == this.requestResource.Name));
+                Arg.Is<GroupResource>(r => r.Name == this.requestResource.Name));
         }
 
         [Test]
         public void ShouldReturnResource()
         {
-            var resource = this.Response.Body.DeserializeJson<PrivilegeResource>();
-            resource.Name.Should().Be("New privilege");
+            var resource = this.Response.Body.DeserializeJson<GroupResource>();
+            resource.Name.Should().Be("New group");
             resource.Active.Should().BeFalse();
         }
     }

@@ -2,9 +2,9 @@
 import config from '../config';
 import * as actionTypes from './actionTypes';
 
-export const fetchPrivileges = () => ({
+export const fetchGroups = () => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/all`,
+        endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -12,11 +12,11 @@ export const fetchPrivileges = () => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_PRIVILEGES,
+                type: actionTypes.REQUEST_GROUPS,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGES,
+                type: actionTypes.RECEIVE_GROUPS,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -28,9 +28,9 @@ export const fetchPrivileges = () => ({
     }
 });
 
-export const fetchPrivilegesForAssignment = () => ({
+export const fetchGroup = id => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/all`,
+        endpoint: `${config.appRoot}/authorisation/groups/${id}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -38,37 +38,11 @@ export const fetchPrivilegesForAssignment = () => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT,
+                type: actionTypes.REQUEST_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
-export const fetchPrivilege = id => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/${id}`,
-        method: 'GET',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json'
-        },
-        types: [
-            {
-                type: actionTypes.REQUEST_PRIVILEGE,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_PRIVILEGE,
+                type: actionTypes.RECEIVE_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -82,12 +56,15 @@ export const fetchPrivilege = id => ({
 
 export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges?Who=/employees/${userId}`,
+        endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
+        },
+        body: {
+            Who: `/members/${userId}`
         },
         types: [
             {
@@ -134,9 +111,9 @@ export const fetchUsers = () => ({
     }
 });
 
-export const createPrivilege = (name, active) => ({
+export const createGroup = (name, active) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
+        endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'POST',
         options: { requiresAuth: false },
         headers: {
@@ -146,11 +123,11 @@ export const createPrivilege = (name, active) => ({
         body: JSON.stringify({ name, active }),
         types: [
             {
-                type: actionTypes.REQUEST_CREATE_PRIVILEGE,
+                type: actionTypes.REQUEST_CREATE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_NEW_PRIVILEGE,
+                type: actionTypes.RECEIVE_NEW_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -162,71 +139,7 @@ export const createPrivilege = (name, active) => ({
     }
 });
 
-export const createPermission = (privilege, user, currentUserUri) => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/permissions`,
-        method: 'POST',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            Privilege: privilege,
-            GrantedByUri: currentUserUri,
-            GranteeUri: `/employees/${user}`
-        }),
-        types: [
-            {
-                type: actionTypes.REQUEST_CREATE_PERMISSION,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_CREATE_PERMISSION,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
-export const deletePermission = (privilege, user, currentUserUri) => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/permissions`,
-        method: 'DELETE',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            Privilege: privilege,
-            GrantedByUri: currentUserUri,
-            GranteeUri: `/employees/${user}`
-        }),
-        types: [
-            {
-                type: actionTypes.REQUEST_DELETE_PERMISSION,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_DELETE_PERMISSION,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
-export const updateNewPrivilege = name => ({
+export const updateNewGroup = name => ({
     type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name
 });
@@ -236,18 +149,18 @@ export const selectUser = id => ({
     data: id
 });
 
-export const updatePrivilegeName = name => ({
-    type: actionTypes.UPDATE_PRIVILEGE_NAME,
+export const updateGroupName = name => ({
+    type: actionTypes.UPDATE_GROUP_NAME,
     data: name
 });
 
-export const togglePrivilegeStatus = () => ({
-    type: actionTypes.TOGGLE_PRIVILEGE_STATUS
+export const toggleGroupStatus = () => ({
+    type: actionTypes.TOGGLE_GROUP_STATUS
 });
 
-export const savePrivilege = (name, active, uri) => ({
+export const saveGroup = (name, active, uri) => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation${uri}`,
+        endpoint: `${config.appRoot}/${uri}`,
         method: 'PUT',
         options: { requiresAuth: false },
         headers: {
@@ -257,11 +170,11 @@ export const savePrivilege = (name, active, uri) => ({
         body: JSON.stringify({ name, active }),
         types: [
             {
-                type: actionTypes.REQUEST_SAVE_PRIVILEGE,
+                type: actionTypes.REQUEST_SAVE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_UPDATED_PRIVILEGE,
+                type: actionTypes.RECEIVE_UPDATED_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -273,7 +186,7 @@ export const savePrivilege = (name, active, uri) => ({
     }
 });
 
-export const removePrivilege = uri => ({
+export const removeGroup = uri => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation${uri}`,
         method: 'PUT',
@@ -284,11 +197,11 @@ export const removePrivilege = uri => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
+                type: actionTypes.REQUEST_DELETE_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGE_DELETED,
+                type: actionTypes.RECEIVE_GROUP_DELETED,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -302,10 +215,5 @@ export const removePrivilege = uri => ({
 
 export const setUpdatedMessageVisible = visible => ({
     type: actionTypes.SET_UPDATE_MESSAGE_VISIBILITY,
-    data: visible
-});
-
-export const setPrivilegeMessageVisible = visible => ({
-    type: actionTypes.SET_PERMISSION_MESSAGE_VISIBILITY,
     data: visible
 });

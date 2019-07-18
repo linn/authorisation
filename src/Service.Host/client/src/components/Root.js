@@ -11,6 +11,8 @@ import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
 import Privileges from '../containers/Privileges';
 import Privilege from '../containers/Privilege';
+import Groups from '../containers/Groups';
+import Group from '../containers/Group';
 
 const Root = ({ store }) => (
     <div>
@@ -51,6 +53,20 @@ const Root = ({ store }) => (
                                     exact
                                     path="/authorisation/privileges/:id"
                                     render={() => <Privilege store={store} />}
+                                    store={store}
+                                />
+
+                                <Route
+                                    exact
+                                    path="/authorisation/groups/"
+                                    render={() => <Groups store={store} />}
+                                    store={store}
+                                />
+
+                                <Route
+                                    exact
+                                    path="/authorisation/groups/:id"
+                                    render={() => <Group store={store} />}
                                     store={store}
                                 />
                             </Switch>
