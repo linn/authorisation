@@ -50,11 +50,6 @@ const mapDispatchToProps = {
     createPermission,
     setPrivilegeMessageVisible,
     deletePermission
-    // deletePermission: (privilegeId, userId, currentUserUri) => {
-    //     dispatch(deletePermission(privilegeId, userId, currentUserUri));
-    //     dispatch(fetchPrivilegesForUser(userId));
-    //     dispatch(fetchPrivilegesForAssignment());
-    // }
 };
 
 export default withRouter(
