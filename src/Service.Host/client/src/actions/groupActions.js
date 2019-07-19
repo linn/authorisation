@@ -54,7 +54,7 @@ export const fetchGroup = id => ({
     }
 });
 
-export const fetchPrivilegesForUser = userId => ({
+export const fetchPrivilegesForGroup = groupId => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'GET',
@@ -64,7 +64,7 @@ export const fetchPrivilegesForUser = userId => ({
             'Content-Type': 'application/json'
         },
         body: {
-            Who: `/members/${userId}`
+            Who: `/groups/${groupId}`
         },
         types: [
             {
