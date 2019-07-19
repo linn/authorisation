@@ -24,6 +24,7 @@
         [SetUp]
         public void SetUp()
         {
+            var group = new Group("group", true);
             var resource = new PermissionResource
                                {
                                    GroupName = "group",
@@ -33,7 +34,10 @@
             this.PrivilegeRepository.FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>())
                 .Returns(new List<Privilege> { new Privilege("create") }.AsQueryable());
             this.GroupRepository.FilterBy(Arg.Any<Expression<Func<Group, bool>>>())
-                .Returns(new List<Group> { new Group("group", true) }.AsQueryable());
+                .Returns(new List<Group> { group }.AsQueryable());
+
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(new List<Permission> { new GroupPermission(group, new Privilege(), "me") }.AsQueryable());
             this.result = this.Sut.RemovePermission(resource);
         }
 

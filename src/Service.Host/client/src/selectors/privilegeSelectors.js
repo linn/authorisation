@@ -44,6 +44,12 @@ export const getPermissionMessageVisibility = state => {
     return permissionMessageVisibility || false;
 };
 
+export const getPermissionMessage = state => {
+    const { privileges } = state;
+    const { permissionMessage } = privileges;
+    return permissionMessage;
+};
+
 export const getSaveEnabled = state => {
     const { privilege } = state;
     const { enableSave } = privilege;

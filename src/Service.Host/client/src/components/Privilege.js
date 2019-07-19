@@ -21,7 +21,8 @@ const styles = () => ({
 
 const ViewPrivilege = ({
     classes,
-    initialise,
+    id,
+    fetchPrivilege,
     updatePrivilegeName,
     togglePrivilegeStatus,
     savePrivilege,
@@ -32,8 +33,8 @@ const ViewPrivilege = ({
     enableSave
 }) => {
     useEffect(() => {
-        initialise();
-    }, [initialise]);
+        fetchPrivilege(id);
+    }, [fetchPrivilege, id]);
 
     const handleSaveClick = () => {
         savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
@@ -122,7 +123,8 @@ const ViewPrivilege = ({
 
 ViewPrivilege.propTypes = {
     classes: PropTypes.shape({}),
-    initialise: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    fetchPrivilege: PropTypes.func.isRequired,
     updatePrivilegeName: PropTypes.func.isRequired,
     togglePrivilegeStatus: PropTypes.func.isRequired,
     savePrivilege: PropTypes.func.isRequired,

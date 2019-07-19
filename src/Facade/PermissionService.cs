@@ -20,12 +20,15 @@
 
         private readonly IRepository<Permission, int> permissionRepository;
 
+        private readonly ITransactionManager transactionManager;
+
         public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository)
             : base(repository, transactionManager)
         {
             this.privilegeRepository = privilegeRepository;
             this.groupRepository = groupRepository;
             this.permissionRepository = repository;
+            this.transactionManager = transactionManager;
         }
 
         public IResult<Permission> CreatePermission(PermissionResource resource)
@@ -41,14 +44,47 @@
         public IResult<Permission> RemovePermission(PermissionResource resource)
         {
             var permission = this.CreateFromResource(resource);
+
             if ((resource.GranteeUri == null && resource.GroupName == null) || (resource.GranteeUri != null && resource.GroupName != null))
             {
                 return new BadRequestResult<Permission>();
             }
 
-            this.permissionRepository.Remove(permission);
-            
+            if (permission is IndividualPermission)
+            {
+                RemoveIndividualPermission(permission);
+            }
+            else
+            {
+                RemoveGroupPermission(permission);
+            }
+
             return new SuccessResult<Permission>(permission);
+        }
+
+        private void RemoveIndividualPermission(Permission permission)
+        {
+            var castedIndividualPermission = (IndividualPermission)permission;
+
+            var individualPermission = this.permissionRepository.FilterBy(
+                p => p is IndividualPermission
+                     && ((IndividualPermission)p).GranteeUri == castedIndividualPermission.GranteeUri).First();
+
+            this.permissionRepository.Remove(individualPermission);
+            this.transactionManager.Commit();
+        }
+
+        private void RemoveGroupPermission(Permission permission)
+        {
+            var castedGroupPermission = (GroupPermission)permission;
+
+            var groupPermission = this.permissionRepository.FilterBy(
+                    p => p is GroupPermission
+                         && ((GroupPermission)p).GranteeGroup == castedGroupPermission.GranteeGroup)
+                .First();
+
+            this.permissionRepository.Remove(groupPermission);
+            this.transactionManager.Commit();
         }
 
         protected override Permission CreateFromResource(PermissionResource resource)

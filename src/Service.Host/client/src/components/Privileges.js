@@ -77,9 +77,10 @@ const ViewPrivileges = ({
     privilegesForAssignment,
     createPermission,
     currentUserUri,
-    //deletePermission,
+    deletePermission,
     showPrivilegeMessage,
-    setPrivilegeMessageVisible
+    setPrivilegeMessageVisible,
+    permissionMessage
 }) => {
     useEffect(() => {
         if (selectedUser == -1) {
@@ -124,9 +125,10 @@ const ViewPrivileges = ({
         setPrivilegeToAssign(e.target.value);
     };
 
-    // const deleteThisPermission = e => {
-    //     deletePermission(e.target.value, selectedUser, currentUserUri);
-    // };
+    const deleteThisPermission = (e, name) => {
+        e.preventDefault();
+        deletePermission(name, selectedUser, currentUserUri);
+    };
 
     let image;
 
@@ -197,12 +199,15 @@ const ViewPrivileges = ({
                                         {privilege.active.toString()}
                                     </TableCell>
                                     <TableCell align="right">
-                                        {/* <Button
-                                            onClick={() => deleteThisPermission(privilege.name)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            X
-                                        </Button> */}
+                                        {!showCreate ? (
+                                            <Button
+                                                onClick={e =>
+                                                    deleteThisPermission(e, privilege.name)
+                                                }
+                                            >
+                                                X
+                                            </Button>
+                                        ) : null}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -271,7 +276,7 @@ const ViewPrivileges = ({
             <SnackbarMessage
                 visible={showPrivilegeMessage}
                 onClose={() => setPrivilegeMessageVisible(false)}
-                message="Permission created"
+                message={permissionMessage}
             />
         </div>
     );
@@ -311,9 +316,10 @@ ViewPrivileges.propTypes = {
     ).isRequired,
     createPermission: PropTypes.func.isRequired,
     currentUserUri: PropTypes.string.isRequired,
-    //deletePermission: PropTypes.func.isRequired,
+    deletePermission: PropTypes.func.isRequired,
     showPrivilegeMessage: PropTypes.func.isRequired,
-    setPrivilegeMessageVisible: PropTypes.func.isRequired
+    setPrivilegeMessageVisible: PropTypes.func.isRequired,
+    permissionMessage: PropTypes.string.isRequired
 };
 
 ViewPrivileges.defaultProps = {
