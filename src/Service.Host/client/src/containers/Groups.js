@@ -9,11 +9,9 @@ const mapStateToProps = state => ({
     loading: getGroupsLoading(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-    initialise: () => {
-        dispatch(fetchGroups());
-    }
-});
+const mapDispatchToProps = {
+    fetchGroups
+};
 
 export default withRouter(
     connect(

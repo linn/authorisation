@@ -21,10 +21,11 @@ const styles = () => ({
 
 const ViewGroup = ({
     classes,
-    initialise,
+    fetchGroup,
     updateGroupName,
     toggleGroupStatus,
     saveGroup,
+    id,
     group,
     loading,
     showUpdatedMessage,
@@ -32,8 +33,8 @@ const ViewGroup = ({
     enableSave
 }) => {
     useEffect(() => {
-        initialise();
-    }, [initialise]);
+        fetchGroup(id);
+    }, [fetchGroup, id]);
 
     const handleSaveClick = () => {
         saveGroup(group.name, group.active, getHref(group, 'self'));
@@ -122,7 +123,7 @@ const ViewGroup = ({
 
 ViewGroup.propTypes = {
     classes: PropTypes.shape({}),
-    initialise: PropTypes.func.isRequired,
+    fetchGroup: PropTypes.func.isRequired,
     updateGroupName: PropTypes.func.isRequired,
     toggleGroupStatus: PropTypes.func.isRequired,
     saveGroup: PropTypes.func.isRequired,
@@ -134,7 +135,8 @@ ViewGroup.propTypes = {
     loading: PropTypes.bool.isRequired,
     showUpdatedMessage: PropTypes.bool.isRequired,
     setUpdatedMessageVisible: PropTypes.func.isRequired,
-    enableSave: PropTypes.bool.isRequired
+    enableSave: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired
 };
 
 ViewGroup.defaultProps = {

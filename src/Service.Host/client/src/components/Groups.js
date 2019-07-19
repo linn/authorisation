@@ -12,10 +12,10 @@ const styles = () => ({
     }
 });
 
-const ViewGroups = ({ classes, initialise, groups, loading }) => {
+const ViewGroups = ({ classes, fetchGroups, groups, loading }) => {
     useEffect(() => {
-        initialise();
-    }, [initialise]);
+        fetchGroups();
+    }, [fetchGroups]);
 
     return (
         <div
@@ -66,7 +66,7 @@ const ViewGroups = ({ classes, initialise, groups, loading }) => {
 
 ViewGroups.propTypes = {
     classes: PropTypes.shape({}),
-    initialise: PropTypes.func.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
     groups: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,

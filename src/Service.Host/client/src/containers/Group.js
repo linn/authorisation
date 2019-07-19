@@ -15,8 +15,6 @@ import {
     setUpdatedMessageVisible
 } from '../actions/groupActions';
 
-const getId = ownProps => ownProps.match.params.id;
-
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     group: getGroup(state),
@@ -25,22 +23,12 @@ const mapStateToProps = (state, { match }) => ({
     enableSave: getSaveEnabled(state)
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        initialise: () => dispatch(fetchGroup(getId(ownProps))),
-        updateGroupName: name => {
-            dispatch(updateGroupName(name));
-        },
-        toggleGroupStatus: () => {
-            dispatch(toggleGroupStatus());
-        },
-        saveGroup: (name, active, uri) => {
-            dispatch(saveGroup(name, active, uri));
-        },
-        setUpdatedMessageVisible: visible => {
-            dispatch(setUpdatedMessageVisible(visible));
-        }
-    };
+const mapDispatchToProps = {
+    fetchGroup,
+    updateGroupName,
+    toggleGroupStatus,
+    saveGroup,
+    setUpdatedMessageVisible
 };
 
 export default withRouter(
