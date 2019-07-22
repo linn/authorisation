@@ -12,6 +12,8 @@ function Group(state = initialState, action) {
         }
         case actionTypes.RECEIVE_GROUP:
             return { ...state, loading: false, enableSave: false, ...action.payload };
+        case actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP:
+            return { ...state, privileges: action.payload.data };
         case actionTypes.RECEIVE_UPDATED_GROUP:
             return {
                 ...state,
@@ -38,6 +40,12 @@ function Group(state = initialState, action) {
             return {
                 ...state,
                 updatedMessageVisibility: action.data
+            };
+        }
+        case actionTypes.RECEIVE_USERS: {
+            return {
+                ...state,
+                users: action.payload.data.items
             };
         }
         default:

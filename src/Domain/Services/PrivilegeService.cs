@@ -10,9 +10,12 @@
     public class PrivilegeService : IPrivilegeService
     {
         private readonly IRepository<Group, int> groupRepository;
+
         private readonly IRepository<Permission, int> permissionRepository;
 
-        public PrivilegeService(IRepository<Group, int> groupRepository, IRepository<Permission, int> permissionRepository)
+        public PrivilegeService(
+            IRepository<Group, int> groupRepository,
+            IRepository<Permission, int> permissionRepository)
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
@@ -22,7 +25,8 @@
         {
             // TODO what if who is string.Empty ?
 
-            var privileges = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission) p).GranteeUri == who)
+            var privileges = this.permissionRepository
+                .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
                 .Select(p => p.Privilege).ToList();
 
             var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
@@ -37,5 +41,34 @@
 
             return privileges.Where(p => p.Active).Distinct();
         }
+
+        public IEnumerable<Privilege> GetImmediatePrivilegesForGroup(int groupId)
+        {
+            var privileges = this.permissionRepository
+                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
+                .Select(p => p.Privilege).ToList();
+
+            return privileges.Where(p => p.Active).Distinct();
+        }
+
+        public IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId)
+        {
+            var privileges = this.permissionRepository
+                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
+                .Select(p => p.Privilege).ToList();
+
+            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf($"/groups/{groupId}"));
+            if (!groups.Any())
+            {
+                return privileges.Where(p => p.Active).Distinct();
+            }
+
+            var groupPermissions = this.permissionRepository.FilterBy(
+                p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf($"/groups/{groupId}"));
+            privileges.AddRange(groupPermissions.Select(p => p.Privilege));
+
+            return privileges.Where(p => p.Active).Distinct();
+        }
     }
+
 }

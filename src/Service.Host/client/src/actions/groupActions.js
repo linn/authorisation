@@ -56,23 +56,47 @@ export const fetchGroup = id => ({
 
 export const fetchPrivilegesForGroup = groupId => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
+        endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: {
-            Who: `/groups/${groupId}`
-        },
         types: [
             {
-                type: actionTypes.REQUEST_PRIVILEGES_FOR_USER,
+                type: actionTypes.REQUEST_PRIVILEGES_FOR_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGES_FOR_USER,
+                type: actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const fetchMembersForGroup = groupId => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/groups/${groupId}/members`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_MEMBERS_FOR_GROUP,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_MEMBERS_FOR_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -86,7 +110,8 @@ export const fetchPrivilegesForGroup = groupId => ({
 
 export const fetchUsers = () => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
+        //todo change back to ${config.appRoot}
+        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {

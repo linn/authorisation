@@ -19,6 +19,12 @@ export const getGroup = state => {
     return group.data;
 };
 
+export const getGroupPrivileges = state => {
+    const { group } = state;
+    const { privileges } = group;
+    return privileges;
+};
+
 export const getGroupLoading = state => {
     const { group } = state;
     const { loading } = group;
@@ -59,4 +65,24 @@ export const getShouldShowCreate = state => {
     const { groups } = state;
     const { selectedUser } = groups;
     return selectedUser === -1;
+};
+
+export const getGroupMembers = state => {
+    const { group } = state;
+    const { data } = group;
+    const { members } = data;
+    const { users } = group;
+
+    let a = [];
+    if (members && users) {
+        const individualMembers = members.filter(x => x.memberUri.includes('employees'));
+        console.info(individualMembers);
+        for (let i = 0; i < individualMembers.length; i++) {
+            a.push({
+                uri: individualMembers[i].memberUri,
+                name: users.find(x => x.href === individualMembers[i].memberUri).fullName
+            });
+        }
+    }
+    return a;
 };

@@ -30,11 +30,17 @@ const ViewGroup = ({
     loading,
     showUpdatedMessage,
     setUpdatedMessageVisible,
-    enableSave
+    enableSave,
+    fetchPrivilegesForGroup,
+    fetchUsers,
+    privileges,
+    members
 }) => {
     useEffect(() => {
         fetchGroup(id);
-    }, [fetchGroup, id]);
+        fetchPrivilegesForGroup(id);
+        fetchUsers();
+    }, [fetchGroup, fetchPrivilegesForGroup, fetchUsers, id]);
 
     const handleSaveClick = () => {
         saveGroup(group.name, group.active, getHref(group, 'self'));
@@ -97,6 +103,32 @@ const ViewGroup = ({
                 >
                     Save
                 </Button>
+
+                {privileges ? (
+                    <div>
+                        <span>Privileges</span>
+                        <ol>
+                            {privileges.map(p => (
+                                <li key={p.name}>{p.name}</li>
+                            ))}
+                        </ol>
+                    </div>
+                ) : (
+                    <div />
+                )}
+
+                {members ? (
+                    <div>
+                        <span>Membaz</span>
+                        <ol>
+                            {members.map(m => (
+                                <li key={m.name}>{m.name}</li>
+                            ))}
+                        </ol>
+                    </div>
+                ) : (
+                    <div />
+                )}
             </div>
         );
     }
@@ -136,11 +168,21 @@ ViewGroup.propTypes = {
     showUpdatedMessage: PropTypes.bool.isRequired,
     setUpdatedMessageVisible: PropTypes.func.isRequired,
     enableSave: PropTypes.bool.isRequired,
-    id: PropTypes.number.isRequired
+    id: PropTypes.number.isRequired,
+    fetchPrivilegesForGroup: PropTypes.func.isRequired,
+    privileges: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            Id: PropTypes.number,
+            active: PropTypes.bool
+        })
+    ),
+    fetchUsers: PropTypes.func.isRequired
 };
 
 ViewGroup.defaultProps = {
     classes: {},
-    group: null
+    group: null,
+    privileges: null
 };
 export default withStyles(styles)(ViewGroup);

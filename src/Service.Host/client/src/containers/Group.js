@@ -5,14 +5,18 @@ import {
     getGroup,
     getGroupLoading,
     getUpdatedMessageVisibility,
-    getSaveEnabled
+    getSaveEnabled,
+    getGroupPrivileges,
+    getGroupMembers
 } from '../selectors/groupSelectors';
 import {
     fetchGroup,
     updateGroupName,
     saveGroup,
     toggleGroupStatus,
-    setUpdatedMessageVisible
+    setUpdatedMessageVisible,
+    fetchPrivilegesForGroup,
+    fetchUsers
 } from '../actions/groupActions';
 
 const mapStateToProps = (state, { match }) => ({
@@ -20,7 +24,9 @@ const mapStateToProps = (state, { match }) => ({
     group: getGroup(state),
     loading: getGroupLoading(state),
     showUpdatedMessage: getUpdatedMessageVisibility(state),
-    enableSave: getSaveEnabled(state)
+    enableSave: getSaveEnabled(state),
+    privileges: getGroupPrivileges(state),
+    members: getGroupMembers(state)
 });
 
 const mapDispatchToProps = {
@@ -28,7 +34,9 @@ const mapDispatchToProps = {
     updateGroupName,
     toggleGroupStatus,
     saveGroup,
-    setUpdatedMessageVisible
+    setUpdatedMessageVisible,
+    fetchPrivilegesForGroup,
+    fetchUsers
 };
 
 export default withRouter(
