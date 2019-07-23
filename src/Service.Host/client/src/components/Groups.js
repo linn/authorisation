@@ -1,6 +1,15 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Table, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
+import {
+    Paper,
+    Button,
+    Table,
+    TableHead,
+    TableBody,
+    TableCell,
+    TableRow,
+    TextField
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
@@ -12,10 +21,27 @@ const styles = () => ({
     }
 });
 
-const ViewGroups = ({ classes, fetchGroups, groups, loading }) => {
+const ViewGroups = ({
+    classes,
+    fetchGroups,
+    groups,
+    loading,
+    createGroup,
+    updateNewGroup,
+    newGroupName
+}) => {
     useEffect(() => {
         fetchGroups();
     }, [fetchGroups]);
+
+    let initialName = '';
+    if (newGroupName) {
+        initialName = newGroupName;
+    }
+    const handleNameChange = e => {
+        updateNewGroup(e.target.value);
+    };
+    const dispatchcreategroup = () => createGroup(initialName, false);
 
     return (
         <div
@@ -56,6 +82,28 @@ const ViewGroups = ({ classes, fetchGroups, groups, loading }) => {
                                     <TableCell align="right">{group.active.toString()}</TableCell>
                                 </TableRow>
                             ))}
+
+                            <TableRow key="New Group">
+                                <TableCell component="th" scope="row">
+                                    <TextField
+                                        placeholder="new group"
+                                        value={initialName}
+                                        id="newPrivilegeName"
+                                        onChange={handleNameChange}
+                                        label="New Group"
+                                    />
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        type="button"
+                                        variant="outlined"
+                                        onClick={dispatchcreategroup}
+                                        id="createNewGroupButton"
+                                    >
+                                        Create
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         </TableBody>
                     </Table>
                 )}
@@ -74,7 +122,8 @@ ViewGroups.propTypes = {
             active: PropTypes.bool
         })
     ),
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    createGroup: PropTypes.func.isRequired
 };
 
 ViewGroups.defaultProps = {

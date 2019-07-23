@@ -10,11 +10,11 @@ function Groups(state = initialState, action) {
             return {
                 ...state,
                 ...action.payload,
-                newGroup: { active: false, name: '' },
+                newGroupName: '',
                 loading: false
             };
         case actionTypes.UPDATE_NEW_GROUP_NAME: {
-            return { ...state, newGroup: { active: true, name: action.data } };
+            return { ...state, newGroupName: action.data };
         }
         default:
             return state;

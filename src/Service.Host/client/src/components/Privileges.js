@@ -110,7 +110,7 @@ const ViewPrivileges = ({
     const handleNameChange = e => {
         updateNewPrivilege(e.target.value);
     };
-    const dispatchcreatePrivilege = () => createPrivilege(initialName, false);
+    const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
     const changeUser = e => {
         selectUser(e.target.value);
@@ -227,7 +227,7 @@ const ViewPrivileges = ({
                                             type="button"
                                             variant="outlined"
                                             onClick={dispatchcreatePrivilege}
-                                            id="newPrivilegeStatus"
+                                            id="createNewPrivilegeButton"
                                         >
                                             Create
                                         </Button>

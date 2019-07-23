@@ -81,33 +81,6 @@ export const fetchPrivilegesForGroup = groupId => ({
     }
 });
 
-export const fetchMembersForGroup = groupId => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/groups/${groupId}/members`,
-        method: 'GET',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        types: [
-            {
-                type: actionTypes.REQUEST_MEMBERS_FOR_GROUP,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_MEMBERS_FOR_GROUP,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
 export const fetchUsers = () => ({
     [RSAA]: {
         //todo change back to ${config.appRoot}
@@ -136,7 +109,7 @@ export const fetchUsers = () => ({
     }
 });
 
-export const createGroup = (name, active) => ({
+export const createGroup = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'POST',
@@ -145,7 +118,7 @@ export const createGroup = (name, active) => ({
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, active }),
+        body: JSON.stringify({ name, active: false }),
         types: [
             {
                 type: actionTypes.REQUEST_CREATE_GROUP,
@@ -165,7 +138,7 @@ export const createGroup = (name, active) => ({
 });
 
 export const updateNewGroup = name => ({
-    type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
+    type: actionTypes.UPDATE_NEW_GROUP_NAME,
     data: name
 });
 

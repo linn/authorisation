@@ -23,7 +23,6 @@
             this.Get("/authorisation/groups", _ => this.GetGroups());
             this.Get("/authorisation/groups/{id:int}", parameters => this.GetGroup(parameters.id));
             this.Get("/authorisation/groups/{id:int}/permissions", parameters => this.GetGroupPermissions(parameters.id));
-            this.Get("/authorisation/groups/{id:int}/members", parameters => this.GetGroupMembers(parameters.id));
             this.Post("/authorisation/groups/{id:int}/members", parameters => this.AddGroupMember(parameters.id));
             this.Put("/authorisation/groups/{id:int}", parameters => this.UpdateGroup(parameters.id));
             this.Delete("/authorisation/groups/{id:int}/members/{memberId:int}", parameters => this.RemoveGroupMember(parameters.id, parameters.memberId));
@@ -71,12 +70,6 @@
         private object GetGroupPermissions(int id)
         {
             var result = this.privilegeService.GetImmediatePrivilegesForGroup(id);
-            return this.Negotiate.WithModel(result);
-        }
-
-        private object GetGroupMembers(int groupId)
-        {
-            var result = this.groupService.GetImmediateMembers(id);
             return this.Negotiate.WithModel(result);
         }
     }

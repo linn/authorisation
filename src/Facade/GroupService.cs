@@ -17,17 +17,16 @@
     public class GroupService : FacadeService<Group, int, GroupResource, GroupResource>, IGroupService
     {
         private readonly IRepository<Group, int> groupRepository;
-        private readonly IRepository<Member, int> memberRepository;
 
 
         private readonly ITransactionManager transactionManager;
 
-        public GroupService(IRepository<Group, int> groupRepository, IRepository<Member, int> memberRepository, ITransactionManager transactionManager) 
+        public GroupService(IRepository<Group, int> groupRepository, ITransactionManager transactionManager)
             : base(groupRepository, transactionManager)
         {
             this.groupRepository = groupRepository;
             this.transactionManager = transactionManager;
-            this.memberRepository = memberRepository;
+
         }
 
         protected override Group CreateFromResource(GroupResource resource)
@@ -105,23 +104,6 @@
             this.transactionManager.Commit();
 
             return new SuccessResult<Group>(group);
-        }
-
-        public IEnumerable<Member> GetImmediateMembers(int groupId)
-        {
-            var group = this.groupRepository.FindById(groupId);
-            if (group == null)
-            {
-                return new NotFoundResult<Group>($"group {groupId} not found");
-            }
-
-            var members = group.Members
-
-
-            //var members = this.memberRepository.FilterBy(m => m is IndividualMember && ((IndividualMember)m. == groupId)
-            //    .Select(p => p.Privilege).ToList();
-
-            return privileges.Where(p => p.Active).Distinct();
         }
     }
 }

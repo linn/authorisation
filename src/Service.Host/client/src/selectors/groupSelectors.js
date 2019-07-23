@@ -8,6 +8,12 @@ export const getGroupsLoading = state => {
     return loading || false;
 };
 
+export const getNewGroupName = state => {
+    const { groups } = state;
+    const { newGroupName } = groups;
+    return newGroupName || '';
+}
+
 export const getNewGroupForCreation = state => {
     const { groups } = state;
     const { newGroup } = groups;
