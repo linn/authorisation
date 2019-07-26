@@ -7,7 +7,11 @@ import {
     getUpdatedMessageVisibility,
     getSaveEnabled,
     getGroupPrivileges,
-    getGroupMembers
+    getGroupMembers,
+    getAllUsers,
+    getGroupPotentialPrivileges,
+    getCurrentUser,
+    getGroupMessage
 } from '../selectors/groupSelectors';
 import {
     fetchGroup,
@@ -16,7 +20,10 @@ import {
     toggleGroupStatus,
     setUpdatedMessageVisible,
     fetchPrivilegesForGroup,
-    fetchUsers
+    fetchPotentialPrivileges,
+    fetchUsers,
+    createPermission,
+    createNewIndividualMember
 } from '../actions/groupActions';
 
 const mapStateToProps = (state, { match }) => ({
@@ -26,7 +33,11 @@ const mapStateToProps = (state, { match }) => ({
     showUpdatedMessage: getUpdatedMessageVisibility(state),
     enableSave: getSaveEnabled(state),
     privileges: getGroupPrivileges(state),
-    members: getGroupMembers(state)
+    potentialPrivileges: getGroupPotentialPrivileges(state),
+    members: getGroupMembers(state),
+    users: getAllUsers(state),
+    currentUserUri: getCurrentUser(state),
+    groupMessage: getGroupMessage(state)
 });
 
 const mapDispatchToProps = {
@@ -36,7 +47,10 @@ const mapDispatchToProps = {
     saveGroup,
     setUpdatedMessageVisible,
     fetchPrivilegesForGroup,
-    fetchUsers
+    fetchUsers,
+    fetchPotentialPrivileges,
+    createPermission,
+    createNewIndividualMember
 };
 
 export default withRouter(

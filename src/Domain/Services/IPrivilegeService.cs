@@ -5,8 +5,6 @@
     public interface IPrivilegeService
     {
         IEnumerable<Privilege> GetPrivileges(string who);
-        IEnumerable<Privilege> GetImmediatePrivilegesForGroup(int groupId);
-
-        IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId);
+       
     }
 }

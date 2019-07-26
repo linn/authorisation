@@ -41,34 +41,6 @@
 
             return privileges.Where(p => p.Active).Distinct();
         }
-
-        public IEnumerable<Privilege> GetImmediatePrivilegesForGroup(int groupId)
-        {
-            var privileges = this.permissionRepository
-                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
-                .Select(p => p.Privilege).ToList();
-
-            return privileges.Where(p => p.Active).Distinct();
-        }
-
-        public IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId)
-        {
-            var privileges = this.permissionRepository
-                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
-                .Select(p => p.Privilege).ToList();
-
-            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf($"/groups/{groupId}"));
-            if (!groups.Any())
-            {
-                return privileges.Where(p => p.Active).Distinct();
-            }
-
-            var groupPermissions = this.permissionRepository.FilterBy(
-                p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf($"/groups/{groupId}"));
-            privileges.AddRange(groupPermissions.Select(p => p.Privilege));
-
-            return privileges.Where(p => p.Active).Distinct();
-        }
     }
 
 }

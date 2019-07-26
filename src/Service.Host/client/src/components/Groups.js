@@ -13,6 +13,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
+import Mypage from './myPageWidth';
 
 const styles = () => ({
     root: {
@@ -44,12 +45,7 @@ const ViewGroups = ({
     const dispatchcreategroup = () => createGroup(initialName, false);
 
     return (
-        <div
-            style={{
-                width: '66.66667%',
-                margin: '0 auto'
-            }}
-        >
+        <Mypage>
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
                     Home
@@ -108,7 +104,7 @@ const ViewGroups = ({
                     </Table>
                 )}
             </Paper>
-        </div>
+        </Mypage>
     );
 };
 

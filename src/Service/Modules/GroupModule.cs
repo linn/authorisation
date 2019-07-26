@@ -13,12 +13,12 @@
     public sealed class GroupModule : NancyModule
     {
         private readonly IGroupService groupService;
-        private readonly IPrivilegeService privilegeService;
+        private readonly IPermissionService permissionService;
 
-        public GroupModule(IGroupService groupService, IPrivilegeService privilegeService)
+        public GroupModule(IGroupService groupService, IPermissionService permissionService)
         {
             this.groupService = groupService;
-            this.privilegeService = privilegeService;
+            this.permissionService = permissionService;
             this.Post("/authorisation/groups", _ => this.CreateGroup());
             this.Get("/authorisation/groups", _ => this.GetGroups());
             this.Get("/authorisation/groups/{id:int}", parameters => this.GetGroup(parameters.id));
@@ -69,7 +69,7 @@
 
         private object GetGroupPermissions(int id)
         {
-            var result = this.privilegeService.GetImmediatePrivilegesForGroup(id);
+            var result = this.permissionService.GetImmediatePermissionsForGroup(id);
             return this.Negotiate.WithModel(result);
         }
     }

@@ -6,10 +6,11 @@ const initialState = { data: {}, loading: false };
 function Group(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_GROUP:
+        case actionTypes.REQUEST_CREATE_GROUP_PERMISSION:
+        case actionTypes.REQUEST_SAVE_GROUP:
+        case actionTypes.REQUEST_POTENTIAL_GROUP_PRIVILEGES:
+        case actionTypes.REQUEST_CREATE_INDIVIDUAL_MEMBER:
             return { ...state, loading: true };
-        case actionTypes.REQUEST_SAVE_GROUP: {
-            return { ...state, loading: true };
-        }
         case actionTypes.RECEIVE_GROUP:
             return { ...state, loading: false, enableSave: false, ...action.payload };
         case actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP:
@@ -19,7 +20,8 @@ function Group(state = initialState, action) {
                 ...state,
                 enableSave: false,
                 loading: false,
-                updatedMessageVisibility: true,
+                groupMessageVisibility: true,
+                groupMessage: 'Save Successful',
                 ...action.payload
             };
         case actionTypes.UPDATE_GROUP_NAME: {
@@ -39,13 +41,43 @@ function Group(state = initialState, action) {
         case actionTypes.SET_UPDATE_MESSAGE_VISIBILITY: {
             return {
                 ...state,
-                updatedMessageVisibility: action.data
+                groupMessageVisibility: action.data
             };
         }
         case actionTypes.RECEIVE_USERS: {
             return {
                 ...state,
                 users: action.payload.data.items
+            };
+        }
+        case actionTypes.RECEIVE_CREATE_GROUP_PERMISSION: {
+            return {
+                ...state,
+                privileges: [...state.privileges, action.payload.data],
+                loading: false,
+                groupMessageVisibility: true,
+                groupMessage: 'Permission created'
+            };
+        }
+        case actionTypes.RECEIVE_CREATE_INDIVIDUAL_MEMBER: {
+            return {
+                ...state,
+                loading: false,
+                groupMessageVisibility: true,
+                groupMessage: 'Member added',
+                data: { ...state.data, members: action.payload.data.members }
+            };
+        }
+        case actionTypes.RECEIVE_POTENTIAL_GROUP_PRIVILEGES:
+            return {
+                ...state,
+                potentialPrivileges: action.payload.data,
+                loading: false
+            };
+        case actionTypes.FETCH_ERROR: {
+            return {
+                ...state,
+                loading: false
             };
         }
         default:

@@ -31,6 +31,12 @@ export const getGroupPrivileges = state => {
     return privileges;
 };
 
+export const getGroupPotentialPrivileges = state => {
+    const { group } = state;
+    const { potentialPrivileges } = group;
+    return potentialPrivileges;
+};
+
 export const getGroupLoading = state => {
     const { group } = state;
     const { loading } = group;
@@ -39,8 +45,14 @@ export const getGroupLoading = state => {
 
 export const getUpdatedMessageVisibility = state => {
     const { group } = state;
-    const { updatedMessageVisibility } = group;
-    return updatedMessageVisibility || false;
+    const { groupMessageVisibility } = group;
+    return groupMessageVisibility || false;
+};
+
+export const getGroupMessage = state => {
+    const { group } = state;
+    const { groupMessage } = group;
+    return groupMessage || false;
 };
 
 export const getSaveEnabled = state => {
@@ -77,18 +89,25 @@ export const getGroupMembers = state => {
     const { group } = state;
     const { data } = group;
     const { members } = data;
-    const { users } = group;
-
-    let a = [];
-    if (members && users) {
-        const individualMembers = members.filter(x => x.memberUri.includes('employees'));
-        console.info(individualMembers);
-        for (let i = 0; i < individualMembers.length; i++) {
-            a.push({
-                uri: individualMembers[i].memberUri,
-                name: users.find(x => x.href === individualMembers[i].memberUri).fullName
-            });
-        }
+    let individualMembers = [];
+    if (members) {
+        individualMembers = members.filter(x => x.memberUri.includes('employees'));
     }
-    return a;
+    console.info(members);
+    console.info(individualMembers);
+    return individualMembers;
+};
+
+export const getAllUsers = state => {
+    const { group } = state;
+    const { users } = group;
+    return users;
+};
+
+export const getCurrentUser = state => {
+    const { oidc } = state;
+    const { user } = oidc;
+    const { profile } = user;
+    const { employee } = profile;
+    return employee;
 };

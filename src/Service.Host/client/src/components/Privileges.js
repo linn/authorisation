@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import config from '../config';
+import Mypage from './myPageWidth';
 
 const useStyles = makeStyles({
     root: {
@@ -145,7 +146,7 @@ const ViewPrivileges = ({
     }
 
     return (
-        <div className={classes.widthTwoThirds}>
+        <Mypage>
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
                     Home
@@ -239,7 +240,7 @@ const ViewPrivileges = ({
                                         <select
                                             value={privilegeToAssign}
                                             onChange={setPrivilegeForAssignment}
-                                            className={classes.thinPrivilegesSelectList}
+                                           // className={classes.thinPrivilegesSelectList}
                                         >
                                             <option value="-1" key="-1">
                                                 Select Privilege
@@ -278,7 +279,7 @@ const ViewPrivileges = ({
                 onClose={() => setPrivilegeMessageVisible(false)}
                 message={permissionMessage}
             />
-        </div>
+        </Mypage>
     );
 };
 

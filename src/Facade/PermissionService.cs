@@ -1,6 +1,7 @@
 ﻿namespace Linn.Authorisation.Facade
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -11,6 +12,8 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class PermissionService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionService
     {
@@ -40,6 +43,35 @@
 
             return this.Add(resource);
         }
+
+        public IResult<IEnumerable<Permission>> GetImmediatePermissionsForGroup(int groupId)
+        {
+            var permissions = this.permissionRepository
+                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
+                .Include(x => ((GroupPermission)x).GranteeGroup)
+                .Include(x => x.Privilege).ToList();
+
+            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+        }
+
+        //public IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId)
+        //{
+        //    var privileges = this.permissionRepository
+        //        .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
+        //        .Select(p => p.Privilege).ToList();
+
+        //    var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf($"/groups/{groupId}"));
+        //    if (!groups.Any())
+        //    {
+        //        return privileges.Where(p => p.Active).Distinct();
+        //    }
+
+        //    var groupPermissions = this.permissionRepository.FilterBy(
+        //        p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf($"/groups/{groupId}"));
+        //    privileges.AddRange(groupPermissions.Select(p => p.Privilege));
+
+        //    return privileges.Where(p => p.Active).Distinct();
+        //}
 
         public IResult<Permission> RemovePermission(PermissionResource resource)
         {

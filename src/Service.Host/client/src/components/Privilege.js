@@ -11,6 +11,7 @@ import {
     getHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
+import Mypage from './myPageWidth';
 
 const styles = () => ({
     root: {
@@ -102,7 +103,7 @@ const ViewPrivilege = ({
     }
 
     return (
-        <div>
+        <Mypage>
             <Link to="../viewprivileges">
                 <Button type="button" variant="outlined">
                     Back to all privileges
@@ -117,7 +118,7 @@ const ViewPrivilege = ({
                 onClose={() => setUpdatedMessageVisible(false)}
                 message="Save Successful"
             />
-        </div>
+        </Mypage>
     );
 };
 
