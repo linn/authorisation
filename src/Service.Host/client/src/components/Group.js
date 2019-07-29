@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Paper, Button, Grid, Switch } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import {
     Loading,
@@ -13,15 +13,26 @@ import {
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
 
-const styles = () => ({
+const useStyles = makeStyles({
     root: {
         margin: '40px',
         padding: '40px'
+    },
+    thinPrivilegesSelectList: {
+        height: '36px',
+        width: '300px',
+        display: 'inline-block',
+        borderColor: 'rgba(0, 0, 0, 0.23)',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        marginRight: `20px`
+    },
+    bottomPadding: {
+        paddingBottom: '20px'
     }
 });
 
 const ViewGroup = ({
-    classes,
     fetchGroup,
     updateGroupName,
     toggleGroupStatus,
@@ -54,6 +65,8 @@ const ViewGroup = ({
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
 
     const [selectedUser, selectUser] = useState({});
+
+    const classes = useStyles();
 
     const dispatchcreatePermission = () => {
         createPermission(privilegeToAssign, group.name, currentUserUri);
@@ -93,58 +106,61 @@ const ViewGroup = ({
     const groupName = group.name;
     const groupActive = group.active || false;
 
-    let elementsToDisplay;
+    const editGroupSection = (
+        <div className={classes.bottomPadding}>
+            <Grid container spacing={24}>
+                <Grid item xs={12}>
+                    <Fragment>
+                        <div>
+                            <Grid item xs={8}>
+                                <InputField
+                                    fullWidth
+                                    disabled={false}
+                                    value={groupName}
+                                    label="Group"
+                                    maxLength={100}
+                                    propertyName="name"
+                                    onChange={handleUpdateGroupName}
+                                />
+                            </Grid>
+                            <Grid item xs={8}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={groupActive}
+                                            onChange={handleToggleGroupStatus}
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Active Status"
+                                    labelPlacement="start"
+                                />
+                            </Grid>
+                        </div>
+                    </Fragment>
+                </Grid>
+            </Grid>
+            <Button
+                type="button"
+                variant="outlined"
+                disabled={!enableSave}
+                onClick={handleSaveClick}
+            >
+                Save
+            </Button>
+        </div>
+    );
+
+    let privilegesElements;
 
     if (loading) {
-        elementsToDisplay = <Loading />;
+        privilegesElements = <Loading />;
     } else {
-        elementsToDisplay = (
-            <div>
-                <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <Fragment>
-                            <div>
-                                <Grid item xs={8}>
-                                    <InputField
-                                        fullWidth
-                                        disabled={false}
-                                        value={groupName}
-                                        label="Group"
-                                        maxLength={100}
-                                        propertyName="name"
-                                        onChange={handleUpdateGroupName}
-                                    />
-                                </Grid>
-                                <Grid item xs={8}>
-                                    <FormControlLabel
-                                        control={
-                                            <Switch
-                                                checked={groupActive}
-                                                onChange={handleToggleGroupStatus}
-                                                color="primary"
-                                            />
-                                        }
-                                        label="Active Status"
-                                        labelPlacement="start"
-                                    />
-                                </Grid>
-                            </div>
-                        </Fragment>
-                    </Grid>
-                </Grid>
-                <Button
-                    type="button"
-                    variant="outlined"
-                    disabled={!enableSave}
-                    onClick={handleSaveClick}
-                >
-                    Save
-                </Button>
-
+        privilegesElements = (
+            <div className={classes.bottomPadding}>
                 {privileges && (
                     <div>
-                        <span>Privileges:</span>
-                        <ol>
+                        <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                             {privileges.map(p => (
                                 <li key={p.privilege}>
                                     {p.privilege} granted by {getEmployeeName(p.grantedByUri)} on{' '}
@@ -182,21 +198,50 @@ const ViewGroup = ({
                         </Button>
                     </div>
                 )}
+            </div>
+        );
+    }
 
+    const createTable = membersList => {
+        const table = [];
+        for (let i = 0; i < membersList.length; i += 4) {
+            const children = [];
+            for (let j = 0; j < 4; j++) {
+                if (membersList[i + j]) {
+                    children.push(
+                        <td>
+                            <li key={membersList[i + j].name}>
+                                {getEmployeeName(membersList[i + j].memberUri)}
+                            </li>
+                        </td>
+                    );
+                } else {
+                    break;
+                }
+            }
+            table.push(<tr>{children}</tr>);
+        }
+        return table;
+    };
+
+    let membersElements;
+
+    if (loading) {
+        membersElements = <Loading />;
+    } else {
+        membersElements = (
+            <div>
                 {members && users && (
                     <div>
-                        <span>Members:</span>
-                        <ol>
-                            {members.map(m => (
-                                <li key={m.name}>{getEmployeeName(m.memberUri)}</li>
-                            ))}
+                        <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                            <table style={{ width: '100%' }}>{createTable(members)}</table>
                         </ol>
 
                         <select
                             value={selectedUser}
                             defaultValue={-1}
                             onChange={changeUser}
-                            //className={classes.privilegesSelectList}
+                            className={classes.thinPrivilegesSelectList}
                         >
                             <option value={-1} key="-1">
                                 All Users
@@ -231,8 +276,15 @@ const ViewGroup = ({
             </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Group" />
-                {elementsToDisplay}
+                {editGroupSection}
+
+                <Title text={`Privileges assigned to '${group.name}'`} />
+                {privilegesElements}
+
+                <Title text={`Members of '${group.name}'`} />
+                {membersElements}
             </Paper>
+
             <SnackbarMessage
                 visible={showUpdatedMessage}
                 onClose={() => setUpdatedMessageVisible(false)}
@@ -243,7 +295,6 @@ const ViewGroup = ({
 };
 
 ViewGroup.propTypes = {
-    classes: PropTypes.shape({}),
     fetchGroup: PropTypes.func.isRequired,
     updateGroupName: PropTypes.func.isRequired,
     toggleGroupStatus: PropTypes.func.isRequired,
@@ -309,4 +360,4 @@ ViewGroup.defaultProps = {
     privileges: null,
     members: null
 };
-export default withStyles(styles)(ViewGroup);
+export default ViewGroup;

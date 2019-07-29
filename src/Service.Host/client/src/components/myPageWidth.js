@@ -5,7 +5,8 @@ const Mypage = props => {
         <div
             style={{
                 width: '66.66667%',
-                margin: '0 auto'
+                margin: '0 auto',
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
             }}
         >
             {props.children}
