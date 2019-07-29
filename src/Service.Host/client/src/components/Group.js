@@ -60,7 +60,6 @@ const ViewGroup = ({
     };
 
     const dispatchCreateIndividualMember = () => {
-        console.log(`current user passed through is ${currentUserUri}`);
         createNewIndividualMember(selectedUser, id, currentUserUri);
     };
 
@@ -80,18 +79,9 @@ const ViewGroup = ({
     };
 
     const getEmployeeName = uri => {
-        // let a = [];
         if (members && users) {
-            // const individualMembers = members.filter(x => x.memberUri.includes('employees'));
-            // console.info(individualMembers);
-            // for (let i = 0; i < individualMembers.length; i++) {
-            //     a.push({
-            //         uri: individualMembers[i].memberUri,
-            //         name:
-            //     });
             const employee = users.find(x => x.href === uri);
             if (employee) return employee.fullName;
-            //}
         }
         return 'Employee not found';
     };
@@ -151,7 +141,7 @@ const ViewGroup = ({
                     Save
                 </Button>
 
-                {privileges ? (
+                {privileges && (
                     <div>
                         <span>Privileges:</span>
                         <ol>
@@ -191,11 +181,9 @@ const ViewGroup = ({
                             Assign to group
                         </Button>
                     </div>
-                ) : (
-                    <div />
                 )}
 
-                {members && users ? (
+                {members && users && (
                     <div>
                         <span>Members:</span>
                         <ol>
@@ -215,7 +203,7 @@ const ViewGroup = ({
                             </option>
                             {users.map(user => (
                                 <option value={user.id} key={user.id}>
-                                    {user.firstName} {user.lastName}
+                                    {user.fullName}
                                 </option>
                             ))}
                         </select>
@@ -229,8 +217,6 @@ const ViewGroup = ({
                         </Button>
                         {/* <div className={classes.employeeImageContainer}>{image}</div> */}
                     </div>
-                ) : (
-                    <div />
                 )}
             </div>
         );
@@ -291,7 +277,30 @@ ViewGroup.propTypes = {
             name: PropTypes.string,
             uri: PropTypes.string
         })
-    )
+    ),
+    potentialPrivileges: PropTypes.arrayOf(
+        PropTypes.shape({
+            dateGranted: PropTypes.string,
+            grantedByUri: PropTypes.string,
+            id: PropTypes.number,
+            privileges: PropTypes.shape({
+                name: PropTypes.string,
+                Id: PropTypes.number,
+                active: PropTypes.bool
+            })
+        })
+    ).isRequired,
+    fetchPotentialPrivileges: PropTypes.func.isRequired,
+    users: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.number,
+            fullName: PropTypes.string
+        })
+    ).isRequired,
+    currentUserUri: PropTypes.string.isRequired,
+    createPermission: PropTypes.func.isRequired,
+    groupMessage: PropTypes.string.isRequired,
+    createNewIndividualMember: PropTypes.func.isRequired
 };
 
 ViewGroup.defaultProps = {

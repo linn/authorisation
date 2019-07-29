@@ -12,7 +12,7 @@ export const getNewGroupName = state => {
     const { groups } = state;
     const { newGroupName } = groups;
     return newGroupName || '';
-}
+};
 
 export const getNewGroupForCreation = state => {
     const { groups } = state;
@@ -89,13 +89,8 @@ export const getGroupMembers = state => {
     const { group } = state;
     const { data } = group;
     const { members } = data;
-    let individualMembers = [];
-    if (members) {
-        individualMembers = members.filter(x => x.memberUri.includes('employees'));
-    }
-    console.info(members);
-    console.info(individualMembers);
-    return individualMembers;
+
+    return members ? members.filter(x => x.memberUri.includes('employees')) : [];
 };
 
 export const getAllUsers = state => {

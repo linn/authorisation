@@ -5,6 +5,5 @@
     public interface IPrivilegeService
     {
         IEnumerable<Privilege> GetPrivileges(string who);
-       
     }
 }

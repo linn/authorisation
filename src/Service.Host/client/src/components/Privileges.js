@@ -200,7 +200,7 @@ const ViewPrivileges = ({
                                         {privilege.active.toString()}
                                     </TableCell>
                                     <TableCell align="right">
-                                        {!showCreate ? (
+                                        {!showCreate && (
                                             <Button
                                                 onClick={e =>
                                                     deleteThisPermission(e, privilege.name)
@@ -208,7 +208,7 @@ const ViewPrivileges = ({
                                             >
                                                 X
                                             </Button>
-                                        ) : null}
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -240,7 +240,7 @@ const ViewPrivileges = ({
                                         <select
                                             value={privilegeToAssign}
                                             onChange={setPrivilegeForAssignment}
-                                           // className={classes.thinPrivilegesSelectList}
+                                            className={classes.thinPrivilegesSelectList}
                                         >
                                             <option value="-1" key="-1">
                                                 Select Privilege

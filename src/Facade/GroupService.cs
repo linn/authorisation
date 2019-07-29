@@ -26,7 +26,6 @@
         {
             this.groupRepository = groupRepository;
             this.transactionManager = transactionManager;
-
         }
 
         protected override Group CreateFromResource(GroupResource resource)

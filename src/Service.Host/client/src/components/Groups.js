@@ -119,7 +119,9 @@ ViewGroups.propTypes = {
         })
     ),
     loading: PropTypes.bool.isRequired,
-    createGroup: PropTypes.func.isRequired
+    createGroup: PropTypes.func.isRequired,
+    updateNewGroup: PropTypes.func.isRequired,
+    newGroupName: PropTypes.string.isRequired
 };
 
 ViewGroups.defaultProps = {

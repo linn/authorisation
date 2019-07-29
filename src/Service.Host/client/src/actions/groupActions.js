@@ -84,7 +84,7 @@ export const fetchPrivilegesForGroup = groupId => ({
 export const fetchUsers = () => ({
     [RSAA]: {
         //todo change back to ${config.appRoot}
-        endpoint: `https://app.linn.co.uk/employees?currentEmployees=true`,
+        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
