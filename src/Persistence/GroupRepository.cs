@@ -24,7 +24,7 @@
 
         public IQueryable<Group> FindAll()
         {
-            return this.serviceDbContext.Groups;
+            return this.serviceDbContext.Groups.Include(x => x.Members);
         }
 
         public void Add(Group group)
