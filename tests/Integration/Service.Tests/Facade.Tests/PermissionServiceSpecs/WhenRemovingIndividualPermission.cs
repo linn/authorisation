@@ -31,6 +31,11 @@
                                               };
             this.PrivilegeRepository.FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>())
                 .Returns(new List<Privilege> { new Privilege("create") }.AsQueryable());
+
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(new List<Permission> { new IndividualPermission("person", new Privilege(), "me") }.AsQueryable());
+            this.result = this.Sut.RemovePermission(resource);
+
             this.result = this.Sut.RemovePermission(resource);
         }
 

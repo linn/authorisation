@@ -16,6 +16,7 @@
             builder.RegisterType<PrivilegeResourceBuilder>().As<IResourceBuilder<Privilege>>();
             builder.RegisterType<PrivilegesResourceBuilder>().As<IResourceBuilder<IEnumerable<Privilege>>>();
             builder.RegisterType<PermissionResourceBuilder>().As<IResourceBuilder<Permission>>();
+            builder.RegisterType<PermissionsResourceBuilder>().As<IResourceBuilder<IEnumerable<Permission>>>();
             builder.RegisterType<GroupResourceBuilder>().As<IResourceBuilder<Group>>();
             builder.RegisterType<GroupsResourceBuilder>().As<IResourceBuilder<IEnumerable<Group>>>();
         }

@@ -5,42 +5,52 @@ import {
     getGroup,
     getGroupLoading,
     getUpdatedMessageVisibility,
-    getSaveEnabled
+    getSaveEnabled,
+    getGroupPrivileges,
+    getGroupMembers,
+    getAllUsers,
+    getGroupPotentialPrivileges,
+    getCurrentUser,
+    getGroupMessage
 } from '../selectors/groupSelectors';
 import {
     fetchGroup,
     updateGroupName,
     saveGroup,
     toggleGroupStatus,
-    setUpdatedMessageVisible
+    setUpdatedMessageVisible,
+    fetchPrivilegesForGroup,
+    fetchPotentialPrivileges,
+    fetchUsers,
+    createPermission,
+    createNewIndividualMember
 } from '../actions/groupActions';
-
-const getId = ownProps => ownProps.match.params.id;
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     group: getGroup(state),
     loading: getGroupLoading(state),
     showUpdatedMessage: getUpdatedMessageVisibility(state),
-    enableSave: getSaveEnabled(state)
+    enableSave: getSaveEnabled(state),
+    privileges: getGroupPrivileges(state),
+    potentialPrivileges: getGroupPotentialPrivileges(state),
+    members: getGroupMembers(state),
+    users: getAllUsers(state),
+    currentUserUri: getCurrentUser(state),
+    groupMessage: getGroupMessage(state)
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        initialise: () => dispatch(fetchGroup(getId(ownProps))),
-        updateGroupName: name => {
-            dispatch(updateGroupName(name));
-        },
-        toggleGroupStatus: () => {
-            dispatch(toggleGroupStatus());
-        },
-        saveGroup: (name, active, uri) => {
-            dispatch(saveGroup(name, active, uri));
-        },
-        setUpdatedMessageVisible: visible => {
-            dispatch(setUpdatedMessageVisible(visible));
-        }
-    };
+const mapDispatchToProps = {
+    fetchGroup,
+    updateGroupName,
+    toggleGroupStatus,
+    saveGroup,
+    setUpdatedMessageVisible,
+    fetchPrivilegesForGroup,
+    fetchUsers,
+    fetchPotentialPrivileges,
+    createPermission,
+    createNewIndividualMember
 };
 
 export default withRouter(

@@ -13,5 +13,4 @@ const rootReducer = combineReducers({
     group
 });
 
-
 export default rootReducer;

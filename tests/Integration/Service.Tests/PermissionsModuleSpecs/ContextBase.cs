@@ -1,5 +1,8 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
 {
+    using System.Collections.Generic;
+
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Facade.ResourceBuilders;
@@ -27,8 +30,13 @@
                 with =>
                     {
                         with.Dependency(this.PermissionService);
-                        with.ResponseProcessor<PermissionResponseProcessor>();
                         with.Module<PermissionsModule>();
+                        with.ResponseProcessor<PermissionResponseProcessor>();
+                        with.ResponseProcessor<PermissionsResponseProcessor>();
+                        with.Dependency<IResourceBuilder<IEnumerable<Permission>>>(new PermissionsResourceBuilder());
+                        // with.Module<GroupModule>();
+                        //with.ResponseProcessor<GroupResponseProcessor>();
+                        //with.Dependency<IResourceBuilder<Group>>(new GroupResourceBuilder());
                         with.Dependency<IResourceBuilder<Permission>>(new PermissionResourceBuilder());
                     });
 

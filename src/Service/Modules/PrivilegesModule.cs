@@ -19,6 +19,7 @@
             this.Post("/authorisation/privileges", _ => this.CreatePrivilege());
             this.Get("/authorisation/privileges/{id:int}", parameters => this.GetPrivilege(parameters.id));
             this.Put("/authorisation/privileges/{id:int}", parameters => this.UpdatePrivilege(parameters.id));
+            this.Delete("/authorisation/privileges/{id:int}", parameters => this.RemovePrivilege(parameters.id));
         }
 
         private object GetPrivilege(int id)
@@ -41,10 +42,17 @@
             return this.Negotiate.WithModel(result);
         }
 
+        private object RemovePrivilege(int id)
+        {
+            var resource = this.Bind<PrivilegeResource>();
+            //var result = this.privilegeService.RemovePrivilege(id, resource);
+            //return this.Negotiate.WithModel(result);
+            return null;
+        }
+
         private object GetPrivileges()
         {
             var privilege = this.privilegeService.GetAll();
-
             return this.Negotiate.WithModel(privilege);
         }
 

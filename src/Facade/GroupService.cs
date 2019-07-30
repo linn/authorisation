@@ -6,6 +6,9 @@
     using System.Linq.Expressions;
     using Domain.Exceptions;
     using Domain.Groups;
+
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -15,9 +18,10 @@
     {
         private readonly IRepository<Group, int> groupRepository;
 
+
         private readonly ITransactionManager transactionManager;
 
-        public GroupService(IRepository<Group, int> groupRepository, ITransactionManager transactionManager) 
+        public GroupService(IRepository<Group, int> groupRepository, ITransactionManager transactionManager)
             : base(groupRepository, transactionManager)
         {
             this.groupRepository = groupRepository;

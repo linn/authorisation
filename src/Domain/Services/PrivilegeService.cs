@@ -10,9 +10,12 @@
     public class PrivilegeService : IPrivilegeService
     {
         private readonly IRepository<Group, int> groupRepository;
+
         private readonly IRepository<Permission, int> permissionRepository;
 
-        public PrivilegeService(IRepository<Group, int> groupRepository, IRepository<Permission, int> permissionRepository)
+        public PrivilegeService(
+            IRepository<Group, int> groupRepository,
+            IRepository<Permission, int> permissionRepository)
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
@@ -22,11 +25,13 @@
         {
             // TODO what if who is string.Empty ?
 
-            var privileges = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission) p).GranteeUri == who)
+            var privileges = this.permissionRepository
+                .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
                 .Select(p => p.Privilege).ToList();
 
-            var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf(who));
-            if (!groups.Any())
+            var groups = this.groupRepository.FindAll().ToList();
+
+            if (!groups.Any(g => g.IsMemberOf(who)))
             {
                 return privileges.Where(p => p.Active).Distinct();
             }
@@ -38,4 +43,5 @@
             return privileges.Where(p => p.Active).Distinct();
         }
     }
+
 }

@@ -11,5 +11,7 @@
         public string GranteeUri { get; set; }
 
         public string GroupName { get; set; }
+
+        public string DateGranted { get; set; }
     }
 }

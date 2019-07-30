@@ -15,8 +15,6 @@ import {
     setUpdatedMessageVisible
 } from '../actions/privilegeActions';
 
-const getId = ownProps => ownProps.match.params.id;
-
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     privilege: getPrivilege(state),
@@ -25,22 +23,12 @@ const mapStateToProps = (state, { match }) => ({
     enableSave: getSaveEnabled(state)
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        initialise: () => dispatch(fetchPrivilege(getId(ownProps))),
-        updatePrivilegeName: name => {
-            dispatch(updatePrivilegeName(name));
-        },
-        togglePrivilegeStatus: () => {
-            dispatch(togglePrivilegeStatus());
-        },
-        savePrivilege: (name, active, uri) => {
-            dispatch(savePrivilege(name, active, uri));
-        },
-        setUpdatedMessageVisible: visible => {
-            dispatch(setUpdatedMessageVisible(visible));
-        }
-    };
+const mapDispatchToProps = {
+    fetchPrivilege,
+    updatePrivilegeName,
+    togglePrivilegeStatus,
+    savePrivilege,
+    setUpdatedMessageVisible
 };
 
 export default withRouter(

@@ -13,17 +13,25 @@ function Privilege(state = initialState, action) {
         case actionTypes.RECEIVE_PRIVILEGE:
             return { ...state, loading: false, enableSave: false, ...action.payload };
         case actionTypes.RECEIVE_UPDATED_PRIVILEGE:
-            return { ...state, loading: false, updatedMessageVisibility: true, ...action.payload };
+            return {
+                ...state,
+                loading: false,
+                enableSave: false,
+                updatedMessageVisibility: true,
+                ...action.payload
+            };
         case actionTypes.UPDATE_PRIVILEGE_NAME: {
             return {
-                ...state.data,
-                data: { ...state.data, name: action.data, enableSave: true }
+                ...state,
+                data: { ...state.data, name: action.data },
+                enableSave: true
             };
         }
         case actionTypes.TOGGLE_PRIVILEGE_STATUS: {
             return {
-                ...state.data,
-                data: { ...state.data, active: !state.data.active, enableSave: true }
+                ...state,
+                data: { ...state.data, active: !state.data.active },
+                enableSave: true
             };
         }
         case actionTypes.SET_UPDATE_MESSAGE_VISIBILITY: {

@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import config from '../config';
+import Mypage from './myPageWidth';
 
 const useStyles = makeStyles({
     root: {
@@ -77,9 +78,10 @@ const ViewPrivileges = ({
     privilegesForAssignment,
     createPermission,
     currentUserUri,
-    //deletePermission,
+    deletePermission,
     showPrivilegeMessage,
-    setPrivilegeMessageVisible
+    setPrivilegeMessageVisible,
+    permissionMessage
 }) => {
     useEffect(() => {
         if (selectedUser == -1) {
@@ -109,7 +111,7 @@ const ViewPrivileges = ({
     const handleNameChange = e => {
         updateNewPrivilege(e.target.value);
     };
-    const dispatchcreatePrivilege = () => createPrivilege(initialName, false);
+    const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
     const changeUser = e => {
         selectUser(e.target.value);
@@ -124,9 +126,10 @@ const ViewPrivileges = ({
         setPrivilegeToAssign(e.target.value);
     };
 
-    // const deleteThisPermission = e => {
-    //     deletePermission(e.target.value, selectedUser, currentUserUri);
-    // };
+    const deleteThisPermission = (e, name) => {
+        e.preventDefault();
+        deletePermission(name, selectedUser, currentUserUri);
+    };
 
     let image;
 
@@ -143,7 +146,7 @@ const ViewPrivileges = ({
     }
 
     return (
-        <div className={classes.widthTwoThirds}>
+        <Mypage>
             <Link to="../authorisation">
                 <Button type="button" variant="outlined">
                     Home
@@ -197,12 +200,15 @@ const ViewPrivileges = ({
                                         {privilege.active.toString()}
                                     </TableCell>
                                     <TableCell align="right">
-                                        {/* <Button
-                                            onClick={() => deleteThisPermission(privilege.name)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            X
-                                        </Button> */}
+                                        {!showCreate && (
+                                            <Button
+                                                onClick={e =>
+                                                    deleteThisPermission(e, privilege.name)
+                                                }
+                                            >
+                                                X
+                                            </Button>
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -222,7 +228,7 @@ const ViewPrivileges = ({
                                             type="button"
                                             variant="outlined"
                                             onClick={dispatchcreatePrivilege}
-                                            id="newPrivilegeStatus"
+                                            id="createNewPrivilegeButton"
                                         >
                                             Create
                                         </Button>
@@ -271,9 +277,9 @@ const ViewPrivileges = ({
             <SnackbarMessage
                 visible={showPrivilegeMessage}
                 onClose={() => setPrivilegeMessageVisible(false)}
-                message="Permission created"
+                message={permissionMessage}
             />
-        </div>
+        </Mypage>
     );
 };
 
@@ -311,9 +317,10 @@ ViewPrivileges.propTypes = {
     ).isRequired,
     createPermission: PropTypes.func.isRequired,
     currentUserUri: PropTypes.string.isRequired,
-    //deletePermission: PropTypes.func.isRequired,
+    deletePermission: PropTypes.func.isRequired,
     showPrivilegeMessage: PropTypes.func.isRequired,
-    setPrivilegeMessageVisible: PropTypes.func.isRequired
+    setPrivilegeMessageVisible: PropTypes.func.isRequired,
+    permissionMessage: PropTypes.string.isRequired
 };
 
 ViewPrivileges.defaultProps = {

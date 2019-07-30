@@ -14,8 +14,9 @@
                            {
                                GrantedByUri = individualPermission.GrantedByUri,
                                GranteeUri = individualPermission.GranteeUri,
-                               Privilege = individualPermission.Privilege.Name
-                           };
+                               Privilege = individualPermission.Privilege.Name,
+                               DateGranted = individualPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
+                };
             }
 
             var groupPermission = (GroupPermission)permission;
@@ -23,8 +24,9 @@
                        {
                            GrantedByUri = groupPermission.GrantedByUri,
                            GroupName = groupPermission.GranteeGroup.Name,
-                           Privilege = groupPermission.Privilege.Name
-                       };
+                           Privilege = groupPermission.Privilege.Name,
+                           DateGranted = groupPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
+            };
         }
 
         object IResourceBuilder<Permission>.Build(Permission p) => this.Build(p);

@@ -8,6 +8,12 @@ export const getGroupsLoading = state => {
     return loading || false;
 };
 
+export const getNewGroupName = state => {
+    const { groups } = state;
+    const { newGroupName } = groups;
+    return newGroupName || '';
+};
+
 export const getNewGroupForCreation = state => {
     const { groups } = state;
     const { newGroup } = groups;
@@ -19,6 +25,18 @@ export const getGroup = state => {
     return group.data;
 };
 
+export const getGroupPrivileges = state => {
+    const { group } = state;
+    const { privileges } = group;
+    return privileges;
+};
+
+export const getGroupPotentialPrivileges = state => {
+    const { group } = state;
+    const { potentialPrivileges } = group;
+    return potentialPrivileges;
+};
+
 export const getGroupLoading = state => {
     const { group } = state;
     const { loading } = group;
@@ -27,8 +45,14 @@ export const getGroupLoading = state => {
 
 export const getUpdatedMessageVisibility = state => {
     const { group } = state;
-    const { updatedMessageVisibility } = group;
-    return updatedMessageVisibility || false;
+    const { groupMessageVisibility } = group;
+    return groupMessageVisibility || false;
+};
+
+export const getGroupMessage = state => {
+    const { group } = state;
+    const { groupMessage } = group;
+    return groupMessage || false;
 };
 
 export const getSaveEnabled = state => {
@@ -59,4 +83,26 @@ export const getShouldShowCreate = state => {
     const { groups } = state;
     const { selectedUser } = groups;
     return selectedUser === -1;
+};
+
+export const getGroupMembers = state => {
+    const { group } = state;
+    const { data } = group;
+    const { members } = data;
+
+    return members ? members.filter(x => x.memberUri.includes('employees')) : [];
+};
+
+export const getAllUsers = state => {
+    const { group } = state;
+    const { users } = group;
+    return users;
+};
+
+export const getCurrentUser = state => {
+    const { oidc } = state;
+    const { user } = oidc;
+    const { profile } = user;
+    const { employee } = profile;
+    return employee;
 };

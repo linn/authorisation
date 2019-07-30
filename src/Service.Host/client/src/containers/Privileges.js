@@ -10,7 +10,8 @@ import {
     getShouldShowCreate,
     getPrivilegesForAssignment,
     getCurrentUser,
-    getPermissionMessageVisibility
+    getPermissionMessageVisibility,
+    getPermissionMessage
 } from '../selectors/privilegeSelectors';
 import {
     fetchPrivileges,
@@ -34,7 +35,8 @@ const mapStateToProps = state => ({
     showCreate: getShouldShowCreate(state),
     privilegesForAssignment: getPrivilegesForAssignment(state),
     currentUserUri: getCurrentUser(state),
-    showPrivilegeMessage: getPermissionMessageVisibility(state)
+    showPrivilegeMessage: getPermissionMessageVisibility(state),
+    permissionMessage: getPermissionMessage(state)
 });
 
 const mapDispatchToProps = {
@@ -46,13 +48,8 @@ const mapDispatchToProps = {
     updateNewPrivilege,
     selectUser,
     createPermission,
-    setPrivilegeMessageVisible
-
-    // deletePermission: (privilegeId, userId, currentUserUri) => {
-    //     dispatch(deletePermission(privilegeId, userId, currentUserUri));
-    //     dispatch(fetchPrivilegesForUser(userId));
-    //     dispatch(fetchPrivilegesForAssignment());
-    // }
+    setPrivilegeMessageVisible,
+    deletePermission
 };
 
 export default withRouter(

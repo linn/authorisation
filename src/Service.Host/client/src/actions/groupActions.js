@@ -54,25 +54,22 @@ export const fetchGroup = id => ({
     }
 });
 
-export const fetchPrivilegesForUser = userId => ({
+export const fetchPrivilegesForGroup = groupId => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
+        endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: {
-            Who: `/members/${userId}`
-        },
         types: [
             {
-                type: actionTypes.REQUEST_PRIVILEGES_FOR_USER,
+                type: actionTypes.REQUEST_PRIVILEGES_FOR_GROUP,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_PRIVILEGES_FOR_USER,
+                type: actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
@@ -86,6 +83,7 @@ export const fetchPrivilegesForUser = userId => ({
 
 export const fetchUsers = () => ({
     [RSAA]: {
+        //todo change back to ${config.appRoot}
         endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
         options: { requiresAuth: false },
@@ -111,7 +109,7 @@ export const fetchUsers = () => ({
     }
 });
 
-export const createGroup = (name, active) => ({
+export const createGroup = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'POST',
@@ -120,7 +118,7 @@ export const createGroup = (name, active) => ({
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, active }),
+        body: JSON.stringify({ name, active: true }),
         types: [
             {
                 type: actionTypes.REQUEST_CREATE_GROUP,
@@ -140,7 +138,7 @@ export const createGroup = (name, active) => ({
 });
 
 export const updateNewGroup = name => ({
-    type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
+    type: actionTypes.UPDATE_NEW_GROUP_NAME,
     data: name
 });
 
@@ -217,3 +215,95 @@ export const setUpdatedMessageVisible = visible => ({
     type: actionTypes.SET_UPDATE_MESSAGE_VISIBILITY,
     data: visible
 });
+
+export const createPermission = (privilege, groupName, currentUserUri) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/permissions`,
+        method: 'POST',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Privilege: privilege,
+            GrantedByUri: currentUserUri,
+            GroupName: groupName
+        }),
+        types: [
+            {
+                type: actionTypes.REQUEST_CREATE_GROUP_PERMISSION,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_CREATE_GROUP_PERMISSION,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const fetchPotentialPrivileges = () => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges/all`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_POTENTIAL_GROUP_PRIVILEGES,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_POTENTIAL_GROUP_PRIVILEGES,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const createNewIndividualMember = (employeeId, groupId, currentUserUri) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/groups/${groupId}/members`,
+        method: 'POST',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            MemberUri: `/employees/${employeeId}`,
+            AddedByUri: currentUserUri
+            //GroupName: groupName
+        }),
+        types: [
+            {
+                type: actionTypes.REQUEST_CREATE_INDIVIDUAL_MEMBER,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_CREATE_INDIVIDUAL_MEMBER,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+

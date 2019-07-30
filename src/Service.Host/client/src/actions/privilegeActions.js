@@ -108,6 +108,7 @@ export const fetchPrivilegesForUser = userId => ({
 });
 
 export const fetchUsers = () => ({
+    //todo change back ${config.appRoot}
     [RSAA]: {
         endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
@@ -134,7 +135,7 @@ export const fetchUsers = () => ({
     }
 });
 
-export const createPrivilege = (name, active) => ({
+export const createPrivilege = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'POST',
@@ -143,7 +144,7 @@ export const createPrivilege = (name, active) => ({
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, active }),
+        body: JSON.stringify({ name }),
         types: [
             {
                 type: actionTypes.REQUEST_CREATE_PRIVILEGE,
