@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     fetchGroups,
     createGroup,
-    updateNewGroup, 
+    updateNewGroup
 };
 
 export default withRouter(

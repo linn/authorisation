@@ -23,7 +23,8 @@ import {
     fetchPotentialPrivileges,
     fetchUsers,
     createPermission,
-    createNewIndividualMember
+    createNewIndividualMember,
+    deletePermission
 } from '../actions/groupActions';
 
 const mapStateToProps = (state, { match }) => ({
@@ -50,7 +51,8 @@ const mapDispatchToProps = {
     fetchUsers,
     fetchPotentialPrivileges,
     createPermission,
-    createNewIndividualMember
+    createNewIndividualMember,
+    deletePermission
 };
 
 export default withRouter(
