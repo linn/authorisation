@@ -14,7 +14,4 @@ const Mypage = props => {
     );
 };
 
-// export const roundedEdges = {
-//   borderRadius: "5px";
-
 export default Mypage;

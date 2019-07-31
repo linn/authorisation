@@ -81,33 +81,6 @@ export const fetchPrivilegesForGroup = groupId => ({
     }
 });
 
-export const fetchUsers = () => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
-        method: 'GET',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        types: [
-            {
-                type: actionTypes.REQUEST_USERS,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_USERS,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
 export const createGroup = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups`,
@@ -294,6 +267,33 @@ export const createNewIndividualMember = (employeeId, groupId, currentUserUri) =
             },
             {
                 type: actionTypes.RECEIVE_CREATE_INDIVIDUAL_MEMBER,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const deleteMember = entityUri => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}${entityUri}`,
+        method: 'DELETE',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_MEMBER,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_MEMBER,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {

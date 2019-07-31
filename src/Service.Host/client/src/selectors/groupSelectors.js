@@ -61,15 +61,6 @@ export const getSaveEnabled = state => {
     return enableSave || false;
 };
 
-export const getUsers = state => {
-    const { groups } = state;
-    const { users } = groups;
-    if (users) {
-        return users.data.items;
-    }
-    return [];
-};
-
 export const getSelectedUser = state => {
     const { groups } = state;
     const { selectedUser } = groups;
@@ -91,12 +82,6 @@ export const getGroupMembers = state => {
     const { members } = data;
 
     return members ? members.filter(x => x.memberUri.includes('employees')) : [];
-};
-
-export const getAllUsers = state => {
-    const { group } = state;
-    const { users } = group;
-    return users;
 };
 
 export const getCurrentUser = state => {

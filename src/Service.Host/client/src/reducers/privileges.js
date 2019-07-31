@@ -39,8 +39,7 @@ function Privileges(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                users: action.payload,
-                newPrivilege: { active: false, name: '' }
+                users: action.payload.data.items
             };
         }
         case actionTypes.UPDATE_SELECTED_USER: {

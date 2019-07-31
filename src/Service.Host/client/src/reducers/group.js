@@ -11,6 +11,7 @@ function Group(state = initialState, action) {
         case actionTypes.REQUEST_POTENTIAL_GROUP_PRIVILEGES:
         case actionTypes.REQUEST_CREATE_INDIVIDUAL_MEMBER:
         case actionTypes.REQUEST_DELETE_GROUP_PERMISSION:
+        case actionTypes.REQUEST_DELETE_MEMBER:
             return { ...state, loading: true };
         case actionTypes.RECEIVE_GROUP:
             return { ...state, loading: false, enableSave: false, ...action.payload };
@@ -45,12 +46,6 @@ function Group(state = initialState, action) {
                 groupMessageVisibility: action.data
             };
         }
-        case actionTypes.RECEIVE_USERS: {
-            return {
-                ...state,
-                users: action.payload.data.items
-            };
-        }
         case actionTypes.RECEIVE_CREATE_GROUP_PERMISSION: {
             return {
                 ...state,
@@ -83,6 +78,16 @@ function Group(state = initialState, action) {
                 loading: false,
                 groupMessageVisibility: true,
                 groupMessage: 'Permission removed'
+            };
+        }
+        case actionTypes.RECEIVE_DELETE_MEMBER: {
+            console.info(action.payload.data);
+            return {
+                ...state,
+                data: { ...state.data, members: action.payload.data.members },
+                loading: false,
+                groupMessageVisibility: true,
+                groupMessage: 'Member removed'
             };
         }
         case actionTypes.FETCH_ERROR: {

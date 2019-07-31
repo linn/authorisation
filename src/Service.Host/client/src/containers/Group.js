@@ -8,11 +8,11 @@ import {
     getSaveEnabled,
     getGroupPrivileges,
     getGroupMembers,
-    getAllUsers,
     getGroupPotentialPrivileges,
     getCurrentUser,
     getGroupMessage
 } from '../selectors/groupSelectors';
+import { getAllUsers } from '../selectors/privilegeSelectors';
 import {
     fetchGroup,
     updateGroupName,
@@ -21,11 +21,12 @@ import {
     setUpdatedMessageVisible,
     fetchPrivilegesForGroup,
     fetchPotentialPrivileges,
-    fetchUsers,
     createPermission,
     createNewIndividualMember,
-    deletePermission
+    deletePermission,
+    deleteMember
 } from '../actions/groupActions';
+import { fetchUsers } from '../actions/privilegeActions';
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
@@ -52,7 +53,8 @@ const mapDispatchToProps = {
     fetchPotentialPrivileges,
     createPermission,
     createNewIndividualMember,
-    deletePermission
+    deletePermission,
+    deleteMember
 };
 
 export default withRouter(

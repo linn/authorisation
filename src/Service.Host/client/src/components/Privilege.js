@@ -1,6 +1,16 @@
 ﻿import React, { useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Grid, Switch } from '@material-ui/core';
+import {
+    Paper,
+    Button,
+    Grid,
+    Switch,
+    Table,
+    TableHead,
+    TableBody,
+    TableCell,
+    TableRow
+} from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -12,6 +22,7 @@ import {
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
+import SubTitle from './SubTitle';
 
 const styles = () => ({
     root: {
@@ -31,11 +42,15 @@ const ViewPrivilege = ({
     loading,
     showUpdatedMessage,
     setUpdatedMessageVisible,
-    enableSave
+    enableSave,
+    //employeesWithPrivilege,
+    fetchUsers
 }) => {
     useEffect(() => {
         fetchPrivilege(id);
-    }, [fetchPrivilege, id]);
+      //  fetchEmployeesWithPrivilege(id),
+      fetchUsers();
+    }, [fetchPrivilege, fetchUsers, id]);
 
     const handleSaveClick = () => {
         savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
@@ -50,6 +65,81 @@ const ViewPrivilege = ({
 
     const privilegeName = privilege.name;
     const privilegeActive = privilege.active || false;
+
+    // const membersElements = (
+    //     <div className={classes.bottomPadding}>
+    //         <SubTitle>Employees with privilege '{privilege.name}'</SubTitle>
+    //         {employeesWithPrivilege && (
+    //             <div>
+    //                 <div className={classes.paddedScrollableDiv}>
+    //                     <Table>
+    //                         <TableHead>
+    //                             <TableRow>
+    //                                 <TableCell>Employee</TableCell>
+    //                                 <TableCell align="right">Granted permission by</TableCell>
+    //                                 <TableCell align="right">Date granted</TableCell>
+    //                                 <TableCell align="right" />
+    //                             </TableRow>
+    //                         </TableHead>
+    //                         <TableBody>
+    //                             {employeesWithPrivilege.map(employee => (
+    //                                 <TableRow key={employee.name}>
+    //                                     {/* link to privilege */}
+
+    //                                     <TableCell component="th" scope="row">
+    //                                        {/* {getEmployeeName(p.grantedByUri)} */}
+    //                                         {employee.name}{' '}
+    //                                     </TableCell>
+
+    //                                     <TableCell align="right">
+    //                                       {/* {getEmployeeName(p.grantedByUri)} */}
+    //                                       {employee.name}{' '}
+    //                                     </TableCell>
+    //                                     <TableCell align="right">{p.dateGranted} </TableCell>
+    //                                     <TableCell align="right">
+    //                                         {/* <Button
+    //                                             onClick={() => deleteThisPermission(p.privilege)}
+    //                                         >
+    //                                             Revoke privilege
+    //                                         </Button> */}
+    //                                     </TableCell>
+    //                                 </TableRow>
+    //                             ))}
+    //                         </TableBody>
+    //                     </Table>
+    //                 </div>
+    //                 <select
+    //                     value={privilegeToAssign}
+    //                     onChange={setPrivilegeForAssignment}
+    //                     className={classes.thinPrivilegesSelectList}
+    //                 >
+    //                     <option value="-1" key="-1">
+    //                         Select Privilege
+    //                     </option>
+    //                     {potentialPrivileges ? (
+    //                         potentialPrivileges.map(p => (
+    //                             <option value={p.name} key={p.name}>
+    //                                 {p.name}
+    //                             </option>
+    //                         ))
+    //                     ) : (
+    //                         <option value="no privileges to assign" key="-1">
+    //                             no privileges to assign
+    //                         </option>
+    //                     )}
+    //                 </select>
+    //                 <Button
+    //                     type="button"
+    //                     variant="outlined"
+    //                     onClick={dispatchcreatePermission}
+    //                     id="createNewPermission"
+    //                 >
+    //                     Assign to group
+    //                 </Button>
+    //             </div>
+    //         )}
+    //     </div>
+    // );
 
     let elementsToDisplay;
 

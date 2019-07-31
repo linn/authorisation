@@ -11,7 +11,8 @@ import {
     TableCell,
     TableRow
 } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+
+// import DeleteIcon from '@material-ui/icons/Delete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -23,6 +24,7 @@ import {
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
+import SubTitle from './SubTitle';
 
 const useStyles = makeStyles({
     root: {
@@ -74,7 +76,8 @@ const ViewGroup = ({
     createPermission,
     groupMessage,
     createNewIndividualMember,
-    deletePermission
+    deletePermission,
+    deleteMember
 }) => {
     useEffect(() => {
         fetchGroup(id);
@@ -128,6 +131,10 @@ const ViewGroup = ({
         deletePermission(name, group.name, currentUserUri);
     };
 
+    const dispatchRemoveMember = uri => {
+        deleteMember(uri);
+    };
+
     const groupName = group.name;
     const groupActive = group.active || false;
 
@@ -178,9 +185,7 @@ const ViewGroup = ({
 
     const privilegesElements = (
         <div className={classes.bottomPadding}>
-            <Typography variant="h5" gutterBottom>
-                Privileges assigned to '{group.name}'
-            </Typography>
+            <SubTitle>Privileges assigned to '{group.name}'</SubTitle>
             {privileges && (
                 <div>
                     <div className={classes.paddedScrollableDiv}>
@@ -257,12 +262,23 @@ const ViewGroup = ({
         const table = [];
         for (let i = 0; i < membersList.length; i += 4) {
             const children = [];
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < 4; j += 1) {
                 if (membersList[i + j]) {
                     children.push(
                         <td>
                             <li key={membersList[i + j].name}>
                                 {getEmployeeName(membersList[i + j].memberUri)}
+                                <Button
+                                    type="button"
+                                   // variant="outlined"
+                                    size="small"
+                                    onClick={() =>
+                                        dispatchRemoveMember(getHref(membersList[i + j], 'self'))
+                                    }
+                                    id="RemoveMember"
+                                >
+                                    X
+                                </Button>
                             </li>
                         </td>
                     );
@@ -277,9 +293,7 @@ const ViewGroup = ({
 
     const membersElements = (
         <div>
-            <Typography variant="h5" gutterBottom>
-                Members of '{group.name}'
-            </Typography>
+            <SubTitle>Members of '{group.name}'</SubTitle>
             {members && users && (
                 <div>
                     <ol className={classes.paddedScrollableDiv}>
@@ -403,7 +417,8 @@ ViewGroup.propTypes = {
     createPermission: PropTypes.func.isRequired,
     groupMessage: PropTypes.string.isRequired,
     createNewIndividualMember: PropTypes.func.isRequired,
-    deletePermission: PropTypes.func.isRequired
+    deletePermission: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired
 };
 
 ViewGroup.defaultProps = {
