@@ -74,14 +74,15 @@ function Group(state = initialState, action) {
         case actionTypes.RECEIVE_DELETE_GROUP_PERMISSION: {
             return {
                 ...state,
-                privileges: state.privileges.filter(i => i.name !== action.payload.data.privilege),
+                privileges: state.privileges.filter(
+                    i => i.privilege !== action.payload.data.privilege
+                ),
                 loading: false,
                 groupMessageVisibility: true,
                 groupMessage: 'Permission removed'
             };
         }
         case actionTypes.RECEIVE_DELETE_MEMBER: {
-            console.info(action.payload.data);
             return {
                 ...state,
                 data: { ...state.data, members: action.payload.data.members },
