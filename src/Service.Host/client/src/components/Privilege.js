@@ -18,7 +18,7 @@ import {
     Loading,
     Title,
     InputField,
-    getHref,
+    getSelfHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
@@ -31,7 +31,7 @@ const styles = () => ({
     }
 });
 
-const ViewPrivilege = ({
+function ViewPrivilege({
     classes,
     id,
     fetchPrivilege,
@@ -45,15 +45,15 @@ const ViewPrivilege = ({
     enableSave,
     //employeesWithPrivilege,
     fetchUsers
-}) => {
+}) {
     useEffect(() => {
         fetchPrivilege(id);
-      //  fetchEmployeesWithPrivilege(id),
-      fetchUsers();
+        //  fetchEmployeesWithPrivilege(id),
+        fetchUsers();
     }, [fetchPrivilege, fetchUsers, id]);
 
     const handleSaveClick = () => {
-        savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
+        savePrivilege(privilege.name, privilege.active, getSelfHref(privilege));
     };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
@@ -113,7 +113,7 @@ const ViewPrivilege = ({
     //                     onChange={setPrivilegeForAssignment}
     //                     className={classes.thinPrivilegesSelectList}
     //                 >
-    //                     <option value="-1" key="-1">
+    //                     <option>
     //                         Select Privilege
     //                     </option>
     //                     {potentialPrivileges ? (
@@ -123,7 +123,7 @@ const ViewPrivilege = ({
     //                             </option>
     //                         ))
     //                     ) : (
-    //                         <option value="no privileges to assign" key="-1">
+    //                         <option value="no privileges to assign">
     //                             no privileges to assign
     //                         </option>
     //                     )}
@@ -210,7 +210,7 @@ const ViewPrivilege = ({
             />
         </Mypage>
     );
-};
+}
 
 ViewPrivilege.propTypes = {
     classes: PropTypes.shape({}),

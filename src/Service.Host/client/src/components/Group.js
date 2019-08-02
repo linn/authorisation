@@ -20,7 +20,7 @@ import {
     Loading,
     Title,
     InputField,
-    getHref,
+    getSelfHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     }
 });
 
-const ViewGroup = ({
+function ViewGroup({
     fetchGroup,
     updateGroupName,
     toggleGroupStatus,
@@ -78,7 +78,7 @@ const ViewGroup = ({
     createNewIndividualMember,
     deletePermission,
     deleteMember
-}) => {
+}) {
     useEffect(() => {
         fetchGroup(id);
         fetchPrivilegesForGroup(id);
@@ -101,7 +101,7 @@ const ViewGroup = ({
     };
 
     const handleSaveClick = () => {
-        saveGroup(group.name, group.active, getHref(group, 'self'));
+        saveGroup(group.name, group.active, getSelfHref(group));
     };
 
     const handleUpdateGroupName = (propertyName, newValue) => {
@@ -118,9 +118,9 @@ const ViewGroup = ({
     const getEmployeeName = uri => {
         if (members && users) {
             const employee = users.find(x => x.href === uri);
-            if (employee) return employee.fullName;
+            return employee ? employee.fullName : 'Employee not found';
         }
-        return 'Employee not found';
+        return 'Error finding employee';
     };
 
     const setPrivilegeForAssignment = e => {
@@ -143,32 +143,30 @@ const ViewGroup = ({
             <Grid container spacing={24}>
                 <Grid item xs={12}>
                     <Fragment>
-                        <div>
-                            <Grid item xs={8}>
-                                <InputField
-                                    fullWidth
-                                    disabled={false}
-                                    value={groupName}
-                                    label="Group"
-                                    maxLength={100}
-                                    propertyName="name"
-                                    onChange={handleUpdateGroupName}
-                                />
-                            </Grid>
-                            <Grid item xs={8}>
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={groupActive}
-                                            onChange={handleToggleGroupStatus}
-                                            color="primary"
-                                        />
-                                    }
-                                    label="Active Status"
-                                    labelPlacement="start"
-                                />
-                            </Grid>
-                        </div>
+                        <Grid item xs={8}>
+                            <InputField
+                                fullWidth
+                                disabled={false}
+                                value={groupName}
+                                label="Group"
+                                maxLength={100}
+                                propertyName="name"
+                                onChange={handleUpdateGroupName}
+                            />
+                        </Grid>
+                        <Grid item xs={8}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={groupActive}
+                                        onChange={handleToggleGroupStatus}
+                                        color="primary"
+                                    />
+                                }
+                                label="Active Status"
+                                labelPlacement="start"
+                            />
+                        </Grid>
                     </Fragment>
                 </Grid>
             </Grid>
@@ -230,9 +228,7 @@ const ViewGroup = ({
                         onChange={setPrivilegeForAssignment}
                         className={classes.thinPrivilegesSelectList}
                     >
-                        <option value="-1" key="-1">
-                            Select Privilege
-                        </option>
+                        <option>Select Privilege</option>
                         {potentialPrivileges ? (
                             potentialPrivileges.map(p => (
                                 <option value={p.name} key={p.name}>
@@ -240,9 +236,7 @@ const ViewGroup = ({
                                 </option>
                             ))
                         ) : (
-                            <option value="no privileges to assign" key="-1">
-                                no privileges to assign
-                            </option>
+                            <option value="no privileges to assign">no privileges to assign</option>
                         )}
                     </select>
                     <Button
@@ -270,10 +264,10 @@ const ViewGroup = ({
                                 {getEmployeeName(membersList[i + j].memberUri)}
                                 <Button
                                     type="button"
-                                   // variant="outlined"
+                                    // variant="outlined"
                                     size="small"
                                     onClick={() =>
-                                        dispatchRemoveMember(getHref(membersList[i + j], 'self'))
+                                        dispatchRemoveMember(getSelfHref(membersList[i + j]))
                                     }
                                     id="RemoveMember"
                                 >
@@ -302,13 +296,10 @@ const ViewGroup = ({
 
                     <select
                         value={selectedUser}
-                        defaultValue={-1}
                         onChange={changeUser}
                         className={classes.thinPrivilegesSelectList}
                     >
-                        <option value={-1} key="-1">
-                            All Users
-                        </option>
+                        <option>All Users</option>
                         {users.map(user => (
                             <option value={user.id} key={user.id}>
                                 {user.fullName}
@@ -357,7 +348,7 @@ const ViewGroup = ({
             />
         </Mypage>
     );
-};
+}
 
 ViewGroup.propTypes = {
     fetchGroup: PropTypes.func.isRequired,

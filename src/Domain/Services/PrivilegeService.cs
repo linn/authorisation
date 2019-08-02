@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Domain.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -23,7 +24,10 @@
 
         public IEnumerable<Privilege> GetPrivileges(string who)
         {
-            // TODO what if who is string.Empty ?
+            if (who == String.Empty)
+            {
+                return null;
+            }
 
             var privileges = this.permissionRepository
                 .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
