@@ -108,6 +108,7 @@ export const fetchPrivilegesForUser = userId => ({
 });
 
 export const fetchUsers = () => ({
+    //todo change back ${config.appRoot}
     [RSAA]: {
         endpoint: `${config.appRoot}/employees?currentEmployees=true`,
         method: 'GET',
