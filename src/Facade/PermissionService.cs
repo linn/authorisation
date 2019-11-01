@@ -79,10 +79,10 @@
                     .Include(x => ((GroupPermission)x).GranteeGroup)
                     .Include(x => x.Privilege).ToList();
 
-            var indPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
+            var individualPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
                     .Include(x => x.Privilege).ToList();
 
-            var permissions = groupPermissions.Concat(indPermissions);
+            var permissions = groupPermissions.Concat(individualPermissions);
 
             return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
         }
