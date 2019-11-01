@@ -15,6 +15,8 @@
             this.permissionService = permissionService;
             this.Post("/authorisation/permissions", _ => this.CreatePermission());
             this.Delete("/authorisation/permissions", _ => this.RemovePermission());
+            this.Get("/authorisation/permissions/{id:int}", parameters => this.GetPermissionsForPrivilege(parameters.id));
+
         }
 
         private object CreatePermission()
@@ -28,6 +30,12 @@
         {
             var resource = this.Bind<PermissionResource>();
             var result = this.permissionService.RemovePermission(resource);
+            return this.Negotiate.WithModel(result);
+        }
+        private object GetPermissionsForPrivilege(int privilegeId)
+        {
+            var resource = this.Bind<PermissionResource>();
+            var result = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
             return this.Negotiate.WithModel(result);
         }
     }

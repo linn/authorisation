@@ -8,11 +8,12 @@ import {
     getSaveEnabled,
     getGroupPrivileges,
     getGroupMembers,
-    getAllUsers,
     getGroupPotentialPrivileges,
     getCurrentUser,
     getGroupMessage
 } from '../selectors/groupSelectors';
+import getAllUsers from '../selectors/usersSelectors';
+
 import {
     fetchGroup,
     updateGroupName,
@@ -21,10 +22,10 @@ import {
     setUpdatedMessageVisible,
     fetchPrivilegesForGroup,
     fetchPotentialPrivileges,
-    fetchUsers,
     createPermission,
     createNewIndividualMember
 } from '../actions/groupActions';
+import fetchUsers from '../actions/userActions';
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,

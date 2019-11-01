@@ -1,15 +1,13 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Paper,
-    Button,
-    Table,
-    TableHead,
-    TableBody,
-    TableCell,
-    TableRow,
-    TextField
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';

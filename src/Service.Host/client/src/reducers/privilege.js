@@ -7,11 +7,20 @@ function Privilege(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_PRIVILEGE:
             return { ...state, loading: true };
+        case actionTypes.REQUEST_USERS_FOR_PRIVILEGE:
+            return { ...state, loading: true };
         case actionTypes.REQUEST_SAVE_PRIVILEGE: {
             return { ...state, loading: true };
         }
         case actionTypes.RECEIVE_PRIVILEGE:
             return { ...state, loading: false, enableSave: false, ...action.payload };
+        case actionTypes.RECEIVE_USERS_FOR_PRIVILEGE:
+            return {
+                ...state,
+                loading: false,
+                enableSave: false,
+                permissions: action.payload.data
+            };
         case actionTypes.RECEIVE_UPDATED_PRIVILEGE:
             return {
                 ...state,

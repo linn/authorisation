@@ -107,10 +107,9 @@ export const fetchPrivilegesForUser = userId => ({
     }
 });
 
-export const fetchUsers = () => ({
-    //todo change back ${config.appRoot}
+export const fetchUsersForPrivilege = privilegeId => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
+        endpoint: `${config.appRoot}/authorisation/permissions/${privilegeId}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
@@ -119,11 +118,11 @@ export const fetchUsers = () => ({
         },
         types: [
             {
-                type: actionTypes.REQUEST_USERS,
+                type: actionTypes.REQUEST_USERS_FOR_PRIVILEGE,
                 payload: {}
             },
             {
-                type: actionTypes.RECEIVE_USERS,
+                type: actionTypes.RECEIVE_USERS_FOR_PRIVILEGE,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {

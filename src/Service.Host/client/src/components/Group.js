@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Grid, Switch } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -206,7 +209,7 @@ const ViewGroup = ({
         const table = [];
         for (let i = 0; i < membersList.length; i += 4) {
             const children = [];
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < 4; j += 1) {
                 if (membersList[i + j]) {
                     children.push(
                         <td>
@@ -260,7 +263,6 @@ const ViewGroup = ({
                         >
                             Add to group
                         </Button>
-                        {/* <div className={classes.employeeImageContainer}>{image}</div> */}
                     </div>
                 )}
             </div>
@@ -278,10 +280,10 @@ const ViewGroup = ({
                 <Title text="View/Edit Group" />
                 {editGroupSection}
 
-                <Title text={`Privileges assigned to '${group.name}'`} />
+                <h4>{`Privileges assigned to '${group.name}'`}</h4>
                 {privilegesElements}
 
-                <Title text={`Members of '${group.name}'`} />
+                <h4>{`Members of '${group.name}'`}</h4>
                 {membersElements}
             </Paper>
 
@@ -355,7 +357,6 @@ ViewGroup.propTypes = {
 };
 
 ViewGroup.defaultProps = {
-    classes: {},
     group: null,
     privileges: null,
     members: null

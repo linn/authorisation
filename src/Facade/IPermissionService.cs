@@ -12,8 +12,8 @@
         IResult<Permission> CreatePermission(PermissionResource permission);
         IResult<IEnumerable<Permission>> GetImmediatePermissionsForGroup(int groupId);
 
-       // IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId);
-
+        // IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId);
+        IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId);
         IResult<Permission> RemovePermission(PermissionResource permission);
     }
 }

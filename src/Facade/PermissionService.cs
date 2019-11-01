@@ -73,6 +73,20 @@
         //    return privileges.Where(p => p.Active).Distinct();
         //}
 
+        public IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId)
+        {
+            var groupPermissions = this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).Privilege.Id == privilegeId)
+                    .Include(x => ((GroupPermission)x).GranteeGroup)
+                    .Include(x => x.Privilege).ToList();
+
+            var indPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
+                    .Include(x => x.Privilege).ToList();
+
+            var permissions = groupPermissions.Concat(indPermissions);
+
+            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+        }
+
         public IResult<Permission> RemovePermission(PermissionResource resource)
         {
             var permission = this.CreateFromResource(resource);

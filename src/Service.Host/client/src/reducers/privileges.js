@@ -7,7 +7,6 @@ function Privileges(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_PRIVILEGES:
         case actionTypes.REQUEST_PRIVILEGES_FOR_USER:
-        case actionTypes.REQUEST_USERS:
         case actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT:
         case actionTypes.REQUEST_CREATE_PERMISSION:
         case actionTypes.REQUEST_DELETE_PERMISSION:
@@ -33,14 +32,6 @@ function Privileges(state = initialState, action) {
                 ...action.payload,
                 newPrivilege: { active: false, name: '' },
                 loading: false
-            };
-        }
-        case actionTypes.RECEIVE_USERS: {
-            return {
-                ...state,
-                loading: false,
-                users: action.payload,
-                newPrivilege: { active: false, name: '' }
             };
         }
         case actionTypes.UPDATE_SELECTED_USER: {

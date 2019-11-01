@@ -1,7 +1,8 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Button } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { Title } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';

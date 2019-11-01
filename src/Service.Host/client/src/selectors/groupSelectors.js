@@ -93,12 +93,6 @@ export const getGroupMembers = state => {
     return members ? members.filter(x => x.memberUri.includes('employees')) : [];
 };
 
-export const getAllUsers = state => {
-    const { group } = state;
-    const { users } = group;
-    return users;
-};
-
 export const getCurrentUser = state => {
     const { oidc } = state;
     const { user } = oidc;
