@@ -2,7 +2,6 @@
 {
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Resources;
-
     using Nancy;
     using Nancy.ModelBinding;
 
@@ -16,7 +15,6 @@
             this.Post("/authorisation/permissions", _ => this.CreatePermission());
             this.Delete("/authorisation/permissions", _ => this.RemovePermission());
             this.Get("/authorisation/permissions/{id:int}", parameters => this.GetPermissionsForPrivilege(parameters.id));
-
         }
 
         private object CreatePermission()
@@ -32,6 +30,7 @@
             var result = this.permissionService.RemovePermission(resource);
             return this.Negotiate.WithModel(result);
         }
+
         private object GetPermissionsForPrivilege(int privilegeId)
         {
             var resource = this.Bind<PermissionResource>();
