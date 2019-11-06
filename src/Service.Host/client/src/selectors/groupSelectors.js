@@ -61,15 +61,6 @@ export const getSaveEnabled = state => {
     return enableSave || false;
 };
 
-export const getUsers = state => {
-    const { groups } = state;
-    const { users } = groups;
-    if (users) {
-        return users.data.items;
-    }
-    return [];
-};
-
 export const getSelectedUser = state => {
     const { groups } = state;
     const { selectedUser } = groups;

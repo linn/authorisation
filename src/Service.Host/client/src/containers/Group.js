@@ -23,7 +23,9 @@ import {
     fetchPrivilegesForGroup,
     fetchPotentialPrivileges,
     createPermission,
-    createNewIndividualMember
+    createNewIndividualMember,
+    deletePermission,
+    deleteMember
 } from '../actions/groupActions';
 import fetchUsers from '../actions/userActions';
 
@@ -51,7 +53,9 @@ const mapDispatchToProps = {
     fetchUsers,
     fetchPotentialPrivileges,
     createPermission,
-    createNewIndividualMember
+    createNewIndividualMember,
+    deletePermission,
+    deleteMember
 };
 
 export default withRouter(

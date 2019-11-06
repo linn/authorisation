@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, getHref } from '@linn-it/linn-form-components-library';
+import { Loading, Title, getSelfHref } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
 
 const styles = () => ({
@@ -20,7 +20,7 @@ const styles = () => ({
     }
 });
 
-const ViewGroups = ({
+function ViewGroups({
     classes,
     fetchGroups,
     groups,
@@ -28,7 +28,7 @@ const ViewGroups = ({
     createGroup,
     updateNewGroup,
     newGroupName
-}) => {
+}) {
     useEffect(() => {
         fetchGroups();
     }, [fetchGroups]);
@@ -65,11 +65,7 @@ const ViewGroups = ({
                         </TableHead>
                         <TableBody>
                             {groups.map(group => (
-                                <TableRow
-                                    key={group.name}
-                                    component={Link}
-                                    to={getHref(group, 'self')}
-                                >
+                                <TableRow key={group.name} component={Link} to={getSelfHref(group)}>
                                     <TableCell component="th" scope="row">
                                         {group.name}
                                     </TableCell>
@@ -104,7 +100,7 @@ const ViewGroups = ({
             </Paper>
         </Mypage>
     );
-};
+}
 
 ViewGroups.propTypes = {
     classes: PropTypes.shape({}),

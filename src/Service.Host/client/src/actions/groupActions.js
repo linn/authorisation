@@ -277,3 +277,62 @@ export const createNewIndividualMember = (employeeId, groupId, currentUserUri) =
         ]
     }
 });
+
+export const deleteMember = entityUri => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}${entityUri}`,
+        method: 'DELETE',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_MEMBER,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_MEMBER,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const deletePermission = (privilege, group, currentUserUri) => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/permissions`,
+        method: 'DELETE',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Privilege: privilege,
+            GrantedByUri: currentUserUri,
+            GroupName: group
+        }),
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_GROUP_PERMISSION,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_GROUP_PERMISSION,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});

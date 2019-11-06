@@ -4,6 +4,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -11,10 +16,11 @@ import {
     Loading,
     Title,
     InputField,
-    getHref,
+    getSelfHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
+import SubTitle from './SubTitle';
 
 const styles = () => ({
     root: {
@@ -23,7 +29,7 @@ const styles = () => ({
     }
 });
 
-const ViewPrivilege = ({
+function ViewPrivilege({
     classes,
     id,
     fetchPrivilege,
@@ -47,7 +53,7 @@ const ViewPrivilege = ({
     }, [fetchPrivilege, fetchUsersForPrivilege, fetchUsers, id]);
 
     const handleSaveClick = () => {
-        savePrivilege(privilege.name, privilege.active, getHref(privilege, 'self'));
+        savePrivilege(privilege.name, privilege.active, getSelfHref(privilege));
     };
 
     const handleUpdatePrivilegeName = (propertyName, newValue) => {
@@ -187,7 +193,7 @@ const ViewPrivilege = ({
             />
         </Mypage>
     );
-};
+}
 
 ViewPrivilege.propTypes = {
     classes: PropTypes.shape({}),
