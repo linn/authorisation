@@ -15,7 +15,7 @@
                                GrantedByUri = individualPermission.GrantedByUri,
                                GranteeUri = individualPermission.GranteeUri,
                                Privilege = individualPermission.Privilege.Name,
-                               DateGranted = individualPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
+                               DateGranted = individualPermission.DateGranted.ToString("o")
                 };
             }
 
@@ -25,7 +25,7 @@
                            GrantedByUri = groupPermission.GrantedByUri,
                            GroupName = groupPermission.GranteeGroup.Name,
                            Privilege = groupPermission.Privilege.Name,
-                           DateGranted = groupPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
+                           DateGranted = groupPermission.DateGranted.ToString("o")
             };
         }
 

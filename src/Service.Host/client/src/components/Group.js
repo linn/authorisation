@@ -1,6 +1,18 @@
 ﻿import React, { useEffect, Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Grid, Switch } from '@material-ui/core';
+import {
+    Paper,
+    Button,
+    Grid,
+    Switch,
+    Table,
+    TableHead,
+    TableBody,
+    TableCell,
+    TableRow
+} from '@material-ui/core';
+
+// import DeleteIcon from '@material-ui/icons/Delete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -8,10 +20,11 @@ import {
     Loading,
     Title,
     InputField,
-    getHref,
+    getSelfHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
+import SubTitle from './SubTitle';
 
 const useStyles = makeStyles({
     root: {
@@ -29,10 +42,19 @@ const useStyles = makeStyles({
     },
     bottomPadding: {
         paddingBottom: '20px'
+    },
+    scrollableDiv: {
+        maxHeight: '300px',
+        overflowY: 'scroll'
+    },
+    paddedScrollableDiv: {
+        maxHeight: '300px',
+        overflowY: 'scroll',
+        paddingBottom: '20px'
     }
 });
 
-const ViewGroup = ({
+function ViewGroup({
     fetchGroup,
     updateGroupName,
     toggleGroupStatus,
@@ -53,8 +75,10 @@ const ViewGroup = ({
     currentUserUri,
     createPermission,
     groupMessage,
-    createNewIndividualMember
-}) => {
+    createNewIndividualMember,
+    deletePermission,
+    deleteMember
+}) {
     useEffect(() => {
         fetchGroup(id);
         fetchPrivilegesForGroup(id);
@@ -77,7 +101,7 @@ const ViewGroup = ({
     };
 
     const handleSaveClick = () => {
-        saveGroup(group.name, group.active, getHref(group, 'self'));
+        saveGroup(group.name, group.active, getSelfHref(group));
     };
 
     const handleUpdateGroupName = (propertyName, newValue) => {
@@ -94,13 +118,21 @@ const ViewGroup = ({
     const getEmployeeName = uri => {
         if (members && users) {
             const employee = users.find(x => x.href === uri);
-            if (employee) return employee.fullName;
+            return employee ? employee.fullName : 'Employee not found';
         }
-        return 'Employee not found';
+        return 'Error finding employee';
     };
 
     const setPrivilegeForAssignment = e => {
         setPrivilegeToAssign(e.target.value);
+    };
+
+    const deleteThisPermission = name => {
+        deletePermission(name, group.name, currentUserUri);
+    };
+
+    const dispatchRemoveMember = uri => {
+        deleteMember(uri);
     };
 
     const groupName = group.name;
@@ -111,32 +143,30 @@ const ViewGroup = ({
             <Grid container spacing={24}>
                 <Grid item xs={12}>
                     <Fragment>
-                        <div>
-                            <Grid item xs={8}>
-                                <InputField
-                                    fullWidth
-                                    disabled={false}
-                                    value={groupName}
-                                    label="Group"
-                                    maxLength={100}
-                                    propertyName="name"
-                                    onChange={handleUpdateGroupName}
-                                />
-                            </Grid>
-                            <Grid item xs={8}>
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={groupActive}
-                                            onChange={handleToggleGroupStatus}
-                                            color="primary"
-                                        />
-                                    }
-                                    label="Active Status"
-                                    labelPlacement="start"
-                                />
-                            </Grid>
-                        </div>
+                        <Grid item xs={8}>
+                            <InputField
+                                fullWidth
+                                disabled={false}
+                                value={groupName}
+                                label="Group"
+                                maxLength={100}
+                                propertyName="name"
+                                onChange={handleUpdateGroupName}
+                            />
+                        </Grid>
+                        <Grid item xs={8}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={groupActive}
+                                        onChange={handleToggleGroupStatus}
+                                        color="primary"
+                                    />
+                                }
+                                label="Active Status"
+                                labelPlacement="start"
+                            />
+                        </Grid>
                     </Fragment>
                 </Grid>
             </Grid>
@@ -151,67 +181,98 @@ const ViewGroup = ({
         </div>
     );
 
-    let privilegesElements;
+    const privilegesElements = (
+        <div className={classes.bottomPadding}>
+            <SubTitle>Privileges assigned to '{group.name}'</SubTitle>
+            {privileges && (
+                <div>
+                    <div className={classes.paddedScrollableDiv}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Privilege</TableCell>
+                                    <TableCell align="right">Granted by</TableCell>
+                                    <TableCell align="right">Date granted</TableCell>
+                                    <TableCell align="right" />
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {privileges.map(p => (
+                                    <TableRow key={p.privilege}>
+                                        {/* link to privilege */}
 
-    if (loading) {
-        privilegesElements = <Loading />;
-    } else {
-        privilegesElements = (
-            <div className={classes.bottomPadding}>
-                {privileges && (
-                    <div>
-                        <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                            {privileges.map(p => (
-                                <li key={p.privilege}>
-                                    {p.privilege} granted by {getEmployeeName(p.grantedByUri)} on{' '}
-                                    {p.dateGranted}
-                                </li>
-                            ))}
-                        </ol>
-                        <select
-                            value={privilegeToAssign}
-                            onChange={setPrivilegeForAssignment}
-                            className={classes.thinPrivilegesSelectList}
-                        >
-                            <option value="-1" key="-1">
-                                Select Privilege
-                            </option>
-                            {potentialPrivileges ? (
-                                potentialPrivileges.map(p => (
-                                    <option value={p.name} key={p.name}>
-                                        {p.name}
-                                    </option>
-                                ))
-                            ) : (
-                                <option value="no privileges to assign" key="-1">
-                                    no privileges to assign
-                                </option>
-                            )}
-                        </select>
-                        <Button
-                            type="button"
-                            variant="outlined"
-                            onClick={dispatchcreatePermission}
-                            id="createNewPermission"
-                        >
-                            Assign to group
-                        </Button>
+                                        <TableCell component="th" scope="row">
+                                            {' '}
+                                            {p.privilege}{' '}
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            {' '}
+                                            {getEmployeeName(p.grantedByUri)}{' '}
+                                        </TableCell>
+                                        <TableCell align="right">{p.dateGranted} </TableCell>
+                                        <TableCell align="right">
+                                            <Button
+                                                onClick={() => deleteThisPermission(p.privilege)}
+                                            >
+                                                Revoke privilege
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </div>
-                )}
-            </div>
-        );
-    }
+                    <select
+                        value={privilegeToAssign}
+                        onChange={setPrivilegeForAssignment}
+                        className={classes.thinPrivilegesSelectList}
+                    >
+                        <option>Select Privilege</option>
+                        {potentialPrivileges ? (
+                            potentialPrivileges.map(p => (
+                                <option value={p.name} key={p.name}>
+                                    {p.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="no privileges to assign">no privileges to assign</option>
+                        )}
+                    </select>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        onClick={dispatchcreatePermission}
+                        id="createNewPermission"
+                    >
+                        Assign to group
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
 
     const createTable = membersList => {
         const table = [];
         for (let i = 0; i < membersList.length; i += 4) {
             const children = [];
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < 4; j += 1) {
                 if (membersList[i + j]) {
                     children.push(
                         <td>
                             <li key={membersList[i + j].name}>
                                 {getEmployeeName(membersList[i + j].memberUri)}
+                                <Button
+                                    type="button"
+                                    // variant="outlined"
+                                    size="small"
+                                    onClick={() =>
+                                        dispatchRemoveMember(getSelfHref(membersList[i + j]))
+                                    }
+                                    id="RemoveMember"
+                                >
+                                    X
+                                </Button>
                             </li>
                         </td>
                     );
@@ -224,48 +285,40 @@ const ViewGroup = ({
         return table;
     };
 
-    let membersElements;
+    const membersElements = (
+        <div>
+            <SubTitle>Members of '{group.name}'</SubTitle>
+            {members && users && (
+                <div>
+                    <ol className={classes.paddedScrollableDiv}>
+                        <table style={{ width: '100%' }}>{createTable(members)}</table>
+                    </ol>
 
-    if (loading) {
-        membersElements = <Loading />;
-    } else {
-        membersElements = (
-            <div>
-                {members && users && (
-                    <div>
-                        <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                            <table style={{ width: '100%' }}>{createTable(members)}</table>
-                        </ol>
-
-                        <select
-                            value={selectedUser}
-                            defaultValue={-1}
-                            onChange={changeUser}
-                            className={classes.thinPrivilegesSelectList}
-                        >
-                            <option value={-1} key="-1">
-                                All Users
+                    <select
+                        value={selectedUser}
+                        onChange={changeUser}
+                        className={classes.thinPrivilegesSelectList}
+                    >
+                        <option>All Users</option>
+                        {users.map(user => (
+                            <option value={user.id} key={user.id}>
+                                {user.fullName}
                             </option>
-                            {users.map(user => (
-                                <option value={user.id} key={user.id}>
-                                    {user.fullName}
-                                </option>
-                            ))}
-                        </select>
-                        <Button
-                            type="button"
-                            variant="outlined"
-                            onClick={dispatchCreateIndividualMember}
-                            id="AddNewMember"
-                        >
-                            Add to group
-                        </Button>
-                        {/* <div className={classes.employeeImageContainer}>{image}</div> */}
-                    </div>
-                )}
-            </div>
-        );
-    }
+                        ))}
+                    </select>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        onClick={dispatchCreateIndividualMember}
+                        id="AddNewMember"
+                    >
+                        Add to group
+                    </Button>
+                    {/* <div className={classes.employeeImageContainer}>{image}</div> */}
+                </div>
+            )}
+        </div>
+    );
 
     return (
         <Mypage>
@@ -276,13 +329,16 @@ const ViewGroup = ({
             </Link>
             <Paper className={classes.root}>
                 <Title text="View/Edit Group" />
-                {editGroupSection}
 
-                <Title text={`Privileges assigned to '${group.name}'`} />
-                {privilegesElements}
-
-                <Title text={`Members of '${group.name}'`} />
-                {membersElements}
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <div>
+                        {editGroupSection}
+                        {privilegesElements}
+                        {membersElements}
+                    </div>
+                )}
             </Paper>
 
             <SnackbarMessage
@@ -292,7 +348,7 @@ const ViewGroup = ({
             />
         </Mypage>
     );
-};
+}
 
 ViewGroup.propTypes = {
     fetchGroup: PropTypes.func.isRequired,
@@ -351,11 +407,12 @@ ViewGroup.propTypes = {
     currentUserUri: PropTypes.string.isRequired,
     createPermission: PropTypes.func.isRequired,
     groupMessage: PropTypes.string.isRequired,
-    createNewIndividualMember: PropTypes.func.isRequired
+    createNewIndividualMember: PropTypes.func.isRequired,
+    deletePermission: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired
 };
 
 ViewGroup.defaultProps = {
-    classes: {},
     group: null,
     privileges: null,
     members: null

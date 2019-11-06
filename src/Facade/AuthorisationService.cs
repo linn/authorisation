@@ -16,7 +16,11 @@ namespace Linn.Authorisation.Facade
 
         public IResult<IEnumerable<Privilege>> GetPrivilegesForMember(string who)
         {
-            return new SuccessResult<IEnumerable<Privilege>>(this.privilegeService.GetPrivileges(who));
+            var result = this.privilegeService.GetPrivileges(who);
+
+           if(result != null) return new SuccessResult<IEnumerable<Privilege>>(result);
+
+           return new BadRequestResult<IEnumerable<Privilege>>("No who provided");
         }
     }
 }

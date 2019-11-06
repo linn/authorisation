@@ -12,7 +12,9 @@ import {
     updatePrivilegeName,
     savePrivilege,
     togglePrivilegeStatus,
-    setUpdatedMessageVisible
+    setUpdatedMessageVisible,
+    fetchEmployeesWithPrivilege,
+    fetchUsers
 } from '../actions/privilegeActions';
 
 const mapStateToProps = (state, { match }) => ({
@@ -28,7 +30,9 @@ const mapDispatchToProps = {
     updatePrivilegeName,
     togglePrivilegeStatus,
     savePrivilege,
-    setUpdatedMessageVisible
+    setUpdatedMessageVisible,
+    fetchEmployeesWithPrivilege,
+    fetchUsers
 };
 
 export default withRouter(

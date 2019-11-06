@@ -1,25 +1,28 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Paper, Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { Title } from '@linn-it/linn-form-components-library';
 import Mypage from './myPageWidth';
 
-const styles = () => ({
+const useStyles = makeStyles({
     root: {
         margin: '40px',
         padding: '40px'
+    },
+    rightMargin: {
+        marginRight: '20px'
     }
 });
 
-function App({ classes }) {
+function App() {
+    const classes = useStyles();
     return (
         <Mypage>
             <Paper className={classes.root}>
                 <Title text="Authorisation" />
                 <Link to="../authorisation/viewprivileges">
-                    <Button type="button" variant="outlined">
+                    <Button type="button" variant="outlined" className={classes.rightMargin}>
                         View Privileges
                     </Button>
                 </Link>
@@ -33,12 +36,4 @@ function App({ classes }) {
     );
 }
 
-App.propTypes = {
-    classes: PropTypes.shape({})
-};
-
-App.defaultProps = {
-    classes: {}
-};
-
-export default withStyles(styles)(App);
+export default App;

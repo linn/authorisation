@@ -12,7 +12,12 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
-import { Loading, Title, getHref, SnackbarMessage } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Title,
+    getSelfHref,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import config from '../config';
 import Mypage from './myPageWidth';
 
@@ -61,7 +66,7 @@ const useStyles = makeStyles({
     centerText: { textAlign: 'center' }
 });
 
-const ViewPrivileges = ({
+function ViewPrivileges({
     getAllPrivileges,
     getPrivilegesForUser,
     getPrivilegesForAssignment,
@@ -82,7 +87,7 @@ const ViewPrivileges = ({
     showPrivilegeMessage,
     setPrivilegeMessageVisible,
     permissionMessage
-}) => {
+}) {
     useEffect(() => {
         if (selectedUser == -1) {
             getAllPrivileges();
@@ -191,7 +196,7 @@ const ViewPrivileges = ({
                                 <TableRow
                                     key={privilege.name}
                                     component={Link}
-                                    to={getHref(privilege, 'self').slice(1)}
+                                    to={getSelfHref(privilege).slice(1)}
                                 >
                                     <TableCell component="th" scope="row">
                                         {privilege.name}
@@ -281,7 +286,7 @@ const ViewPrivileges = ({
             />
         </Mypage>
     );
-};
+}
 
 ViewPrivileges.propTypes = {
     getAllPrivileges: PropTypes.func.isRequired,
