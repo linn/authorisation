@@ -4,6 +4,9 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
+import Table from '@material-ui/core/Table';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -20,6 +23,9 @@ const styles = () => ({
     root: {
         margin: '40px',
         padding: '40px'
+    },
+    bottompadding: {
+        paddingBottom: '40px'
     }
 });
 
@@ -66,13 +72,14 @@ function ViewPrivilege({
     };
 
     const createTable = (membersList, isGroup) => {
-        const table = [];
+        const rows = [];
         for (let i = 0; i < membersList.length; i += 4) {
-            const children = [];
+            const singleRow = [];
+
             for (let j = 0; j < 4; j += 1) {
                 if (membersList[i + j]) {
-                    children.push(
-                        <td>
+                    singleRow.push(
+                        <TableCell>
                             {isGroup ? (
                                 <li key={membersList[i + j].groupName}>
                                     {membersList[i + j].groupName}
@@ -82,26 +89,23 @@ function ViewPrivilege({
                                     {getEmployeeName(membersList[i + j].granteeUri)}
                                 </li>
                             )}
-                        </td>
+                        </TableCell>
                     );
                 } else {
                     break;
                 }
             }
-            table.push(<tr>{children}</tr>);
+
+            rows.push(<TableRow>{singleRow}</TableRow>);
         }
-        return table;
+        return rows;
     };
 
     const privilegeName = privilege.name;
     const privilegeActive = privilege.active || false;
 
-    const individualPermissions = usersWithPermission
-        ? usersWithPermission.filter(x => x.granteeUri)
-        : [];
-    const groupPermissions = usersWithPermission
-        ? usersWithPermission.filter(x => x.groupName)
-        : [];
+    const individualPermissions = usersWithPermission.filter(x => x.granteeUri);
+    const groupPermissions = usersWithPermission.filter(x => x.groupName);
 
     let elementsToDisplay;
 
@@ -110,53 +114,46 @@ function ViewPrivilege({
     } else {
         elementsToDisplay = (
             <Fragment>
-                <Grid item xs={12}>
-                    <Fragment>
-                        <Grid item xs={8}>
-                            <InputField
-                                fullWidth
-                                disabled={false}
-                                value={privilegeName}
-                                label="Privilege"
-                                maxLength={100}
-                                propertyName="name"
-                                onChange={handleUpdatePrivilegeName}
-                            />
-                        </Grid>
-                        <Grid item xs={8}>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={privilegeActive}
-                                        onChange={handleTogglePrivilegeStatus}
-                                        color="primary"
-                                    />
-                                }
-                                label="Active Status"
-                                labelPlacement="start"
-                            />
-                        </Grid>
-                        <Grid item xs={8}>
-                            {usersWithPermission && (
-                                <Fragment>
-                                    <h4>Groups With permission:</h4>
-                                    <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                                        <table style={{ width: '100%' }}>
-                                            {createTable(groupPermissions, true)}
-                                        </table>
-                                    </ol>
-                                    <h4>Users With permission:</h4>
-                                    <ol style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                                        <table style={{ width: '100%' }}>
-                                            {createTable(individualPermissions, false)}
-                                        </table>
-                                    </ol>
-                                </Fragment>
-                            )}
-                        </Grid>
-                    </Fragment>
+                <Grid item xs={12} className={classes.bottompadding}>
+                    <Grid item xs={8}>
+                        <InputField
+                            fullWidth
+                            disabled={false}
+                            value={privilegeName}
+                            label="Privilege"
+                            maxLength={100}
+                            propertyName="name"
+                            onChange={handleUpdatePrivilegeName}
+                        />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={privilegeActive}
+                                    onChange={handleTogglePrivilegeStatus}
+                                    color="primary"
+                                />
+                            }
+                            label="Active Status"
+                            labelPlacement="start"
+                        />
+                    </Grid>
+                    <Grid item xs={8}>
+                        {usersWithPermission && (
+                            <Fragment>
+                                <h4>Groups With permission:</h4>
+                                <ol>
+                                    <Table>{createTable(groupPermissions, true)}</Table>
+                                </ol>
+                                <h4>Users With permission:</h4>
+                                <ol>
+                                    <Table>{createTable(individualPermissions, false)}</Table>
+                                </ol>
+                            </Fragment>
+                        )}
+                    </Grid>
                 </Grid>
-                <br />
                 <Button
                     type="button"
                     variant="outlined"
@@ -205,7 +202,7 @@ ViewPrivilege.propTypes = {
     showUpdatedMessage: PropTypes.bool.isRequired,
     setUpdatedMessageVisible: PropTypes.func.isRequired,
     enableSave: PropTypes.bool.isRequired,
-    usersWithPermission: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    usersWithPermission: PropTypes.arrayOf(PropTypes.shape({})),
     fetchUsersForPrivilege: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     allUsers: PropTypes.arrayOf(PropTypes.shape({})).isRequired
@@ -213,6 +210,7 @@ ViewPrivilege.propTypes = {
 
 ViewPrivilege.defaultProps = {
     classes: {},
-    privilege: null
+    privilege: null,
+    usersWithPermission: []
 };
 export default withStyles(styles)(ViewPrivilege);
