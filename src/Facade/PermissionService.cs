@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
@@ -12,7 +11,6 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
-
     using Microsoft.EntityFrameworkCore;
 
     public class PermissionService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionService
@@ -54,24 +52,19 @@
             return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
         }
 
-        //public IEnumerable<Privilege> GetAllPrivilegesForGroup(int groupId)
-        //{
-        //    var privileges = this.permissionRepository
-        //        .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
-        //        .Select(p => p.Privilege).ToList();
+        public IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId)
+        {
+            var groupPermissions = this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).Privilege.Id == privilegeId)
+                    .Include(x => ((GroupPermission)x).GranteeGroup)
+                    .Include(x => x.Privilege).ToList();
 
-        //    var groups = this.groupRepository.FindAll().Where(g => g.IsMemberOf($"/groups/{groupId}"));
-        //    if (!groups.Any())
-        //    {
-        //        return privileges.Where(p => p.Active).Distinct();
-        //    }
+            var individualPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
+                    .Include(x => x.Privilege).ToList();
 
-        //    var groupPermissions = this.permissionRepository.FilterBy(
-        //        p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf($"/groups/{groupId}"));
-        //    privileges.AddRange(groupPermissions.Select(p => p.Privilege));
+            var permissions = groupPermissions.Concat(individualPermissions);
 
-        //    return privileges.Where(p => p.Active).Distinct();
-        //}
+            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+        }
 
         public IResult<Permission> RemovePermission(PermissionResource resource)
         {

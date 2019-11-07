@@ -1,13 +1,11 @@
 ﻿import * as actionTypes from '../actions/actionTypes';
-//define the initial state
+
 const initialState = { data: [], loading: false };
 
-//define a reducer with an initialized state action
 function Privileges(state = initialState, action) {
     switch (action.type) {
         case actionTypes.REQUEST_PRIVILEGES:
         case actionTypes.REQUEST_PRIVILEGES_FOR_USER:
-        case actionTypes.REQUEST_USERS:
         case actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT:
         case actionTypes.REQUEST_CREATE_PERMISSION:
         case actionTypes.REQUEST_DELETE_PERMISSION:
@@ -33,13 +31,6 @@ function Privileges(state = initialState, action) {
                 ...action.payload,
                 newPrivilege: { active: false, name: '' },
                 loading: false
-            };
-        }
-        case actionTypes.RECEIVE_USERS: {
-            return {
-                ...state,
-                loading: false,
-                users: action.payload.data.items
             };
         }
         case actionTypes.UPDATE_SELECTED_USER: {

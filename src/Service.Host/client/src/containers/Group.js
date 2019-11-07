@@ -12,7 +12,8 @@ import {
     getCurrentUser,
     getGroupMessage
 } from '../selectors/groupSelectors';
-import { getAllUsers } from '../selectors/privilegeSelectors';
+import getAllUsers from '../selectors/usersSelectors';
+
 import {
     fetchGroup,
     updateGroupName,
@@ -26,7 +27,7 @@ import {
     deletePermission,
     deleteMember
 } from '../actions/groupActions';
-import { fetchUsers } from '../actions/privilegeActions';
+import fetchUsers from '../actions/userActions';
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,

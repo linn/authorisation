@@ -1,5 +1,5 @@
 ﻿import * as actionTypes from '../actions/actionTypes';
-//define the initial state
+
 const initialState = { data: [], loading: false };
 
 function Groups(state = initialState, action) {

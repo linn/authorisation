@@ -56,10 +56,13 @@ export const getSaveEnabled = state => {
     return enableSave || false;
 };
 
-export const getAllUsers = state => {
-    const { privileges } = state;
-    const { users } = privileges;
-    return users;
+export const getPermissionsForPrivilege = state => {
+    const { privilege } = state;
+    const { permissions } = privilege;
+    if (permissions) {
+        return permissions;
+    }
+    return [];
 };
 
 export const getSelectedUser = state => {

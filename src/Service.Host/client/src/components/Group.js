@@ -1,18 +1,14 @@
 ﻿import React, { useEffect, Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Paper,
-    Button,
-    Grid,
-    Switch,
-    Table,
-    TableHead,
-    TableBody,
-    TableCell,
-    TableRow
-} from '@material-ui/core';
-
-// import DeleteIcon from '@material-ui/icons/Delete';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';

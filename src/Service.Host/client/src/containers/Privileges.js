@@ -5,7 +5,6 @@ import {
     getPrivileges,
     getNewPrivilegeForCreation,
     getPrivilegesLoading,
-    getAllUsers,
     getSelectedUser,
     getShouldShowCreate,
     getPrivilegesForAssignment,
@@ -17,7 +16,6 @@ import {
     fetchPrivileges,
     createPrivilege,
     updateNewPrivilege,
-    fetchUsers,
     selectUser,
     fetchPrivilegesForUser,
     fetchPrivilegesForAssignment,
@@ -25,6 +23,8 @@ import {
     setPrivilegeMessageVisible,
     deletePermission
 } from '../actions/privilegeActions';
+import getAllUsers from '../selectors/usersSelectors';
+import fetchUsers from '../actions/userActions';
 
 const mapStateToProps = state => ({
     privileges: getPrivileges(state),

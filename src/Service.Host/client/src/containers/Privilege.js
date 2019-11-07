@@ -5,7 +5,8 @@ import {
     getPrivilege,
     getPrivilegeLoading,
     getUpdatedMessageVisibility,
-    getSaveEnabled
+    getSaveEnabled,
+    getPermissionsForPrivilege
 } from '../selectors/privilegeSelectors';
 import {
     fetchPrivilege,
@@ -13,16 +14,19 @@ import {
     savePrivilege,
     togglePrivilegeStatus,
     setUpdatedMessageVisible,
-    fetchEmployeesWithPrivilege,
-    fetchUsers
+    fetchUsersForPrivilege
 } from '../actions/privilegeActions';
+import getAllUsers from '../selectors/usersSelectors';
+import fetchUsers from '../actions/userActions';
 
 const mapStateToProps = (state, { match }) => ({
     id: match.params.id,
     privilege: getPrivilege(state),
     loading: getPrivilegeLoading(state),
     showUpdatedMessage: getUpdatedMessageVisibility(state),
-    enableSave: getSaveEnabled(state)
+    enableSave: getSaveEnabled(state),
+    usersWithPermission: getPermissionsForPrivilege(state),
+    allUsers: getAllUsers(state)
 });
 
 const mapDispatchToProps = {
@@ -31,7 +35,7 @@ const mapDispatchToProps = {
     togglePrivilegeStatus,
     savePrivilege,
     setUpdatedMessageVisible,
-    fetchEmployeesWithPrivilege,
+    fetchUsersForPrivilege,
     fetchUsers
 };
 
