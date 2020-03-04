@@ -1,17 +1,15 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
 {
+    using System.Collections.Generic;
     using FluentAssertions;
-
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenCreatingIndividualPermission : ContextBase
@@ -19,12 +17,16 @@
         [SetUp]
         public void SetUp()
         {
-            var resource = new PermissionResource { GranteeUri = "/employee/1", GrantedByUri = "/employee/33087", Privilege = "Name"};
+            var resource = new PermissionResource { GranteeUri = "/employee/1", GrantedByUri = "/employee/33087", Privilege = "Name" };
 
             var p = new IndividualPermission("/employee/1", new Privilege("Name"), "/employee/33087");
 
             this.PermissionService.CreatePermission(Arg.Any<PermissionResource>())
                 .Returns(new CreatedResult<Permission>(p));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
             this.Response = this.Browser.Post(
                 "/authorisation/permissions",

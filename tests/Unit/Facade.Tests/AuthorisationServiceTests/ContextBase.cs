@@ -11,7 +11,7 @@ namespace Linn.Authorisation.Facade.Tests.AuthorisationServiceTests
 
     public abstract class ContextBase
     {
-        protected AuthorisationService Sut { get; private set; }
+        protected MemberPrivilegesService Sut { get; private set; }
 
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
 
@@ -26,7 +26,7 @@ namespace Linn.Authorisation.Facade.Tests.AuthorisationServiceTests
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
             this.PrivilegeService = new PrivilegeService(this.GroupRepository, this.PermissionRepository);
 
-            this.Sut = new AuthorisationService(this.PrivilegeService);
+            this.Sut = new MemberPrivilegesService(this.PrivilegeService);
         }
     }
 }

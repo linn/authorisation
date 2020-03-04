@@ -1,8 +1,6 @@
 ﻿namespace Linn.Authorisation.Service.Tests.GroupModuleSpecs
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Linq;
     using FluentAssertions;
     using Linn.Authorisation.Domain;
@@ -16,15 +14,16 @@
     using NUnit.Framework;
     using NUnit.Framework.Internal;
 
+    using Linn.Production.Domain.LinnApps;
+
     public class WhenGettingGroupPermissions : ContextBase
     {
         private readonly string firstGroup = "first group";
-        private readonly string secondGroup = "second group";
+        
         [SetUp]
         public void SetUp()
         {
             var group1 = new Group(this.firstGroup, true);
-            var group2 = new Group(this.secondGroup, true);
 
             this.PermissionService.GetImmediatePermissionsForGroup(33)
                 .Returns(
@@ -32,8 +31,11 @@
                         new List<GroupPermission>
                             {
                                 new GroupPermission(group1, new Privilege("test priv"), "me")
-                            }
-                    ));
+                            }));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
             this.Response = this.Browser.Get(
                 "/authorisation/groups/33/permissions",

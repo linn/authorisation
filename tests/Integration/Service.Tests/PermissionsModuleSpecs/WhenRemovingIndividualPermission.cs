@@ -1,17 +1,15 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
 {
+    using System.Collections.Generic;
     using FluentAssertions;
-
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenRemovingIndividualPermission : ContextBase
@@ -19,12 +17,14 @@
         [SetUp]
         public void SetUp()
         {
-            var resource = new PermissionResource { GranteeUri = "/employee/1", GrantedByUri = "/employee/33087", Privilege = "Name" };
-
             var p = new IndividualPermission("/employee/1", new Privilege("Name"), "/employee/33087");
 
             this.PermissionService.RemovePermission(Arg.Any<PermissionResource>())
                 .Returns(new SuccessResult<Permission>(p));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
             this.Response = this.Browser.Delete(
                 "/authorisation/permissions",

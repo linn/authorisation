@@ -1,18 +1,16 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
 {
+    using System.Collections.Generic;
     using FluentAssertions;
-
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenCreatingGroupPermission : ContextBase
@@ -26,6 +24,10 @@
 
             this.PermissionService.CreatePermission(Arg.Any<PermissionResource>())
                 .Returns(new CreatedResult<Permission>(p));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
             this.Response = this.Browser.Post(
                 "/authorisation/permissions",

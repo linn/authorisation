@@ -22,7 +22,7 @@
         public void SetUp()
         {
             var result = new List<Privilege> { new Privilege("test"), new Privilege("test2") };
-            this.AuthorisationService.GetPrivilegesForMember("/employees/1234")
+            this.MemberPrivilegesService.GetPrivilegesForMember("/employees/1234")
                 .Returns(new SuccessResult<IEnumerable<Privilege>>(result));
             this.Response = this.Browser.Get(
                 "/authorisation/privileges",
@@ -42,7 +42,7 @@
         [Test]
         public void ShouldCallService()
         {
-            this.AuthorisationService.GetPrivilegesForMember(Arg.Any<string>()).ReceivedCalls();
+            this.MemberPrivilegesService.GetPrivilegesForMember(Arg.Any<string>()).ReceivedCalls();
         }
 
         [Test]

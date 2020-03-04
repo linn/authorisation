@@ -39,6 +39,16 @@
                 return new BadRequestResult<Permission>();
             }
 
+            var existingIdenticalPermission = this.permissionRepository.FindBy(
+                x => x.Privilege.Name == resource.Privilege
+                     && (x is GroupPermission && ((GroupPermission)x).GranteeGroup.Name == resource.GroupName)
+                     || (x is IndividualPermission && ((IndividualPermission)x).GranteeUri == resource.GranteeUri));
+
+            if (existingIdenticalPermission != null)
+            {
+                return new BadRequestResult<Permission>("Permission already exists");
+            }
+
             return this.Add(resource);
         }
 

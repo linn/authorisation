@@ -1,18 +1,17 @@
 ﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
 {
-    using FluentAssertions;
+    using System.Collections.Generic;
 
+    using FluentAssertions;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
+    using Linn.Production.Domain.LinnApps;
 
     using Nancy;
     using Nancy.Testing;
-
     using NSubstitute;
-
     using NUnit.Framework;
-    using System.Collections.Generic;
 
     public class WhenGettingPrivilege : ContextBase
     {
@@ -21,7 +20,13 @@
         {
             var privilege = new Privilege("First Privilege", true);
             this.PrivilegeService.GetById(19)
-                .Returns(new SuccessResult<Privilege>( privilege ));
+                .Returns(new SuccessResult<Privilege>(privilege));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
+
+
             this.Response = this.Browser.Get(
                 "/authorisation/privileges/19",
                 with =>
