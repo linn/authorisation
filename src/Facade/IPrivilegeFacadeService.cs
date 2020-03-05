@@ -6,6 +6,6 @@
 
     public interface IPrivilegeFacadeService : IFacadeService<Privilege, int, PrivilegeResource, PrivilegeResource>
     {
-        IResult<string> Remove(int id);
+        IResult<Privilege> Remove(int id);
     }
 }

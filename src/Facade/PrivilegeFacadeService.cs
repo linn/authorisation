@@ -2,7 +2,10 @@
 {
     using System;
     using System.Linq.Expressions;
+    using System.Net;
+
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Domain.Exceptions;
@@ -25,7 +28,7 @@
             this.permissionRepository = permissionRepository;
         }
 
-        public IResult<string> Remove(int privilegeId)
+        public IResult<Privilege> Remove(int privilegeId)
         {
             var permissionsForPriv = this.permissionRepository.FilterBy(x => x.Privilege.Id == privilegeId);
             var privilegeToRemove = this.privilegeRepository.FindBy(x => x.Id == privilegeId);
@@ -41,12 +44,12 @@
             }
             catch (DomainException exception)
             {
-                return new BadRequestResult<string>($"Error removing privilege {privilegeId} or associated permissions - {exception.Message}");
+                return new BadRequestResult<Privilege>($"Error removing privilege {privilegeId} or associated permissions - {exception.Message}");
             }
 
             this.transactionManager.Commit();
 
-            return new SuccessResult<string>($"Successfully removed privilege {privilegeId} and associated permissions");
+            return new SuccessResult<Privilege>(privilegeToRemove); 
         }
 
         protected override Privilege CreateFromResource(PrivilegeResource resource)

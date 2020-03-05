@@ -4,6 +4,7 @@
     using System.Security.Claims;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Resources;
@@ -12,6 +13,8 @@
     using Linn.Authorisation.Service.Tests;
     using Linn.Common.Authorisation;
     using Linn.Common.Facade;
+    using Linn.Production.Facade.ResourceBuilders;
+
     using Nancy.Testing;
     using NSubstitute;
     using NUnit.Framework;
@@ -35,8 +38,10 @@
                         with.Dependency(this.AuthorisationService);
                         with.Module<PrivilegesModule>();
                         with.ResponseProcessor<PrivilegeResponseProcessor>();
+                        with.ResponseProcessor<ErrorResponseProcessor>();
                         with.Dependency<IResourceBuilder<Privilege>>(new PrivilegeResourceBuilder());
                         with.ResponseProcessor<PrivilegesResponseProcessor>();
+                        with.Dependency<IResourceBuilder<Error>>(new ErrorResourceBuilder());
                         with.Dependency<IResourceBuilder<IEnumerable<Privilege>>>(new PrivilegesResourceBuilder()); with.RequestStartup(
                             (container, pipelines, context) =>
                                 {

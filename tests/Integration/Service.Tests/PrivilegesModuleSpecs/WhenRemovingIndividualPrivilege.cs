@@ -17,12 +17,9 @@
         [SetUp]
         public void SetUp()
         {
-            var requestResource = new PrivilegeResource { Name = "New privilege", Active = false };
-
-            var p = new Privilege("Name");
-
+            var p = new Privilege("deletme");
             this.PrivilegeService.Remove(Arg.Any<int>())
-                .Returns(new SuccessResult<string>("Successfully removed privilege 19 and associated permissions"));
+                .Returns(new SuccessResult<Privilege>(p));
 
             this.AuthorisationService.HasPermissionFor(
                 AuthorisedAction.AuthorisationAdmin,
@@ -33,7 +30,6 @@
                 with =>
                     {
                         with.Header("Accept", "application/json");
-                        with.Header("Content-Type", "application/json");
                     }).Result;
         }
 
@@ -52,8 +48,8 @@
         [Test]
         public void ShouldReturnResource()
         {
-            var resource = this.Response.Body.DeserializeJson<string>();
-            resource.Should().Be("Successfully removed privilege 19 and associated permissions");
+            var resource = this.Response.Body.DeserializeJson<Privilege>();
+            resource.Name.Should().Be("deletme");
         }
     }
 }
