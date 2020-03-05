@@ -2,7 +2,13 @@ namespace Linn.Authorisation.Service.Host
 {
     using System.IdentityModel.Tokens.Jwt;
 
+    using Amazon;
     using Amazon.Internal;
+    using Amazon.KeyManagementService;
+    using Amazon.S3;
+
+    using AspNetCore.DataProtection.Aws.Kms;
+    using AspNetCore.DataProtection.Aws.S3;
 
     using Linn.Common.Authentication.Host.Extensions;
     using Linn.Common.Configuration;
@@ -31,16 +37,16 @@ namespace Linn.Authorisation.Service.Host
             var keysBucketName = ConfigurationManager.Configuration["KEYS_BUCKET_NAME"];
             var kmsKeyAlias = ConfigurationManager.Configuration["KMS_KEY_ALIAS"];
 
-            //services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(new AmazonS3Config { RegionEndpoint = RegionEndpointProviderV2.RegionEndpoint.EUWest1 }));
-            //services.TryAddSingleton<IAmazonKeyManagementService>(new AmazonKeyManagementServiceClient(new AmazonKeyManagementServiceConfig
-            //                                                                                               {
-            //                                                                                                   RegionEndpoint = RegionEndpointProviderV2.RegionEndpoint.EUWest1
-            //                                                                                               }));
+            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(new AmazonS3Config { RegionEndpoint = RegionEndpoint.EUWest1 }));
+            services.TryAddSingleton<IAmazonKeyManagementService>(new AmazonKeyManagementServiceClient(new AmazonKeyManagementServiceConfig
+            {
+                RegionEndpoint = RegionEndpoint.EUWest1
+            }));
 
-            //services.AddDataProtection()
-            //    .SetApplicationName("auth-oidc")
-            //    .PersistKeysToAwsS3(new S3XmlRepositoryConfig(keysBucketName))
-            //    .ProtectKeysWithAwsKms(new KmsXmlEncryptorConfig(kmsKeyAlias) { DiscriminatorAsContext = true });
+            services.AddDataProtection()
+                .SetApplicationName("auth-oidc")
+                .PersistKeysToAwsS3(new S3XmlRepositoryConfig(keysBucketName))
+                .ProtectKeysWithAwsKms(new KmsXmlEncryptorConfig(kmsKeyAlias) { DiscriminatorAsContext = true });
 
             services.AddLinnAuthentication(
                 options =>
