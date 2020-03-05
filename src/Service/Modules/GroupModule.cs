@@ -1,26 +1,22 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
     using System.Linq;
-
     using Common.Facade;
-    using Domain.Groups;
     using Facade;
-
-    using Linn.Authorisation.Domain.Services;
     using Linn.Common.Authorisation;
     using Linn.Production.Domain.LinnApps;
     using Linn.Production.Service.Extensions;
-
     using Nancy;
     using Nancy.ModelBinding;
     using Nancy.Security;
-
     using Resources;
 
     public sealed class GroupModule : NancyModule
     {
         private readonly IGroupService groupService;
+
         private readonly IPermissionService permissionService;
+
         private readonly IAuthorisationService authorisationService;
 
         public GroupModule(IGroupService groupService, IPermissionService permissionService, IAuthorisationService authorisationService)
@@ -89,12 +85,12 @@
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
                 return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to view groups")));
-            } 
+            }
 
             var groups = this.groupService.GetAll();
             return this.Negotiate.WithModel(groups);
         }
-        
+
         private object AddGroupMember(int id)
         {
             this.RequiresAuthentication();
@@ -118,7 +114,7 @@
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
                 return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to edit groups")));
-            } 
+            }
 
             var result = this.groupService.RemoveGroupMember(id, memberId);
             return this.Negotiate.WithModel(result);

@@ -21,7 +21,8 @@ import {
     fetchPrivilegesForAssignment,
     createPermission,
     setPrivilegeMessageVisible,
-    deletePermission
+    deletePermission,
+    deletePrivilege
 } from '../actions/privilegeActions';
 import getAllUsers from '../selectors/usersSelectors';
 import fetchUsers from '../actions/userActions';
@@ -49,7 +50,8 @@ const mapDispatchToProps = {
     selectUser,
     createPermission,
     setPrivilegeMessageVisible,
-    deletePermission
+    deletePermission,
+    deletePrivilege
 };
 
 export default withRouter(

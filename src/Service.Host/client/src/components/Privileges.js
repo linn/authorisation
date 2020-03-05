@@ -84,7 +84,8 @@ function ViewPrivileges({
     deletePermission,
     showPrivilegeMessage,
     setPrivilegeMessageVisible,
-    permissionMessage
+    permissionMessage,
+    deletePrivilege
 }) {
     useEffect(() => {
         if (selectedUser == -1) {
@@ -132,6 +133,11 @@ function ViewPrivileges({
     const deleteThisPermission = (e, name) => {
         e.preventDefault();
         deletePermission(name, selectedUser, currentUserUri);
+    };
+
+    const deleteThisPrivilege = (e, id) => {
+        e.preventDefault();
+        deletePrivilege(id);
     };
 
     let image;
@@ -210,6 +216,13 @@ function ViewPrivileges({
                                                 }
                                             >
                                                 X
+                                            </Button>
+                                        )}
+                                        {showCreate && (
+                                            <Button
+                                                onClick={e => deleteThisPrivilege(e, privilege.id)}
+                                            >
+                                                Delete
                                             </Button>
                                         )}
                                     </TableCell>

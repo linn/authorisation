@@ -310,6 +310,32 @@ export const setPrivilegeMessageVisible = visible => ({
     data: visible
 });
 
+export const deletePrivilege = privilegeId => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges/${privilegeId}`,
+        method: 'DELETE',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_PRIVILEGE,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
+
 // export const fetchEmployeesWithPrivilege = () => {
 //     [RSAA]: {
 //         endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
