@@ -63,16 +63,18 @@ function Privileges(state = initialState, action) {
                 permissionMessageVisibility: true,
                 permissionMessage: 'Permission removed'
             };
-        },
+        }
+
         case actionTypes.RECEIVE_DELETE_PRIVILEGE: {
             return {
                 ...state,
-                data: state.data.filter(i => i.name !== action.payload.data.privilege),
+                data: state.data.filter(i => i.name !== action.payload.data.name),
                 loading: false,
                 permissionMessageVisibility: true,
-                permissionMessage: `Privilege ${action.payload.data.privilege.name} removed`
+                permissionMessage: `Privilege "${action.payload.data.name}" removed`
             };
         }
+
         default:
             return state;
     }

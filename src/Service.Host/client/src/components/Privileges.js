@@ -135,9 +135,9 @@ function ViewPrivileges({
         deletePermission(name, selectedUser, currentUserUri);
     };
 
-    const deleteThisPrivilege = (e, id) => {
+    const deleteThisPrivilege = (e, uri) => {
         e.preventDefault();
-        deletePrivilege(id);
+        deletePrivilege(uri);
     };
 
     let image;
@@ -220,7 +220,9 @@ function ViewPrivileges({
                                         )}
                                         {showCreate && (
                                             <Button
-                                                onClick={e => deleteThisPrivilege(e, privilege.id)}
+                                                onClick={e =>
+                                                    deleteThisPrivilege(e, getSelfHref(privilege))
+                                                }
                                             >
                                                 Delete
                                             </Button>

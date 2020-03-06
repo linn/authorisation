@@ -41,8 +41,8 @@
 
             var existingIdenticalPermission = this.permissionRepository.FindBy(
                 x => x.Privilege.Name == resource.Privilege
-                     && (x is GroupPermission && ((GroupPermission)x).GranteeGroup.Name == resource.GroupName)
-                     || (x is IndividualPermission && ((IndividualPermission)x).GranteeUri == resource.GranteeUri));
+                     && ((x is GroupPermission && ((GroupPermission)x).GranteeGroup.Name == resource.GroupName)
+                     || (x is IndividualPermission && ((IndividualPermission)x).GranteeUri == resource.GranteeUri)));
 
             if (existingIdenticalPermission != null)
             {

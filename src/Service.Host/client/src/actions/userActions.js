@@ -5,9 +5,9 @@ import * as actionTypes from './actionTypes';
 const fetchUsers = () => ({
     [RSAA]: {
         //${config.appRoot} can be changed to https://app-sys.linn.co.uk to see names locally
-        endpoint: `${config.appRoot}/employees?currentEmployees=true`,
+        endpoint: `https://app-sys.linn.co.uk/employees?currentEmployees=true`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
