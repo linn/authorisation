@@ -8,7 +8,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import {
     Loading,
@@ -18,6 +26,8 @@ import {
 } from '@linn-it/linn-form-components-library';
 import config from '../config';
 import Mypage from './myPageWidth';
+
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const useStyles = makeStyles({
     root: {
@@ -122,6 +132,9 @@ function ViewPrivileges({
     };
 
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [deletePrivilegeName, setDeletePrivilegeName] = useState({});
+    const [deletePrivilegeUri, setDeletePrivilegeUri] = useState({});
 
     const dispatchcreatePermission = () => {
         createPermission(privilegeToAssign, selectedUser, currentUserUri);
@@ -135,9 +148,15 @@ function ViewPrivileges({
         deletePermission(name, selectedUser, currentUserUri);
     };
 
-    const deleteThisPrivilege = (e, uri) => {
+    const handlePrivilegeDeleteClick = (e, uri, name) => {
         e.preventDefault();
-        deletePrivilege(uri);
+        setDeletePrivilegeName(name);
+        setDeletePrivilegeUri(uri);
+        setDialogOpen(true);
+    };
+
+    const deleteThisPrivilege = () => {
+        deletePrivilege(deletePrivilegeUri);
     };
 
     let image;
@@ -161,6 +180,50 @@ function ViewPrivileges({
                     Home
                 </Button>
             </Link>
+            <Dialog
+                data-testid="modal"
+                open={dialogOpen}
+                className={classes.modal}
+                onClose={() => {
+                    setDialogOpen(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                TransitionComponent={Transition}
+                fullWidth
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Are you sure you want to delete privilege `{deletePrivilegeName}`?
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        This will also delete the associated permissions
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        style={{ float: 'left' }}
+                        onClick={() => {
+                            deleteThisPrivilege();
+                            setDialogOpen(false);
+                        }}
+                        color="secondary"
+                    >
+                        Delete
+                    </Button>
+                    <Button
+                        color="default"
+                        variant="contained"
+                        style={{ float: 'right' }}
+                        onClick={() => {
+                            setDialogOpen(false);
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <Paper className={classes.root}>
                 <Title text="Privileges" className={classes.centerText} />
@@ -221,7 +284,11 @@ function ViewPrivileges({
                                         {showCreate && (
                                             <Button
                                                 onClick={e =>
-                                                    deleteThisPrivilege(e, getSelfHref(privilege))
+                                                    handlePrivilegeDeleteClick(
+                                                        e,
+                                                        getSelfHref(privilege),
+                                                        privilege.name
+                                                    )
                                                 }
                                             >
                                                 Delete
@@ -338,7 +405,8 @@ ViewPrivileges.propTypes = {
     deletePermission: PropTypes.func.isRequired,
     showPrivilegeMessage: PropTypes.func.isRequired,
     setPrivilegeMessageVisible: PropTypes.func.isRequired,
-    permissionMessage: PropTypes.string.isRequired
+    permissionMessage: PropTypes.string.isRequired,
+    deletePrivilege: PropTypes.func.isRequired
 };
 
 ViewPrivileges.defaultProps = {
