@@ -1,15 +1,12 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
-    using System;
     using System.Linq;
-
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Facade;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Production.Domain.LinnApps;
     using Linn.Production.Service.Extensions;
-    using Linn.Common.Authorisation;
     using Nancy;
     using Nancy.ModelBinding;
     using Nancy.Security;
@@ -88,7 +85,7 @@
 
             var result = this.privilegeService.Remove(id);
             return this.Negotiate.WithModel(result);
-       }
+        }
 
         private object GetPrivileges()
         {
@@ -103,6 +100,5 @@
             var privilege = this.privilegeService.GetAll();
             return this.Negotiate.WithModel(privilege);
         }
-
     }
 }

@@ -308,30 +308,3 @@ export const deletePrivilege = uri => ({
         ]
     }
 });
-
-// export const fetchEmployeesWithPrivilege = () => {
-//     [RSAA]: {
-//         endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
-//         method: 'GET',
-//         options: { requiresAuth: true },
-//         headers: {
-//             Accept: 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         types: [
-//             {
-//                 type: actionTypes.REQUEST_PRIVILEGES_FOR_GROUP,
-//                 payload: {}
-//             },
-//             {
-//                 type: actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP,
-//                 payload: async (action, state, res) => ({ data: await res.json() })
-//             },
-//             {
-//                 type: actionTypes.FETCH_ERROR,
-//                 payload: (action, state, res) =>
-//                     res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-//             }
-//         ]
-//     }
-// }
