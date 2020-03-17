@@ -58,10 +58,10 @@
     "sinon": "^4.5.0",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
-    "webpack": "^3.6.0",
-    "webpack-dev-middleware": "^1.12.2",
-    "webpack-dev-server": "^2.11.3",
-    "webpack-hot-middleware": "^2.24.3"
+    "webpack": "^4.42.0",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
     "@linn-it/linn-form-components-library": "^1.0.37",
