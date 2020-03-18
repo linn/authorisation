@@ -1,54 +1,55 @@
-﻿//namespace Linn.Authorisation.Service.Tests.PermissionsModuleSpecs
-//{
-//    using FluentAssertions;
-//    using Linn.Authorisation.Domain;
-//    using Linn.Authorisation.Domain.Permissions;
-//    using Linn.Authorisation.Resources;
-//    using Linn.Common.Facade;
-//    using Nancy;
-//    using Nancy.Testing;
-//    using NSubstitute;
-//    using NUnit.Framework;
+﻿namespace Linn.Authorisation.Service.Tests.PrivilegesModuleSpecs
+{
+    using System.Collections.Generic;
+    using FluentAssertions;
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
+    using Linn.Production.Domain.LinnApps;
+    using Nancy;
+    using Nancy.Testing;
+    using NSubstitute;
+    using NUnit.Framework;
 
-//    public class WhenRemovingIndividualPrivilege : ContextBase
-//    {
-//        [SetUp]
-//        public void SetUp()
-//        {
-//            var requestResource = new PrivilegeResource { Name = "New privilege", Active = false };
+    public class WhenRemovingIndividualPrivilege : ContextBase
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            var p = new Privilege("deletme");
+            this.PrivilegeService.Remove(Arg.Any<int>())
+                .Returns(new SuccessResult<Privilege>(p));
 
-//            var p = new IndividualPermission("/employee/19", new Privilege("Name"), "/employee/33087");
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
-//            this.PermissionService.RemovePermission(Arg.Any<PermissionResource>())
-//                .Returns(new SuccessResult<Permission>(p));
+            this.Response = this.Browser.Delete(
+                "/authorisation/privileges/19",
+                with =>
+                    {
+                        with.Header("Accept", "application/json");
+                    }).Result;
+        }
 
-//            this.Response = this.Browser.Delete(
-//                "/authorisation/privilege/19",
-//                with =>
-//                    {
-//                        with.Header("Accept", "application/json");
-//                        with.Header("Content-Type", "application/json");
-//                        with.Query("granteeUri", "/privilege/19");
-//                    }).Result;
-//        }
+        [Test]
+        public void ShouldReturnOk()
+        {
+            this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
 
-//        [Test]
-//        public void ShouldReturnOk()
-//        {
-//            this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
-//        }
+        [Test]
+        public void ShouldCallService()
+        {
+            this.PrivilegeService.Remove(Arg.Any<int>()).ReceivedCalls();
+        }
 
-//        [Test]
-//        public void ShouldCallService()
-//        {
-//            this.PermissionService.RemovePermission(Arg.Any<PermissionResource>()).ReceivedCalls();
-//        }
-
-//        [Test]
-//        public void ShouldReturnResource()
-//        {
-//            var resource = this.Response.Body.DeserializeJson<PermissionResource>();
-//            resource.GranteeUri.Should().Be("/privilege/19");
-//        }
-//    }
-//}
+        [Test]
+        public void ShouldReturnResource()
+        {
+            var resource = this.Response.Body.DeserializeJson<Privilege>();
+            resource.Name.Should().Be("deletme");
+        }
+    }
+}

@@ -1,17 +1,18 @@
 ﻿namespace Linn.Authorisation.Service.Tests.GroupsModuleSpecs
 {
+    using System.Collections.Generic;
     using FluentAssertions;
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Tests.GroupModuleSpecs;
     using Linn.Common.Facade;
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
-    class WhenUpdatingGroup : ContextBase
+    public class WhenUpdatingGroup : ContextBase
     {
         private GroupResource requestResource;
 
@@ -20,11 +21,15 @@
         {
             this.requestResource = new GroupResource { Name = "New group", Active = false };
             var group = new Group("New group", false);
-          
+
             this.GroupService.Update(19, Arg.Any<GroupResource>())
                 .Returns(new SuccessResult<Group>(group));
-            
-            this.Response = this.Browser.Put(  
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
+
+            this.Response = this.Browser.Put(
                 "/authorisation/groups/19",
                  with =>
                 {

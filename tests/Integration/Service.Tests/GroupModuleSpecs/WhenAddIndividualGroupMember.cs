@@ -1,8 +1,10 @@
 ﻿namespace Linn.Authorisation.Service.Tests.GroupModuleSpecs
 {
+    using System.Collections.Generic;
     using Common.Facade;
     using Domain.Groups;
     using FluentAssertions;
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
     using NSubstitute;
@@ -22,6 +24,11 @@
             var group = new Group("Test", true);
             group.AddIndividualMember("/employees/1", "/employees/7004");
             this.GroupService.AddGroupMember(1, Arg.Any<GroupMemberResource>()).Returns(new SuccessResult<Group>(group));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
+
             this.Response = this.Browser.Post(
                 "/authorisation/groups/1/members",
                 with =>

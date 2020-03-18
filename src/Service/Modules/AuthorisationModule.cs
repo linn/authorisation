@@ -10,11 +10,11 @@
 
     public sealed class AuthorisationModule : NancyModule
     {
-        private readonly IAuthorisationService authorisationService;
+        private readonly IMemberPrivilegesService memberPrivilegesService;
 
-        public AuthorisationModule(IAuthorisationService authorisationService)
+        public AuthorisationModule(IMemberPrivilegesService memberPrivilegesService)
         {
-            this.authorisationService = authorisationService;
+            this.memberPrivilegesService = memberPrivilegesService;
 
             this.Get("/authorisation/privileges", _ => this.GetPrivileges());
         }
@@ -22,7 +22,7 @@
         private object GetPrivileges()
         {
             var resource = this.Bind<AuthorisationRequestResource>();
-            var result = this.authorisationService.GetPrivilegesForMember(resource.Who);
+            var result = this.memberPrivilegesService.GetPrivilegesForMember(resource.Who);
             return this.Negotiate.WithModel(result);
         }
     }

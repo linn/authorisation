@@ -6,7 +6,7 @@ export const fetchGroups = () => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -32,7 +32,7 @@ export const fetchGroup = id => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups/${id}`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -58,7 +58,7 @@ export const fetchPrivilegesForGroup = groupId => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ export const createGroup = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups`,
         method: 'POST',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -132,7 +132,7 @@ export const saveGroup = (name, active, uri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/${uri}`,
         method: 'PUT',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ export const removeGroup = uri => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation${uri}`,
         method: 'PUT',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ export const createPermission = (privilege, groupName, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'POST',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -224,7 +224,7 @@ export const fetchPotentialPrivileges = () => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges/all`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -250,7 +250,7 @@ export const createNewIndividualMember = (employeeId, groupId, currentUserUri) =
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/groups/${groupId}/members`,
         method: 'POST',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -282,7 +282,7 @@ export const deleteMember = entityUri => ({
     [RSAA]: {
         endpoint: `${config.appRoot}${entityUri}`,
         method: 'DELETE',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -309,7 +309,7 @@ export const deletePermission = (privilege, group, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'DELETE',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'

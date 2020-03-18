@@ -6,7 +6,7 @@ export const fetchPrivileges = () => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges/all`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -32,7 +32,7 @@ export const fetchPrivilegesForAssignment = () => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges/all`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -58,7 +58,7 @@ export const fetchPrivilege = id => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges/${id}`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json'
         },
@@ -84,7 +84,7 @@ export const fetchPrivilegesForUser = userId => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges?Who=/employees/${userId}`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ export const fetchUsersForPrivilege = privilegeId => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions/${privilegeId}`,
         method: 'GET',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ export const createPrivilege = name => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/privileges`,
         method: 'POST',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -166,7 +166,7 @@ export const createPermission = (privilege, user, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'POST',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -198,7 +198,7 @@ export const deletePermission = (privilege, user, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'DELETE',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -249,7 +249,7 @@ export const savePrivilege = (name, active, uri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation${uri}`,
         method: 'PUT',
-        options: { requiresAuth: false },
+        options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -273,33 +273,6 @@ export const savePrivilege = (name, active, uri) => ({
     }
 });
 
-export const removePrivilege = uri => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation${uri}`,
-        method: 'PUT',
-        options: { requiresAuth: false },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        types: [
-            {
-                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_PRIVILEGE_DELETED,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
 export const setUpdatedMessageVisible = visible => ({
     type: actionTypes.SET_UPDATE_MESSAGE_VISIBILITY,
     data: visible
@@ -310,29 +283,28 @@ export const setPrivilegeMessageVisible = visible => ({
     data: visible
 });
 
-// export const fetchEmployeesWithPrivilege = () => {
-//     [RSAA]: {
-//         endpoint: `${config.appRoot}/authorisation/groups/${groupId}/permissions`,
-//         method: 'GET',
-//         options: { requiresAuth: false },
-//         headers: {
-//             Accept: 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         types: [
-//             {
-//                 type: actionTypes.REQUEST_PRIVILEGES_FOR_GROUP,
-//                 payload: {}
-//             },
-//             {
-//                 type: actionTypes.RECEIVE_PRIVILEGES_FOR_GROUP,
-//                 payload: async (action, state, res) => ({ data: await res.json() })
-//             },
-//             {
-//                 type: actionTypes.FETCH_ERROR,
-//                 payload: (action, state, res) =>
-//                     res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-//             }
-//         ]
-//     }
-// }
+export const deletePrivilege = uri => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/${uri}`,
+        method: 'DELETE',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_DELETE_PRIVILEGE,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_DELETE_PRIVILEGE,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});

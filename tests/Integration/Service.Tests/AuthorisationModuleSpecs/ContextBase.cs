@@ -17,17 +17,17 @@
 
     public abstract class ContextBase : NancyContextBase
     {
-        protected IAuthorisationService AuthorisationService { get; set; }
+        protected IMemberPrivilegesService MemberPrivilegesService { get; set; }
 
         [SetUp]
         public void EstablishContext()
         {
-            this.AuthorisationService = Substitute.For<IAuthorisationService>();
+            this.MemberPrivilegesService = Substitute.For<IMemberPrivilegesService>();
 
             var bootstrapper = new ConfigurableBootstrapper(
                 with =>
                     {
-                        with.Dependency(this.AuthorisationService);
+                        with.Dependency(this.MemberPrivilegesService);
                         with.ResponseProcessor<PrivilegesResponseProcessor>();
                         with.Module<AuthorisationModule>();
                         with.Dependency<IResourceBuilder<Privilege>>(new PrivilegeResourceBuilder());

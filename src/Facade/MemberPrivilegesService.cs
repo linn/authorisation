@@ -5,11 +5,11 @@ namespace Linn.Authorisation.Facade
     using Linn.Authorisation.Domain.Services;
     using Linn.Common.Facade;
 
-    public class AuthorisationService : IAuthorisationService
+    public class MemberPrivilegesService : IMemberPrivilegesService
     {
         private readonly IPrivilegeService privilegeService;
 
-        public AuthorisationService(IPrivilegeService privilegeService)
+        public MemberPrivilegesService(IPrivilegeService privilegeService)
         {
             this.privilegeService = privilegeService;
         }

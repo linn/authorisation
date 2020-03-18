@@ -9,6 +9,7 @@ function Privileges(state = initialState, action) {
         case actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT:
         case actionTypes.REQUEST_CREATE_PERMISSION:
         case actionTypes.REQUEST_DELETE_PERMISSION:
+        case actionTypes.REQUEST_DELETE_PRIVILEGE:
             return { ...state, loading: true };
         case actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT: {
             return { ...state, loading: false, privilegesForAssignment: action.payload.data };
@@ -63,6 +64,17 @@ function Privileges(state = initialState, action) {
                 permissionMessage: 'Permission removed'
             };
         }
+
+        case actionTypes.RECEIVE_DELETE_PRIVILEGE: {
+            return {
+                ...state,
+                data: state.data.filter(i => i.name !== action.payload.data.name),
+                loading: false,
+                permissionMessageVisibility: true,
+                permissionMessage: `Privilege "${action.payload.data.name}" removed`
+            };
+        }
+
         default:
             return state;
     }

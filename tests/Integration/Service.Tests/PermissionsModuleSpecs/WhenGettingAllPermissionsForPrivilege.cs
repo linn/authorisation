@@ -2,23 +2,19 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
     using FluentAssertions;
-
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-
+    using Linn.Production.Domain.LinnApps;
     using Nancy;
     using Nancy.Testing;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
-    public class WhenGettingAllPermissionsForPrivilege: ContextBase
+    public class WhenGettingAllPermissionsForPrivilege : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
 
@@ -35,9 +31,13 @@
                                                 new GroupPermission(new Group("adminz", true), new Privilege(privilegeName), "/employees/7004")
                                             };
 
-          
+
             this.PermissionService.GetAllPermissionsForPrivilege(Arg.Any<int>())
                 .Returns(new SuccessResult<IEnumerable<Permission>>(permissions));
+
+            this.AuthorisationService.HasPermissionFor(
+                AuthorisedAction.AuthorisationAdmin,
+                Arg.Any<IEnumerable<string>>()).Returns(true);
 
             this.Response = this.Browser.Get(
                 "/authorisation/permissions/3",
