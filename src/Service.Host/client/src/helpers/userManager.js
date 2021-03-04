@@ -13,7 +13,8 @@ var oidcConfig = {
     silent_redirect_uri: `${host}/authorisation/signin-oidc-silent`,
     automaticSilentRenew: true,
     filterProtocolClaims: true,
-    loadUserInfo: true
+    loadUserInfo: true,
+    monitorSession: false
 };
 
 const userManager = createUserManager(oidcConfig);
