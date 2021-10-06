@@ -2,10 +2,9 @@
 set -ev
 
 # install aws cli
-curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-unzip awscli-bundle.zip
-./awscli-bundle/install -b ~/bin/aws
-export PATH=~/bin:$PATH
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
 # deploy on aws
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
@@ -32,14 +31,7 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
   fi
 else
   # not master - deploy to int
-  echo deploy to int
-
-    aws s3 cp s3://$S3_BUCKET_NAME/authorisation/int.env ./secrets.env
-
-    STACK_NAME=authorisation-int
-    APP_ROOT=http://app-int.linn.co.uk
-    PROXY_ROOT=http://app.linn.co.uk
-    ENV_SUFFIX=-int
+  echo dont deploy to int
 fi
 
 # load the secret variables but hide the output from the travis log
