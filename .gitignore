@@ -69,3 +69,4 @@ src/Service.Host/client/build/
 
 config.env
 local-update.sh
+/src/Service.Host/config-example (2).env
