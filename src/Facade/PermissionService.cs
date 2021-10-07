@@ -103,8 +103,7 @@
 
             var individualPermission = this.permissionRepository.FilterBy(
                 p => p is IndividualPermission
-                     && ((IndividualPermission)p).GranteeUri == castedIndividualPermission.GranteeUri 
-                     && p.Privilege.Id == castedIndividualPermission.Privilege.Id).First();
+                     && ((IndividualPermission)p).GranteeUri == castedIndividualPermission.GranteeUri).First();
 
             this.permissionRepository.Remove(individualPermission);
             this.transactionManager.Commit();
