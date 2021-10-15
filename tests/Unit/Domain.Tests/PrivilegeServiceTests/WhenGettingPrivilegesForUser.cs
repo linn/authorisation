@@ -40,10 +40,7 @@
 
             var group2 = new Group { Name = "memberless-group", Active = true };
 
-            var group3 = new Group { Name = "inactive-group", Active = false };
-            group3.AddIndividualMember("/employees/33087", "/employees/12345");
-
-            var groups = new List<Group> { group1, group2, group3 };
+            var groups = new List<Group> { group1, group2 };
 
             this.GroupRepository.FindAll().Returns(groups.AsQueryable());
 
