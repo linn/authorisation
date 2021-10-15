@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
@@ -24,16 +25,16 @@
 
         public IEnumerable<Privilege> GetPrivileges(string who)
         {
-            if (who == String.Empty)
+            if (who == string.Empty)
             {
-                return null;
+                throw new NoGranteeUriProvidedException("no granteeUri provided");
             }
 
             var privileges = this.permissionRepository
                 .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
                 .Select(p => p.Privilege).ToList();
 
-            var groups = this.groupRepository.FindAll().ToList();
+            var groups = this.groupRepository.FindAll().Where(x => x.Active).ToList();
 
             if (!groups.Any(g => g.IsMemberOf(who)))
             {

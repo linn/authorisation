@@ -4,53 +4,48 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using Linn.Authorisation.Domain;
+
+    using FluentAssertions;
+
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
-    using FluentAssertions;
 
     using NSubstitute;
 
     using NUnit.Framework;
 
-    public class WhenGettingPermissionsForUser : ContextBase
+    public class WhenGettingPermissionsForUserNoGroups : ContextBase
     {
         private IEnumerable<Privilege> result;
 
         [SetUp]
         public void SetUp()
         {
-            var priv1 = new Privilege { Name = "click-buttons.admin" };
+            var priv1 = new Privilege { Name = "click-buttons.admin", Id = 1, Active = true };
 
-            var priv2 = new Privilege { Name = "type-things.admin" };
+            var priv2 = new Privilege { Name = "type-things.admin", Id = 2, Active = true };
 
-            var indvPermissions = new List<IndividualPermission>
+            var inactivePriv = new Privilege { Name = "delete-things.admin", Id = 3, Active = false };
+
+            var indvPermissions = new List<Permission>
                                       {
                                           new IndividualPermission("/employees/33087", priv1, "/employees/7004"),
                                           new IndividualPermission("/employees/33087", priv2, "/employees/7004"),
+                                          new IndividualPermission("/employees/33087", inactivePriv, "/employees/7004")
                                       };
 
-           
-
-
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                    .Returns(indvPermissions);
+                .Returns(indvPermissions.AsQueryable());
 
-            this.GroupRepository.FindAll()
-                    .Returns(new List<Group>());
-
+            this.GroupRepository.FindAll().Returns(new List<Group>().AsQueryable());
 
             this.result = this.Sut.GetPrivileges("/employees/33087");
         }
 
         [Test]
-        public void ShouldReturnPrivilegs()
+        public void ShouldCallGroupRepository()
         {
-            this.result.Count().Should().Be(2);
-            this.result.FirstOrDefault(
-                x => x.Name == "click-buttons.admin").Should().NotBeNull();
-            this.result.FirstOrDefault(
-                x => x.Name == "type-things.admin").Should().NotBeNull();
+            this.GroupRepository.Received().FindAll();
         }
 
         [Test]
@@ -60,9 +55,17 @@
         }
 
         [Test]
-        public void ShouldCallGroupRepository()
+        public void ShouldNotReturnInactivePrivilege()
         {
-            this.GroupRepository.Received().FindAll());
+            this.result.FirstOrDefault(x => x.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
+        }
+
+        [Test]
+        public void ShouldReturnActivePrivileges()
+        {
+            this.result.Count().Should().Be(2);
+            this.result.FirstOrDefault(x => x.Name == "click-buttons.admin" && x.Id == 1).Should().NotBeNull();
+            this.result.FirstOrDefault(x => x.Name == "type-things.admin" && x.Id == 2).Should().NotBeNull();
         }
     }
 }
