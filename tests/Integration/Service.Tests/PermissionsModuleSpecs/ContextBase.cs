@@ -21,14 +21,14 @@
 
     public abstract class ContextBase : NancyContextBase
     {
-        protected IPermissionService PermissionService { get; set; }
+        protected IPermissionFacadeService PermissionService { get; set; }
 
         protected IAuthorisationService AuthorisationService { get; set; }
 
         [SetUp]
         public void EstablishContext()
         {
-            this.PermissionService = Substitute.For<IPermissionService>();
+            this.PermissionService = Substitute.For<IPermissionFacadeService>();
             this.AuthorisationService = Substitute.For<IAuthorisationService>();
 
             var bootstrapper = new ConfigurableBootstrapper(
