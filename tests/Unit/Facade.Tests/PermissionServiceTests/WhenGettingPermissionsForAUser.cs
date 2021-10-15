@@ -21,15 +21,18 @@
         private IResult<IEnumerable<Permission>> result;
 
         private readonly string privilegeName = "do.admin.stuuuff";
+        private readonly string privilegeName2 = "do-someother-stuuuff";
+        private readonly string privilegeName3 = "do-hings";
+
         [SetUp]
         public void SetUp()
         {
 
             var permissions = new List<Permission>
                                             {
-                                                new IndividualPermission("/employees/133", new Privilege(privilegeName), "/employees/7004"),
-                                                new IndividualPermission("/employees/3006", new Privilege(privilegeName), "/employees/7004"),
-                                                new GroupPermission(new Group("adminz", true), new Privilege(privilegeName), "/employees/7004")
+                                                new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
+                                                new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
+                                                new GroupPermission(new Group("adminz", true), new Privilege(this.privilegeName3), "/employees/7004")
                                             };
 
             this.PermissionService.GetAllPermissionsForUser(Arg.Any<string>()).Returns(permissions);
@@ -63,9 +66,9 @@
             }
 
             permissions.ToList().Count.Should().Be(3);
-            groupPermissions.Should().Contain(x => x.Privilege.Name == privilegeName && x.GranteeGroup.Name == "adminz");
+            groupPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName3 && x.GranteeGroup.Name == "adminz");
             individualPermissions.Should().Contain(x => x.Privilege.Name == privilegeName && x.GranteeUri == "/employees/133");
-            individualPermissions.Should().Contain(x => x.Privilege.Name == privilegeName && x.GranteeUri == "/employees/3006");
+            individualPermissions.Should().Contain(x => x.Privilege.Name == privilegeName2 && x.GranteeUri == "/employees/3006");
         }
     }
 }

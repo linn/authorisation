@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Domain.Tests.PrivilegeServiceTests
+﻿namespace Linn.Authorisation.Domain.Tests.PermissionsTests
 {
     using Linn.Authorisation.Domain.Exceptions;
 
@@ -14,7 +14,7 @@
         [Test]
         public void ShouldThrowException()
         {
-            Assert.Throws<NoGranteeUriProvidedException>(() => this.Sut.GetPrivileges(string.Empty));
+            Assert.Throws<NoGranteeUriProvidedException>(() => this.Sut.GetAllPermissionsForUser(string.Empty));
         }
     }
 }

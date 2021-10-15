@@ -57,8 +57,8 @@
 
             result.ToList().Count.Should().Be(3);
             groupPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName3 && x.GranteeGroup.Name == "adminz");
-            individualPermissions.Should().Contain(x => x.Privilege.Name == "do.admin.stuuuff" && x.GranteeUri == "/employees/133");
-            individualPermissions.Should().Contain(x => x.Privilege.Name == "do.admin.stuuuff" && x.GranteeUri == "/employees/3006");
+            individualPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName && x.GranteeUri == "/employees/133");
+            individualPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName2 && x.GranteeUri == "/employees/3006");
         }
         [Test]
         public void ShouldCallGroupRepository()
