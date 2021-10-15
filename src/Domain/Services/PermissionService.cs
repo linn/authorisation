@@ -3,9 +3,10 @@
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Linn.Authorisation.Domain.Exceptions;
 
     public class PermissionService : IPermissionService
     {
@@ -23,9 +24,9 @@
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)
         {
-            if (who == String.Empty)
+            if (who == string.Empty)
             {
-                return null;
+                throw new NoGranteeUriProvidedException("no granteeUri provided");
             }
 
             var permissions = this.permissionRepository

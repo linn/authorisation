@@ -34,7 +34,7 @@
                 .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
                 .Select(p => p.Privilege).ToList();
 
-            var groups = this.groupRepository.FindAll().Where(x => x.Active).ToList();
+            var groups = this.groupRepository.FindAll().ToList();
 
             if (!groups.Any(g => g.IsMemberOf(who)))
             {

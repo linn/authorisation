@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using Exceptions;
     using FluentAssertions;
     using Groups;
     using Linn.Authorisation.Domain;
@@ -14,18 +13,21 @@
 
     public class WhenGettingPermissionsForAUser : ContextBase
     {
+        private readonly string privilegeName = "do.admin.stuuuff";
+        private readonly string privilegeName2 = "do-someother-stuuuff";
+        private readonly string privilegeName3 = "do-hings";
+
 
         private IEnumerable<Permission> result;
-        private readonly string privilegeName = "do.admin.stuuuff";
 
         [SetUp]
         public void SetUp()
         {
             var permissions = new List<Permission>
                                   {
-                                      new IndividualPermission("/employees/133", new Privilege(privilegeName), "/employees/7004"),
-                                      new IndividualPermission("/employees/3006", new Privilege(privilegeName), "/employees/7004"),
-                                      new GroupPermission(new Group("adminz", true), new Privilege(privilegeName), "/employees/7004")
+                                      new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
+                                      new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
+                                      new GroupPermission(new Group("adminz", true), new Privilege(this.privilegeName3), "/employees/7004")
                                   };
 
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
@@ -39,11 +41,9 @@
         [Test]
         public void ShouldReturnCorrectPermissions()
         {
-
-            var permissions = this.Sut.GetAllPermissionsForUser("/employees/133");
             var groupPermissions = new List<GroupPermission>();
             var individualPermissions = new List<IndividualPermission>();
-            foreach (var p in permissions)
+            foreach (var p in this.result)
             {
                 if (p is IndividualPermission)
                 {
@@ -55,8 +55,8 @@
                 }
             }
 
-            permissions.ToList().Count.Should().Be(3);
-            groupPermissions.Should().Contain(x => x.Privilege.Name == "do.admin.stuuuff" && x.GranteeGroup.Name == "adminz");
+            result.ToList().Count.Should().Be(3);
+            groupPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName3 && x.GranteeGroup.Name == "adminz");
             individualPermissions.Should().Contain(x => x.Privilege.Name == "do.admin.stuuuff" && x.GranteeUri == "/employees/133");
             individualPermissions.Should().Contain(x => x.Privilege.Name == "do.admin.stuuuff" && x.GranteeUri == "/employees/3006");
         }
