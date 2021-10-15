@@ -133,8 +133,8 @@
 
             var groupPermission = this.permissionRepository.FilterBy(
                     p => p is GroupPermission
-                         && ((GroupPermission)p).GranteeGroup == castedGroupPermission.GranteeGroup)
-                .First();
+                         && ((GroupPermission)p).GranteeGroup == castedGroupPermission.GranteeGroup
+                         && p.Privilege.Id == castedGroupPermission.Privilege.Id).First();
 
             this.permissionRepository.Remove(groupPermission);
             this.transactionManager.Commit();
