@@ -58,7 +58,7 @@
         [Test]
         public void ShouldNotReturnInactivePrivilege()
         {
-            this.result.FirstOrDefault(x => x.Privilege.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
+            this.result.SingleOrDefault(x => x.Privilege.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
         }
     }
 }

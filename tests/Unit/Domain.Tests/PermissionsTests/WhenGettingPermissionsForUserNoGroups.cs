@@ -52,15 +52,15 @@
         [Test]
         public void ShouldNotReturnInactivePrivilege()
         {
-            this.result.FirstOrDefault(x => x.Privilege.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
+            this.result.SingleOrDefault(x => x.Privilege.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
         }
 
         [Test]
         public void ShouldReturnActivePrivileges()
         {
             this.result.Count().Should().Be(2);
-            this.result.FirstOrDefault(x => x.Privilege.Name == "click-buttons.admin" && x.Privilege.Id == 1).Should().NotBeNull();
-            this.result.FirstOrDefault(x => x.Privilege.Name == "type-things.admin" && x.Privilege.Id == 2).Should().NotBeNull();
+            this.result.SingleOrDefault(x => x.Privilege.Name == "click-buttons.admin" && x.Privilege.Id == 1).Should().NotBeNull();
+            this.result.SingleOrDefault(x => x.Privilege.Name == "type-things.admin" && x.Privilege.Id == 2).Should().NotBeNull();
         }
     }
 }
