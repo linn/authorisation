@@ -22,11 +22,8 @@
         public void SetUp()
         {
             var priv1 = new Privilege { Name = "click-buttons.admin", Id = 1, Active = true };
-
             var priv2 = new Privilege { Name = "type-things.admin", Id = 2, Active = true };
-
             var inactivePriv = new Privilege { Name = "delete-things.admin", Id = 3, Active = false };
-
             var indvPermissions = new List<Permission>
                                       {
                                           new IndividualPermission("/employees/33087", priv1, "/employees/7004"),
@@ -36,9 +33,7 @@
 
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(indvPermissions.AsQueryable());
-
             this.GroupRepository.FindAll().Returns(new List<Group>().AsQueryable());
-
             this.result = this.Sut.GetPrivileges("/employees/33087");
         }
 

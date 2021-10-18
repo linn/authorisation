@@ -11,7 +11,6 @@
     public class PermissionService : IPermissionService
     {
         private readonly IRepository<Group, int> groupRepository;
-
         private readonly IRepository<Permission, int> permissionRepository;
 
         public PermissionService(
@@ -24,7 +23,7 @@
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)
         {
-            if (who == string.Empty)
+            if (string.IsNullOrEmpty(who))
             {
                 throw new NoGranteeUriProvidedException("no granteeUri provided");
             }

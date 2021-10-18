@@ -12,7 +12,6 @@
     public class PrivilegeService : IPrivilegeService
     {
         private readonly IRepository<Group, int> groupRepository;
-
         private readonly IRepository<Permission, int> permissionRepository;
 
         public PrivilegeService(
@@ -25,7 +24,7 @@
 
         public IEnumerable<Privilege> GetPrivileges(string who)
         {
-            if (who == string.Empty)
+            if (string.IsNullOrEmpty(who))
             {
                 throw new NoGranteeUriProvidedException("no granteeUri provided");
             }
@@ -48,5 +47,4 @@
             return privileges.Where(p => p.Active).Distinct();
         }
     }
-
 }

@@ -22,9 +22,7 @@
         public void SetUp()
         {
             var privilege1 = new Privilege { Name = "click-buttons.admin", Id = 1, Active = true };
-
             var privilege2 = new Privilege { Name = "type-things.admin", Id = 2, Active = true };
-
             var inactivePrivilege = new Privilege { Name = "delete-things.admin", Id = 3, Active = false };
 
             var indvPermissions = new List<Permission>
@@ -39,21 +37,16 @@
             group1.AddIndividualMember("not-the-right-member", "/employees/12345");
 
             var group2 = new Group { Name = "memberless-group", Active = true };
-
             var groups = new List<Group> { group1, group2 };
-
             this.GroupRepository.FindAll().Returns(groups.AsQueryable());
 
             var privOnlyInGroup = new Privilege { Name = "be-cool.admin", Id = 4, Active = true };
-
             var groupPermissionsToReturn = new List<Permission>
-                                           {
-                                               new GroupPermission(group1, privOnlyInGroup, "/employees/7004")
-                                           };
-
+                                               {
+                                                   new GroupPermission(group1, privOnlyInGroup, "/employees/7004")
+                                               };
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(indvPermissions.AsQueryable(), groupPermissionsToReturn.AsQueryable());
-
             this.result = this.Sut.GetPrivileges("/employees/33087");
         }
 

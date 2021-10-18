@@ -11,11 +11,7 @@
     <Compile Remove="PrivilegeServiceTests\WhenGettingPrivilegesForPermission.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="PrivilegeServiceTests\NewFile1.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />

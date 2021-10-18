@@ -16,6 +16,7 @@
             get;
             private set;
         }
+
         protected IRepository<Group, int> GroupRepository
         {
             get;

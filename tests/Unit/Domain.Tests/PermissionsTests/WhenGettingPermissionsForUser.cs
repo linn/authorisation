@@ -16,8 +16,6 @@
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do-someother-stuuuff";
         private readonly string privilegeName3 = "do-hings";
-
-
         private IEnumerable<Permission> result;
 
         [SetUp]
@@ -32,34 +30,19 @@
 
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(permissions.AsQueryable());
-
             this.GroupRepository.FindAll().Returns(new List<Group>().AsQueryable());
-
             this.result = this.Sut.GetAllPermissionsForUser("/employees/133");
         }
 
         [Test]
         public void ShouldReturnCorrectPermissions()
         {
-            var groupPermissions = new List<GroupPermission>();
-            var individualPermissions = new List<IndividualPermission>();
-            foreach (var p in this.result)
-            {
-                if (p is IndividualPermission)
-                {
-                    individualPermissions.Add((IndividualPermission)p);
-                }
-                else
-                {
-                    groupPermissions.Add((GroupPermission)p);
-                }
-            }
-
-            result.ToList().Count.Should().Be(3);
-            groupPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName3 && x.GranteeGroup.Name == "adminz");
-            individualPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName && x.GranteeUri == "/employees/133");
-            individualPermissions.Should().Contain(x => x.Privilege.Name == this.privilegeName2 && x.GranteeUri == "/employees/3006");
+            this.result.ToList().Count.Should().Be(3);
+            this.result.Where(x => x is GroupPermission).Should().Contain(x => x.Privilege.Name == this.privilegeName3 && ((GroupPermission)x).GranteeGroup.Name == "adminz");
+            this.result.Where(x => x is IndividualPermission).Should().Contain(x => x.Privilege.Name == this.privilegeName && ((IndividualPermission)x).GranteeUri == "/employees/133");
+            this.result.Where(x => x is IndividualPermission).Should().Contain(x => x.Privilege.Name == this.privilegeName2 && ((IndividualPermission)x).GranteeUri == "/employees/3006");
         }
+
         [Test]
         public void ShouldCallGroupRepository()
         {
