@@ -1,12 +1,12 @@
 ﻿namespace Linn.Authorisation.Domain.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Linn.Authorisation.Domain.Exceptions;
 
     public class PermissionService : IPermissionService
     {
@@ -19,6 +19,15 @@
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
+        }
+        public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
+        {
+            return this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId);
+        }
+
+        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
+        {
+            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)
@@ -45,5 +54,4 @@
             return permissions.Where(p => p.Privilege.Active).Distinct();
         }
     }
-
 }

@@ -25,20 +25,14 @@
         public void SetUp()
         {
 
-            var individualPermissions = new List<Permission>
+            var permissions = new List<Permission>
                                             {
                                                 new IndividualPermission("/employees/133", new Privilege(privilegeName), "/employees/7004"),
-                                                new IndividualPermission("/employees/3006", new Privilege(privilegeName), "/employees/7004")
+                                                new IndividualPermission("/employees/3006", new Privilege(privilegeName), "/employees/7004"),
+                                                new GroupPermission(new Group("adminz", true), new Privilege(privilegeName), "/employees/7004")
                                             };
-            var groupPermissions = new List<Permission>
-                                       {
-                                           new GroupPermission(new Group("adminz", true), new Privilege(privilegeName), "/employees/7004")
-                                       };
-
-            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(groupPermissions.AsQueryable(), individualPermissions.AsQueryable());
-
-            this.result = this.Sut.GetAllPermissionsForPrivilege(77);
+            this.PermissionService.GetAllPermissionsForPrivilege(Arg.Any<int>()).Returns(permissions);
+            this.result = this.Sut.GetAllPermissionsForPrivilege(1);
         }
 
         [Test]

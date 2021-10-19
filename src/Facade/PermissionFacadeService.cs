@@ -62,28 +62,17 @@
 
         public IResult<IEnumerable<Permission>> GetImmediatePermissionsForGroup(int groupId)
         {
-            var permissions = this.permissionRepository
-                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
-                .Include(x => ((GroupPermission)x).GranteeGroup)
-                .Include(x => x.Privilege).ToList();
+            var result = this.permissionService.GetImmediatePermissionsForGroup(groupId);
 
-            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+            return new SuccessResult<IEnumerable<Permission>>(result);
         }
 
         public IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId)
         {
-            var groupPermissions = this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).Privilege.Id == privilegeId)
-                    .Include(x => ((GroupPermission)x).GranteeGroup)
-                    .Include(x => x.Privilege).ToList();
+            var result = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
 
-            var individualPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
-                    .Include(x => x.Privilege).ToList();
-
-            var permissions = groupPermissions.Concat(individualPermissions);
-
-            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+            return new SuccessResult<IEnumerable<Permission>>(result);
         }
-
 
         public IResult<IEnumerable<Permission>> GetAllPermissionsForUser(string granteeUri)
         {

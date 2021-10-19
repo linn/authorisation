@@ -24,7 +24,7 @@
         protected IPermissionFacadeService PermissionService { get; set; }
 
         protected IAuthorisationService AuthorisationService { get; set; }
-
+        
         [SetUp]
         public void EstablishContext()
         {
