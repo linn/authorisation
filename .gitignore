@@ -69,19 +69,4 @@ src/Service.Host/client/build/
 
 config.env
 local-update.sh
-/src/Persistence/StyleCop.Cache
-/src/Domain/StyleCop.Cache
-/src/Facade/StyleCop.Cache
-/src/IoC/StyleCop.Cache
-/src/Messaging/StyleCop.Cache
-/src/Messaging.Host/StyleCop.Cache
-/tests/Unit/Proxy.Tests/StyleCop.Cache
-/tests/Unit/Messaging.Tests/StyleCop.Cache
-/tests/Unit/Facade.Tests/StyleCop.Cache
-/tests/Unit/Domain.Tests/StyleCop.Cache
-/tests/Integration/Service.Tests/StyleCop.Cache
-/src/Service.Host/StyleCop.Cache
-/src/Service/StyleCop.Cache
-/src/Resources/StyleCop.Cache
-/src/Proxy/StyleCop.Cache
-/StyleCop.Cache
+*StyleCop.Cache
