@@ -33,6 +33,11 @@ function App() {
                         View Groups
                     </Button>
                 </Link>
+                <Link to="../authorisation/viewpermissions">
+                <Button type="button" variant="outlined" className={classes.rightMargin}>
+                        View Permissions
+                    </Button>
+                </Link>
             </Paper>
         </Mypage>
     );

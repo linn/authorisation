@@ -27,6 +27,7 @@
             this.Delete("/authorisation/permissions", _ => this.RemovePermission());
             this.Get("/authorisation/permissions/{id:int}", parameters => this.GetPermissionsForPrivilege(parameters.id));
             this.Get("/authorisation/permissions/user", parameters => this.GetAllPermissionsForUser());
+            this.Get("/authorisation/permissions/", parameters => this.GetAllPermissionsForUser());
         }
 
         private object CreatePermission()
@@ -81,10 +82,9 @@
 
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
-                return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to remove permissions")));
+                return this.Negotiate.WithModel(new BadRequestResult<string>("You are not authorised to remove permissions"));
             }
 
-            var resource = this.Bind<PermissionResource>();
             var result = this.permissionService.GetAllPermissionsForUser(this.Bind<IndividalPermissionRequestResource>().GranteeUri);
             return this.Negotiate.WithModel(result);
         }

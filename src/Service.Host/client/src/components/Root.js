@@ -13,6 +13,7 @@ import Privileges from '../containers/Privileges';
 import Privilege from '../containers/Privilege';
 import Groups from '../containers/Groups';
 import Group from '../containers/Group';
+import Permissions from '../containers/Permissions';
 
 const Root = ({ store }) => (
     <div>
@@ -67,6 +68,27 @@ const Root = ({ store }) => (
                                     exact
                                     path="/authorisation/groups/:id"
                                     render={() => <Group store={store} />}
+                                    store={store}
+                                />
+                               
+                                <Route
+                                    exact
+                                    path="/authorisation/permissions/"
+                                    render={() => <Permissions store={store} />}
+                                    store={store}
+                                />
+                               
+                                <Route
+                                    exact
+                                    path="/authorisation/viewpermissions"
+                                    render={() => <Permissions store={store} />}
+                                    store={store}
+                                />
+
+                                <Route
+                                    exact
+                                    path="/authorisation/permissions/:id"
+                                    render={() => <Permissions store={store} />}
                                     store={store}
                                 />
                             </Switch>
