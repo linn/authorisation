@@ -17,7 +17,7 @@ function Permissions(state = initialState, action) {
             return {
                 ...state,
                 ...action.payload,
-                newPermission: { active: false, name: '' },
+                newPermission: { privilege: '', grantedByUri: '', granteeByUri: '', groupName: '', dateGranted: ''  },
                 loading: false
             };
         case actionTypes.UPDATE_NEW_PERMISSION_NAME: {
@@ -27,7 +27,7 @@ function Permissions(state = initialState, action) {
             return {
                 ...state,
                 ...action.payload,
-                newPermission: { active: false, name: '' },
+                newPermission: { privilege: '', grantedByUri: '', granteeByUri: '', groupName: '', dateGranted: ''  },
                 loading: false
             };
         }

@@ -100,7 +100,7 @@ function ViewPermissions({
 
     let initialName = '';
     if (newPermission) {
-        initialName = newPermission.name;
+        initialName = newPermission.privilege;
     }
 
     const classes = useStyles();
