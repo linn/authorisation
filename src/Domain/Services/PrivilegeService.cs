@@ -37,14 +37,14 @@
 
             if (!groups.Any(g => g.IsMemberOf(who)))
             {
-                return privileges.Where(p => p.Active).Distinct();
+                return privileges.Where(p => p.Active).Distinct().OrderBy(p => p.Name);
             }
 
             var groupPermissions = this.permissionRepository.FilterBy(
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf(who));
             privileges.AddRange(groupPermissions.Select(p => p.Privilege));
-
-            return privileges.Where(p => p.Active).Distinct();
+            
+            return privileges.Where(p => p.Active).Distinct().OrderBy(p => p.Name);
         }
     }
 }

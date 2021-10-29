@@ -22,12 +22,12 @@
         }
         public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
         {
-            return this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId);
+            return this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
         {
-            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId);
+            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)
@@ -44,14 +44,14 @@
 
             if (!groups.Any(g => g.IsMemberOf(who)))
             {
-                return permissions.Where(p => p.Privilege.Active).Distinct();
+                return permissions.Where(p => p.Privilege.Active).Distinct().OrderBy(p => p.Privilege.Name);
             }
 
             var groupPermissions = this.permissionRepository.FilterBy(
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf(who));
             permissions.AddRange(groupPermissions);
 
-            return permissions.Where(p => p.Privilege.Active).Distinct();
+            return permissions.Where(p => p.Privilege.Active).Distinct().OrderBy(p => p.Privilege.Name);
         }
     }
 }

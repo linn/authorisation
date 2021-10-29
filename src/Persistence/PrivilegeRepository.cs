@@ -28,7 +28,7 @@
 
         public IQueryable<Privilege> FindAll()
         {
-            return this.serviceDbContext.Privileges;
+            return this.serviceDbContext.Privileges.OrderBy(p => p.Name);
         }
 
         public void Add(Privilege privilege)

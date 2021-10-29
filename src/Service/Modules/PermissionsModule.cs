@@ -37,7 +37,7 @@
 
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
-                return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to create permissions")));
+                return this.Negotiate.WithModel(new BadRequestResult<string>("You are not authorised to create permissions"));
             }
 
             var resource = this.Bind<PermissionResource>();
@@ -52,7 +52,7 @@
 
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
-                return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to remove permissions")));
+                return this.Negotiate.WithModel(new BadRequestResult<string>("You are not authorised to remove permissions"));
             }
 
             var resource = this.Bind<PermissionResource>();
@@ -67,7 +67,7 @@
 
             if (!this.authorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
             {
-                return this.Negotiate.WithModel((new BadRequestResult<string>("You are not authorised to view permissions")));
+                return this.Negotiate.WithModel(new BadRequestResult<string>("You are not authorised to view permissions"));
             }
 
             var resource = this.Bind<PermissionResource>();

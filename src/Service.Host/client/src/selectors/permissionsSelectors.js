@@ -1,6 +1,6 @@
 export const getPermissions = state => {
     const { permissions } = state;
-    console.log(permissions.data.permission);
+    console.log(permissions.data.privilege);
     return permissions.data;
 };
 
