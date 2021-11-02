@@ -141,7 +141,7 @@ export const createPermission = (permission, user, currentUserUri) => ({
     }
 });
 
-export const deletePermission = (permission, user, currentUserUri) => ({
+export const deletePermission = (privilegeName, user, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'DELETE',
@@ -151,7 +151,7 @@ export const deletePermission = (permission, user, currentUserUri) => ({
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            permission: permission,
+            privilege: privilegeName,
             GrantedByUri: currentUserUri,
             GranteeUri: `/employees/${user}`
         }),

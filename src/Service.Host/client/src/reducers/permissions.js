@@ -52,7 +52,7 @@ function Permissions(state = initialState, action) {
         case actionTypes.RECEIVE_DELETE_PERMISSION: {
             return {
                 ...state,
-                data: state.data.filter(i => i.name !== action.payload.data.permission),
+                data: state.data.filter(i => i.privilege !== action.payload.data.privilege),
                 loading: false
             };
         }

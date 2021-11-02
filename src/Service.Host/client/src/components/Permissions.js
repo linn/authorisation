@@ -116,18 +116,6 @@ function ViewPermissions({
     const [deletePermissionName, setDeletePermissionName] = useState({});
     const [deletePermissionUri, setDeletePermissionUri] = useState({});
 
-    const deleteThisPermission = (e, name) => {
-        e.preventDefault();
-        deletePermission(name, selectedUser, currentUserUri);
-    };
-
-    const handlePermissionDeleteClick = (e, uri, name) => {
-        e.preventDefault();
-        setDeletePermissionName(name);
-        setDeletePermissionUri(uri);
-        setDialogOpen(true);
-    };
-
     let image;
 
     if (selectedUser !== -1) {
@@ -149,50 +137,6 @@ function ViewPermissions({
                     Home
                 </Button>
             </Link>
-            {/* <Dialog
-                data-testid="modal"
-                open={dialogOpen}
-                className={classes.modal}
-                onClose={() => {
-                    setDialogOpen(false);
-                }}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                TransitionComponent={Transition}
-                fullWidth
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Are you sure you want to delete permission `{deletePermissionName}`?
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        This will also delete the associated permissions
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        style={{ float: 'left' }}
-                        onClick={() => {
-                            deleteThisPermission();
-                            setDialogOpen(false);
-                        }}
-                        color="secondary"
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        color="default"
-                        variant="contained"
-                        style={{ float: 'right' }}
-                        onClick={() => {
-                            setDialogOpen(false);
-                        }}
-                    >
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
 
             <Paper className={classes.root}>
                 <Title text="Permissions" className={classes.centerText} />
@@ -224,7 +168,8 @@ function ViewPermissions({
                             <TableRow>
                                 <TableCell>Permission</TableCell>
                                 <TableCell>Granted By Uri</TableCell>
-                                <TableCell align="right">Type</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell align="right">Action</TableCell>
                                 <TableCell align="right" />
                             </TableRow>
                         </TableHead>
@@ -247,6 +192,17 @@ function ViewPermissions({
                                             Individual Permission
                                         </TableCell>
                                     )}
+                                        <TableCell align="right">
+                                        {
+                                            <Button
+                                                onClick={e =>
+                                                    deletePermission(permission.privilege, selectedUser, currentUserUri)
+                                                }
+                                            >
+                                                X
+                                            </Button>
+                                        }
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -287,7 +243,6 @@ ViewPermissions.propTypes = {
     selectedUser: PropTypes.string.isRequired, 
     createPermission: PropTypes.func.isRequired,
     currentUserUri: PropTypes.string.isRequired,
-    deletePermission: PropTypes.func.isRequired,
     deletePermission: PropTypes.func.isRequired
 };
 
