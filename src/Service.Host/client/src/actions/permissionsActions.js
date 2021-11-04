@@ -108,6 +108,33 @@ export const fetchUsersForPermission = permissionId => ({
     }
 });
 
+export const createPrivilege = name => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges`,
+        method: 'POST',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name }),
+        types: [
+            {
+                type: actionTypes.REQUEST_CREATE_PRIVILEGE,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_NEW_PRIVILEGE,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});
 
 export const createPermission = (privilege, user, currentUserUri) => ({
     [RSAA]: {
@@ -173,8 +200,8 @@ export const deletePermission = (privilegeName, user, currentUserUri) => ({
     }
 });
 
-export const updateNewPermission = name => ({
-    type: actionTypes.UPDATE_NEW_PERMISSION_NAME,
+export const updateNewPrivilege = name => ({
+    type: actionTypes.UPDATE_NEW_PRIVILEGE_NAME,
     data: name
 });
 
@@ -183,13 +210,13 @@ export const selectUser = id => ({
     data: id
 });
 
-export const updatePermissionName = name => ({
-    type: actionTypes.UPDATE_PERMISSION_NAME,
+export const updatePrivilegeName = name => ({
+    type: actionTypes.UPDATE_PRIVILEGE_NAME,
     data: name
 });
 
-export const togglePermissionStatus = () => ({
-    type: actionTypes.TOGGLE_PERMISSION_STATUS
+export const togglePrivilegeStatus = () => ({
+    type: actionTypes.TOGGLE_PRIVILEGE_STATUS
 });
 
 export const savePermission = (name, active, uri) => ({

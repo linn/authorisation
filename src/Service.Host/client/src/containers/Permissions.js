@@ -13,12 +13,13 @@ import {
 } from '../selectors/PermissionsSelectors';
 import {
     fetchPermissions,
-    updateNewPermission,
+    updateNewPrivilege,
     selectUser,
     fetchPermissionsForUser,
     createPermission,
     deletePermission,
-    fetchPrivilegesForAssignment
+    fetchPrivilegesForAssignment,
+    createPrivilege
 } from '../actions/PermissionsActions';
 import getAllUsers from '../selectors/usersSelectors';
 import fetchUsers from '../actions/userActions';
@@ -40,7 +41,8 @@ const mapDispatchToProps = {
     getPrivilegesForAssignment: fetchPrivilegesForAssignment,
     getUsers: fetchUsers,
     createPermission,
-    updateNewPermission,
+    createPrivilege,
+    updateNewPrivilege,
     selectUser,
     deletePermission
 };

@@ -79,7 +79,8 @@ function ViewPermissions({
     getPermissionsForUser,
     getPrivilegesForAssignment,
     getUsers,
-    updateNewPermission,
+    updateNewPrivilege,
+    createPrivilege,
     createPermission,
     selectUser,
     permissions,
@@ -113,7 +114,7 @@ function ViewPermissions({
 
     const showPrivilegesForAssignment = privilegesForAssignment.length || false;
     const handleNameChange = e => {
-        updateNewPermission(e.target.value);
+        updateNewPrivilege(e.target.value);
     };
 	const dispatchcreatePrivilege = () => createPrivilege(initialName);	   
     const changeUser = e => {
@@ -293,7 +294,8 @@ ViewPermissions.propTypes = {
     getPrivilegesForAssignment: PropTypes.func.isRequired,
     getUsers: PropTypes.func.isRequired,
     createPermission: PropTypes.func.isRequired,
-    updateNewPermission: PropTypes.func.isRequired,
+    createPrivilege: PropTypes.func.isRequired,
+    updateNewPrivilege: PropTypes.func.isRequired,
     permissions: PropTypes.arrayOf(
         PropTypes.shape({
             privilege: PropTypes.string,
