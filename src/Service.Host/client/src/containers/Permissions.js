@@ -6,7 +6,10 @@ import {
     getNewPermissionForCreation,
     getPermissionsLoading,
     getSelectedUser,
-    getCurrentUser
+    getCurrentUser,
+    getPrivilegesForAssignment,
+    getNewPrivilegeForCreation,
+    getShouldShowCreate
 } from '../selectors/PermissionsSelectors';
 import {
     fetchPermissions,
@@ -14,23 +17,27 @@ import {
     selectUser,
     fetchPermissionsForUser,
     createPermission,
-    deletePermission
+    deletePermission,
+    fetchPrivilegesForAssignment
 } from '../actions/PermissionsActions';
 import getAllUsers from '../selectors/usersSelectors';
 import fetchUsers from '../actions/userActions';
 
 const mapStateToProps = state => ({
     permissions: getPermissions(state),
-    newPermission: getNewPermissionForCreation(state),
+    newprivilege: getNewPrivilegeForCreation(state),
     loading: getPermissionsLoading(state),
     users: getAllUsers(state),
     selectedUser: getSelectedUser(state),
+    showCreate: getShouldShowCreate(state),
+    privilegesForAssignment: getPrivilegesForAssignment(state),
     currentUserUri: getCurrentUser(state)
 });
 
 const mapDispatchToProps = {
     getAllPermissions: fetchPermissions,
     getPermissionsForUser: fetchPermissionsForUser,
+    getPrivilegesForAssignment: fetchPrivilegesForAssignment,
     getUsers: fetchUsers,
     createPermission,
     updateNewPermission,

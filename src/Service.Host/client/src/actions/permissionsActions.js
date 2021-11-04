@@ -109,7 +109,7 @@ export const fetchUsersForPermission = permissionId => ({
 });
 
 
-export const createPermission = (permission, user, currentUserUri) => ({
+export const createPermission = (privilege, user, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
         method: 'POST',
@@ -119,7 +119,7 @@ export const createPermission = (permission, user, currentUserUri) => ({
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            permission: permission,
+            privilege: privilege,
             GrantedByUri: currentUserUri,
             GranteeUri: `/employees/${user}`
         }),
@@ -230,3 +230,28 @@ export const setPermissionMessageVisible = visible => ({
     data: visible
 });
 
+export const fetchPrivilegesForAssignment = () => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/authorisation/privileges/all`,
+        method: 'GET',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: (action, state, res) =>
+                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
+            }
+        ]
+    }
+});

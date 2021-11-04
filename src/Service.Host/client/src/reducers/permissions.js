@@ -35,13 +35,13 @@ function Permissions(state = initialState, action) {
             return { ...state, selectedUser: action.data, enableSave: false };
         }
         case actionTypes.RECEIVE_CREATE_PERMISSION: {
-            const permission = state.PermissionsForAssignment.find(
-                obj => obj.name == action.payload.data.permission
-            );
+    
             return {
                 ...state,
-                data: [...state.data, permission],
+                data: [...state.data, action.payload.data],
                 loading: false,
+                permissionMessageVisibility: true,
+                permissionMessage: 'Permission created'   
             };
         }
         case actionTypes.SET_PERMISSION_MESSAGE_VISIBILITY: {

@@ -4,12 +4,6 @@ export const getPermissions = state => {
     return permissions.data;
 };
 
-export const getNewPermissionForCreation = state => {
-    const { permissions } = state;
-    const { newPermission } = permissions;
-    return newPermission || null;
-};
-
 export const getPermission = state => {
     const { permissions } = state;
     console.log(permissions.data);
@@ -49,4 +43,22 @@ export const getCurrentUser = state => {
     const { profile } = user;
     const { employee } = profile;
     return employee;
+};
+
+export const getShouldShowCreate = state => {
+    const { privileges } = state;
+    const { selectedUser } = privileges;
+    return selectedUser == null || selectedUser == -1;
+};
+
+export const getPrivilegesForAssignment = state => {
+    const { privileges } = state;
+    const { privilegesForAssignment } = privileges;
+    return privilegesForAssignment || [{ name: 'No Privileges Available' }];
+};
+
+export const getNewPrivilegeForCreation = state => {
+    const { privileges } = state;
+    const { newPrivilege } = privileges;
+    return newPrivilege || null;
 };
