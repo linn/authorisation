@@ -8,8 +8,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -127,9 +125,9 @@ function ViewPrivileges({
     };
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
 
-    const changeUser = e => {
-        selectUser(e.target.value);
-    };
+    // const changeUser = e => {
+    //     selectUser(e.target.value);
+    // };
 
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -227,26 +225,6 @@ function ViewPrivileges({
 
             <Paper className={classes.root}>
                 <Title text="Privileges" className={classes.centerText} />
-                <div className={classes.bottomMargin}>
-                    <span className={classes.dropDownLabel}>View privileges for:</span>
-                    <select
-                        defaultValue={selectedUser}
-                        selected={selectedUser}
-                        onChange={changeUser}
-                        className={classes.privilegesSelectList}
-                    >
-                        <option value={-1} key="-1">
-                            All Users
-                        </option>
-                        {users.map(user => (
-                            <option value={user.id} key={user.id}>
-                                {user.firstName} {user.lastName}
-                            </option>
-                        ))}
-                    </select>
-                    <div className={classes.employeeImageContainer}>{image}</div>
-                </div>
-
                 {loading ? (
                     <Loading />
                 ) : (

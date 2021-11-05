@@ -217,7 +217,7 @@ function ViewPermissions({
                                                         deletePermission(permission.privilege, selectedUser, currentUserUri)
                                                         }
                                                         >
-                                                    X
+                                                    Delete
                                                 </Button>
                                             }
                                             </TableCell>
