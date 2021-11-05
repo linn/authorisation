@@ -10,7 +10,7 @@ import {
     getPrivilegesForAssignment,
     getNewPrivilegeForCreation,
     getShouldShowCreate
-} from '../selectors/PermissionsSelectors';
+} from '../selectors/permissionsSelectors';
 import {
     fetchPermissions,
     updateNewPrivilege,
@@ -20,7 +20,7 @@ import {
     deletePermission,
     fetchPrivilegesForAssignment,
     createPrivilege
-} from '../actions/PermissionsActions';
+} from '../actions/permissionsActions';
 import getAllUsers from '../selectors/usersSelectors';
 import fetchUsers from '../actions/userActions';
 

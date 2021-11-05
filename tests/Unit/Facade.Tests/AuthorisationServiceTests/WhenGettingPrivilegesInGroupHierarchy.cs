@@ -45,15 +45,15 @@ namespace Linn.Authorisation.Facade.Tests.PermissionTests
         }
 
         [Test]
-        public void ShouldReturnPrivileges()
+        public void ShouldReturnPrivileges()                                               
         {
             this.result.Should().BeOfType<SuccessResult<IEnumerable<Privilege>>>();
 
             var privileges = ((SuccessResult<IEnumerable<Privilege>>)this.result).Data;
             var enumerable = privileges.ToList();
             enumerable.Count.Should().Be(2);
-            enumerable.First().Name.Should().Be("tariffs.created");
-            enumerable.SingleOrDefault(p => p.Name == "tariffs.created").Should().NotBeNull();
+            enumerable.First().Name.Should().Be("sernos.created");
+            enumerable.SingleOrDefault(p => p.Name == "sernos.created").Should().NotBeNull() ;
         }
     }
 }

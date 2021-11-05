@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -8,20 +8,13 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import {
     Loading,
     Title,
-    getSelfHref,
+    getHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import config from '../config';
@@ -122,10 +115,6 @@ function ViewPermissions({
     };
     
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [deletePermissionName, setDeletePermissionName] = useState({});
-
-    const [deletePermissionUri, setDeletePermissionUri] = useState({});
     const dispatchcreatePermission = () => {
         createPermission(privilegeToAssign, selectedUser, currentUserUri);
     };
@@ -192,34 +181,48 @@ function ViewPermissions({
                         </TableHead>
                         <TableBody>
                             {permissions.map(permission => (
-                                <TableRow key={permission.privilege}>
+                                <TableRow 
+                                    key={permission.privilege}
+                                >
                                     <TableCell component="th" scope="row">
                                         {permission.privilege}
                                     </TableCell>
+
                                     <TableCell component="th" scope="row">
                                         {permission.grantedByUri}
                                     </TableCell>
                                     {permission.groupName ? (
-                                    <TableCell component="th" scope="row">
-                                        Group Permission : {permission.groupName}
-                                    </TableCell>
+                                        <Fragment>
+                                            <TableCell component="th" scope="row">
+                                                Group Permission : {permission.groupName}
+                                            </TableCell>
+                                            <TableCell component="th" scope="row">
+                                                <Button variant="outlined">
+                                                    <Link  to={getHref(permission, 'group')}>
+                                                        View Group
+                                                    </Link>
+                                                </Button>
+                                            </TableCell>
+                                        </Fragment>
                                     ):
                                     (
-                                        <TableCell component="th" scope="row">
-                                            Individual Permission
-                                        </TableCell>
+                                       <Fragment>
+                                            <TableCell component="th" scope="row">
+                                                Individual Permission
+                                            </TableCell>
+                                            <TableCell component="th" scope="row">
+                                            {
+                                                <Button variant="outlined"
+                                                    onClick={e =>
+                                                        deletePermission(permission.privilege, selectedUser, currentUserUri)
+                                                        }
+                                                        >
+                                                    X
+                                                </Button>
+                                            }
+                                            </TableCell>
+                                        </Fragment>  
                                     )}
-                                        <TableCell align="right">
-                                        {
-                                            <Button
-                                                onClick={e =>
-                                                    deletePermission(permission.privilege, selectedUser, currentUserUri)
-                                                }
-                                            >
-                                                X
-                                            </Button>
-                                        }
-                                    </TableCell>
                                 </TableRow>
                             ))}
                             {showCreate ? (
@@ -302,7 +305,8 @@ ViewPermissions.propTypes = {
             grantedByUri: PropTypes.string,
             granteeByUri: PropTypes.string,
             groupName: PropTypes.string,
-            dateGranted: PropTypes.string
+            dateGranted: PropTypes.string,
+            granteeGroupId: PropTypes.string
         })
     ),
     newPermission: PropTypes.shape({
@@ -310,7 +314,8 @@ ViewPermissions.propTypes = {
         grantedByUri: PropTypes.string,
         granteeByUri: PropTypes.string,
         groupName: PropTypes.string,
-        dateGranted: PropTypes.string
+        dateGranted: PropTypes.string,
+        granteeGroupId: PropTypes.string
     }),
     loading: PropTypes.bool.isRequired,
     users: PropTypes.arrayOf(

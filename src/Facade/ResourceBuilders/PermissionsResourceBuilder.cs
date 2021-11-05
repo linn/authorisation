@@ -13,32 +13,11 @@
     {
         public IEnumerable<PermissionResource> Build(IEnumerable<Permission> permissions)
         {
+            var resourceBuilder = new PermissionResourceBuilder();
             var permissionList = new List<PermissionResource>();
 
             foreach(var permission in permissions) {
-                if (permission is IndividualPermission individualPermission)
-                {
-                    permissionList.Add(new PermissionResource
-                    {
-                        GrantedByUri = individualPermission.GrantedByUri,
-                        GranteeUri = individualPermission.GranteeUri,
-                        Privilege = individualPermission.Privilege.Name,
-                        DateGranted = individualPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
-                    });
-                }
-                else if (permission is GroupPermission)
-                {
-                    var groupPermission = (GroupPermission)permission;
-
-                    permissionList.Add(
-                        new PermissionResource
-                            {
-                                GrantedByUri = groupPermission.GrantedByUri,
-                                GroupName = groupPermission.GranteeGroup.Name,
-                                Privilege = groupPermission.Privilege.Name,
-                                DateGranted = groupPermission.DateGranted.ToString("ddd, dd MMMM yyyy hh:mm tt")
-                            });
-                }
+                permissionList.Add(resourceBuilder.Build(permission));
             }
 
             return permissionList;
