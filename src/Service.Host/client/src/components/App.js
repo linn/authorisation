@@ -29,7 +29,7 @@ function App() {
                     </Button>
                 </Link>
                 <Link to="../authorisation/groups">
-                    <Button type="button" variant="outlined">
+                    <Button type="button" variant="outlined" className={classes.rightMargin}>
                         View Groups
                     </Button>
                 </Link>
