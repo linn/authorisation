@@ -73,13 +73,6 @@ const Root = ({ store }) => (
                                
                                 <Route
                                     exact
-                                    path="/authorisation/permissions/"
-                                    render={() => <Permissions store={store} />}
-                                    store={store}
-                                />
-                               
-                                <Route
-                                    exact
                                     path="/authorisation/viewpermissions"
                                     render={() => <Permissions store={store} />}
                                     store={store}

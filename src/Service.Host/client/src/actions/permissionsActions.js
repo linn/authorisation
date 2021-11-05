@@ -108,34 +108,6 @@ export const fetchUsersForPermission = permissionId => ({
     }
 });
 
-export const createPrivilege = name => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges`,
-        method: 'POST',
-        options: { requiresAuth: true },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name }),
-        types: [
-            {
-                type: actionTypes.REQUEST_CREATE_PRIVILEGE,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_NEW_PRIVILEGE,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
-
 export const createPermission = (privilege, user, currentUserUri) => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/authorisation/permissions`,
@@ -257,28 +229,4 @@ export const setPermissionMessageVisible = visible => ({
     data: visible
 });
 
-export const fetchPrivilegesForAssignment = () => ({
-    [RSAA]: {
-        endpoint: `${config.appRoot}/authorisation/privileges/all`,
-        method: 'GET',
-        options: { requiresAuth: true },
-        headers: {
-            Accept: 'application/json'
-        },
-        types: [
-            {
-                type: actionTypes.REQUEST_PRIVILEGES_FOR_ASSIGNMENT,
-                payload: {}
-            },
-            {
-                type: actionTypes.RECEIVE_PRIVILEGES_FOR_ASSIGNMENT,
-                payload: async (action, state, res) => ({ data: await res.json() })
-            },
-            {
-                type: actionTypes.FETCH_ERROR,
-                payload: (action, state, res) =>
-                    res ? `Report - ${res.status} ${res.statusText}` : `Network request failed`
-            }
-        ]
-    }
-});
+

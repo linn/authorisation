@@ -74,16 +74,11 @@ const useStyles = makeStyles({
 
 function ViewPrivileges({
     getAllPrivileges,
-    getPrivilegesForUser,
-    getPrivilegesForAssignment,
-    getUsers,
     createPrivilege,
     updateNewPrivilege,
-    selectUser,
     privileges,
     newprivilege,
     loading,
-    users,
     selectedUser,
     showCreate,
     privilegesForAssignment,
@@ -96,19 +91,9 @@ function ViewPrivileges({
     deletePrivilege
 }) {
     useEffect(() => {
-        if (selectedUser == -1) {
-            getAllPrivileges();
-        } else {
-            getPrivilegesForUser(selectedUser);
-            getPrivilegesForAssignment(selectedUser);
-        }
-        getUsers();
+        getAllPrivileges();
     }, [
-        getAllPrivileges,
-        getPrivilegesForUser,
-        getPrivilegesForAssignment,
-        selectedUser,
-        getUsers
+        getAllPrivileges
     ]);
 
     let initialName = '';
@@ -124,11 +109,6 @@ function ViewPrivileges({
         updateNewPrivilege(e.target.value);
     };
     const dispatchcreatePrivilege = () => createPrivilege(initialName);
-
-    // const changeUser = e => {
-    //     selectUser(e.target.value);
-    // };
-
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
     const [dialogOpen, setDialogOpen] = useState(false);
     const [deletePrivilegeName, setDeletePrivilegeName] = useState({});
@@ -348,9 +328,6 @@ function ViewPrivileges({
 
 ViewPrivileges.propTypes = {
     getAllPrivileges: PropTypes.func.isRequired,
-    getPrivilegesForUser: PropTypes.func.isRequired,
-    getPrivilegesForAssignment: PropTypes.func.isRequired,
-    getUsers: PropTypes.func.isRequired,
     createPrivilege: PropTypes.func.isRequired,
     updateNewPrivilege: PropTypes.func.isRequired,
     privileges: PropTypes.arrayOf(
@@ -365,10 +342,6 @@ ViewPrivileges.propTypes = {
         active: PropTypes.bool
     }),
     loading: PropTypes.bool.isRequired,
-    users: PropTypes.arrayOf(
-        PropTypes.shape({ displayText: PropTypes.string, id: PropTypes.number })
-    ),
-    selectUser: PropTypes.func.isRequired,
     selectedUser: PropTypes.string.isRequired,
     showCreate: PropTypes.bool.isRequired,
     privilegesForAssignment: PropTypes.arrayOf(

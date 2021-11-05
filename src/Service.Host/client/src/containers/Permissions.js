@@ -17,10 +17,12 @@ import {
     selectUser,
     fetchPermissionsForUser,
     createPermission,
-    deletePermission,
-    fetchPrivilegesForAssignment,
-    createPrivilege
+    deletePermission
 } from '../actions/permissionsActions';
+import {
+    createPrivilege,
+    fetchPrivilegesForAssignment
+} from '../actions/privilegeActions';
 import getAllUsers from '../selectors/usersSelectors';
 import fetchUsers from '../actions/userActions';
 
