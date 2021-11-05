@@ -5,6 +5,7 @@ import privilege from './privilege';
 import groups from './groups';
 import group from './group';
 import users from './users';
+import permissions from './permissions';
 
 const rootReducer = combineReducers({
     oidc,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     privilege,
     groups,
     group,
-    users
+    users,
+    permissions
 });
 
 export default rootReducer;

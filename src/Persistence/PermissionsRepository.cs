@@ -7,6 +7,8 @@
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
 
+    using Microsoft.EntityFrameworkCore;
+
     public class PermissionsRepository : IRepository<Permission, int>
     {
         private readonly ServiceDbContext serviceDbContext;
@@ -43,7 +45,10 @@
 
         public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
         {
-            return this.serviceDbContext.Permissions.Where(expression);
+            var indivPermissions = this.serviceDbContext.Permissions.Where(p => p is IndividualPermission).Include(x => x.Privilege).ToList();
+            var groupPermissions = this.serviceDbContext.Permissions.Where(p => p is GroupPermission).Include(x => ((GroupPermission)x).GranteeGroup).Include(x => x.Privilege).ToList();
+            var allPermissions = groupPermissions.Concat(indivPermissions).AsQueryable().Where(expression);
+            return allPermissions;
         }
     }
 }

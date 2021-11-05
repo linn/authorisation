@@ -1,50 +1,57 @@
 ﻿namespace Linn.Authorisation.Domain.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Linq.Expressions;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
 
-    public class PrivilegeService : IPrivilegeService
+    public class PermissionService : IPermissionService
     {
         private readonly IRepository<Group, int> groupRepository;
         private readonly IRepository<Permission, int> permissionRepository;
 
-        public PrivilegeService(
+        public PermissionService(
             IRepository<Group, int> groupRepository,
             IRepository<Permission, int> permissionRepository)
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
         }
+        public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
+        {
+            return this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
+        }
 
-        public IEnumerable<Privilege> GetPrivileges(string who)
+        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
+        {
+            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
+        }
+
+        public IEnumerable<Permission> GetAllPermissionsForUser(string who)
         {
             if (string.IsNullOrEmpty(who))
             {
                 throw new NoGranteeUriProvidedException("no granteeUri provided");
             }
 
-            var privileges = this.permissionRepository
-                .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who)
-                .Select(p => p.Privilege).ToList();
+            var permissions = this.permissionRepository
+                .FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).GranteeUri == who).ToList();
 
             var groups = this.groupRepository.FindAll().ToList();
 
             if (!groups.Any(g => g.IsMemberOf(who)))
             {
-                return privileges.Where(p => p.Active).Distinct().OrderBy(p => p.Name);
+                return permissions.Where(p => p.Privilege.Active).Distinct().OrderBy(p => p.Privilege.Name);
             }
 
             var groupPermissions = this.permissionRepository.FilterBy(
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf(who));
-            privileges.AddRange(groupPermissions.Select(p => p.Privilege));
-            
-            return privileges.Where(p => p.Active).Distinct().OrderBy(p => p.Name);
+            permissions.AddRange(groupPermissions);
+
+            return permissions.Where(p => p.Privilege.Active).Distinct().OrderBy(p => p.Privilege.Name);
         }
     }
 }

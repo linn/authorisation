@@ -69,3 +69,4 @@ src/Service.Host/client/build/
 
 config.env
 local-update.sh
+*StyleCop.Cache

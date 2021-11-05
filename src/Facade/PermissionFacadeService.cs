@@ -7,13 +7,14 @@
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade.Exceptions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
     using Microsoft.EntityFrameworkCore;
 
-    public class PermissionService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionService
+    public class PermissionFacadeService : FacadeService<Permission, int, PermissionResource, PermissionResource>, IPermissionFacadeService
     {
         private readonly IRepository<Privilege, int> privilegeRepository;
 
@@ -23,13 +24,20 @@
 
         private readonly ITransactionManager transactionManager;
 
-        public PermissionService(IRepository<Permission, int> repository, ITransactionManager transactionManager, IRepository<Privilege, int> privilegeRepository, IRepository<Group, int> groupRepository)
+        private readonly IPermissionService permissionService;
+
+        public PermissionFacadeService(IRepository<Permission, int> repository,
+                                       ITransactionManager transactionManager,
+                                       IRepository<Privilege, int> privilegeRepository,
+                                       IRepository<Group, int> groupRepository,
+                                       IPermissionService permissionService)
             : base(repository, transactionManager)
         {
             this.privilegeRepository = privilegeRepository;
             this.groupRepository = groupRepository;
             this.permissionRepository = repository;
             this.transactionManager = transactionManager;
+            this.permissionService = permissionService;
         }
 
         public IResult<Permission> CreatePermission(PermissionResource resource)
@@ -54,26 +62,24 @@
 
         public IResult<IEnumerable<Permission>> GetImmediatePermissionsForGroup(int groupId)
         {
-            var permissions = this.permissionRepository
-                .FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId)
-                .Include(x => ((GroupPermission)x).GranteeGroup)
-                .Include(x => x.Privilege).ToList();
+            var result = this.permissionService.GetImmediatePermissionsForGroup(groupId);
 
-            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+            return new SuccessResult<IEnumerable<Permission>>(result);
         }
 
         public IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId)
         {
-            var groupPermissions = this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).Privilege.Id == privilegeId)
-                    .Include(x => ((GroupPermission)x).GranteeGroup)
-                    .Include(x => x.Privilege).ToList();
+            var result = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
 
-            var individualPermissions = this.permissionRepository.FilterBy(p => p is IndividualPermission && ((IndividualPermission)p).Privilege.Id == privilegeId)
-                    .Include(x => x.Privilege).ToList();
+            return new SuccessResult<IEnumerable<Permission>>(result);
+        }
 
-            var permissions = groupPermissions.Concat(individualPermissions);
+        public IResult<IEnumerable<Permission>> GetAllPermissionsForUser(string granteeUri)
+        {
+            var result = this.permissionService.GetAllPermissionsForUser(granteeUri);
 
-            return new SuccessResult<IEnumerable<Permission>>(permissions.Distinct());
+            return new SuccessResult<IEnumerable<Permission>>(result);
+
         }
 
         public IResult<Permission> RemovePermission(PermissionResource resource)
@@ -116,7 +122,7 @@
 
             var groupPermission = this.permissionRepository.FilterBy(
                     p => p is GroupPermission
-                         && ((GroupPermission)p).GranteeGroup == castedGroupPermission.GranteeGroup 
+                         && ((GroupPermission)p).GranteeGroup == castedGroupPermission.GranteeGroup
                          && p.Privilege.Id == castedGroupPermission.Privilege.Id).First();
 
             this.permissionRepository.Remove(groupPermission);

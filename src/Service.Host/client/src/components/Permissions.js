@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -9,17 +9,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import {
     Loading,
     Title,
-    getSelfHref,
+    getHref,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import config from '../config';
@@ -41,7 +36,7 @@ const useStyles = makeStyles({
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
         marginRight: '20px'
     },
-    privilegesSelectList: {
+    permissionsSelectList: {
         height: '75px',
         width: '300px',
         display: 'inline-block',
@@ -50,7 +45,7 @@ const useStyles = makeStyles({
         borderRadius: '5px',
         cursor: 'pointer'
     },
-    thinPrivilegesSelectList: {
+    thinPermissionsSelectList: {
         height: '36px',
         width: '300px',
         display: 'inline-block',
@@ -72,28 +67,35 @@ const useStyles = makeStyles({
     centerText: { textAlign: 'center' }
 });
 
-function ViewPrivileges({
-    getAllPrivileges,
-    createPrivilege,
+function ViewPermissions({
+    getAllPermissions,
+    getPermissionsForUser,
+    getPrivilegesForAssignment,
+    getUsers,
     updateNewPrivilege,
-    privileges,
+    createPrivilege,
+    createPermission,
+    selectUser,
+    permissions,
     newprivilege,
     loading,
+    users,
     selectedUser,
     showCreate,
     privilegesForAssignment,
-    createPermission,
     currentUserUri,
-    deletePermission,
-    showPrivilegeMessage,
-    setPrivilegeMessageVisible,
-    permissionMessage,
-    deletePrivilege
+    deletePermission
 }) {
     useEffect(() => {
-        getAllPrivileges();
+        getPermissionsForUser(selectedUser);
+        getPrivilegesForAssignment(selectedUser);
+        getUsers();
     }, [
-        getAllPrivileges
+        getAllPermissions,
+        getPermissionsForUser,
+        getPrivilegesForAssignment,
+        selectedUser,
+        getUsers
     ]);
 
     let initialName = '';
@@ -104,38 +106,21 @@ function ViewPrivileges({
     const classes = useStyles();
 
     const showPrivilegesForAssignment = privilegesForAssignment.length || false;
-
     const handleNameChange = e => {
         updateNewPrivilege(e.target.value);
     };
-    const dispatchcreatePrivilege = () => createPrivilege(initialName);
+	const dispatchcreatePrivilege = () => createPrivilege(initialName);	   
+    const changeUser = e => {
+        selectUser(e.target.value);
+    };
+    
     const [privilegeToAssign, setPrivilegeToAssign] = useState({});
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [deletePrivilegeName, setDeletePrivilegeName] = useState({});
-    const [deletePrivilegeUri, setDeletePrivilegeUri] = useState({});
-
     const dispatchcreatePermission = () => {
         createPermission(privilegeToAssign, selectedUser, currentUserUri);
     };
     const setPrivilegeForAssignment = e => {
         setPrivilegeToAssign(e.target.value);
-    };
-
-    const deleteThisPermission = (e, name) => {
-        e.preventDefault();
-        deletePermission(name, selectedUser, currentUserUri);
-    };
-
-    const handlePrivilegeDeleteClick = (e, uri, name) => {
-        e.preventDefault();
-        setDeletePrivilegeName(name);
-        setDeletePrivilegeUri(uri);
-        setDialogOpen(true);
-    };
-
-    const deleteThisPrivilege = () => {
-        deletePrivilege(deletePrivilegeUri);
-    };
+    };											
 
     let image;
 
@@ -158,101 +143,86 @@ function ViewPrivileges({
                     Home
                 </Button>
             </Link>
-            <Dialog
-                data-testid="modal"
-                open={dialogOpen}
-                className={classes.modal}
-                onClose={() => {
-                    setDialogOpen(false);
-                }}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                TransitionComponent={Transition}
-                fullWidth
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Are you sure you want to delete privilege `{deletePrivilegeName}`?
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        This will also delete the associated permissions
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        style={{ float: 'left' }}
-                        onClick={() => {
-                            deleteThisPrivilege();
-                            setDialogOpen(false);
-                        }}
-                        color="secondary"
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        color="default"
-                        variant="contained"
-                        style={{ float: 'right' }}
-                        onClick={() => {
-                            setDialogOpen(false);
-                        }}
-                    >
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
             <Paper className={classes.root}>
-                <Title text="Privileges" className={classes.centerText} />
+                <Title text="Permissions" className={classes.centerText} />
+                <div className={classes.bottomMargin}>
+                    <span className={classes.dropDownLabel}>View permissions for:</span>
+                    <select
+                        defaultValue={selectedUser}
+                        selected={selectedUser}
+                        onChange={changeUser}
+                        className={classes.permissionsSelectList}
+                    >
+                        <option value={-1} key="-1">
+                            All Users
+                        </option>
+                        {users.map(user => (
+                            <option value={user.id} key={user.id}>
+                                {user.firstName} {user.lastName}
+                            </option>
+                        ))}
+                    </select>
+                    <div className={classes.employeeImageContainer}>{image}</div>
+                </div>
+
                 {loading ? (
                     <Loading />
                 ) : (
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Privilege</TableCell>
-                                <TableCell align="right">Active status</TableCell>
+                                <TableCell>Permission</TableCell>
+                                <TableCell>Granted By Uri</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell align="right">Action</TableCell>
                                 <TableCell align="right" />
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {privileges.map(privilege => (
-                                <TableRow
-                                    key={privilege.name}
-                                    component={Link}
-                                    to={getSelfHref(privilege).slice(1)}
+                            {permissions.map(permission => (
+                                <TableRow 
+                                    key={permission.privilege}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {privilege.name}
+                                        {permission.privilege}
                                     </TableCell>
-                                    <TableCell align="right">
-                                        {privilege.active.toString()}
+
+                                    <TableCell component="th" scope="row">
+                                        {permission.grantedByUri}
                                     </TableCell>
-                                    <TableCell align="right">
-                                        {!showCreate && (
-                                            <Button
-                                                onClick={e =>
-                                                    deleteThisPermission(e, privilege.name)
-                                                }
-                                            >
-                                                X
-                                            </Button>
-                                        )}
-                                        {showCreate && (
-                                            <Button
-                                                onClick={e =>
-                                                    handlePrivilegeDeleteClick(
-                                                        e,
-                                                        getSelfHref(privilege),
-                                                        privilege.name
-                                                    )
-                                                }
-                                            >
-                                                Delete
-                                            </Button>
-                                        )}
-                                    </TableCell>
+                                    {permission.groupName ? (
+                                        <Fragment>
+                                            <TableCell component="th" scope="row">
+                                                Group Permission : {permission.groupName}
+                                            </TableCell>
+                                            <TableCell component="th" scope="row">
+                                                <Button variant="outlined">
+                                                    <Link  to={getHref(permission, 'group')}>
+                                                        View Group
+                                                    </Link>
+                                                </Button>
+                                            </TableCell>
+                                        </Fragment>
+                                    ):
+                                    (
+                                       <Fragment>
+                                            <TableCell component="th" scope="row">
+                                                Individual Permission
+                                            </TableCell>
+                                            <TableCell component="th" scope="row">
+                                            {
+                                                <Button variant="outlined"
+                                                    onClick={e =>
+                                                        deletePermission(permission.privilege, selectedUser, currentUserUri)
+                                                        }
+                                                        >
+                                                    Delete
+                                                </Button>
+                                            }
+                                            </TableCell>
+                                        </Fragment>  
+                                    )}
                                 </TableRow>
                             ))}
                             {showCreate ? (
@@ -283,7 +253,7 @@ function ViewPrivileges({
                                         <select
                                             value={privilegeToAssign}
                                             onChange={setPrivilegeForAssignment}
-                                            className={classes.thinPrivilegesSelectList}
+                                            className={classes.thinPermissionsSelectList}
                                         >
                                             <option value="-1" key="-1">
                                                 Select Privilege
@@ -317,53 +287,51 @@ function ViewPrivileges({
                     </Table>
                 )}
             </Paper>
-            <SnackbarMessage
-                visible={showPrivilegeMessage}
-                onClose={() => setPrivilegeMessageVisible(false)}
-                message={permissionMessage}
-            />
         </Mypage>
     );
 }
 
-ViewPrivileges.propTypes = {
-    getAllPrivileges: PropTypes.func.isRequired,
+ViewPermissions.propTypes = {
+    getAllPermissions: PropTypes.func.isRequired,
+    getPermissionsForUser: PropTypes.func.isRequired,
+    getPrivilegesForAssignment: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired,
+    createPermission: PropTypes.func.isRequired,
     createPrivilege: PropTypes.func.isRequired,
     updateNewPrivilege: PropTypes.func.isRequired,
-    privileges: PropTypes.arrayOf(
+    permissions: PropTypes.arrayOf(
         PropTypes.shape({
-            name: PropTypes.string,
-            Id: PropTypes.number,
-            active: PropTypes.bool
+            privilege: PropTypes.string,
+            grantedByUri: PropTypes.string,
+            granteeByUri: PropTypes.string,
+            groupName: PropTypes.string,
+            dateGranted: PropTypes.string,
+            granteeGroupId: PropTypes.string
         })
     ),
-    newprivilege: PropTypes.shape({
-        name: PropTypes.string,
-        active: PropTypes.bool
+    newPermission: PropTypes.shape({
+        privilege: PropTypes.string,
+        grantedByUri: PropTypes.string,
+        granteeByUri: PropTypes.string,
+        groupName: PropTypes.string,
+        dateGranted: PropTypes.string,
+        granteeGroupId: PropTypes.string
     }),
     loading: PropTypes.bool.isRequired,
-    selectedUser: PropTypes.string.isRequired,
-    showCreate: PropTypes.bool.isRequired,
-    privilegesForAssignment: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string,
-            Id: PropTypes.number,
-            active: PropTypes.bool
-        })
-    ).isRequired,
+    users: PropTypes.arrayOf(
+        PropTypes.shape({ displayText: PropTypes.string, id: PropTypes.number })
+    ),
+    selectUser: PropTypes.func.isRequired,
+    selectedUser: PropTypes.string.isRequired, 
     createPermission: PropTypes.func.isRequired,
     currentUserUri: PropTypes.string.isRequired,
-    deletePermission: PropTypes.func.isRequired,
-    showPrivilegeMessage: PropTypes.func.isRequired,
-    setPrivilegeMessageVisible: PropTypes.func.isRequired,
-    permissionMessage: PropTypes.string.isRequired,
-    deletePrivilege: PropTypes.func.isRequired
+    deletePermission: PropTypes.func.isRequired
 };
 
-ViewPrivileges.defaultProps = {
-    privileges: null,
-    newprivilege: null,
+ViewPermissions.defaultProps = {
+    permissions: null,
+    newPermission: null,
     users: [{ displayText: 'No users to display', id: -5 }]
 };
 
-export default ViewPrivileges;
+export default ViewPermissions;

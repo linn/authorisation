@@ -15,7 +15,7 @@
 
         public IEnumerable<GroupResource> Build(IEnumerable<Group> groups)
         {
-            return groups.Select(a => this.groupResourceBuilder.Build(a));
+            return groups.Select(a => this.groupResourceBuilder.Build(a)).OrderBy(a => a.Name);
         }
 
         object IResourceBuilder<IEnumerable<Group>>.Build(IEnumerable<Group> groups) =>

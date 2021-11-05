@@ -15,11 +15,11 @@
     {
         private readonly IGroupService groupService;
 
-        private readonly IPermissionService permissionService;
+        private readonly IPermissionFacadeService permissionService;
 
         private readonly IAuthorisationService authorisationService;
 
-        public GroupModule(IGroupService groupService, IPermissionService permissionService, IAuthorisationService authorisationService)
+        public GroupModule(IGroupService groupService, IPermissionFacadeService permissionService, IAuthorisationService authorisationService)
         {
             this.groupService = groupService;
             this.permissionService = permissionService;

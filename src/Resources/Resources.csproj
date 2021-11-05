@@ -6,7 +6,7 @@
     <RootNamespace>Linn.Authorisation.Resources</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="Linn.Common.Resources" Version="2.0.0" />
   </ItemGroup>
 
