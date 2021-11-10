@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:2.2
+﻿FROM mcr.microsoft.com/dotnet/core/runtime:2.2
 
 ARG gitBranch=unspecified
 
