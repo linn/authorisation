@@ -20,7 +20,7 @@ namespace Linn.Authorisation.IoC
             builder.RegisterType<MemberPrivilegesService>().As<IMemberPrivilegesService>();
             builder.RegisterType<PrivilegeFacadeService>()
                 .As<IPrivilegeFacadeService>();
-            builder.RegisterType<PermissionService>().As<IPermissionService>();
+            builder.RegisterType<PermissionFacadeService>().As<IPermissionFacadeService>();
             builder.RegisterType<GroupService>()
                 .As<IGroupService>();
             builder.RegisterType<AuthorisationService>().As<IAuthorisationService>();

@@ -5,7 +5,7 @@
     using Linn.Common.Facade;
     using System.Collections.Generic;
 
-    public interface IPermissionService : IFacadeService<Permission, int, PermissionResource, PermissionResource>
+    public interface IPermissionFacadeService : IFacadeService<Permission, int, PermissionResource, PermissionResource>
     {
         IResult<Permission> CreatePermission(PermissionResource permission);
 
@@ -14,5 +14,8 @@
         IResult<IEnumerable<Permission>> GetAllPermissionsForPrivilege(int privilegeId);
 
         IResult<Permission> RemovePermission(PermissionResource permission);
+
+        IResult<IEnumerable<Permission>> GetAllPermissionsForUser(string granteeUri);
+
     }
 }

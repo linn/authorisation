@@ -1,4 +1,4 @@
-﻿FROM microsoft/dotnet:2.1-runtime
+﻿FROM mcr.microsoft.com/dotnet/runtime:2.1
 
 COPY bin/release/netcoreapp2.1/publish/ /app/bin/
 

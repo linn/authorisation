@@ -1,8 +1,13 @@
 ﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
+    using Linn.Common.Resources;
 
     public class PermissionResourceBuilder : IResourceBuilder<Permission>
     {
@@ -25,7 +30,9 @@
                            GrantedByUri = groupPermission.GrantedByUri,
                            GroupName = groupPermission.GranteeGroup.Name,
                            Privilege = groupPermission.Privilege.Name,
-                           DateGranted = groupPermission.DateGranted.ToString("o")
+                           DateGranted = groupPermission.DateGranted.ToString("o"),
+                           GranteeGroupId = groupPermission.GranteeGroup.Id.ToString(),
+                           Links = this.BuildLinks(groupPermission).ToArray()
             };
         }
 
@@ -34,6 +41,15 @@
         public string GetLocation(Permission model)
         {
             return $"/authorisation/permissions/{model.Id}";
+        }
+
+        public IEnumerable<LinkResource> BuildLinks(GroupPermission permission)
+        {
+            yield return new LinkResource
+                             {
+                                 Rel = "group",
+                                 Href = $"/authorisation/groups/{permission.GranteeGroup.Id}"
+                             };
         }
     }
 }
