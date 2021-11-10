@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Linn.Authorisation.Service.Host</AssemblyName>
     <RootNamespace>Linn.Authorisation.Service.Host</RootNamespace>
   </PropertyGroup>
