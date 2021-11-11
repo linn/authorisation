@@ -2,7 +2,7 @@ language: csharp
 dist: xenial
 sudo: required
 mono: none
-dotnet: 2.1.302
+dotnet: 2.2
 services: docker
 before_install:
     - chmod +x ./scripts/*.sh
