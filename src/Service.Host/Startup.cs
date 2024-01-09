@@ -44,8 +44,8 @@ namespace Linn.Authorisation.Service.Host
                 options =>
                     {
                         options.Authority = ApplicationSettings.Get().AuthorityUri;
-                        options.CallbackPath = new PathString("/template/signin-oidc");
-                        options.CookiePath = "/template";
+                        options.CallbackPath = new PathString("/authorisation/signin-oidc");
+                        options.CookiePath = "/authorisation";
                     });
         }
 
@@ -58,7 +58,7 @@ namespace Linn.Authorisation.Service.Host
                 app.UseDeveloperExceptionPage();
                 app.UseStaticFiles(new StaticFileOptions
                                        {
-                                           RequestPath = "/template/build",
+                                           RequestPath = "/authorisation/build",
                                            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "client", "build"))
                                        });
             }
@@ -66,7 +66,7 @@ namespace Linn.Authorisation.Service.Host
             {
                 app.UseStaticFiles(new StaticFileOptions
                                        {
-                                           RequestPath = "/template/build",
+                                           RequestPath = "/authorisation/build",
                                            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "app", "client", "build"))
                                        });
             }

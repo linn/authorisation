@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "authorisation",
   "version": "1.0.0",
-  "description": "template",
+  "description": "authorisation",
   "main": "index.js",
   "scripts": {
     "noEmitOnError": "true",

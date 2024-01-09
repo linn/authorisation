@@ -1,5 +1,4 @@
----
-Description: Template
+Description: Authorisation
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   dockerTag:
@@ -44,12 +43,6 @@ Parameters:
   loggingMaxInnerExceptionDepth:
     Type: Number
     Description: Logging Max Inner Exception Depth
-  smtpHostname:
-    Type: String
-    Description: SMTP Hostname
-  pdfServiceRoot:
-    Type: String
-    Description: Pdf Service API root url
   environmentSuffix:
     Type: String
     AllowedValues:
@@ -72,26 +65,19 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
-  templateRole:
+  authorisationRole:
     Type: AWS::IAM::Role
     Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Effect: "Allow"
             Principal:
-              Service: ["ecs-tasks.amazonaws.com"]
-            Action: ["sts:AssumeRole"]
+              Service: [ "ecs-tasks.amazonaws.com" ]
+            Action: [ "sts:AssumeRole" ]
       Path: "/"
       Policies:
-        - PolicyName: templateServices
+        - PolicyName: authorisationServices
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -100,61 +86,23 @@ Resources:
                   - sqs:SendMessage
                 Resource:
                   Fn::ImportValue: logging-queue-arn
-              - Effect: Allow
-                Action:
-                  - ses:SendEmail
-                  - ses:SendRawEmail
-                Resource: '*'
-        - PolicyName: kms
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'kms:Encrypt'
-                  - 'kms:Decrypt'
-                Resource: "*"
-        - PolicyName: s3Policy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:*
-                Resource: !Sub "arn:aws:s3:::auth${environmentSuffix}*-keysbucket*"
-  templateTaskDefinition:
+  authorisationTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
-      TaskRoleArn: !GetAtt templateRole.Arn
+      TaskRoleArn: !GetAtt authorisationRole.Arn
       ContainerDefinitions:
-        - Name: template
+        - Name: authorisation
           Cpu: '1'
           Essential: 'true'
-          Image: !Sub docker.io/linn/template:${dockerTag}
+          Image: !Sub docker.io/linn/authorisation:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
-          Memory: '500'
-          HealthCheck:
-            Command:
-              - "CMD-SHELL"
-              - "curl -f http://localhost:5050/healthcheck || exit 1"
-          DockerLabels:
-            traefik.enable: true
-            traefik.http.routers.template.entrypoints: web
-            traefik.http.routers.template.rule: "PathPrefix(`/template`)"
-            traefik.http.services.template.loadbalancer.healthcheck.path: "/healthcheck"
+          Memory: '250'
           LogConfiguration:
             LogDriver: gelf
             Options:
               'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub template-${dockerTag}-ecs-task
+              'tag': !Sub authorisation-${dockerTag}-ecs-task
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost
@@ -184,108 +132,22 @@ Resources:
               Value: !Ref loggingEnvironment
             - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
               Value: !Ref loggingMaxInnerExceptionDepth
-            - Name: SMTP_HOSTNAME
-              Value: !Ref smtpHostname
-            - Name: PDF_SERVICE_ROOT
-              Value: !Ref pdfServiceRoot
             - Name: awsRegion
               Value: !Ref AWS::Region
-            - Name: KEYS_BUCKET_NAME
-              Value:
-                Fn::ImportValue:
-                  !Sub "linn-keys-bucket${environmentSuffix}"
-            - Name: KMS_KEY_ALIAS
-              Value:
-                Fn::ImportValue:
-                  !Sub "kms-key-alias${environmentSuffix}"
-  templateMessagingTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
-      TaskRoleArn: !GetAtt templateRole.Arn
-      ContainerDefinitions:
-        - Name: templateMessaging
-          Essential: 'true'
-          Image: !Sub docker.io/linn/template-messaging:${dockerTag}
-          PortMappings:
-            - ContainerPort: 5050
-          Memory: '150'
-          LogConfiguration:
-            LogDriver: gelf
-            Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub template-messaging-${dockerTag}-ecs-task
-          Environment:
-            - Name: DATABASE_HOST
-              Value: !Ref databaseHost
-            - Name: DATABASE_NAME
-              Value: !Ref databaseName
-            - Name: DATABASE_USER_ID
-              Value: !Ref databaseUserId
-            - Name: DATABASE_PASSWORD
-              Value: !Ref databasePassword
-            - Name: RABBIT_SERVER
-              Value: !Ref rabbitServer
-            - Name: RABBIT_PORT
-              Value: !Ref rabbitPort
-            - Name: RABBIT_USERNAME
-              Value: !Ref rabbitUsername
-            - Name: RABBIT_PASSWORD
-              Value: !Ref rabbitPassword
-            - Name: APP_ROOT
-              Value: !Ref appRoot
-            - Name: PROXY_ROOT
-              Value: !Ref proxyRoot
-            - Name: LOG_AMAZON_SQSQUEUEURI
-              Value: !ImportValue logging-queue-url
-            - Name: LOG_ENVIRONMENT
-              Value: !Ref loggingEnvironment
-            - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
-              Value: !Ref loggingMaxInnerExceptionDepth
-            - Name: awsRegion
-              Value: !Ref AWS::Region
-  templateService:
+  authorisationService:
     Type: AWS::ECS::Service
     Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
       # Have to use long form conditional
       Cluster: !If
         - isTesting
         - !Sub ${TestClusterName}
         - !Sub ${ProductionClusterName}
-      DesiredCount: !If [isTesting, 1, 2]
-      PlacementStrategies:
-        - Field: attribute:ecs.availability-zone
-          Type: spread
-        - Field: instanceId
-          Type: spread
-      TaskDefinition: !Ref templateTaskDefinition
-  templateMessagingService:
-    Type: AWS::ECS::Service
-    Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
-      # Have to use long form conditional
-      Cluster: !If
-        - isTesting
-        - !Sub ${TestClusterName}
-        - !Sub ${ProductionClusterName}
-      DesiredCount: !If [isTesting, 1, 1]
-      TaskDefinition: !Ref templateMessagingTaskDefinition
+      DesiredCount: !If [ isTesting, 1, 2]
+      TaskDefinition: !Ref authorisationTaskDefinition
+      Role: ecsServiceRole
+      LoadBalancers:
+        - ContainerName: authorisation
+          ContainerPort: 5050
+          TargetGroupArn:
+            Fn::ImportValue:
+              !Sub "authorisation-target-group-arn${environmentSuffix}"
