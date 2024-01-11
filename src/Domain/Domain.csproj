@@ -7,8 +7,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Linn.Common.Domain" Version="1.0.0" />
-		<PackageReference Include="Linn.Common.Persistence" Version="2.0.1" />
+		<PackageReference Include="Linn.Common.Domain" Version="1.2.0" />
+		<PackageReference Include="Linn.Common.Persistence" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
