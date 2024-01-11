@@ -1,6 +1,8 @@
 ﻿namespace Linn.Authorisation.IoC
 {
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
@@ -17,13 +19,16 @@
         public static IServiceCollection AddFacade(this IServiceCollection services)
         {
             return services.AddTransient<IBuilder<Privilege>, PrivilegeResourceBuilder>()
-                .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>();
+                .AddTransient<IBuilder<Permission>, PermissionResourceBuilder>()
+                .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
+                .AddTransient<IPermissionFacadeService, PermissionFacadeService>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddTransient<IRazorEngine, RazorEngine>()
-                .AddTransient<ITemplateEngine, RazorTemplateEngine>();
+                .AddTransient<ITemplateEngine, RazorTemplateEngine>()
+                .AddTransient<IPermissionService, PermissionService>();
         }
     }
 }
