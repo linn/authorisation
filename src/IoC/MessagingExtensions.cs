@@ -25,15 +25,13 @@
         public static IServiceCollection AddMessageHandlers(this IServiceCollection services)
         {
             // register handlers for different message types
-            return services.AddSingleton<Handler<ThingMessage>, ThingMessageHandler>();
+            return services;
         }
 
         public static IServiceCollection AddMessageDispatchers(this IServiceCollection services)
         {
             // register dispatchers for different message types:
-            return services.AddTransient<IMessageDispatcher<Thing>>(
-            x => new RabbitMessageDispatcher<Thing>(
-                x.GetService<ChannelConfiguration>(), x.GetService<ILog>(), ThingMessage.RoutingKey));
+            return services;
         }
     }
 }
