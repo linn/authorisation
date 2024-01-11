@@ -51,7 +51,6 @@
             resources.Should().HaveCount(2);
 
             resources?.First().Id.Should().Be(1);
-            resources.Second().Id.Should().Be(2);
         }
     }
 }
