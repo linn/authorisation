@@ -27,7 +27,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
                     }.AsQueryable());
 
             this.Response = this.Client.Get(
-                "/authorisation/privileges/all",
+                "/authorisation/privileges",
                 with =>
                     {
                         with.Accept("application/json");
