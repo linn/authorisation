@@ -1,11 +1,6 @@
 ﻿namespace Linn.Authorisation.IoC
 {
-    using Linn.Common.Logging;
     using Linn.Common.Messaging.RabbitMQ.Configuration;
-    using Linn.Common.Messaging.RabbitMQ.Dispatchers;
-    using Linn.Common.Messaging.RabbitMQ.Handlers;
-    using Linn.Authorisation.Domain.LinnApps;
-    using Linn.Authorisation.Messaging.Handlers;
     using Linn.Authorisation.Messaging.Messages;
 
     using Microsoft.Extensions.DependencyInjection;
