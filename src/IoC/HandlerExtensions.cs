@@ -13,7 +13,8 @@
         public static IServiceCollection AddHandlers(this IServiceCollection services)
         {
             return services
-                .AddTransient<IHandler, JsonResultHandler<ProcessResultResource>>();
+                .AddTransient<IHandler, JsonResultHandler<ProcessResultResource>>()
+                .AddTransient<IHandler, JsonResultHandler<IEnumerable<PrivilegeResource>>>();
         }
     }
 }

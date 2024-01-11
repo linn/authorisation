@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.IoC
 {
+    using Linn.Authorisation.Domain;
     using Linn.Common.Persistence;
     using Linn.Common.Persistence.EntityFramework;
     using Linn.Authorisation.Domain.LinnApps;
@@ -14,7 +15,9 @@
         {
             return services.AddScoped<ServiceDbContext>()
                 .AddTransient<DbContext>(a => a.GetService<ServiceDbContext>())
-                .AddTransient<ITransactionManager, TransactionManager>();
+                .AddTransient<ITransactionManager, TransactionManager>()
+                .AddTransient<IRepository<Privilege, int>, EntityFrameworkRepository<Privilege, int>>(r =>
+                    new EntityFrameworkRepository<Privilege, int>(r.GetService<ServiceDbContext>()?.Privileges));
         }
     }
 }
