@@ -35,7 +35,7 @@ else
 fi
 
 # load the secret variables but hide the output from the travis log
-source ./secrets.env > /dev/null 2>&1
+source ./secrets.env
 
 echo "secrets succesfully loaded"
 
