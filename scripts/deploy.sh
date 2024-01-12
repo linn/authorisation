@@ -7,7 +7,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 
 # deploy on aws
-if [ "${TRAVIS_BRANCH}" = "main" ]; then
+if [ "${TRAVIS_BRANCH}" = "master" ]; then
   if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     # master - deploy to production
     echo deploy to production
@@ -30,12 +30,12 @@ if [ "${TRAVIS_BRANCH}" = "main" ]; then
     ENV_SUFFIX=-sys
   fi
 else
-  # not main - deploy to int if required
+  # not master - deploy to int if required
   echo do not deploy to int
 fi
 
 # load the secret variables but hide the output from the travis log
-source ./secrets.env
+source ./secrets.env > /dev/null 2>&1
 
 echo "secrets succesfully loaded"
 
