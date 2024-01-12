@@ -6,7 +6,7 @@ ENV TZ=Europe/London
 
 EXPOSE 5050
 
-COPY bin/release/net/7.0/publish/ /app/bin/
+COPY bin/release/net7.0/publish/ /app/bin/
 COPY client/build/ /app/client/build/
 COPY views/ /app/views/
      
