@@ -1,4 +1,4 @@
-﻿namespace Linn.Production.Domain.LinnApps
+﻿namespace Linn.Authorisation.Domain.LinnApps
 {
     public class AuthorisedAction
     {

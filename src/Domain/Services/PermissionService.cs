@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
@@ -22,7 +21,8 @@
         }
         public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
         {
-            return this.permissionRepository.FilterBy(p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
+            return this.permissionRepository.FilterBy(
+                p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)

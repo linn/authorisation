@@ -1,6 +1,5 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
-    using System;
     using Groups;
 
     public class GroupPermission : Permission

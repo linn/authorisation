@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Facade.ResourceBuilders
+namespace Linn.Authorisation.Facade.ResourceBuilders
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,26 +8,28 @@
     using Linn.Common.Facade;
     using Linn.Common.Resources;
 
-    public class PrivilegeResourceBuilder : IResourceBuilder<Privilege>
+    public class PrivilegeResourceBuilder : IBuilder<Privilege>
     {
-        public PrivilegeResource Build(Privilege privilege)
+
+        public object Build(Privilege model, IEnumerable<string> claims)
         {
             return new PrivilegeResource
                        {
-                           Name = privilege.Name,
-                           Active = privilege.Active,
-                           Links = this.BuildLinks(privilege).ToArray()
+                           Id = model.Id,
+                           Name = model.Name,
+                           Active = model.Active,
+                           Links = this.BuildLinks(model).ToArray()
                        };
         }
         
-        object IResourceBuilder<Privilege>.Build(Privilege p) => this.Build(p);
-
         public string GetLocation(Privilege model)
         {
-            return $"/authorisation/privileges/{model.Name}";
+            return $"/authorisation/privileges/{model.Id}";
         }
-
-        public IEnumerable<LinkResource> BuildLinks(Privilege privilege)
+        
+        object IBuilder<Privilege>.Build(Privilege model, IEnumerable<string> claims) => this.Build(model, claims);
+        
+        private IEnumerable<LinkResource> BuildLinks(Privilege privilege)
         {
             yield return new LinkResource
                              {

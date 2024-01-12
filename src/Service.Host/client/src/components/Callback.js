@@ -1,21 +1,21 @@
 ﻿import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
 import { Loading } from '@linn-it/linn-form-components-library';
-import PropTypes from 'prop-types';
+import history from '../history';
+
 import userManager from '../helpers/userManager';
 
-const Callback = ({ onSuccess }) => (
-    <CallbackComponent
-        userManager={userManager}
-        successCallback={onSuccess}
-        errorCallback={err => console.error(err)}
-    >
-        <Loading />
-    </CallbackComponent>
-);
-
-Callback.propTypes = {
-    onSuccess: PropTypes.func.isRequired
-};
+function Callback() {
+    return (
+        <CallbackComponent
+            userManager={userManager}
+            successCallback={user => {
+                history.push(user.state.redirect);
+            }}
+        >
+            <Loading />
+        </CallbackComponent>
+    );
+}
 
 export default Callback;

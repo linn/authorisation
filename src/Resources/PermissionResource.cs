@@ -1,4 +1,4 @@
-﻿namespace Linn.Authorisation.Resources
+namespace Linn.Authorisation.Resources
 {
     using Linn.Common.Resources;
 

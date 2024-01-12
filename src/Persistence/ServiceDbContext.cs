@@ -84,6 +84,5 @@ namespace Linn.Authorisation.Persistence
             builder.Entity<Privilege>().Property(a => a.Active);
             builder.Entity<Privilege>().Property(a => a.Name);
         }
-
     }
 }

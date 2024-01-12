@@ -1,89 +1,94 @@
 namespace Linn.Authorisation.Service.Host
 {
     using System.IdentityModel.Tokens.Jwt;
-
-    using Amazon;
-    using Amazon.Internal;
-    using Amazon.KeyManagementService;
-    using Amazon.S3;
-
-    using AspNetCore.DataProtection.Aws.Kms;
-    using AspNetCore.DataProtection.Aws.S3;
+    using System.IO;
 
     using Linn.Common.Authentication.Host.Extensions;
-    using Linn.Common.Configuration;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+    using Linn.Common.Logging;
+    using Linn.Common.Service.Core;
+    using Linn.Common.Service.Core.Extensions;
+    using Linn.Authorisation.IoC;
+    using Linn.Authorisation.Service.Host.Negotiators;
+    using Linn.Authorisation.Service.Models;
+
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.DataProtection;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
-    using Microsoft.Extensions.Logging;
-    using Nancy;
-    using Nancy.Owin;
+    using Microsoft.Extensions.FileProviders;
+    using Microsoft.Extensions.Hosting;
 
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var keysBucketName = ConfigurationManager.Configuration["KEYS_BUCKET_NAME"];
-            var kmsKeyAlias = ConfigurationManager.Configuration["KMS_KEY_ALIAS"];
+            services.AddCors();
+            services.AddSingleton<IViewLoader, ViewLoader>();
+            services.AddSingleton<IResponseNegotiator, HtmlNegotiator>();
+            services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
 
-            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(new AmazonS3Config { RegionEndpoint = RegionEndpoint.EUWest1 }));
-            services.TryAddSingleton<IAmazonKeyManagementService>(new AmazonKeyManagementServiceClient(new AmazonKeyManagementServiceConfig
-            {
-                RegionEndpoint = RegionEndpoint.EUWest1
-            }));
+            services.AddCredentialsExtensions();
+            services.AddSqsExtensions();
+            services.AddLog();
 
-            services.AddDataProtection()
-                .SetApplicationName("auth-oidc")
-                .PersistKeysToAwsS3(new S3XmlRepositoryConfig(keysBucketName))
-                .ProtectKeysWithAwsKms(new KmsXmlEncryptorConfig(kmsKeyAlias) { DiscriminatorAsContext = true });
+            services.AddFacade();
+            services.AddServices();
+            services.AddPersistence();
+            services.AddHandlers();
+            services.AddMessageDispatchers();
 
             services.AddLinnAuthentication(
                 options =>
                     {
-                        options.Authority = ConfigurationManager.Configuration["AUTHORITY_URI"];
+                        options.Authority = ApplicationSettings.Get().AuthorityUri;
                         options.CallbackPath = new PathString("/authorisation/signin-oidc");
+                        options.CookiePath = "/authorisation";
                     });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole();
-
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseStaticFiles(new StaticFileOptions
+                                       {
+                                           RequestPath = "/authorisation/build",
+                                           FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "client", "build"))
+                                       });
             }
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            else
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            });
+                app.UseStaticFiles(new StaticFileOptions
+                                       {
+                                           RequestPath = "/authorisation/build",
+                                           FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "app", "client", "build"))
+                                       });
+            }
 
             app.UseAuthentication();
 
             app.UseBearerTokenAuthentication();
-
-            app.UseOwin(x => x.UseNancy(
-                config =>
+            app.UseExceptionHandler(
+                c => c.Run(async context =>
                     {
-                        config.PassThroughWhenStatusCodesAre(HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden);
-                    }));
+                        var exception = context.Features
+                            .Get<IExceptionHandlerPathFeature>()
+                            ?.Error;
 
-            app.Use((context, next) => context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme));
+                        var log = app.ApplicationServices.GetService<ILog>();
+                        log.Error(exception?.Message, exception);
+
+                        var response = new { error = $"{exception?.Message}  -  {exception?.StackTrace}" };
+                        await context.Response.WriteAsJsonAsync(response);
+                    }));
+            app.UseRouting();
+            app.UseEndpoints(builder => { builder.MapEndpoints(); });
         }
     }
 }

@@ -1,5 +1,4 @@
-import { ItemType } from '@linn-it/linn-form-components-library';
+﻿import { ItemType } from '@linn-it/linn-form-components-library';
 
-export const privilege = new ItemType('privilege', 'PRIVILEGE', '/authorisation/privileges');
-
-export const test = new ItemType('privilege', 'PRIVILEGE', '/authorisation/privileges');
+export const hub = new ItemType('hub', 'HUB', '/template/hubs');
+export const hubs = new ItemType('hubs', 'HUBS', '/template/hubs');

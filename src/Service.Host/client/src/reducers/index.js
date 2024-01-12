@@ -1,20 +1,18 @@
-﻿import { combineReducers } from 'redux';
+﻿import {
+    reducers as sharedLibraryReducers,
+    fetchErrorReducer
+} from '@linn-it/linn-form-components-library';
+import { combineReducers } from 'redux';
 import { reducer as oidc } from 'redux-oidc';
-import privileges from './privileges';
-import privilege from './privilege';
-import groups from './groups';
-import group from './group';
-import users from './users';
-import permissions from './permissions';
+import * as itemTypes from '../itemTypes';
 
-const rootReducer = combineReducers({
-    oidc,
-    privileges,
-    privilege,
-    groups,
-    group,
-    users,
-    permissions
-});
+const errors = fetchErrorReducer({ ...itemTypes });
+
+const rootReducer = history =>
+    combineReducers({
+        oidc,
+        ...sharedLibraryReducers,
+        errors
+    });
 
 export default rootReducer;

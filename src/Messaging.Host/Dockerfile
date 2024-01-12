@@ -1,5 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/core/runtime:2.2
+﻿FROM mcr.microsoft.com/dotnet/runtime:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 
-COPY bin/release/netcoreapp2.2/publish/ /app/bin/
+COPY bin/release/net6.0/publish/ /app/bin/
+ENV TZ=Europe/London
 
 CMD dotnet /app/bin/Linn.Authorisation.Messaging.Host.dll

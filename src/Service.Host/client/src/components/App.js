@@ -1,45 +1,28 @@
 ﻿import React from 'react';
-import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { Title } from '@linn-it/linn-form-components-library';
-import Mypage from './myPageWidth';
+import Typography from '@mui/material/Typography';
+import { useSelector, useDispatch } from 'react-redux';
+import { Page } from '@linn-it/linn-form-components-library';
+import { useParams } from 'react-router';
 
-const useStyles = makeStyles({
-    root: {
-        margin: '40px',
-        padding: '40px'
-    },
-    rightMargin: {
-        marginRight: '20px'
-    }
-});
+import getName from '../selectors/userSelectors';
+import actions from '../actions';
+import config from '../config';
+import history from '../history';
 
 function App() {
-    const classes = useStyles();
+    const name = useSelector(state => getName(state));
+    const dispatch = useDispatch();
+
+    const { id } = useParams();
+
+    dispatch(actions.testAction());
+
     return (
-        <Mypage>
-            <Paper className={classes.root}>
-                <Title text="Authorisation" />
-                <Link to="../authorisation/viewprivileges">
-                    <Button type="button" variant="outlined" className={classes.rightMargin}>
-                        View Privileges
-                    </Button>
-                </Link>
-                <Link to="../authorisation/groups">
-                    <Button type="button" variant="outlined" className={classes.rightMargin}>
-                        View Groups
-                    </Button>
-                </Link>
-                <Link to="../authorisation/viewpermissions">
-                <Button type="button" variant="outlined" className={classes.rightMargin}>
-                        View Permissions
-                    </Button>
-                </Link>
-            </Paper>
-        </Mypage>
+        <Page homeUrl={config.appRoot} history={history}>
+            <Typography variant="h6">App</Typography>
+            <Typography>Hello {name}</Typography>
+            <Typography>id is {id}</Typography>
+        </Page>
     );
 }
 

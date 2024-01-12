@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Linn.Authorisation.Resources</AssemblyName>
-    <RootNamespace>Linn.Authorisation.Resources</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<AssemblyName>Linn.Authorisation.Resources</AssemblyName>
+		<RootNamespace>Linn.Authorisation.Resources</RootNamespace>
+	</PropertyGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Linn.Common.Resources" Version="2.0.0" />
-  </ItemGroup>
+		<PackageReference Include="Linn.Common.Resources" Version="2.1.0" />
+	</ItemGroup>
 
 </Project>
