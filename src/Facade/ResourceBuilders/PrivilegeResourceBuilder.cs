@@ -15,6 +15,7 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
         {
             return new PrivilegeResource
                        {
+                           Id = model.Id,
                            Name = model.Name,
                            Active = model.Active,
                            Links = this.BuildLinks(model).ToArray()
