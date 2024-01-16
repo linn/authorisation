@@ -24,7 +24,7 @@ function ExampleComponent() {
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h6">Example Component / Grid Layout demo</Typography>
+                    <Typography variant="h1">Example Component / Grid Layout demo</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography>
@@ -99,11 +99,7 @@ function ExampleComponent() {
                     </Typography>
                 </Grid>
 
-                <Grid item xs={9} style={{ backgroundColor: 'olive' }}>
-                    <Typography>
-                        I fill up the remaining 9 columns with an olive green background
-                    </Typography>
-                </Grid>
+                <Grid item xs={9} style={{ backgroundColor: 'olive' }} />
 
                 <Grid item xs={6}>
                     <Typography>
@@ -131,7 +127,7 @@ function ExampleComponent() {
                     <Button
                         variant="contained"
                         onClick={() => {
-                            alert(`The text currently entere is ${inputValue}`);
+                            alert(`The text currently entered is ${inputValue}`);
                         }}
                     >
                         Click me

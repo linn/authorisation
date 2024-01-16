@@ -17,6 +17,18 @@ function App() {
                 <ListItem component={Link} to="/authorisation/example-component">
                     <Typography color="primary">Example Link</Typography>
                 </ListItem>
+                <ListItem component={Link} to="/authorisation/example-component">
+                    <Typography color="primary">Example Link 2</Typography>
+                </ListItem>
+                <ListItem component={Link} to="/authorisation/example-component">
+                    <Typography color="primary">Example Link 3</Typography>
+                </ListItem>
+                <ListItem component={Link} to="/authorisation/example-component">
+                    <Typography color="primary">Example Link 4</Typography>
+                </ListItem>
+                <ListItem component={Link} to="/authorisation/example-component">
+                    <Typography color="primary">Example Link 5</Typography>
+                </ListItem>
             </List>
         </Page>
     );
