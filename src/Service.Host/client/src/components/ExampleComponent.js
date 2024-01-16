@@ -86,7 +86,7 @@ function ExampleComponent() {
 
                 <Grid item xs={6} style={{ backgroundColor: 'grey' }}>
                     <Typography>
-                        I should span 6, i.e. half the page. I have a pink background
+                        I should span 6, i.e. half the page. I have a grey background
                     </Typography>
                 </Grid>
                 <Grid item xs={6} style={{ backgroundColor: 'purple' }}>
