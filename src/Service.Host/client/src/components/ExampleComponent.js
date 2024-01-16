@@ -31,7 +31,7 @@ function ExampleComponent() {
                         This is just an example component. You can see that by importing the Page
                         component above and making it your outermost element, you will render the
                         nav menu and breadcrumb buttons above. Note that all free text is rendered
-                        inside a Typography element to give it a consisten font / style
+                        inside a Typography element to give it a consistent font / style
                     </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ backgroundColor: 'pink' }}>
