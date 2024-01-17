@@ -6,6 +6,7 @@ function useInitialise(url) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
+        setIsLoading(true);
         const requestParameters = {
             method: 'GET',
             headers: {
