@@ -25,14 +25,13 @@ function Privileges() {
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
             return (
-                <ListItem>
+                <ListItem key={privilege.id}>
                     <Typography color="black">{privilege.name} - ACTIVE</Typography>
                 </ListItem>
             );
-            // eslint-disable-next-line no-else-return
-        } else {
+        }
             return (
-                <ListItem>
+                <ListItem key={privilege.id}>
                     <Typography color="black">{privilege.name} - INACTIVE</Typography>
                 </ListItem>
             );
