@@ -10,7 +10,7 @@ import useInitialise from '../hooks/useInitialise';
 
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
-    const endpoint = 'http://localhost:51799/authorisation/privileges';
+    const endpoint = `${config.appRoot}/authorisation/privileges`;
 
     // use this new hook to fetch data once when this component is first rendered
     const { data } = useInitialise(endpoint);
