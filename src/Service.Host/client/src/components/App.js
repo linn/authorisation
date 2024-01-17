@@ -8,6 +8,7 @@ import ListItem from '@mui/material/ListItem';
 
 import config from '../config';
 import history from '../history';
+import Privileges from './Priviliges';
 
 function App() {
     return (
@@ -24,12 +25,14 @@ function App() {
                     <Typography color="primary">Example Link 3</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/example-component">
-                    <Typography color="primary">Example Link 4</Typography>
+                    <Typography color="primary">{privileges}</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/example-component">
                     <Typography color="primary">Example Link 5</Typography>
                 </ListItem>
             </List>
+
+            <Privileges privileges ={privileges}/>
         </Page>
     );
 }
