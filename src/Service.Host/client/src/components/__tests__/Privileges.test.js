@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import useInitialise from '../../hooks/useInitialise';
 import render from '../../test-utils';
 import Privileges from '../Privileges';
+import config from '../../config';
 
 jest.mock('../../hooks/useInitialise');
 
@@ -21,9 +22,9 @@ describe('Privileges tests', () => {
         useInitialise.mockImplementation(() => ({ data: MOCK_PRIVILEGES }));
     });
 
-    test('App renders without crashing...', () => {
-        const { getByText } = render(<Privileges />);
-        expect(getByText('Privileges')).toBeInTheDocument();
+    test('fetches data', () => {
+        render(<Privileges />);
+        expect(useInitialise).toBeCalledWith(`${config.appRoot}/authorisation/privileges`);
     });
 
     test('renders all privileges', () => {
