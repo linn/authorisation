@@ -7,7 +7,7 @@ function useInitialise(url) {
 
     useEffect(() => {
         const requestParameters = {
-            method: 'GET', // I think this is the part we were missing!
+            method: 'GET',
             headers: {
                 accept: 'application/json'
             }
