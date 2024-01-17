@@ -12,6 +12,7 @@ import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import ExampleComponent from './ExampleComponent';
+import Privileges from './Privileges';
 
 function Root({ store }) {
     return (
@@ -33,6 +34,11 @@ function Root({ store }) {
                                         exact
                                         path="/authorisation/example-component"
                                         element={<ExampleComponent />}
+                                    />
+                                    <Route
+                                        exact
+                                        path="/authorisation/privileges"
+                                        element={<Privileges />}
                                     />
                                     <Route
                                         exact
