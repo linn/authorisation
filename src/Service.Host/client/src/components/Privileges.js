@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Page } from '@linn-it/linn-form-components-library';
+import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,6 +21,14 @@ function Privileges() {
             setPrivileges(data);
         }
     }, [data]);
+
+    const spinningWheel = () => {
+        console.log(isLoading);
+        if (isLoading) {
+            return <Loading />;
+        }
+        return <div />;
+    };
 
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
@@ -55,6 +63,11 @@ function Privileges() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">Privileges</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    {spinningWheel()}
+                </Grid>
+                <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>
                 </Grid>
             </Grid>
