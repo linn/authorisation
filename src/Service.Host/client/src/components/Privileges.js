@@ -30,12 +30,11 @@ function Privileges() {
                 </ListItem>
             );
         }
-            return (
-                <ListItem key={privilege.id}>
-                    <Typography color="black">{privilege.name} - INACTIVE</Typography>
-                </ListItem>
-            );
-        }
+        return (
+            <ListItem key={privilege.id}>
+                <Typography color="black">{privilege.name} - INACTIVE</Typography>
+            </ListItem>
+        );
     };
 
     privileges.sort((a, b) => {
