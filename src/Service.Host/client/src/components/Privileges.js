@@ -12,8 +12,8 @@ function Privileges() {
     const [privileges, setPrivileges] = useState([]);
     const endpoint = `${config.appRoot}/authorisation/privileges`;
 
-    // use this new hook to fetch data once when this component is first rendered
-    const { data } = useInitialise(endpoint);
+    // note that this function also returns a loading boolean to tell you whether or not the request is loading
+    const { data, isLoading } = useInitialise(endpoint);
 
     // any time data changes, load it into our local privileges state
     useEffect(() => {

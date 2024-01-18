@@ -23,6 +23,7 @@ namespace Linn.Authorisation.Service.Modules
             HttpResponse res,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
+            await Task.Delay(5000); // just for the loading story - delete before merging!
             await res.Negotiate(service.GetAll());
         }
     }
