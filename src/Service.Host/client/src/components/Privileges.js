@@ -23,7 +23,6 @@ function Privileges() {
     }, [data]);
 
     const spinningWheel = () => {
-        console.log(isLoading);
         if (isLoading) {
             return <Loading />;
         }
