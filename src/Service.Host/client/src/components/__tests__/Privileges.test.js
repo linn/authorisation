@@ -10,14 +10,13 @@ import config from '../../config';
 
 jest.mock('../../hooks/useInitialise');
 
-const MOCK_PRIVILEGES = [
-    { name: 'a.privilege', active: true },
-    { name: 'd.privilege', active: true },
-    { name: 'c.privilege', active: false },
-    { name: 'b.privilege', active: true }
-];
-
-describe('Privileges tests', () => {
+describe('When Privileges ', () => {
+    const MOCK_PRIVILEGES = [
+        { name: 'a.privilege', active: true },
+        { name: 'd.privilege', active: true },
+        { name: 'c.privilege', active: false },
+        { name: 'b.privilege', active: true }
+    ];
     beforeEach(() => {
         useInitialise.mockImplementation(() => ({ data: MOCK_PRIVILEGES }));
     });
@@ -42,5 +41,21 @@ describe('Privileges tests', () => {
         expect(listItems[1].children[0].innerHTML).toBe('b.privilege - ACTIVE');
         expect(listItems[2].children[0].innerHTML).toBe('c.privilege - INACTIVE');
         expect(listItems[3].children[0].innerHTML).toBe('d.privilege - ACTIVE');
+    });
+
+    test('does not render loading spinner', () => {
+        const { queryByRole } = render(<Privileges />);
+        expect(queryByRole('progressbar')).not.toBeInTheDocument();
+    });
+});
+
+describe('When loading ', () => {
+    beforeEach(() => {
+        useInitialise.mockImplementation(() => ({ isLoading: true }));
+    });
+
+    test('renders loading spinner', () => {
+        const { getByRole } = render(<Privileges />);
+        expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });

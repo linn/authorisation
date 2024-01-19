@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Page } from '@linn-it/linn-form-components-library';
+import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,8 +12,8 @@ function Privileges() {
     const [privileges, setPrivileges] = useState([]);
     const endpoint = `${config.appRoot}/authorisation/privileges`;
 
-    // use this new hook to fetch data once when this component is first rendered
-    const { data } = useInitialise(endpoint);
+    // note that this function also returns a loading boolean to tell you whether or not the request is loading
+    const { data, isLoading } = useInitialise(endpoint);
 
     // any time data changes, load it into our local privileges state
     useEffect(() => {
@@ -21,6 +21,13 @@ function Privileges() {
             setPrivileges(data);
         }
     }, [data]);
+
+    const spinningWheel = () => {
+        if (isLoading) {
+            return <Loading />;
+        }
+        return <div />;
+    };
 
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
@@ -55,6 +62,11 @@ function Privileges() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">Privileges</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    {spinningWheel()}
+                </Grid>
+                <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>
                 </Grid>
             </Grid>
