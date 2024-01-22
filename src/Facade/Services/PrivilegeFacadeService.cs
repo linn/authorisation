@@ -20,9 +20,7 @@ namespace Linn.Authorisation.Facade.Services
         {
             var privilege = new Privilege 
                                 {
-                                    Id = resource.Id,
-                                    Name = resource.Name,
-                                    Active = resource.Active
+                                    Name = resource.Name
                                 };
             return privilege;
         }

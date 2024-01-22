@@ -5,9 +5,9 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
-    using Linn.Common.Facade;
 
     using NSubstitute;
 
@@ -20,7 +20,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.resource = new PrivilegeResource { Id = 1, Name = "1", Active = true };
+            this.resource = new PrivilegeResource { Name = "1" };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
         }
@@ -29,6 +29,12 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         public void ShouldReturnCreated()
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+        [Test]
+        public void ShouldCallAddRepository()
+        {
+            this.PrivilegeRepository.Received().Add(Arg.Any<Privilege>());
         }
 
         [Test]
@@ -43,7 +49,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         {
             var resources = this.Response.DeserializeBody<PrivilegeResource>();
             resources.Should().NotBeNull();
-            resources.Id.Should().Be(1);
+            resources.Name.Should().Be("1");
         }
     }
 }
