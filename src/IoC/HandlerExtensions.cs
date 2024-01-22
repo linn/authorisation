@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
 
-    using Linn.Common.Service.Core;
-    using Linn.Common.Service.Core.Handlers;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Service.Core.Handlers;
 
     using Microsoft.Extensions.DependencyInjection;
 
