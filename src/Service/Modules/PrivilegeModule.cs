@@ -27,7 +27,7 @@ namespace Linn.Authorisation.Service.Modules
             await res.Negotiate(service.GetAll());
         }
 
-        private async Task CreatePrivilege (
+        private async Task CreatePrivilege(
             HttpResponse res,
             PrivilegeResource resource,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
@@ -36,6 +36,5 @@ namespace Linn.Authorisation.Service.Modules
 
             await res.Negotiate(result);
         }
-
     }
 }

@@ -20,10 +20,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.resource = new PrivilegeResource { Id = 1, Name = "1" };
-
-            this.FacadeService.Add(this.resource).Returns(
-                new CreatedResult<PrivilegeResource>(new PrivilegeResource { Id = 1, Name = "1", }));
+            this.resource = new PrivilegeResource { Id = 1, Name = "1", Active = true };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
         }
