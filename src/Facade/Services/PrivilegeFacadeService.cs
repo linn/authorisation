@@ -19,7 +19,11 @@ namespace Linn.Authorisation.Facade.Services
         
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            return new Privilege
+            {
+                Id = resource.Id,
+                Name = resource.Name
+            };
         }
         
         protected override void UpdateFromResource(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
