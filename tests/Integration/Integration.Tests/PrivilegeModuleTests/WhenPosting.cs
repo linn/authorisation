@@ -20,7 +20,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.resource = new PrivilegeResource { Name = "1" };
+            this.resource = new PrivilegeResource { Name = "test-permission" };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
         }
@@ -47,9 +47,8 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [Test]
         public void ShouldReturnJsonBody()
         {
-            var resources = this.Response.DeserializeBody<PrivilegeResource>();
-            resources.Should().NotBeNull();
-            resources.Name.Should().Be("1");
+            var result = this.Response.DeserializeBody<PrivilegeResource>();
+            result.Name.Should().Be("test-permission");
         }
     }
 }
