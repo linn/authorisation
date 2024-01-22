@@ -11,7 +11,6 @@ namespace Linn.Authorisation.Facade.Services
 
     public class PrivilegeFacadeService : FacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>
     {
-
         public PrivilegeFacadeService(IRepository<Privilege, int> repository, ITransactionManager transactionManager, IBuilder<Privilege> resourceBuilder) 
             : base(repository, transactionManager, resourceBuilder)
         {
