@@ -9,7 +9,13 @@ import history from '../history';
 
 function CreatePrivilege() {
     const endpoint = `${config.appRoot}/authorisation/privileges`;
-    const { send, isLoading, postResult } = usePost(endpoint, { name: newName }, true);
+    const { send, isLoading, postResult } = usePost(
+        endpoint,
+        {
+            // post body here
+        },
+        true
+    );
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
