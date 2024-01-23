@@ -33,8 +33,8 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
         [Test]
         public void ShouldCallAddRepository()
-        {
-            this.PrivilegeRepository.Received().Add(Arg.Any<Privilege>());
+        { 
+            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "test-permission"));
         }
 
         [Test]
