@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
-import usePost from '../hooks/usePost';
 
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
@@ -16,9 +14,6 @@ function Privileges() {
 
     // note that this function also returns a loading boolean to tell you whether or not the request is loading
     const { data, isLoading } = useInitialise(endpoint);
-
-    const postBody = { name: 'something.new' };
-    const { send } = usePost(endpoint, postBody, true);
 
     // any time data changes, load it into our local privileges state
     useEffect(() => {
@@ -67,7 +62,6 @@ function Privileges() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">Privileges</Typography>
-                    <Button onClick={send}>gogogo</Button>
                 </Grid>
                 <Grid item xs={12}>
                     {spinningWheel()}
