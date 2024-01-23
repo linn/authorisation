@@ -17,6 +17,7 @@ namespace Linn.Authorisation.Service.Modules
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("/authorisation/privileges", this.GetAll);
+            endpoints.MapPost("/authorisation/privileges", this.CreatePrivilege);
         }
 
         private async Task GetAll(
@@ -24,6 +25,16 @@ namespace Linn.Authorisation.Service.Modules
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
             await res.Negotiate(service.GetAll());
+        }
+
+        private async Task CreatePrivilege(
+            HttpResponse res,
+            PrivilegeResource resource,
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
+        {
+            var result = service.Add(resource);
+
+            await res.Negotiate(result);
         }
     }
 }
