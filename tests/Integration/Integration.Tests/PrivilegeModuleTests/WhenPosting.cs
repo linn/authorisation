@@ -34,7 +34,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [Test]
         public void ShouldCallAddRepository()
         { 
-            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "test-permission"));
+            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "test-permission" && p.Active == true));
         }
 
         [Test]

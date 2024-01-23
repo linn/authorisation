@@ -18,10 +18,7 @@ namespace Linn.Authorisation.Facade.Services
         
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> privileges = null)
         {
-            var privilege = new Privilege 
-                                {
-                                    Name = resource.Name
-                                };
+            var privilege = new Privilege(resource.Name);
             return privilege;
         }
         
