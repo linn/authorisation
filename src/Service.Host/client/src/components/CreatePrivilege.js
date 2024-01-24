@@ -3,15 +3,19 @@ import { Page, Loading, InputField, SnackbarMessage } from '@linn-it/linn-form-c
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Privileges from './Privileges';
+import useInitialise from '../hooks/useInitialise';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
 
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState([]);
-    const [result, setResult] = useState([]);
+    const [privileges, setPrivileges] = useState([]);
     const endpoint = `${config.appRoot}/authorisation/privileges`;
+    const [result, setResult] = useState([]);
+
+    const { data } = useInitialise(endpoint);
+
     const { send, isLoading, postResult } = usePost(
         endpoint,
         {
@@ -27,10 +31,17 @@ function CreatePrivilege() {
         }
         return <div />;
     };
+    
+    // any time data changes, load it into our local privileges state
+    useEffect(() => {
+        if (data) {
+            setPrivileges(data);
+        }
+    }, [data]);
 
     function isNameValid(name) {
         let valid = true;
-        Privileges.forEach(
+        privileges.forEach(
             privilege => {
                 if (name === privilege.name) {
                     setResult({
