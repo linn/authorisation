@@ -16,9 +16,17 @@ function CreatePrivilege() {
         endpoint,
         {
             // post body here
+            name: inputValue
         },
         true
     );
+
+    const spinningWheel = () => {
+        if (isLoading) {
+            return <Loading />;
+        }
+        return <div />;
+    };
 
     function isNameValid(name) {
         let valid = true;
@@ -44,15 +52,16 @@ function CreatePrivilege() {
     function createNewPrivilege(name) {
         if (isNameValid(name)) {
             //POST to backend to get add the new privilege
+            send();
         }
     }
 
-    function displayMessage(name) {
-        if (isNameValid(name)) {
-            return <Typography>{result.message}</Typography>;
-        }
-        return <Typography>Name is not valid</Typography>;
-    }
+    // function displayMessage(name) {
+    //     if (isNameValid(name)) {
+    //         return <Typography>{result.message}</Typography>;
+    //     }
+    //     return <Typography>Name is not valid</Typography>;
+    // }
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
@@ -74,8 +83,9 @@ function CreatePrivilege() {
                     >
                         Save
                     </Button>
-
-                    {displayMessage(inputValue.trim())}
+                    <Grid item xs={12}>
+                        {spinningWheel()}
+                    </Grid>
                 </Grid>
             </Grid>
         </Page>
