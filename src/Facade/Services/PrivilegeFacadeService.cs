@@ -11,7 +11,6 @@ namespace Linn.Authorisation.Facade.Services
 
     public class PrivilegeFacadeService : FacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>
     {
-
         public PrivilegeFacadeService(IRepository<Privilege, int> repository, ITransactionManager transactionManager, IBuilder<Privilege> resourceBuilder) 
             : base(repository, transactionManager, resourceBuilder)
         {
@@ -19,7 +18,8 @@ namespace Linn.Authorisation.Facade.Services
         
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            var privilege = new Privilege(resource.Name);
+            return privilege;
         }
         
         protected override void UpdateFromResource(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)

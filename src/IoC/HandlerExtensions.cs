@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
 
-    using Linn.Common.Service.Core;
-    using Linn.Common.Service.Core.Handlers;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Service.Core.Handlers;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +14,7 @@
             return services
                 .AddTransient<IHandler, JsonResultHandler<ProcessResultResource>>()
                 .AddTransient<IHandler, JsonResultHandler<IEnumerable<PrivilegeResource>>>()
+                .AddTransient<IHandler, JsonResultHandler<PrivilegeResource>>()
                 .AddTransient<IHandler, JsonResultHandler<IEnumerable<PermissionResource>>>();
         }
     }
