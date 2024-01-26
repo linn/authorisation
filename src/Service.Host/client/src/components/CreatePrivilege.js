@@ -115,7 +115,7 @@ function CreatePrivilege() {
                         open={open}
                         autoHideDuration={5000}
                         onClose={handleClose}
-                        message={`Save successful - ${postResult}`}
+                        message="Save successful"
                         action={action}
                     />
                     <Grid item xs={12}>
