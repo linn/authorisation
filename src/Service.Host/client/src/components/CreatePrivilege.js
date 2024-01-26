@@ -5,9 +5,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
 import useInitialise from '../hooks/useInitialise';
 import usePost from '../hooks/usePost';
 import config from '../config';
@@ -16,7 +13,6 @@ import history from '../history';
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState('');
     const [privileges, setPrivileges] = useState([]);
-    const [open, setOpen] = React.useState(false);
     const endpoint = `${config.appRoot}/authorisation/privileges`;
 
     const { data } = useInitialise(endpoint);
@@ -63,29 +59,35 @@ function CreatePrivilege() {
         }
     }
 
+    function disableButton(input) {
+        if (input === '') {
+            return (
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        createNewPrivilege(inputValue.trim());
+                    }}
+                    disabled
+                >
+                    Save
+                </Button>
+            );
+        }
+        return (
+            <Button
+                variant="contained"
+                onClick={() => {
+                    createNewPrivilege(inputValue.trim());
+                }}
+            >
+                Save
+            </Button>
+        );
+    }
+
     const handleFieldChange = (propertyName, newValue) => {
-        console.log(propertyName);
         setInputValue(newValue);
     };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
-
-    const action = (
-        <fragment>
-            <Button color="secondary" size="small" onClick={handleClose}>
-                CLOSE
-            </Button>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                <CloseIcon fontSize="small" />
-            </IconButton>
-        </fragment>
-    );
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -94,29 +96,19 @@ function CreatePrivilege() {
                     <Typography variant="h4">Create a new Privilege</Typography>
                     <InputField
                         propertyName="inputValue"
-                        label="name"
+                        label="Name"
                         value={inputValue}
                         onChange={handleFieldChange}
                         fullWidth
                     />
 
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            createNewPrivilege(inputValue.trim());
-                            setOpen(true);
-                        }}
-                    >
-                        Save
-                    </Button>
+                    {disableButton(inputValue)}
                 </Grid>
                 <Grid>
                     <Snackbar
-                        open={open}
+                        open={postResult?.id}
                         autoHideDuration={5000}
-                        onClose={handleClose}
-                        message="Save successful"
-                        action={action}
+                        message="Save Successful"
                     />
                     <Grid item xs={12}>
                         {spinningWheel()}

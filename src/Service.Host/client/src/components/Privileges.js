@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import { Link } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
@@ -55,9 +54,11 @@ function Privileges() {
         const fb = b.name.toLowerCase();
 
         if (fa < fb) {
+            console.log(`fa ${fa} is less than fb ${fb}`);
             return -1;
         }
         if (fa > fb) {
+            console.log(`fa ${fa} is greater than fb ${fb}`);
             return 1;
         }
         return 0;
@@ -68,7 +69,6 @@ function Privileges() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">Privileges</Typography>
-                    <Button onClick={send}>gogogo</Button>
                 </Grid>
                 <Grid item xs={12}>
                     {spinningWheel()}
