@@ -4,6 +4,7 @@ import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
+import { Link } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
@@ -37,7 +38,7 @@ function Privileges() {
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
             return (
-                <ListItem key={privilege.id}>
+                <ListItem component={Link} to="/authorisation/Id" key={privilege.id}>
                     <Typography color="black">{privilege.name} - ACTIVE</Typography>
                 </ListItem>
             );

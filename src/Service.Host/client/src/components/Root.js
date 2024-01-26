@@ -13,6 +13,8 @@ import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
+import CreatePrivilege from './CreatePrivilege';
+import Id from './Id';
 
 function Root({ store }) {
     return (
@@ -40,6 +42,12 @@ function Root({ store }) {
                                         path="/authorisation/privileges"
                                         element={<Privileges />}
                                     />
+                                    <Route
+                                        exact
+                                        path="/authorisation/CreatePrivilege"
+                                        element={<CreatePrivilege />}
+                                    />
+                                    <Route exact path="/authorisation/Id" element={<Id />} />
                                     <Route
                                         exact
                                         path="/authorisation/signin-oidc-client"
