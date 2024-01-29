@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
-import { Link } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
@@ -33,7 +33,7 @@ function Privileges() {
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
             return (
-                <ListItem component={Link} to="/authorisation/Id" key={privilege.id}>
+                <ListItem key={privilege.id}>
                     <Typography color="black">{privilege.name} - ACTIVE</Typography>
                 </ListItem>
             );
@@ -50,11 +50,9 @@ function Privileges() {
         const fb = b.name.toLowerCase();
 
         if (fa < fb) {
-            console.log(`fa ${fa} is less than fb ${fb}`);
             return -1;
         }
         if (fa > fb) {
-            console.log(`fa ${fa} is greater than fb ${fb}`);
             return 1;
         }
         return 0;
@@ -71,6 +69,11 @@ function Privileges() {
                 </Grid>
                 <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>
+                </Grid>
+                <Grid item xs={6}>
+                    <ListItem component={Link} to="/authorisation/privileges/create">
+                        <Typography color="primary">Create Privileges</Typography>
+                    </ListItem>
                 </Grid>
             </Grid>
         </Page>
