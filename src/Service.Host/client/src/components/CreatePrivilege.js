@@ -32,13 +32,6 @@ function CreatePrivilege() {
         return <div />;
     };
 
-    // any time data changes, load it into our local privileges state
-
-    function createNewPrivilege() {
-        //POST to backend to get add the new privilege
-        send();
-    }
-
     const handleFieldChange = (propertyName, newValue) => {
         setInputValue(newValue);
     };
@@ -59,7 +52,7 @@ function CreatePrivilege() {
                     <Button
                         variant="contained"
                         onClick={() => {
-                            createNewPrivilege(inputValue.trim());
+                            send();
                         }}
                         disabled={!inputValue}
                     >
@@ -68,7 +61,7 @@ function CreatePrivilege() {
                 </Grid>
                 <Grid>
                     <Snackbar
-                        open={postResult?.id}
+                        open={!!postResult?.id}
                         autoHideDuration={5000}
                         message="Save Successful"
                     />
