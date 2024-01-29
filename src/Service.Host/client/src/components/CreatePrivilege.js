@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Page, Loading, InputField } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 
-import useInitialise from '../hooks/useInitialise';
+//import useInitialise from '../hooks/useInitialise';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
 
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState('');
-    const [privileges, setPrivileges] = useState([]);
+
     const endpoint = `${config.appRoot}/authorisation/privileges`;
 
-    const { data } = useInitialise(endpoint);
+    //const { data } = useInitialise(endpoint);
     const { send, isLoading, postResult } = usePost(
         endpoint,
         {
@@ -33,56 +33,10 @@ function CreatePrivilege() {
     };
 
     // any time data changes, load it into our local privileges state
-    useEffect(() => {
-        if (data) {
-            setPrivileges(data);
-        }
-    }, [data]);
 
-    function isNameValid(name) {
-        let valid = true;
-        privileges.forEach(
-            privilege => {
-                if (name === privilege.name) {
-                    valid = false;
-                }
-            },
-            [valid]
-        );
-        return valid;
-    }
-
-    function createNewPrivilege(name) {
-        if (isNameValid(name)) {
-            //POST to backend to get add the new privilege
-            send();
-        }
-    }
-
-    function disableButton(input) {
-        if (input === '') {
-            return (
-                <Button
-                    variant="contained"
-                    onClick={() => {
-                        createNewPrivilege(inputValue.trim());
-                    }}
-                    disabled
-                >
-                    Save
-                </Button>
-            );
-        }
-        return (
-            <Button
-                variant="contained"
-                onClick={() => {
-                    createNewPrivilege(inputValue.trim());
-                }}
-            >
-                Save
-            </Button>
-        );
+    function createNewPrivilege() {
+        //POST to backend to get add the new privilege
+        send();
     }
 
     const handleFieldChange = (propertyName, newValue) => {
@@ -102,7 +56,15 @@ function CreatePrivilege() {
                         fullWidth
                     />
 
-                    {disableButton(inputValue)}
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            createNewPrivilege(inputValue.trim());
+                        }}
+                        disabled={!inputValue}
+                    >
+                        Save
+                    </Button>
                 </Grid>
                 <Grid>
                     <Snackbar
