@@ -8,7 +8,6 @@ import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
-import usePost from '../hooks/usePost';
 
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
@@ -16,9 +15,6 @@ function Privileges() {
 
     // note that this function also returns a loading boolean to tell you whether or not the request is loading
     const { data, isLoading } = useInitialise(endpoint);
-
-    const postBody = { name: 'something.new' };
-    const { send } = usePost(endpoint, postBody, true);
 
     // any time data changes, load it into our local privileges state
     useEffect(() => {
