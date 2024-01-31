@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useParams } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import Typography from '@mui/material/Typography';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
@@ -16,15 +17,20 @@ function Privilege() {
     const { data, isLoading } = useInitialise(endpoint);
     const [privilege, setPrivilege] = useState([]);
 
+    // useEffect(() => {
+    //     if (data) {
+    //         data.forEach(InputData => {
+    //             if (id === InputData.id) {
+    //                 setPrivilege(InputData);
+    //             }
+    //         });
+    //     }
+    // }, [data, id]);
     useEffect(() => {
         if (data) {
-            data.forEach(InputData => {
-                if (id === InputData.id) {
-                    setPrivilege(InputData);
-                }
-            });
+            setPrivilege(data);
         }
-    }, [data, id]);
+    }, [data]);
 
     const spinningWheel = () => {
         if (isLoading) {
@@ -45,8 +51,8 @@ function Privilege() {
                 <Grid item xs={12}>
                     <List>
                         <ListItem component={Typography}>
-                            <Typography color="primary">
-                                `Activity: ${privilege.active ? 'Active' : 'Inactive'}`
+                            <Typography color="black">
+                                Activity: {privilege.active ? 'Active' : 'Inactive'}
                             </Typography>
                         </ListItem>
                     </List>
