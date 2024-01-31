@@ -17,15 +17,6 @@ function Privilege() {
     const { data, isLoading } = useInitialise(endpoint);
     const [privilege, setPrivilege] = useState([]);
 
-    // useEffect(() => {
-    //     if (data) {
-    //         data.forEach(InputData => {
-    //             if (id === InputData.id) {
-    //                 setPrivilege(InputData);
-    //             }
-    //         });
-    //     }
-    // }, [data, id]);
     useEffect(() => {
         if (data) {
             setPrivilege(data);
@@ -43,16 +34,13 @@ function Privilege() {
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h4">{privilege.name}</Typography>
-                </Grid>
-                <Grid item xs={12}>
                     {spinningWheel()}
                 </Grid>
                 <Grid item xs={12}>
                     <List>
                         <ListItem component={Typography}>
                             <Typography color="black">
-                                Activity: {privilege.active ? 'Active' : 'Inactive'}
+                                {privilege.name} {privilege.active ? ' - ACTIVE' : '- INACTIVE'}
                             </Typography>
                         </ListItem>
                     </List>
