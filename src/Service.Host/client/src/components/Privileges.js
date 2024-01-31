@@ -33,14 +33,14 @@ function Privileges() {
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
             return (
-                <ListItem key={privilege.id}>
-                    <Typography color="black">{privilege.name} - ACTIVE</Typography>
+                <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+                    <Typography color="primary">{privilege.name} - ACTIVE</Typography>
                 </ListItem>
             );
         }
         return (
-            <ListItem key={privilege.id}>
-                <Typography color="black">{privilege.name} - INACTIVE</Typography>
+            <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+                <Typography color="primary">{privilege.name} - INACTIVE</Typography>
             </ListItem>
         );
     };
