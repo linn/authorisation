@@ -13,6 +13,7 @@ import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
+import CreatePrivilege from './CreatePrivilege';
 
 function Root({ store }) {
     return (
@@ -44,6 +45,11 @@ function Root({ store }) {
                                         exact
                                         path="/authorisation/signin-oidc-client"
                                         element={<Callback />}
+                                    />
+                                    <Route
+                                        exact
+                                        path="/authorisation/privileges/create"
+                                        element={<CreatePrivilege />}
                                     />
                                     <Route element={<NotFoundPage />} />
                                 </Routes>
