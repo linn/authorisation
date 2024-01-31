@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
