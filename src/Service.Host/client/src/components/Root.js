@@ -14,6 +14,7 @@ import history from '../history';
 import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
 import CreatePrivilege from './CreatePrivilege';
+import Privilege from './Privilege';
 
 function Root({ store }) {
     return (
@@ -50,6 +51,11 @@ function Root({ store }) {
                                         exact
                                         path="/authorisation/privileges/create"
                                         element={<CreatePrivilege />}
+                                    />
+                                    <Route
+                                        exact
+                                        path="authorisation/privileges/:id"
+                                        element={<Privilege />}
                                     />
                                     <Route element={<NotFoundPage />} />
                                 </Routes>
