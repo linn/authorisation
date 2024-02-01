@@ -24,7 +24,8 @@ namespace Linn.Authorisation.Facade.Services
         
         protected override void UpdateFromResource(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            entity.Name = updateResource.Name;
+            entity.Active = updateResource.Active;
         }
         
         protected override Expression<Func<Privilege, bool>> SearchExpression(string searchTerm)
