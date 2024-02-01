@@ -53,6 +53,7 @@ describe('When name Input ', () => {
         fireEvent.change(input, { target: { value: 'new.name' } });
         expect(usePost).toBeCalledWith(
             `${config.appRoot}/authorisation/privileges`,
+            null,
             expect.objectContaining({ name: 'new.name' }),
             true
         );
