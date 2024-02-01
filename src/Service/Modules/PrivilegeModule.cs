@@ -1,5 +1,6 @@
 namespace Linn.Authorisation.Service.Modules
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Domain;
@@ -26,6 +27,13 @@ namespace Linn.Authorisation.Service.Modules
         {
             await res.Negotiate(service.GetAll());
         }
+
+        private async Task UpdatePrivilege(
+            HttpResponse res,
+            PrivilegeResource resource,
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
+           {}
+
 
         private async Task CreatePrivilege(
             HttpResponse res,
