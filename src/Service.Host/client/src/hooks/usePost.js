@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getAccessToken } from '../selectors/getAccessToken';
+// import { getAccessToken } from '../selectors/getAccessToken';
 
-function usePost(url, id, data, requiresAuth = false) {
+function usePost(url, id, data, requiresAuth = false, token = null) {
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [postResult, setPostResult] = useState(null);
 
     // for now, until we decide whether we want to keep redux handling oidc state
-    const token = useSelector(state => getAccessToken(state));
 
     const send = () => {
         setIsLoading(true);
