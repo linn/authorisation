@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise'; // will want to use this hook again to do the data fetching
@@ -37,13 +35,9 @@ function Privilege() {
                     {spinningWheel()}
                 </Grid>
                 <Grid item xs={12}>
-                    <List>
-                        <ListItem component={Typography}>
-                            <Typography color="black">
-                                {privilege.name} {privilege.active ? ' - ACTIVE' : '- INACTIVE'}
-                            </Typography>
-                        </ListItem>
-                    </List>
+                    <Typography color="black">
+                        {privilege.name} {privilege.active ? ' - ACTIVE' : '- INACTIVE'}
+                    </Typography>
                 </Grid>
             </Grid>
         </Page>
