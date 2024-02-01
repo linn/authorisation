@@ -20,7 +20,7 @@ function usePost(url, id, data, requiresAuth = false) {
             'Content-Type': 'application/json'
         };
         const requestParameters = {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify(data),
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };

@@ -5,23 +5,18 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 
-//import useInitialise from '../hooks/useInitialise';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
+import itemTypes from '../itemTypes';
 
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState('');
 
-    const endpoint = `${config.appRoot}/authorisation/privileges`;
-
-    //const { data } = useInitialise(endpoint);
     const { send, isLoading, postResult } = usePost(
-        endpoint,
-        {
-            // post body here
-            name: inputValue
-        },
+        itemTypes.privileges.url,
+        null,
+        { name: inputValue },
         true
     );
 

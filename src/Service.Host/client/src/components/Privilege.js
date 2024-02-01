@@ -5,14 +5,15 @@ import { Page, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
-import useInitialise from '../hooks/useInitialise'; // will want to use this hook again to do the data fetching
+import useInitialise from '../hooks/useInitialise';
+
+import itemTypes from '../itemTypes';
 
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
-    const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
-    const { data, isLoading } = useInitialise(endpoint);
+    const { data, isLoading } = useInitialise(itemTypes.privileges.url, id);
     const [privilege, setPrivilege] = useState([]);
 
     useEffect(() => {
