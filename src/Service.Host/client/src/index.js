@@ -4,6 +4,7 @@ import { SnackbarProvider } from 'notistack';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { linnTheme } from '@linn-it/linn-form-components-library';
 import { AuthProvider } from 'react-oidc-context';
+import { WebStorageStateStore } from 'oidc-client-ts';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import Root from './components/Root';
@@ -24,8 +25,8 @@ const oidcConfig = {
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
         window.location = `${host}/authorisation`;
-    }
-    // userStore: new WebStorageStateStore({ store: window.localStorage })
+    },
+    userStore: new WebStorageStateStore({ store: window.localStorage })
 };
 
 const render = Component => {
