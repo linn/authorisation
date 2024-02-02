@@ -41,7 +41,7 @@ function Root() {
                             />
                             <Route
                                 exact
-                                path="authorisation/privileges/:id"
+                                path="/authorisation/privileges/:id"
                                 element={<Privilege />}
                             />
                             <Route element={<NotFoundPage />} />
@@ -52,9 +52,5 @@ function Root() {
         </div>
     );
 }
-
-Root.propTypes = {
-    store: PropTypes.shape({}).isRequired
-};
 
 export default Root;
