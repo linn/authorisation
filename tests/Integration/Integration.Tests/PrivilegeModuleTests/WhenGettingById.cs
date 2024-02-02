@@ -17,7 +17,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.PrivilegeRepository.FindById(1).Returns(new Privilege { Id = 1, Name = "name" });
+            this.PrivilegeRepository.FindById(1).Returns(new Privilege { Id = 1, Name = "name", Active =true});
 
             this.Response = this.Client.Get(
                 "/authorisation/privileges/1",
@@ -46,6 +46,7 @@
             var resources = this.Response.DeserializeBody<PrivilegeResource>();
             resources.Id.Should().Be(1);
             resources.Name.Should().Be("name");
+            resources.Active.Should().BeTrue();
         }
     }
 }

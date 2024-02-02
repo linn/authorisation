@@ -8,15 +8,13 @@ import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
+import itemTypes from '../itemTypes';
 
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
-    const endpoint = `${config.appRoot}/authorisation/privileges`;
 
-    // note that this function also returns a loading boolean to tell you whether or not the request is loading
-    const { data, isLoading } = useInitialise(endpoint);
+    const { data, isLoading } = useInitialise(itemTypes.privileges.url);
 
-    // any time data changes, load it into our local privileges state
     useEffect(() => {
         if (data) {
             setPrivileges(data);
@@ -33,14 +31,14 @@ function Privileges() {
     const renderPrivilege = privilege => {
         if (privilege.active === true) {
             return (
-                <ListItem key={privilege.id}>
-                    <Typography color="black">{privilege.name} - ACTIVE</Typography>
+                <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+                    <Typography color="primary">{privilege.name} - ACTIVE</Typography>
                 </ListItem>
             );
         }
         return (
-            <ListItem key={privilege.id}>
-                <Typography color="black">{privilege.name} - INACTIVE</Typography>
+            <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+                <Typography color="primary">{privilege.name} - INACTIVE</Typography>
             </ListItem>
         );
     };
