@@ -84,7 +84,7 @@ function Page({
         }
     }, [auth, hasTriedSignin]);
 
-    const authShit = () => {
+    const authUi = () => {
         if (auth.activeNavigator === 'signinSilent') {
             return <Typography variant="subtitle1">Signing in...</Typography>;
         }
@@ -137,7 +137,7 @@ function Page({
             <Grid item xs={pageWidth[width]}>
                 <Paper className={classes.root} square>
                     <>
-                        <div style={{ float: 'right' }}>{authShit()}</div>
+                        <div style={{ float: 'right' }}>{authUi()}</div>
                         {children}
                     </>
                 </Paper>

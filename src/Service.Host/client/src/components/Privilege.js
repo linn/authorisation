@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Page, Loading } from '@linn-it/linn-form-components-library';
+import { Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
-
 import itemTypes from '../itemTypes';
+import Page from './Page';
 
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>

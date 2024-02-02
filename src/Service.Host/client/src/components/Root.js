@@ -1,7 +1,6 @@
 ﻿import React from 'react';
 import { Route, Routes } from 'react-router';
 import { Navigate, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import App from './App';
 import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
