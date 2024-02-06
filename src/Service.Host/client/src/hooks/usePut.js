@@ -34,7 +34,6 @@ function usePut(url, id, data, requiresAuth = false) {
                 return response.json();
             })
             .then(json => {
-
                 setPutResult(json);
 
                 setIsLoading(false);
@@ -46,7 +45,6 @@ function usePut(url, id, data, requiresAuth = false) {
     };
 
     return { send, isLoading, serverError, putResult };
-
 }
 
 export default usePut;
