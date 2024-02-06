@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getAccessToken } from '../selectors/getAccessToken';
 
-function usePost(url, id, data, requiresAuth = false) {
+function usePut(url, id, data, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [postResult, setPostResult] = useState(null);
@@ -20,7 +20,7 @@ function usePost(url, id, data, requiresAuth = false) {
             'Content-Type': 'application/json'
         };
         const requestParameters = {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify(data),
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
@@ -44,4 +44,4 @@ function usePost(url, id, data, requiresAuth = false) {
     return { send, isLoading, serverError, postResult };
 }
 
-export default usePost;
+export default usePut;

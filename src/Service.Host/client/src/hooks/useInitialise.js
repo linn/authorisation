@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 
-function useInitialise(url) {
+function useInitialise(url, id) {
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [data, setData] = useState(null);
 
     useEffect(() => {
         setIsLoading(true);
+        setData(null);
+        setServerError(null);
         const requestParameters = {
             method: 'GET',
             headers: {
                 accept: 'application/json'
             }
         };
-        fetch(url, requestParameters)
+        fetch(id ? `${url}/${id}` : url, requestParameters)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -28,7 +30,7 @@ function useInitialise(url) {
                 setServerError(error);
                 setIsLoading(false);
             });
-    }, [url]);
+    }, [url, id]);
     return { isLoading, serverError, data };
 }
 

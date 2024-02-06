@@ -3,19 +3,35 @@ import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { Page, Loading, InputField, OnOffSwitch } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import config from '../config';
+import usePut from '../hooks/usePut';
 import history from '../history';
-import useInitialise from '../hooks/useInitialise'; // will want to use this hook again to do the data fetching
+import useInitialise from '../hooks/useInitialise';
+import itemTypes from '../itemTypes';
+
+//import itemTypes from '../itemTypes';
 
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
     const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
-    const { data, isLoading } = useInitialise(endpoint);
+    const { data, isGetLoading } = useInitialise(endpoint);
     const [privilege, setPrivilege] = useState();
     const [editingButtonValue, setEditingButtonValue] = useState(false);
+
+    const { send, isPutLoading, postResult } = usePut(
+        itemTypes.privileges.url,
+        null,
+        {
+            name: privilege?.name,
+            active: privilege?.active,
+            ...privilege
+        },
+        true
+    );
 
     useEffect(() => {
         if (data) {
@@ -24,7 +40,7 @@ function Privilege() {
     }, [data]);
 
     const spinningWheel = () => {
-        if (isLoading) {
+        if (isGetLoading || isPutLoading) {
             return <Loading />;
         }
         return <div />;
@@ -33,8 +49,9 @@ function Privilege() {
     const handleChange = () => {
         setEditingButtonValue(!editingButtonValue);
     };
-    const handleActiveChange = event => {
-        setPrivilege({ ...privilege, active: event.target.checked });
+    const handleActiveChange = (_, newValue) => {
+        setPrivilege({ ...privilege, active: newValue });
+        console.log(newValue);
     };
 
     const handleNameFieldChange = (_, newValue) => {
@@ -56,6 +73,7 @@ function Privilege() {
                     <Typography color="black">
                         Edit:
                         <OnOffSwitch
+                            value={editingButtonValue}
                             inputProps={{ 'aria-label': 'Switch demo' }}
                             onChange={handleChange}
                         />
@@ -74,7 +92,7 @@ function Privilege() {
                         Inactive{' '}
                         <OnOffSwitch
                             value={privilege?.active}
-                            onChange={handleActiveChange()}
+                            onChange={handleActiveChange}
                             inputProps={{ 'aria-label': 'Switch demo' }}
                             disabled={editingButtonValue === false}
                             defaultchecked={data?.active}
@@ -84,12 +102,21 @@ function Privilege() {
                     <Button
                         variant="contained"
                         disabled={
-                            editingButtonValue === false ||
-                            (data?.name === privilege?.name && data?.active === privilege?.active)
+                            editingButtonValue === false &&
+                            (data?.name === privilege?.name || data?.active === privilege?.active)
                         }
+                        onClick={() => {
+                            send();
+                        }}
                     >
                         Save
                     </Button>
+
+                    <Snackbar
+                        open={!!postResult?.id}
+                        autoHideDuration={5000}
+                        message="Save Successful"
+                    />
                 </Grid>
             </Grid>
         </Page>
