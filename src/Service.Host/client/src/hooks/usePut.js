@@ -5,14 +5,14 @@ import { getAccessToken } from '../selectors/getAccessToken';
 function usePut(url, id, data, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
-    const [postResult, setPostResult] = useState(null);
+    const [putResult, setPutResult] = useState(null);
 
     // for now, until we decide whether we want to keep redux handling oidc state
     const token = useSelector(state => getAccessToken(state));
 
     const send = () => {
         setIsLoading(true);
-        setPostResult(null);
+        setPutResult(null);
         setServerError(null);
 
         const headers = {
@@ -32,7 +32,7 @@ function usePut(url, id, data, requiresAuth = false) {
                 return response.json();
             })
             .then(json => {
-                setPostResult(json);
+                setPutResult(json);
                 setIsLoading(false);
             })
             .catch(error => {
@@ -41,7 +41,7 @@ function usePut(url, id, data, requiresAuth = false) {
             });
     };
 
-    return { send, isLoading, serverError, postResult };
+    return { send, isLoading, serverError, putResult };
 }
 
 export default usePut;

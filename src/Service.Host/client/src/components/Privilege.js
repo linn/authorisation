@@ -11,20 +11,20 @@ import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
 
-//import itemTypes from '../itemTypes';
-
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
     const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
     const { data, isGetLoading } = useInitialise(endpoint);
+
     const [privilege, setPrivilege] = useState();
+    const [rr, setRr] = useState(0);
     const [editingButtonValue, setEditingButtonValue] = useState(false);
 
-    const { send, isPutLoading, postResult } = usePut(
+    const { send, isPutLoading, putResult } = usePut(
         itemTypes.privileges.url,
-        null,
+        id,
         {
             name: privilege?.name,
             active: privilege?.active,
@@ -51,7 +51,12 @@ function Privilege() {
     };
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
-        console.log(newValue);
+    };
+
+    const handleClick = () => {
+        if (putResult) {
+            setRr(rr + 1);
+        }
     };
 
     const handleNameFieldChange = (_, newValue) => {
@@ -65,10 +70,6 @@ function Privilege() {
                     {spinningWheel()}
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography color="black">
-                        Current Values: {data?.name} {data?.active ? ' - ACTIVE' : '- INACTIVE'}
-                    </Typography>
-
                     <br />
                     <Typography color="black">
                         Edit:
@@ -107,13 +108,14 @@ function Privilege() {
                         }
                         onClick={() => {
                             send();
+                            handleClick();
                         }}
                     >
                         Save
                     </Button>
 
                     <Snackbar
-                        open={!!postResult?.id}
+                        open={!!putResult?.id}
                         autoHideDuration={5000}
                         message="Save Successful"
                     />
