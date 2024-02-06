@@ -9,17 +9,15 @@ import config from '../config';
 import usePut from '../hooks/usePut';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
+
 import itemTypes from '../itemTypes';
 
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
-    const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
     const { data, isGetLoading } = useInitialise(endpoint);
-
     const [privilege, setPrivilege] = useState();
-
     const [editingButtonValue, setEditingButtonValue] = useState(false);
 
     const { send, isPutLoading, putResult } = usePut(
