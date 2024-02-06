@@ -19,7 +19,7 @@ function Privilege() {
     const { data, isGetLoading } = useInitialise(endpoint);
 
     const [privilege, setPrivilege] = useState();
-    const [rr, setRr] = useState(0);
+
     const [editingButtonValue, setEditingButtonValue] = useState(false);
 
     const { send, isPutLoading, putResult } = usePut(
@@ -51,12 +51,6 @@ function Privilege() {
     };
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
-    };
-
-    const handleClick = () => {
-        if (putResult) {
-            setRr(rr + 1);
-        }
     };
 
     const handleNameFieldChange = (_, newValue) => {
@@ -108,7 +102,6 @@ function Privilege() {
                         }
                         onClick={() => {
                             send();
-                            handleClick();
                         }}
                     >
                         Save
