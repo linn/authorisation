@@ -17,7 +17,7 @@ function Privilege() {
     const { id } = useParams();
     const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
-    const { data, isGetLoading } = useInitialise(endpoint);
+    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
     const [privilege, setPrivilege] = useState();
     const [editingButtonValue, setEditingButtonValue] = useState(false);
 

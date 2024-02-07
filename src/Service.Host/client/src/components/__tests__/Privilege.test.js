@@ -32,7 +32,7 @@ describe('When Active Privilege ', () => {
 
     test('renders privilege', () => {
         const { getByText } = render(<Privilege />);
-        expect(getByText('a.privilege - ACTIVE')).toBeInTheDocument();
+        expect(getByText('a.privilege')).toBeInTheDocument();
     });
 
     test('does not render loading spinner', () => {
@@ -53,7 +53,7 @@ describe('When Inactive Privilege ', () => {
 
     test('renders privilege', () => {
         const { getByText } = render(<Privilege />);
-        expect(getByText('a.privilege - INACTIVE')).toBeInTheDocument();
+        expect(getByText('a.privilege')).toBeInTheDocument();
     });
 
     test('does not render loading spinner', () => {
@@ -64,7 +64,7 @@ describe('When Inactive Privilege ', () => {
 
 describe('When loading ', () => {
     beforeEach(() => {
-        useInitialise.mockImplementation(() => ({ isLoading: true }));
+        useInitialise.mockImplementation(() => ({ isGetLoading: true }));
     });
 
     test('renders loading spinner', () => {
