@@ -74,3 +74,21 @@ describe('When loading ', () => {
         expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });
+
+describe('When updating Privilege ', () => {
+    beforeEach(() => {
+        useInitialise.mockImplementation(() => ({ data: ACTIVE_PRIVILEGE }));
+    });
+
+    test('makes PUT request with updated data when fields changed and save clicked', () => {
+        // before doing anything we will need to mock out usePut in a similar way to how useInitialise is mocked
+        // up at the top of this file
+        
+        // then, the general recipe for the test will be:
+        // 1. imulate input to the input field to change it to new.name
+        // 2. simulate click on switch to switch it from active = false
+        // 3. simulate click on save button
+        // 4. expect usePut to be called with correct parameters
+        // 5. expect send() to be called
+    });
+});
