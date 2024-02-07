@@ -31,8 +31,9 @@ describe('When Active Privilege ', () => {
     });
 
     test('renders privilege', () => {
-        const { getByDisplayValue } = render(<Privilege />);
+        const { getByDisplayValue, getByRole } = render(<Privilege />);
         expect(getByDisplayValue('a.privilege')).toBeInTheDocument();
+        expect(getByRole('checkbox')).toBeChecked();
     });
 
     test('does not render loading spinner', () => {
@@ -52,8 +53,9 @@ describe('When Inactive Privilege ', () => {
     });
 
     test('renders privilege', () => {
-        const { getByDisplayValue } = render(<Privilege />);
+        const { getByDisplayValue, getByRole } = render(<Privilege />);
         expect(getByDisplayValue('a.privilege')).toBeInTheDocument();
+        expect(getByRole('checkbox')).not.toBeChecked();
     });
 
     test('does not render loading spinner', () => {

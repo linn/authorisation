@@ -15,11 +15,9 @@ import itemTypes from '../itemTypes';
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
-    const endpoint = `${config.appRoot}/authorisation/privileges/${id}`;
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
     const [privilege, setPrivilege] = useState();
-    const [editingButtonValue, setEditingButtonValue] = useState(false);
 
     const { send, isPutLoading, putResult } = usePut(
         itemTypes.privileges.url,
@@ -45,9 +43,6 @@ function Privilege() {
         return <div />;
     };
 
-    const handleChange = () => {
-        setEditingButtonValue(!editingButtonValue);
-    };
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
     };
@@ -62,17 +57,6 @@ function Privilege() {
                 <Grid item xs={12}>
                     {spinningWheel()}
                 </Grid>
-                <Grid item xs={12}>
-                    <br />
-                    <Typography color="black">
-                        Edit:
-                        <OnOffSwitch
-                            value={editingButtonValue}
-                            inputProps={{ 'aria-label': 'Switch demo' }}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </Grid>
                 <Grid item xs={6}>
                     <InputField
                         propertyName="inputValue"
@@ -80,15 +64,13 @@ function Privilege() {
                         value={privilege?.name}
                         onChange={handleNameFieldChange}
                         fullWidth
-                        disabled={editingButtonValue === false}
                     />
                     <Typography color="black">
-                        Inactive{' '}
+                        Inactive
                         <OnOffSwitch
                             value={privilege?.active}
                             onChange={handleActiveChange}
                             inputProps={{ 'aria-label': 'Switch demo' }}
-                            disabled={editingButtonValue === false}
                             defaultchecked={data?.active}
                         />
                         Active
@@ -96,8 +78,7 @@ function Privilege() {
                     <Button
                         variant="contained"
                         disabled={
-                            editingButtonValue === false &&
-                            (data?.name === privilege?.name || data?.active === privilege?.active)
+                            data?.name === privilege?.name || data?.active === privilege?.active
                         }
                         onClick={() => {
                             send();
