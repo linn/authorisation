@@ -4,10 +4,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { useParams } from 'react-router-dom';
+import { fireEvent } from '@testing-library/react';
 
 import useInitialise from '../../hooks/useInitialise';
 import render from '../../test-utils';
 import Privilege from '../Privilege';
+import usePut from '../../hooks/usePut';
 import config from '../../config';
 
 jest.mock('react-router-dom', () => ({
@@ -20,6 +22,10 @@ jest.mock('../../hooks/useInitialise');
 const ACTIVE_PRIVILEGE = { name: 'a.privilege', active: true, id: 1 };
 const INACTIVE_PRIVILEGE = { name: 'a.privilege', active: false, id: 1 };
 
+jest.mock(`../../hooks/usePut`);
+const sendPut = jest.fn();
+usePut.mockImplementation(() => ({ send: sendPut }));
+
 describe('When Active Privilege ', () => {
     beforeEach(() => {
         useInitialise.mockImplementation(() => ({ data: ACTIVE_PRIVILEGE }));
@@ -31,8 +37,9 @@ describe('When Active Privilege ', () => {
     });
 
     test('renders privilege', () => {
-        const { getByText } = render(<Privilege />);
-        expect(getByText('a.privilege - ACTIVE')).toBeInTheDocument();
+        const { getByDisplayValue, getByRole } = render(<Privilege />);
+        expect(getByDisplayValue('a.privilege')).toBeInTheDocument();
+        expect(getByRole('checkbox')).toBeChecked();
     });
 
     test('does not render loading spinner', () => {
@@ -52,8 +59,9 @@ describe('When Inactive Privilege ', () => {
     });
 
     test('renders privilege', () => {
-        const { getByText } = render(<Privilege />);
-        expect(getByText('a.privilege - INACTIVE')).toBeInTheDocument();
+        const { getByDisplayValue, getByRole } = render(<Privilege />);
+        expect(getByDisplayValue('a.privilege')).toBeInTheDocument();
+        expect(getByRole('checkbox')).not.toBeChecked();
     });
 
     test('does not render loading spinner', () => {
@@ -64,11 +72,42 @@ describe('When Inactive Privilege ', () => {
 
 describe('When loading ', () => {
     beforeEach(() => {
-        useInitialise.mockImplementation(() => ({ isLoading: true }));
+        useInitialise.mockImplementation(() => ({ isGetLoading: true }));
     });
 
     test('renders loading spinner', () => {
         const { getByRole } = render(<Privilege />);
         expect(getByRole('progressbar')).toBeInTheDocument();
+    });
+});
+
+describe('When updating Privilege ', () => {
+    beforeEach(() => {
+        useInitialise.mockImplementation(() => ({ data: ACTIVE_PRIVILEGE }));
+    });
+
+    test('makes PUT request with updated data when fields changed and save clicked', () => {
+        const { getByLabelText, getByText } = render(<Privilege />);
+        const input = getByLabelText('Name');
+        expect(input).toBeInTheDocument();
+
+        fireEvent.change(input, { target: { value: 'testPut123' } });
+
+        const button = getByText('Save');
+        expect(button).toBeInTheDocument();
+        fireEvent.click(button);
+
+        expect(sendPut).toHaveBeenCalled();
+    });
+});
+
+describe('When update succeeds ', () => {
+    beforeEach(() => {
+        usePut.mockImplementation(() => ({ send: sendPut, putResult: { id: 1 } }));
+    });
+
+    test('renders success message', () => {
+        const { getByText } = render(<Privilege />);
+        expect(getByText('Save Successful')).toBeInTheDocument();
     });
 });
