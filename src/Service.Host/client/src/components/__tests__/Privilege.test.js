@@ -87,8 +87,6 @@ describe('When updating Privilege ', () => {
     });
 
     test('makes PUT request with updated data when fields changed and save clicked', () => {
-        // before doing anything we will need to mock out usePut in a similar way to how useInitialise is mocked
-        // up at the top of this file
         const { getByLabelText, getByText } = render(<Privilege />);
         const input = getByLabelText('Name');
         expect(input).toBeInTheDocument();
