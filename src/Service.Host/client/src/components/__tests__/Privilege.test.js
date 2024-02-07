@@ -52,8 +52,8 @@ describe('When Inactive Privilege ', () => {
     });
 
     test('renders privilege', () => {
-        const { getByText } = render(<Privilege />);
-        expect(getByText('a.privilege')).toBeInTheDocument();
+        const { getByDisplayValue } = render(<Privilege />);
+        expect(getByDisplayValue('a.privilege')).toBeInTheDocument();
     });
 
     test('does not render loading spinner', () => {
