@@ -78,7 +78,7 @@ function Privilege() {
                     <Button
                         variant="contained"
                         disabled={
-                            data?.name === privilege?.name || data?.active === privilege?.active
+                            data?.name === privilege?.name && data?.active === privilege?.active
                         }
                         onClick={() => {
                             send();

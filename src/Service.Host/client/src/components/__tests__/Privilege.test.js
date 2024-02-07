@@ -4,10 +4,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { useParams } from 'react-router-dom';
+import { fireEvent } from '@testing-library/react';
 
 import useInitialise from '../../hooks/useInitialise';
 import render from '../../test-utils';
 import Privilege from '../Privilege';
+import usePut from '../../hooks/usePut';
 import config from '../../config';
 
 jest.mock('react-router-dom', () => ({
@@ -19,6 +21,10 @@ useParams.mockImplementation(() => ({ id: 1 }));
 jest.mock('../../hooks/useInitialise');
 const ACTIVE_PRIVILEGE = { name: 'a.privilege', active: true, id: 1 };
 const INACTIVE_PRIVILEGE = { name: 'a.privilege', active: false, id: 1 };
+
+jest.mock(`../../hooks/usePut`);
+const sendPut = jest.fn();
+usePut.mockImplementation(() => ({ send: sendPut }));
 
 describe('When Active Privilege ', () => {
     beforeEach(() => {
@@ -83,12 +89,27 @@ describe('When updating Privilege ', () => {
     test('makes PUT request with updated data when fields changed and save clicked', () => {
         // before doing anything we will need to mock out usePut in a similar way to how useInitialise is mocked
         // up at the top of this file
-        
-        // then, the general recipe for the test will be:
-        // 1. imulate input to the input field to change it to new.name
-        // 2. simulate click on switch to switch it from active = false
-        // 3. simulate click on save button
-        // 4. expect usePut to be called with correct parameters
-        // 5. expect send() to be called
+        const { getByLabelText, getByText } = render(<Privilege />);
+        const input = getByLabelText('Name');
+        expect(input).toBeInTheDocument();
+
+        fireEvent.change(input, { target: { value: 'testPut123' } });
+
+        const button = getByText('Save');
+        expect(button).toBeInTheDocument();
+        fireEvent.click(button);
+
+        expect(sendPut).toHaveBeenCalled();
+    });
+});
+
+describe('When update succeeds ', () => {
+    beforeEach(() => {
+        usePut.mockImplementation(() => ({ send: sendPut, putResult: { id: 1 } }));
+    });
+
+    test('renders success message', () => {
+        const { getByText } = render(<Privilege />);
+        expect(getByText('Save Successful')).toBeInTheDocument();
     });
 });
