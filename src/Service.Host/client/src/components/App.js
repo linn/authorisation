@@ -1,11 +1,9 @@
 ﻿import React from 'react';
 import Typography from '@mui/material/Typography';
-import { Page } from '@linn-it/linn-form-components-library';
 import List from '@mui/material/List';
 import { Link } from 'react-router-dom';
-
 import ListItem from '@mui/material/ListItem';
-
+import Page from './Page';
 import config from '../config';
 import history from '../history';
 

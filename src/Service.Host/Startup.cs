@@ -46,6 +46,7 @@ namespace Linn.Authorisation.Service.Host
                         options.Authority = ApplicationSettings.Get().AuthorityUri;
                         options.CallbackPath = new PathString("/authorisation/signin-oidc");
                         options.CookiePath = "/authorisation";
+                        options.ClientId = "app2";
                     });
         }
 

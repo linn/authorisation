@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { Page, Loading, InputField } from '@linn-it/linn-form-components-library';
+import { Loading, InputField } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
 import itemTypes from '../itemTypes';
+import Page from './Page';
 
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState('');
-
     const { send, isLoading, postResult } = usePost(
         itemTypes.privileges.url,
         null,

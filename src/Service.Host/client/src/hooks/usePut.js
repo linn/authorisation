@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getAccessToken } from '../selectors/getAccessToken';
+import { useAuth } from 'react-oidc-context';
 
 function usePut(url, id, data, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
@@ -8,8 +7,12 @@ function usePut(url, id, data, requiresAuth = false) {
 
     const [putResult, setPutResult] = useState(null);
 
-    // for now, until we decide whether we want to keep redux handling oidc state
-    const token = useSelector(state => getAccessToken(state));
+    let token = '';
+
+    const auth = useAuth();
+    if (requiresAuth) {
+        token = auth.user?.access_token;
+    }
 
     const send = () => {
         setIsLoading(true);

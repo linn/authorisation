@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import { Page, Loading } from '@linn-it/linn-form-components-library';
+import { Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,6 +9,7 @@ import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
+import Page from './Page';
 
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);

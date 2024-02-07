@@ -6,6 +6,7 @@ namespace Linn.Authorisation.Service.Modules
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
+    using Linn.Authorisation.Service.Extensions;
     using Linn.Common.Facade;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
@@ -51,10 +52,13 @@ namespace Linn.Authorisation.Service.Modules
 
         private async Task CreatePrivilege(
             HttpResponse res,
+            HttpRequest req,
             PrivilegeResource resource,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
             var result = service.Add(resource);
+
+            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
 
             await res.Negotiate(result);
         }

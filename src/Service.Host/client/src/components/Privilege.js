@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Page, Loading, InputField, OnOffSwitch } from '@linn-it/linn-form-components-library';
+import { Loading, InputField, OnOffSwitch } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
@@ -9,8 +9,8 @@ import config from '../config';
 import usePut from '../hooks/usePut';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
-
 import itemTypes from '../itemTypes';
+import Page from './Page';
 
 function Privilege() {
     // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
