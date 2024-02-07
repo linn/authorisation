@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
 function useInitialise(url, id) {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isGetLoading, setIsGetLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        setIsLoading(true);
+        setIsGetLoading(true);
         setData(null);
         setServerError(null);
         const requestParameters = {
@@ -24,14 +24,14 @@ function useInitialise(url, id) {
             })
             .then(json => {
                 setData(json);
-                setIsLoading(false);
+                setIsGetLoading(false);
             })
             .catch(error => {
                 setServerError(error);
-                setIsLoading(false);
+                setIsGetLoading(false);
             });
     }, [url, id]);
-    return { isLoading, serverError, data };
+    return { isGetLoading, serverError, data };
 }
 
 export default useInitialise;
