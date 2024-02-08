@@ -9,6 +9,7 @@ import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
 import CreatePrivilege from './CreatePrivilege';
 import Privilege from './Privilege';
+import CreatePermission from './CreatePermission';
 
 function Root() {
     return (
@@ -43,12 +44,12 @@ function Root() {
                                 path="/authorisation/privileges/:id"
                                 element={<Privilege />}
                             />
-                            <Route element={<NotFoundPage />} />
                             <Route
                                 exact
                                 path="/authorisation/permissions/create"
-                                element={<CreatePrivilege />}
+                                element={<CreatePermission />}
                             />
+                            <Route element={<NotFoundPage />} />
                         </Routes>
                     </HistoryRouter>
                 </div>
