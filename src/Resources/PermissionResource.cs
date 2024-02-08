@@ -1,10 +1,13 @@
 namespace Linn.Authorisation.Resources
 {
     using Linn.Common.Resources;
+    using System.Data;
 
     public class PermissionResource : HypermediaResource
     {
         public string Privilege { get; set; }
+
+        public int PrivilegeId { get; set; }
 
         public string GrantedByUri { get; set; }
 

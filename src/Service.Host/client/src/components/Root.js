@@ -44,6 +44,11 @@ function Root() {
                                 element={<Privilege />}
                             />
                             <Route element={<NotFoundPage />} />
+                            <Route
+                                exact
+                                path="/authorisation/permissions/create"
+                                element={<CreatePrivilege />}
+                            />
                         </Routes>
                     </HistoryRouter>
                 </div>

@@ -32,13 +32,28 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         
         protected IPermissionService DomainService { get; private set; }
 
+        protected IRepository<Permission, int> PermissionRepository { get; private set; }
+
+        protected IRepository<Privilege, int> PrivilegeRepository { get; private set; }
+
+        protected ITransactionManager TransactionManager { get; set; }
+
+
         [SetUp]
         public void SetUpContext()
         {
             this.DomainService = Substitute.For<IPermissionService>();
+            this.PermissionRepository = Substitute.For<IRepository<Permission, int>>();
+            this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
+            this.TransactionManager = Substitute.For<ITransactionManager>();
+
+
             this.FacadeService = new PermissionFacadeService(
                 this.DomainService,
-                new PermissionResourceBuilder());
+                new PermissionResourceBuilder(),
+                this.PermissionRepository,
+                this.PrivilegeRepository,
+                this.TransactionManager);
             this.Log = Substitute.For<ILog>();
 
             this.Client = TestClient.With<PermissionsModule>(
