@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Loading, InputField } from '@linn-it/linn-form-components-library';
+import React, { useEffect, useState } from 'react';
+import { Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -9,10 +9,21 @@ import config from '../config';
 import history from '../history';
 import itemTypes from '../itemTypes';
 import Page from './Page';
+import useInitialise from '../hooks/useInitialise';
+//import Privilege from './Privilege';
 
 function CreatePermission() {
-    const [inputValue, setInputValue] = useState('');
-    const { send, isLoading, postResult } = usePost(
+    const [dropDownOption, setDropDownOPtion] = useState('Choose a Privilege');
+    //const [privileges, setPrivileges] = useState([]);
+    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
+
+    useEffect(() => {
+        if (data) {
+            //setPrivileges(data);
+        }
+    }, [data]);
+
+    const { send, isPostLoading, postResult } = usePost(
         itemTypes.permission.url,
         null,
         {
@@ -22,14 +33,14 @@ function CreatePermission() {
     );
 
     const spinningWheel = () => {
-        if (isLoading) {
+        if (isGetLoading || isPostLoading) {
             return <Loading />;
         }
         return <div />;
     };
 
-    const handleFieldChange = (propertyName, newValue) => {
-        setInputValue(newValue);
+    const handleDropDownOptionChange = event => {
+        setDropDownOPtion(event.target.value);
     };
 
     return (
@@ -37,20 +48,23 @@ function CreatePermission() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">Create a new Permission</Typography>
-                    <InputField
-                        propertyName="inputValue"
-                        label="Permissions"
-                        value={inputValue}
-                        onChange={handleFieldChange}
-                        fullWidth
-                    />
+                    <select
+                        id="dropdown"
+                        value={dropDownOption}
+                        onChange={handleDropDownOptionChange}
+                    >
+                        {/* privileges.foreach((privilege) ={'>'} {
+                            <option value = {privileges.id}>{privilege.name}</option>
+                            
+                        ) */}
+                    </select>
 
                     <Button
                         variant="contained"
                         onClick={() => {
                             send();
                         }}
-                        disabled={!inputValue}
+                        disabled={dropDownOption === 'Choose a Privilege'}
                     >
                         Save
                     </Button>
