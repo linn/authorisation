@@ -46,7 +46,7 @@ function Root() {
                             />
                             <Route
                                 exact
-                                path="/authorisation/permissions/create"
+                                path="/authorisation/permission/create"
                                 element={<CreatePermission />}
                             />
                             <Route element={<NotFoundPage />} />
