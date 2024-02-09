@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
+//import usePut from '../hooks/usePut';
 import Page from './Page';
 
 function CreatePermission() {
-    console.log(useInitialise(itemTypes.employees.url));
-
-    const [dropDownOption, setDropDownOPtion] = useState('Choose a Privilege');
+    const [dropDownOption, setDropDownOption] = useState('Choose a Privilege');
+    const [privilegeInput, setPrivilegeInput] = useState('');
+    const [employeeInput, setEmployeeInput] = useState('');
 
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
         itemTypes.privileges.url
@@ -21,6 +23,16 @@ function CreatePermission() {
         itemTypes.employees.url
     );
 
+    // const { send, isPutLoading, putResult } = usePut(
+    //     itemTypes.permission.url,
+    //     {
+    //         privilege: privilegeInput,
+    //         employee: employeeInput,
+    //         ...permission
+    //     },
+    //     true
+    // );
+
     const spinningWheel = () => {
         if (privilegesLoading || isEmployeesLoading) {
             return <Loading />;
@@ -28,17 +40,26 @@ function CreatePermission() {
         return <div />;
     };
 
-    // function displayPrivilegesInDropDown () {
-    //     privileges.forEach(privilege => {
-    //         id: {privilege.id}
-    //         displayText: {privilege?.name}
-    //         })
-    //     };
-    // };
+    privileges?.sort((a, b) => {
+        const fa = a.name.toLowerCase();
+        const fb = b.name.toLowerCase();
 
-    const handleDropDownOptionChange = (propertyName, newValue) => {
-        console.log(newValue);
-        setDropDownOPtion(newValue);
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
+    const handlePrivilegeDropDownChange = (propertyName, newValue) => {
+        setDropDownOption(newValue);
+        setPrivilegeInput(newValue);
+    };
+
+    const handleEmployeeDropDownChange = (propertyName, newValue) => {
+        setDropDownOption(newValue);
+        setEmployeeInput(newValue);
     };
 
     return (
@@ -49,7 +70,7 @@ function CreatePermission() {
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
                     items={privileges?.map(privilege => ({
@@ -59,13 +80,13 @@ function CreatePermission() {
                     required
                     label="Choose a Privilege"
                     fullWidth
-                    value="Choose a Privilege"
-                    onChange={handleDropDownOptionChange}
+                    onChange={handlePrivilegeDropDownChange}
+                    value={privilegeInput}
                 />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
                 <Dropdown
-                    propertyName="privilege choice"
+                    propertyName="employee choice"
                     items={employees?.items?.map(employee => ({
                         id: employee.id,
                         displayText: `${employee?.firstName} ${employee?.lastName}`
@@ -73,9 +94,24 @@ function CreatePermission() {
                     required
                     label="Choose an Employee"
                     fullWidth
-                    value="Choose an  Employee"
-                    onChange={handleDropDownOptionChange}
+                    onChange={handleEmployeeDropDownChange}
+                    value={employeeInput}
                 />
+            </Grid>
+
+            <Grid container spacing={20}>
+                <Grid item xs={12} />
+            </Grid>
+
+            <Grid item xs={6}>
+                <Button
+                    variant="contained"
+                    // onClick={() => {
+                    //     send();
+                    // }}
+                >
+                    Save
+                </Button>
             </Grid>
             <Grid container spacing={20}>
                 <Grid item xs={12} />
