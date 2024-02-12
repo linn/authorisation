@@ -9,7 +9,7 @@ import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
-import usePost from '../hooks/usePut';
+import usePost from '../hooks/usePost';
 import Page from './Page';
 
 function CreatePermission() {
@@ -28,12 +28,12 @@ function CreatePermission() {
         employeeInput
     );
 
-    const { send, isPostLoading, putResult } = usePost(
-        itemTypes.permissions,
+    const { send, isPostLoading, postResult } = usePost(
+        itemTypes.permissions.url,
+        employeeInput,
         {
             Privilegeid: privilegeInput,
-            GranteeUri: `/employees/${employeeInput}`,
-            ...permissions
+            GranteeUri: `/employees/${employeeInput}`
         },
         true
     );
@@ -75,7 +75,7 @@ function CreatePermission() {
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
                 {spinningWheel()}
-
+                {console.log(permissions)};
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
 
@@ -125,7 +125,7 @@ function CreatePermission() {
             </Grid>
             <Grid>
                 <Snackbar
-                    open={!!putResult?.id}
+                    open={!!postResult?.id}
                     autoHideDuration={5000}
                     message="Save Successful"
                 />
