@@ -40,7 +40,7 @@ namespace Linn.Authorisation.Service.Modules
         {
             var result = service.CreatePermission(resource);
 
-            //var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
+            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
 
             await res.Negotiate(result);
         }

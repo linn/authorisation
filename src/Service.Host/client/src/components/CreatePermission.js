@@ -4,15 +4,16 @@ import Typography from '@mui/material/Typography';
 import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
-//import usePut from '../hooks/usePut';
+import usePost from '../hooks/usePut';
 import Page from './Page';
 
 function CreatePermission() {
-    const [dropDownOption, setDropDownOption] = useState('Choose a Privilege');
+    const [, setDropDownOption] = useState('Choose a Privilege');
     const [privilegeInput, setPrivilegeInput] = useState('');
     const [employeeInput, setEmployeeInput] = useState('');
 
@@ -22,19 +23,23 @@ function CreatePermission() {
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
+    const { data: permissions, isGetLoading: isPermissionsLoading } = useInitialise(
+        itemTypes.permissions.url,
+        employeeInput
+    );
 
-    // const { send, isPutLoading, putResult } = usePut(
-    //     itemTypes.permission.url,
-    //     {
-    //         privilege: privilegeInput,
-    //         employee: employeeInput,
-    //         ...permission
-    //     },
-    //     true
-    // );
+    const { send, isPostLoading, putResult } = usePost(
+        itemTypes.permissions,
+        {
+            Privilegeid: privilegeInput,
+            GranteeUri: `/employees/${employeeInput}`,
+            ...permissions
+        },
+        true
+    );
 
     const spinningWheel = () => {
-        if (privilegesLoading || isEmployeesLoading) {
+        if (privilegesLoading || isEmployeesLoading || isPostLoading || isPermissionsLoading) {
             return <Loading />;
         }
         return <div />;
@@ -61,6 +66,10 @@ function CreatePermission() {
         setDropDownOption(newValue);
         setEmployeeInput(newValue);
     };
+
+    function handleButtonClick() {
+        send();
+    }
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -105,13 +114,24 @@ function CreatePermission() {
 
             <Grid item xs={6}>
                 <Button
+                    disabled={privilegeInput === '' || employeeInput === ''}
                     variant="contained"
-                    // onClick={() => {
-                    //     send();
-                    // }}
+                    onClick={() => {
+                        handleButtonClick();
+                    }}
                 >
                     Save
                 </Button>
+            </Grid>
+            <Grid>
+                <Snackbar
+                    open={!!putResult?.id}
+                    autoHideDuration={5000}
+                    message="Save Successful"
+                />
+                <Grid item xs={12}>
+                    {spinningWheel()}
+                </Grid>
             </Grid>
             <Grid container spacing={20}>
                 <Grid item xs={12} />
