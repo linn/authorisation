@@ -43,7 +43,6 @@ function usePost(url, id, data, requiresAuth = false) {
                 setIsLoading(false);
             });
     };
-
     return { send, isLoading, serverError, postResult };
 }
 
