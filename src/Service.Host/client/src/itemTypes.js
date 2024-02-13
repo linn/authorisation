@@ -3,7 +3,7 @@
 const itemTypes = {
     privileges: { url: `${config.appRoot}/authorisation/privileges` },
     employees: { url: `${config.proxyRoot}/employees?currentEmployees=true` },
-    permissions: { url: `${config.proxyRoot}/authorisation/permissions?who=/employees` }
+    permissions: { url: `${config.appRoot}/authorisation/permissions` }
 };
 
 export default itemTypes;
