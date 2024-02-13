@@ -5,8 +5,6 @@ import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
@@ -17,7 +15,6 @@ import Page from './Page';
 function CreatePermission() {
     const [, setDropDownOption] = useState('Choose a Privilege');
     const [privilegeInput, setPrivilegeInput] = useState('');
-    const [fullName, setFullName] = useState('');
     const [employeeInput, setEmployeeInput] = useState('');
 
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
@@ -25,10 +22,6 @@ function CreatePermission() {
     );
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
-    );
-    const { data: permissions, isGetLoading: isPermissionsLoading } = useInitialise(
-        itemTypes.permissions.url,
-        employeeInput
     );
 
     const { send, isPostLoading, postResult } = usePost(
@@ -42,7 +35,7 @@ function CreatePermission() {
     );
 
     const spinningWheel = () => {
-        if (privilegesLoading || isEmployeesLoading || isPostLoading || isPermissionsLoading) {
+        if (privilegesLoading || isEmployeesLoading || isPostLoading) {
             return <Loading />;
         }
         return <div />;
@@ -61,11 +54,6 @@ function CreatePermission() {
         return 0;
     });
 
-    const renderEmployeesPermission = permission => (
-        <ListItem>
-            <Typography color="primary">{permission.privilege}</Typography>
-        </ListItem>
-    );
     const handlePrivilegeDropDownChange = (propertyName, newValue) => {
         setDropDownOption(newValue);
         setPrivilegeInput(newValue);
@@ -80,49 +68,10 @@ function CreatePermission() {
         send();
     }
 
-    const getFullName = () => {
-        console.log(employeeInput);
-        employees.forEach(employee => {
-            console.log(employee.id);
-            if (employeeInput === employee.id) {
-                console.log('match');
-                setFullName(`${employee?.firstName} ${employee?.lastName}`);
-            }
-        });
-    };
-
-    // const displayUserPermissions = () => {
-    //     if (employeeInput) {
-    //         if (permissions !== '[]') {
-    //             return (
-    //                 <Grid item xs={12}>
-    //                     <Typography color="black" variant="h5">
-    //                         {employeeInput
-    //                             ? `Current Permissions available for ${employeeInput.firstName}`
-    //                             : ''}
-    //                     </Typography>
-    //                     <List>{permissions?.map(renderEmployeesPermission)}</List>
-    //                 </Grid>
-    //             );
-    //         }
-    //         return (
-    //             <Grid item xs={12}>
-    //                 <Typography color="black" variant="h5">
-    //                     {employeeInput
-    //                         ? `${employeeInput.firstName} has no permissions currently`
-    //                         : ''}
-    //                 </Typography>
-    //             </Grid>
-    //         );
-    //     }
-    //     return null;
-    // };
-
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
                 {spinningWheel()}
-                {console.log(permissions)};
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
 
@@ -170,9 +119,10 @@ function CreatePermission() {
                     Save
                 </Button>
             </Grid>
+
             <Grid>
                 <Snackbar
-                    open={!!postResult?.id}
+                    open={!!postResult?.privilegeId}
                     autoHideDuration={5000}
                     message="Save Successful"
                 />
@@ -183,16 +133,6 @@ function CreatePermission() {
             <Grid container spacing={20}>
                 <Grid item xs={12} />
             </Grid>
-            <Grid item xs={12}>
-                {getFullName}
-                <Typography color="black" variant="h5">
-                    {employeeInput ? `Current Permissions available for ${fullName}` : ''}
-                </Typography>
-                <List>{permissions?.map(renderEmployeesPermission)}</List>
-            </Grid>
-            {/* <Grid item xs={12}>
-                {displayUserPermissions}
-            </Grid> */}
         </Page>
     );
 }
