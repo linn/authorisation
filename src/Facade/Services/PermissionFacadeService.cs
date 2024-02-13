@@ -54,7 +54,7 @@ namespace Linn.Authorisation.Facade.Services
                 PrivilegeId = permission.Privilege.Id
             };
 
-            return new SuccessResult<PermissionResource>(result);
+            return new CreatedResult<PermissionResource>(result);
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri)
