@@ -2,9 +2,6 @@ namespace Linn.Authorisation.Service.Modules
 {
     using System.Threading.Tasks;
 
-    using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Domain.Permissions;
-    using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
@@ -38,9 +35,7 @@ namespace Linn.Authorisation.Service.Modules
             PermissionResource resource,
             IPermissionFacadeService service)
         {
-            var result = service.CreatePermission(resource);
-
-            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
+            var result = service.CreatePermission(resource, req.HttpContext.User.GetEmployeeUrl());
 
             await res.Negotiate(result);
         }

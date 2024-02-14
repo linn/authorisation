@@ -9,6 +9,6 @@ namespace Linn.Authorisation.Facade.Services
     {
         IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri);
 
-        IResult<PermissionResource> CreatePermission(PermissionResource permissionResource);
+        IResult<PermissionResource> CreatePermission(PermissionResource permissionResource, string employeeUri);
     }
 }

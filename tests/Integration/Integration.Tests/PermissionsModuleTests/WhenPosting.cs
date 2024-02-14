@@ -10,7 +10,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
-    using Linn.Common.Resources;
 
     using NSubstitute;
 
@@ -31,7 +30,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                                     PrivilegeId = 100,
                                     GrantedByUri = "/employees/33156",
                                     GranteeUri = "/employees/33190",
-                                    DateGranted = DateTime.Now.ToString(),
+                                    DateGranted = DateTime.Now.ToString("o"),
                                     GranteeGroupId = null,
                                     GroupName = null
                                 };
@@ -48,7 +47,13 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [Test]
         public void ShouldCallAddRepository()
         { 
-            this.PermissionRepository.Received().Add(Arg.Is<Permission>(p => p.Privilege.Id == 100 && p.GrantedByUri == "/employees/33156"));
+            this.PermissionRepository.Received().Add(Arg.Is<IndividualPermission>(p => p.Privilege.Id == 100 && p.GranteeUri == "/employees/33190"));
+        }
+
+        [Test]
+        public void ShouldCommit()
+        {
+            this.TransactionManager.Received(1).Commit();
         }
 
         [Test]

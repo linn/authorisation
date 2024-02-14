@@ -35,7 +35,7 @@ namespace Linn.Authorisation.Facade.Services
             this.transactionManager = transactionManager;
         }
 
-        public IResult<PermissionResource> CreatePermission(PermissionResource permissionResource)
+        public IResult<PermissionResource> CreatePermission(PermissionResource permissionResource, string employeeUri)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
@@ -49,7 +49,7 @@ namespace Linn.Authorisation.Facade.Services
             var result = new PermissionResource
             {
                 DateGranted = permission.DateGranted.ToString("o"),
-                GrantedByUri = permission.GrantedByUri,
+                GrantedByUri = employeeUri,
                 GranteeUri = permission.GranteeUri,
                 PrivilegeId = permission.Privilege.Id
             };
