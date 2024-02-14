@@ -19,8 +19,7 @@ function useGet(url, id = null, queryString = '', requiresAuth = false) {
         setServerError(null);
 
         const headers = {
-            accept: 'application/json',
-            'Content-Type': 'application/json'
+            accept: 'application/json'
         };
         const requestParameters = {
             method: 'GET',
