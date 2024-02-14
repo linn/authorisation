@@ -38,6 +38,12 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         }
 
         [Test]
+        public void ShouldCommit()
+        {
+            this.TransactionManager.Received(1).Commit();
+        }
+
+        [Test]
         public void ShouldReturnJsonContentType()
         {
             this.Response.Content.Headers.ContentType.Should().NotBeNull();
