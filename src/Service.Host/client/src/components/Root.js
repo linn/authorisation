@@ -10,6 +10,7 @@ import Privileges from './Privileges';
 import CreatePrivilege from './CreatePrivilege';
 import Privilege from './Privilege';
 import CreatePermission from './CreatePermission';
+import ViewPermission from './ViewPermission';
 
 function Root() {
     return (
@@ -48,6 +49,11 @@ function Root() {
                                 exact
                                 path="/authorisation/permission/create"
                                 element={<CreatePermission />}
+                            />
+                            <Route
+                                exact
+                                path="/authorisation/permission/view"
+                                element={<ViewPermission />}
                             />
                             <Route element={<NotFoundPage />} />
                         </Routes>
