@@ -8,5 +8,7 @@ namespace Linn.Authorisation.Facade.Services
     public interface IPermissionFacadeService
     {
         IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri);
+
+        IResult<PermissionResource> CreatePermission(PermissionResource permissionResource, string employeeUri);
     }
 }

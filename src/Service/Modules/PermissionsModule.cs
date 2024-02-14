@@ -3,6 +3,9 @@ namespace Linn.Authorisation.Service.Modules
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Facade.Services;
+    using Linn.Authorisation.Resources;
+    using Linn.Authorisation.Service.Extensions;
+    using Linn.Common.Facade;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
 
@@ -15,6 +18,7 @@ namespace Linn.Authorisation.Service.Modules
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("/authorisation/permissions", this.GetPermissions);
+            endpoints.MapPost("/authorisation/permissions", this.CreatePermission);
         }
 
         private async Task GetPermissions(
@@ -23,6 +27,17 @@ namespace Linn.Authorisation.Service.Modules
             IPermissionFacadeService service)
         {
             await res.Negotiate(service.GetAllPermissionsForUser(who));
+        }
+
+        private async Task CreatePermission(
+            HttpResponse res,
+            HttpRequest req,
+            PermissionResource resource,
+            IPermissionFacadeService service)
+        {
+            var result = service.CreatePermission(resource, req.HttpContext.User.GetEmployeeUrl());
+
+            await res.Negotiate(result);
         }
     }
 }
