@@ -13,7 +13,6 @@ import usePost from '../hooks/usePost';
 import Page from './Page';
 
 function CreatePermission() {
-    const [, setDropDownOption] = useState('Choose a Privilege');
     const [privilegeInput, setPrivilegeInput] = useState('');
     const [employeeInput, setEmployeeInput] = useState('');
 
@@ -55,18 +54,12 @@ function CreatePermission() {
     });
 
     const handlePrivilegeDropDownChange = (propertyName, newValue) => {
-        setDropDownOption(newValue);
         setPrivilegeInput(newValue);
     };
 
     const handleEmployeeDropDownChange = (propertyName, newValue) => {
-        setDropDownOption(newValue);
         setEmployeeInput(newValue);
     };
-
-    function handleButtonClick() {
-        send();
-    }
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -78,7 +71,7 @@ function CreatePermission() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
-                    items={privileges?.map(privilege => ({
+                    items={privileges.map(privilege => ({
                         id: privilege.id,
                         displayText: privilege?.name
                     }))}
@@ -92,7 +85,7 @@ function CreatePermission() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="employee choice"
-                    items={employees?.items?.map(employee => ({
+                    items={employees.items.map(employee => ({
                         id: employee.id,
                         displayText: `${employee?.firstName} ${employee?.lastName}`
                     }))}
@@ -104,35 +97,23 @@ function CreatePermission() {
                 />
             </Grid>
 
-            <Grid container spacing={20}>
-                <Grid item xs={12} />
-            </Grid>
-
             <Grid item xs={6}>
                 <Button
                     disabled={privilegeInput === '' || employeeInput === ''}
                     variant="contained"
                     onClick={() => {
-                        handleButtonClick();
+                        send();
                     }}
                 >
                     Save
                 </Button>
             </Grid>
 
-            <Grid>
-                <Snackbar
-                    open={!!postResult?.privilegeId}
-                    autoHideDuration={5000}
-                    message="Save Successful"
-                />
-                <Grid item xs={12}>
-                    {spinningWheel()}
-                </Grid>
-            </Grid>
-            <Grid container spacing={20}>
-                <Grid item xs={12} />
-            </Grid>
+            <Snackbar
+                open={!!postResult?.privilegeId}
+                autoHideDuration={5000}
+                message="Save Successful"
+            />
         </Page>
     );
 }

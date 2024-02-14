@@ -16,7 +16,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
     using NUnit.Framework;
 
-    public class WhenPosting : ContextBase
+    public class WhenPostingIndividualPermission : ContextBase
     {
         private PermissionResource resource;
 
@@ -31,9 +31,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                                     PrivilegeId = 100,
                                     GrantedByUri = "/employees/33156",
                                     GranteeUri = "/employees/33190",
-                                    DateGranted = new DateTime(2024, 02, 13).ToString("o"),
-                                    GranteeGroupId = "1234",
-                                    GroupName = "testGroup"
+                                    DateGranted = DateTime.Now.ToString(),
+                                    GranteeGroupId = null,
+                                    GroupName = null
                                 };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/permissions", this.resource).Result;
@@ -62,8 +62,8 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         public void ShouldReturnJsonBody()
         {
             var result = this.Response.DeserializeBody<PermissionResource>();
-            result.PrivilegeId.Should().Be(100);
-            result.GranteeUri.Should().Be("/employees/33190");
+            result.PrivilegeId.Should().Be(this.resource.PrivilegeId);
+            result.GranteeUri.Should().Be(this.resource.GranteeUri);
         }
     }
 }

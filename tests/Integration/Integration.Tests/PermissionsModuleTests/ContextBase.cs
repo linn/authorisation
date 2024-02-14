@@ -38,7 +38,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
         protected ITransactionManager TransactionManager { get; set; }
 
-
         [SetUp]
         public void SetUpContext()
         {
@@ -46,7 +45,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.PermissionRepository = Substitute.For<IRepository<Permission, int>>();
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
             this.TransactionManager = Substitute.For<ITransactionManager>();
-
 
             this.FacadeService = new PermissionFacadeService(
                 this.DomainService,
