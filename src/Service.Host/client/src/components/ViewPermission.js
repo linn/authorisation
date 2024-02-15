@@ -34,7 +34,9 @@ function ViewPermission() {
 
     const renderEmployeesPermission = permission => (
         <ListItem>
-            <Typography color="primary">{permission.privilege}</Typography>
+            <Typography key={permission.PrivilegeId} color="primary">
+                {permission.privilege}
+            </Typography>
         </ListItem>
     );
 
