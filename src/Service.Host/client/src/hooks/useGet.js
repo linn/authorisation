@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 
-function useGet(url, id = null, queryString = '', requiresAuth = false) {
+function useGet(url, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [result, setResult] = useState(null);
@@ -13,7 +13,7 @@ function useGet(url, id = null, queryString = '', requiresAuth = false) {
         token = auth.user?.access_token;
     }
 
-    const send = () => {
+    const send = (id, queryString) => {
         setIsLoading(true);
         setResult(null);
         setServerError(null);
