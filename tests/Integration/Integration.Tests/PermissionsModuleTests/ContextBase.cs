@@ -8,9 +8,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.IoC;
-    using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
-    using Linn.Common.Facade;
     using Linn.Common.Logging;
     using Linn.Common.Persistence;
 
