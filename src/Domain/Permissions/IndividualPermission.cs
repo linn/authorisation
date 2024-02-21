@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Linn.Authorisation.Domain.Permissions
 {
     public class IndividualPermission : Permission
@@ -12,6 +16,16 @@ namespace Linn.Authorisation.Domain.Permissions
             // empty args constructor needed for ef
         }
 
-        public string GranteeUri { get; set; }       
+        public string GranteeUri { get; set; }
+
+        public bool CheckUnique(IEnumerable<IndividualPermission> existingPermissions)
+        {
+            foreach (var permission in existingPermissions.Where(p => p.Privilege.Id == this.Privilege.Id && p.GranteeUri == this.GranteeUri))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

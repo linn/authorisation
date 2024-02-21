@@ -1,6 +1,10 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.Design;
+    using System.Linq;
 
     public abstract class Permission : Entity
     {
@@ -21,5 +25,9 @@ namespace Linn.Authorisation.Domain.Permissions
         public DateTime DateGranted { get; set; }
 
         public string GrantedByUri { get; set; }
+
+        
+
     }
 }
+    

@@ -20,5 +20,9 @@
     <ProjectReference Include="..\..\..\src\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PermissionTests\" />
+  </ItemGroup>
+
 
 </Project>
