@@ -23,8 +23,7 @@
         public void SetUp()
         {
             var privilege = new Privilege { Id = 100, Name = "test.privilege", Active = true };
-            this.PrivilegeRepository.FindById(privilege.Id).Returns(
-                privilege);
+            this.PrivilegeRepository.FindById(privilege.Id).Returns(privilege);
 
             var existingPermission = new IndividualPermission
                                          {
