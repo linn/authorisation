@@ -42,6 +42,17 @@ namespace Linn.Authorisation.Facade.Services
             var permission = new IndividualPermission(
                 permissionResource.GranteeUri, privilege, permissionResource.GrantedByUri);
 
+            var permissions = this.permissionsRepository.FilterBy(p => p is IndividualPermission);
+
+            var individualPermissions = permissions.Select(p => (IndividualPermission)p);
+
+            
+
+            if(permission.CheckUnique(individualPermissions)
+            {
+
+            }
+
             this.permissionsRepository.Add(permission);
 
             this.transactionManager.Commit();
