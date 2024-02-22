@@ -21,9 +21,12 @@ namespace Linn.Authorisation.Domain.Permissions
         { 
             bool isUnique = true;
       
-            foreach (var permission in existingPermissions.Where(p => p.Privilege.Name == this.Privilege.Name && p.GranteeUri == this.GranteeUri))
+            foreach (var permission in existingPermissions)
             {
-                isUnique = false;
+                if (permission.Privilege.Name == this.Privilege.Name && permission.GranteeUri == this.GranteeUri)
+                { 
+                    isUnique = false; 
+                }
             }
 
             return isUnique;
