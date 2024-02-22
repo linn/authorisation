@@ -43,6 +43,9 @@ function usePost(url, id, data, requiresAuth = false) {
                 setIsLoading(false);
             });
     };
+
+    console.log(serverError)
+    
     return { send, isLoading, serverError, postResult };
 }
 

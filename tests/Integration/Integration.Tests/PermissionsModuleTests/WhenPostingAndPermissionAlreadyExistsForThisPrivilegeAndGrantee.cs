@@ -1,7 +1,9 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -30,7 +32,8 @@
                                              Id = 10, Privilege = privilege, GranteeUri = "/employees/33190"
                                          };
 
-            this.PermissionRepository.FindAll().Returns(new List<Permission>
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(new List<Permission>
                                                             {
                                                                 existingPermission
                                                             }.AsQueryable());

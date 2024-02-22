@@ -48,24 +48,26 @@ namespace Linn.Authorisation.Facade.Services
 
             
 
-            if(permission.CheckUnique(individualPermissions)
+            if(permission.CheckUnique(individualPermissions))
             {
+                this.permissionsRepository.Add(permission);
 
+                this.transactionManager.Commit();
+
+                var result = new PermissionResource
+                {
+                    DateGranted = permission.DateGranted.ToString("o"),
+                    GrantedByUri = employeeUri,
+                    GranteeUri = permission.GranteeUri,
+                    PrivilegeId = permission.Privilege.Id
+                };
+
+                return new CreatedResult<PermissionResource>(result);
             }
 
-            this.permissionsRepository.Add(permission);
+            return new BadRequestResult<PermissionResource>();
 
-            this.transactionManager.Commit();
-
-            var result = new PermissionResource
-            {
-                DateGranted = permission.DateGranted.ToString("o"),
-                GrantedByUri = employeeUri,
-                GranteeUri = permission.GranteeUri,
-                PrivilegeId = permission.Privilege.Id
-            };
-
-            return new CreatedResult<PermissionResource>(result);
+            
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri)
