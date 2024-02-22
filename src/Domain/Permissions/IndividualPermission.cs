@@ -2,6 +2,7 @@ namespace Linn.Authorisation.Domain.Permissions
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security;
 
     public class IndividualPermission : Permission
     {
@@ -18,18 +19,16 @@ namespace Linn.Authorisation.Domain.Permissions
         public string GranteeUri { get; set; }
 
         public bool CheckUnique(IEnumerable<IndividualPermission> existingPermissions)
-        { 
-            bool isUnique = true;
-      
+        {
             foreach (var permission in existingPermissions)
             {
                 if (permission.Privilege.Name == this.Privilege.Name && permission.GranteeUri == this.GranteeUri)
                 { 
-                    isUnique = false; 
+                    return false; 
                 }
             }
 
-            return isUnique;
+            return true;
         }
     }
 }

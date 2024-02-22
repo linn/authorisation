@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class WhenCheckingUniqueAndNotUnique : ContextBase
+    public class WhenCheckingUnique : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do.admin.stuuuff 2";
@@ -63,7 +63,7 @@
 
                 result.Should().BeFalse();
             }
-
+            [Test]
             public void ShouldReturnTrue()
             {
                 var result = this.individualPermissionCheckTrue.CheckUnique(this.permissions);
