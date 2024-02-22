@@ -1,8 +1,6 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Security;
 
     public class IndividualPermission : Permission
     {
