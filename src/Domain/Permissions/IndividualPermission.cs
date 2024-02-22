@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Linn.Authorisation.Domain.Permissions
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class IndividualPermission : Permission
     {
         public IndividualPermission(string granteeUri, Privilege privilege, string grantedByUri) : base(privilege, grantedByUri)
@@ -19,13 +18,15 @@ namespace Linn.Authorisation.Domain.Permissions
         public string GranteeUri { get; set; }
 
         public bool CheckUnique(IEnumerable<IndividualPermission> existingPermissions)
-        {
-            foreach (var permission in existingPermissions.Where(p => p.Privilege.Id == this.Privilege.Id && p.GranteeUri == this.GranteeUri))
+        { 
+            bool isUnique = true;
+      
+            foreach (var permission in existingPermissions.Where(p => p.Privilege.Name == this.Privilege.Name && p.GranteeUri == this.GranteeUri))
             {
-                return false;
+                isUnique = false;
             }
 
-            return true;
+            return isUnique;
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using Linn.Authorisation.Domain.Permissions;
-using NSubstitute;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
 {
+    using FluentAssertions;
+    using Linn.Authorisation.Domain.Permissions;
+    using NSubstitute;
+    using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     public class WhenCheckingUniqueAndNotUnique : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
@@ -17,7 +18,7 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
         [SetUp]
         public void SetUp()
         {
-            individualPermission = new IndividualPermission
+            this.individualPermission = new IndividualPermission
             {
                 GranteeUri = "/employees/133",
                 Privilege = new Privilege(this.privilegeName),
@@ -25,15 +26,14 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
                 DateGranted = DateTime.UtcNow
             };
 
-            permissions = new List<IndividualPermission>
+            this.permissions = new List<IndividualPermission>
             {
                 new IndividualPermission{
                 GranteeUri = "/employees/133",
                 Privilege = new Privilege(this.privilegeName),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
-                }
-                ,
+                },
                 new IndividualPermission{
                 GranteeUri = "/employees/3006",
                 Privilege = new Privilege(this.privilegeName),
@@ -42,14 +42,21 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
                 }
             };
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(permissions.AsQueryable());
+                .Returns(this.permissions.AsQueryable());
         }
             [Test]
             public void ShouldReturnFalse()
             {
-                var result = individualPermission.CheckUnique(permissions);
+                var result = this.individualPermission.CheckUnique(this.permissions);
 
-                Assert.IsFalse(result);
+                result.Should().BeFalse();
+            }
+
+            public void ShouldReturnTrue()
+            {
+                var result = this.individualPermission.CheckUnique(this.permissions);
+
+                result.Should().BeTrue();
             }
     }
 }
