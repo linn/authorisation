@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class WhenCheckingUnique : ContextBase
+    public class WhenCheckingIndividualNotUnique : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do.admin.stuuuff 2";
@@ -26,14 +26,6 @@
             {
                 GranteeUri = "/employees/133",
                 Privilege = new Privilege(this.privilegeName),
-                GrantedByUri = "/employees/7004",
-                DateGranted = DateTime.UtcNow
-            };
-
-            this.individualPermissionCheckTrue = new IndividualPermission
-            {
-                GranteeUri = "/employees/100",
-                Privilege = new Privilege(this.privilegeName2),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
             };
@@ -62,14 +54,6 @@
                 var result = this.individualPermissionCheckFalse.CheckUnique(this.permissions);
 
                 result.Should().BeFalse();
-            }
-
-            [Test]
-            public void ShouldReturnTrue()
-            {
-                var result = this.individualPermissionCheckTrue.CheckUnique(this.permissions);
-
-                result.Should().BeTrue();
             }
     }
 }

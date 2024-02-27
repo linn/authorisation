@@ -51,8 +51,6 @@ namespace Linn.Authorisation.Facade.Services
 
             var individualPermissions = permissions.Select(p => (IndividualPermission)p);
 
-            
-
             if (permission.CheckUnique(individualPermissions))
             {
                 this.permissionsRepository.Add(permission);
@@ -79,7 +77,7 @@ namespace Linn.Authorisation.Facade.Services
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
-            var group = this.groupRepository.FindById(permissionResource.GranteeGroupId);
+            var group = this.groupRepository.FindById((int)permissionResource.GranteeGroupId);
 
             var permission = new GroupPermission(
                 group, privilege, permissionResource.GrantedByUri);

@@ -9,51 +9,37 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Linn.Authorisation.Domain.Groups;
-
-    public class WhenCheckingUniqueGroup : ContextBase
+    public class WhenCheckingIndividualUnique : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do.admin.stuuuff 2";
         private readonly string privilegeName3 = "do.admin.stuuuff 3";
 
-        private readonly string groupName = "group 1";
-        private readonly string groupName2 = "group 2";
-        private readonly string groupName3 = "group 3";
-
-        private List<GroupPermission> permissions;
-        private GroupPermission GroupPermissionCheckFalse;
-        private GroupPermission GroupPermissionCheckTrue;
+        private List<IndividualPermission> permissions;
+        private IndividualPermission individualPermissionCheckFalse;
+        private IndividualPermission individualPermissionCheckTrue;
 
         [SetUp]
         public void SetUp()
         {
-            this.GroupPermissionCheckFalse = new GroupPermission
+            this.individualPermissionCheckTrue = new IndividualPermission
             {
-                GranteeGroup = new Group(this.groupName, true),
-                Privilege = new Privilege(this.privilegeName),
-                GrantedByUri = "/employees/7004",
-                DateGranted = DateTime.UtcNow
-            };
-
-            this.GroupPermissionCheckTrue = new GroupPermission
-            {
-                GranteeGroup = new Group(this.groupName3, true), 
+                GranteeUri = "/employees/100",
                 Privilege = new Privilege(this.privilegeName2),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
             };
 
-            this.permissions = new List<GroupPermission>
+            this.permissions = new List<IndividualPermission>
             {
-                new GroupPermission{
-                GranteeGroup = new Group(this.groupName,true),
+                new IndividualPermission{
+                GranteeUri = "/employees/133",
                 Privilege = new Privilege(this.privilegeName),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
                 },
-                new GroupPermission{
-                GranteeGroup = new Group(this.groupName2,true),
+                new IndividualPermission{
+                GranteeUri = "/employees/3006",
                 Privilege = new Privilege(this.privilegeName3),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
@@ -63,17 +49,9 @@
                 .Returns(this.permissions.AsQueryable());
         }
             [Test]
-            public void ShouldReturnFalse()
-            {
-                var result = this.GroupPermissionCheckFalse.CheckUnique(this.permissions);
-
-                result.Should().BeFalse();
-            }
-
-            [Test]
             public void ShouldReturnTrue()
             {
-                var result = this.GroupPermissionCheckTrue.CheckUnique(this.permissions);
+                var result = this.individualPermissionCheckTrue.CheckUnique(this.permissions);
 
                 result.Should().BeTrue();
             }

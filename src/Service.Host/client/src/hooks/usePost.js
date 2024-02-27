@@ -44,8 +44,6 @@ function usePost(url, id, data, requiresAuth = false) {
             });
     };
 
-
-
     return { send, isLoading, serverError, postResult };
 }
 
