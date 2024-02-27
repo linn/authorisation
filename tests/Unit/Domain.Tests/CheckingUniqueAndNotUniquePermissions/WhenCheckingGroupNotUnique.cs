@@ -1,9 +1,8 @@
-﻿using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
-
-namespace Linn.Authorisation.Domain.Tests.CheckingUniqueAndNotUniquePermissions
+﻿namespace Linn.Authorisation.Domain.Tests.CheckingUniqueAndNotUniquePermissions
 {
     using FluentAssertions;
     using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
     using NSubstitute;
     using NUnit.Framework;
     using System;
