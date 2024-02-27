@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
+
+namespace Linn.Authorisation.Domain.Tests.CheckingUniqueAndNotUniquePermissions
 {
     using FluentAssertions;
     using Linn.Authorisation.Domain.Permissions;
@@ -22,38 +24,38 @@
         [SetUp]
         public void SetUp()
         {
-            this.individualPermissionCheckTrue = new IndividualPermission
+            individualPermissionCheckTrue = new IndividualPermission
             {
                 GranteeUri = "/employees/100",
-                Privilege = new Privilege(this.privilegeName2),
+                Privilege = new Privilege(privilegeName2),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
             };
 
-            this.permissions = new List<IndividualPermission>
+            permissions = new List<IndividualPermission>
             {
                 new IndividualPermission{
                 GranteeUri = "/employees/133",
-                Privilege = new Privilege(this.privilegeName),
+                Privilege = new Privilege(privilegeName),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
                 },
                 new IndividualPermission{
                 GranteeUri = "/employees/3006",
-                Privilege = new Privilege(this.privilegeName3),
+                Privilege = new Privilege(privilegeName3),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
                 }
             };
-            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(this.permissions.AsQueryable());
+            PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(permissions.AsQueryable());
         }
-            [Test]
-            public void ShouldReturnTrue()
-            {
-                var result = this.individualPermissionCheckTrue.CheckUnique(this.permissions);
+        [Test]
+        public void ShouldReturnTrue()
+        {
+            var result = individualPermissionCheckTrue.CheckUnique(permissions);
 
-                result.Should().BeTrue();
-            }
+            result.Should().BeTrue();
+        }
     }
 }

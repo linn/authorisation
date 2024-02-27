@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
+
+namespace Linn.Authorisation.Domain.Tests.CheckingUniqueAndNotUniquePermissions
 {
     using FluentAssertions;
     using Linn.Authorisation.Domain.Permissions;
@@ -11,7 +13,7 @@
 
     using Linn.Authorisation.Domain.Groups;
 
-    public class WhenCheckingGroupNotUnique : ContextBase
+    public class WhenCheckingGroupUnique : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do.admin.stuuuff 2";
@@ -28,38 +30,38 @@
         [SetUp]
         public void SetUp()
         {
-            this.GroupPermissionCheckFalse = new GroupPermission
+            GroupPermissionCheckTrue = new GroupPermission
             {
-                GranteeGroup = new Group(this.groupName, true),
-                Privilege = new Privilege(this.privilegeName),
+                GranteeGroup = new Group(groupName3, true),
+                Privilege = new Privilege(privilegeName2),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
             };
 
-            this.permissions = new List<GroupPermission>
+            permissions = new List<GroupPermission>
             {
                 new GroupPermission{
-                GranteeGroup = new Group(this.groupName,true),
-                Privilege = new Privilege(this.privilegeName),
+                GranteeGroup = new Group(groupName,true),
+                Privilege = new Privilege(privilegeName),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
                 },
                 new GroupPermission{
-                GranteeGroup = new Group(this.groupName2,true),
-                Privilege = new Privilege(this.privilegeName3),
+                GranteeGroup = new Group(groupName2,true),
+                Privilege = new Privilege(privilegeName3),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
                 }
             };
-            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(this.permissions.AsQueryable());
+            PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(permissions.AsQueryable());
         }
-            [Test]
-            public void ShouldReturnFalse()
-            {
-                var result = this.GroupPermissionCheckFalse.CheckUnique(this.permissions);
+        [Test]
+        public void ShouldReturnTrue()
+        {
+            var result = GroupPermissionCheckTrue.CheckUnique(permissions);
 
-                result.Should().BeFalse();
-            }
+            result.Should().BeTrue();
+        }
     }
 }
