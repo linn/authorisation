@@ -30,6 +30,7 @@ function usePost(url, id, data, requiresAuth = false) {
         fetch(id ? `${url}/${id}` : url, requestParameters)
             .then(response => {
                 if (!response.ok) {
+                    console.log(response)
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
@@ -39,13 +40,14 @@ function usePost(url, id, data, requiresAuth = false) {
                 setIsLoading(false);
             })
             .catch(error => {
+
                 setServerError(error);
                 setIsLoading(false);
             });
     };
 
-    console.log(serverError)
-    
+
+
     return { send, isLoading, serverError, postResult };
 }
 

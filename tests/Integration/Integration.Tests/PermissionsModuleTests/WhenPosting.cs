@@ -31,7 +31,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                                     GrantedByUri = "/employees/33156",
                                     GranteeUri = "/employees/33190",
                                     DateGranted = DateTime.Now.ToString("o"),
-                                    GranteeGroupId = null,
+                                    GranteeGroupId = 0,
                                     GroupName = null
                                 };
 
