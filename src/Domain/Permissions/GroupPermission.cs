@@ -1,6 +1,7 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
     using Groups;
+    using System.Collections.Generic;
 
     public class GroupPermission : Permission
     {
@@ -15,5 +16,19 @@ namespace Linn.Authorisation.Domain.Permissions
         }
 
         public Group GranteeGroup { get; set; }
+
+        public bool CheckUnique(IEnumerable<GroupPermission> existingPermissions)
+            {
+                foreach (var permission in existingPermissions)
+                {
+                    if (permission.Privilege.Name == this.Privilege.Name && permission.GranteeGroup.Id == this.GranteeGroup.Id)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
     }
+
+    
 }

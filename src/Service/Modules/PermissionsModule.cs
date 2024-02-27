@@ -35,7 +35,7 @@ namespace Linn.Authorisation.Service.Modules
             PermissionResource resource,
             IPermissionFacadeService service)
         {
-            var result = service.CreatePermission(resource, req.HttpContext.User.GetEmployeeUrl());
+            var result = service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl());
 
             await res.Negotiate(result);
         }

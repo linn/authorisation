@@ -71,7 +71,7 @@ function CreatePermission() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
-                    items={privileges.map(privilege => ({
+                    items={privileges?.map(privilege => ({
                         id: privilege.id,
                         displayText: privilege?.name
                     }))}
@@ -85,7 +85,7 @@ function CreatePermission() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="employee choice"
-                    items={employees.items.map(employee => ({
+                    items={employees?.items.map(employee => ({
                         id: employee.id,
                         displayText: `${employee?.firstName} ${employee?.lastName}`
                     }))}
