@@ -91,7 +91,6 @@ namespace Linn.Authorisation.Facade.Services
             if (permission.CheckUnique(groupPermissions))
             {
                 this.permissionsRepository.Add(permission);
-
                 this.transactionManager.Commit();
 
                 var result = new PermissionResource
@@ -102,17 +101,14 @@ namespace Linn.Authorisation.Facade.Services
                     GranteeGroupId = permission.GranteeGroup.Id,
                     GroupName = permission.GranteeGroup.Name,
                 };
-
                 return new CreatedResult<PermissionResource>(result);
             }
-
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri)
         {
             var result = this.permissionService.GetAllPermissionsForUser(granteeUri);
-
             var resources = result.Select(x => (PermissionResource)this.resourceBuilder.Build(x, null));
 
             return new SuccessResult<IEnumerable<PermissionResource>>(resources);

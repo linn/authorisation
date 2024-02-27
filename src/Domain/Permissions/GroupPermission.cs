@@ -26,7 +26,6 @@ namespace Linn.Authorisation.Domain.Permissions
                         return false;
                     }
                 }
-
                 return true;
             }
     }
