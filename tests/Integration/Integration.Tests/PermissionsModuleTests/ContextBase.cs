@@ -34,7 +34,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
 
         protected IRepository<Privilege, int> PrivilegeRepository { get; private set; }
+
         public IRepository<Group, int> GroupRespository { get; private set; }
+
         protected ITransactionManager TransactionManager { get; set; }
 
         [SetUp]
