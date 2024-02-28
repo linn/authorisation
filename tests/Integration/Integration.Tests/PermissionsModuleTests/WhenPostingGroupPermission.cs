@@ -18,6 +18,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using NSubstitute;
 
     using NUnit.Framework;
+    using NUnit.Framework.Internal;
 
     public class WhenPostingGroupPermission : ContextBase
     {
@@ -26,33 +27,18 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
-            var privilege = new Privilege { Id = 100, Name = "test.privilege", Active = true };
-            this.PrivilegeRepository.FindById(privilege.Id).Returns(privilege);
+            this.PrivilegeRepository.FindById(100).Returns(new Privilege { Id = 100, Name = "test.privilege", Active = true });
 
-            var groupPermission = new GroupPermission
-                                      {
-                                          Id = 10,
-                                          Privilege = privilege,
-                                          GrantedByUri = "/employees/33156",
-                                          DateGranted = DateTime.Now,
-                                          GranteeGroup = new Group
-                                                             { 
-                                                                 Id = 10,
-                                                                 Active = true,
-                                                                 Name = "TestGroupName"
-                                                             }
-            };
-
-            this.PermissionRepository.FindById(groupPermission.Id).Returns(groupPermission);
+            this.GroupRespository.FindById(10).Returns(new Group { Id = 10, Name = "TestGroup", Active = true });
 
             this.resource = new PermissionResource
-                                {
-                                    Privilege = privilege.Name,
-                                    PrivilegeId = privilege.Id,
-                                    GrantedByUri = groupPermission.GrantedByUri,
-                                    GranteeGroupId = groupPermission.GranteeGroup.Id,
-                                    GroupName = groupPermission.GranteeGroup.Name,
-                                    DateGranted = groupPermission.DateGranted.ToString("o"),
+            {
+                                    Privilege = "test.privilege",
+                                    PrivilegeId = 100,
+                                    GrantedByUri = "/employees/33156/",
+                                    GranteeGroupId = 10,
+                                    GroupName = "TestGroup",
+                                    DateGranted = DateTime.Now.ToString("o"),
             };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/permissions", this.resource).Result;
@@ -67,7 +53,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [Test]
         public void ShouldCallAddRepository()
         { 
-            this.PermissionRepository.Received().Add(Arg.Is<GroupPermission>(p => p.Privilege.Id == 100 && p.GranteeGroup.Id == 11));
+            this.PermissionRepository.Received().Add(Arg.Is<GroupPermission>(p => p.Privilege.Id == 100 && p.GranteeGroup.Id == 10));
         }
 
         [Test]
