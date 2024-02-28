@@ -9,7 +9,8 @@ import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
 import CreatePrivilege from './CreatePrivilege';
 import Privilege from './Privilege';
-import CreatePermission from './CreatePermission';
+import CreateIndividualPermission from './CreateIndividualPermission';
+import CreateGroupPermission from './CreateGroupPermission';
 import ViewPermission from './ViewPermission';
 
 function Root() {
@@ -47,8 +48,13 @@ function Root() {
                             />
                             <Route
                                 exact
-                                path="/authorisation/permission/create"
-                                element={<CreatePermission />}
+                                path="/authorisation/permission/create/individual"
+                                element={<CreateIndividualPermission />}
+                            />
+                            <Route
+                                exact
+                                path="/authorisation/permission/create/group"
+                                element={<CreateGroupPermission />}
                             />
                             <Route
                                 exact

@@ -12,7 +12,7 @@ import itemTypes from '../itemTypes';
 import usePost from '../hooks/usePost';
 import Page from './Page';
 
-function CreatePermission() {
+function CreateIndividualPermission() {
     const [privilegeInput, setPrivilegeInput] = useState('');
     const [employeeInput, setEmployeeInput] = useState('');
 
@@ -118,4 +118,4 @@ function CreatePermission() {
     );
 }
 
-export default CreatePermission;
+export default CreateIndividualPermission;
