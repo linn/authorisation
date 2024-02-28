@@ -1,12 +1,16 @@
 namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
     using System.Net;
     using System.Net.Http.Json;
 
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -22,18 +26,34 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.PrivilegeRepository.FindById(100).Returns(new Privilege { Id = 100, Name = "test.privilege", Active = true });
+            var privilege = new Privilege { Id = 100, Name = "test.privilege", Active = true };
+            this.PrivilegeRepository.FindById(privilege.Id).Returns(privilege);
+
+            var groupPermission = new GroupPermission
+                                      {
+                                          Id = 10,
+                                          Privilege = privilege,
+                                          GrantedByUri = "/employees/33156",
+                                          DateGranted = DateTime.Now,
+                                          GranteeGroup = new Group
+                                                             { 
+                                                                 Id = 10,
+                                                                 Active = true,
+                                                                 Name = "TestGroupName"
+                                                             }
+            };
+
+            this.PermissionRepository.FindById(groupPermission.Id).Returns(groupPermission);
 
             this.resource = new PermissionResource
                                 {
-                                    Privilege = "test.privilege",
-                                    PrivilegeId = 100,
-                                    GrantedByUri = "/employees/33156",
-                                    GranteeUri = null,
-                                    DateGranted = DateTime.Now.ToString("o"),
-                                    GranteeGroupId = 10,
-                                    GroupName = "TestGroup 1"
-                                };
+                                    Privilege = privilege.Name,
+                                    PrivilegeId = privilege.Id,
+                                    GrantedByUri = groupPermission.GrantedByUri,
+                                    GranteeGroupId = groupPermission.GranteeGroup.Id,
+                                    GroupName = groupPermission.GranteeGroup.Name,
+                                    DateGranted = groupPermission.DateGranted.ToString("o"),
+            };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/permissions", this.resource).Result;
         }

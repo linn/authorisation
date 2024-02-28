@@ -69,8 +69,6 @@ namespace Linn.Authorisation.Facade.Services
             }
 
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
-
-            
         }
 
         public IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri)
@@ -101,6 +99,7 @@ namespace Linn.Authorisation.Facade.Services
                 };
                 return new CreatedResult<PermissionResource>(result);
             }
+
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
         }
 

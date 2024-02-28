@@ -35,14 +35,14 @@ namespace Linn.Authorisation.Service.Modules
             PermissionResource resource,
             IPermissionFacadeService service)
         {
-            var result = service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl());
-
-            if (resource.GranteeGroupId == null) { 
-                result = service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl());
+            if (resource.GranteeGroupId == null) 
+            {
+                await res.Negotiate(service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
             }
-            
-
-            await res.Negotiate(result);
+            else
+            {
+                await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
+            }
         }
     }
 }
