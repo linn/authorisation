@@ -1,6 +1,7 @@
 ﻿namespace Linn.Authorisation.IoC
 {
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade.ResourceBuilders;
@@ -20,7 +21,9 @@
         {
             return services.AddTransient<IBuilder<Privilege>, PrivilegeResourceBuilder>()
                 .AddTransient<IBuilder<Permission>, PermissionResourceBuilder>()
+                .AddTransient<IBuilder<Group>, GroupResourceBuilder>()
                 .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
+                .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>();
         }
 
