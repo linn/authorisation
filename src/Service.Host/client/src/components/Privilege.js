@@ -53,46 +53,45 @@ function Privilege() {
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    {spinningWheel()}
-                </Grid>
-                <Grid item xs={6}>
-                    <InputField
-                        propertyName="inputValue"
-                        label="Name"
-                        value={privilege?.name}
-                        onChange={handleNameFieldChange}
-                        fullWidth
+            <Grid item xs={12}>
+                {spinningWheel()}
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="h4">Edit Privilege</Typography>
+            </Grid>
+            <Grid item xs={6}>
+                <InputField
+                    propertyName="inputValue"
+                    label="Name"
+                    value={privilege?.name}
+                    onChange={handleNameFieldChange}
+                    fullWidth
+                />
+                <Typography color="black">
+                    Inactive
+                    <OnOffSwitch
+                        value={privilege?.active}
+                        onChange={handleActiveChange}
+                        inputProps={{ 'aria-label': 'Switch demo' }}
+                        defaultchecked={data?.active}
                     />
-                    <Typography color="black">
-                        Inactive
-                        <OnOffSwitch
-                            value={privilege?.active}
-                            onChange={handleActiveChange}
-                            inputProps={{ 'aria-label': 'Switch demo' }}
-                            defaultchecked={data?.active}
-                        />
-                        Active
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        disabled={
-                            data?.name === privilege?.name && data?.active === privilege?.active
-                        }
-                        onClick={() => {
-                            send();
-                        }}
-                    >
-                        Save
-                    </Button>
+                    Active
+                </Typography>
+                <Button
+                    variant="contained"
+                    disabled={data?.name === privilege?.name && data?.active === privilege?.active}
+                    onClick={() => {
+                        send();
+                    }}
+                >
+                    Save
+                </Button>
 
-                    <Snackbar
-                        open={!!putResult?.id}
-                        autoHideDuration={5000}
-                        message="Save Successful"
-                    />
-                </Grid>
+                <Snackbar
+                    open={!!putResult?.id}
+                    autoHideDuration={5000}
+                    message="Save Successful"
+                />
             </Grid>
         </Page>
     );
