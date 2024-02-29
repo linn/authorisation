@@ -11,14 +11,14 @@ import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
 import Page from './Page';
 
-function Privileges() {
-    const [privileges, setPrivileges] = useState([]);
+function ViewGroups() {
+    const [groups, setGroups] = useState([]);
 
-    const { data, isLoading } = useInitialise(itemTypes.privileges.url);
+    const { data, isLoading } = useInitialise(itemTypes.groups.url);
 
     useEffect(() => {
         if (data) {
-            setPrivileges(data);
+            setGroups(data);
         }
     }, [data]);
 
@@ -29,15 +29,15 @@ function Privileges() {
         return <div />;
     };
 
-    const renderPrivilege = privilege => (
-        <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+    const renderPrivilege = group => (
+        <ListItem component={Link} to={`/authorisation/group/${group.id}`}>
             <Typography color="primary">
-                {privilege?.active ? `${privilege.name} - ACTIVE` : `${privilege.name} - INACTIVE`}
+                {group?.active ? `${group.name} - ACTIVE` : `${group.name} - INACTIVE`}
             </Typography>
         </ListItem>
     );
 
-    privileges.sort((a, b) => {
+    groups.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
 
@@ -54,17 +54,17 @@ function Privileges() {
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h4">Privileges</Typography>
+                    <Typography variant="h4">Groups</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     {spinningWheel()}
                 </Grid>
                 <Grid item xs={12}>
-                    <List>{privileges.map(renderPrivilege)}</List>
+                    <List>{groups.map(renderPrivilege)}</List>
                 </Grid>
                 <Grid item xs={6}>
                     <ListItem component={Link} to="/authorisation/privileges/create">
-                        <Typography color="primary">Create Privileges</Typography>
+                        <Typography color="primary">Create Group</Typography>
                     </ListItem>
                 </Grid>
             </Grid>
@@ -72,4 +72,4 @@ function Privileges() {
     );
 }
 
-export default Privileges;
+export default ViewGroups;
