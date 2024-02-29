@@ -13,7 +13,6 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Group() {
-    // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
@@ -80,9 +79,7 @@ function Group() {
                 <Button
                     variant="contained"
                     disabled={data?.name === group?.name && data?.active === group?.active}
-                    onClick={() => {
-                        send();
-                    }}
+                    onClick={send}
                 >
                     Save
                 </Button>
