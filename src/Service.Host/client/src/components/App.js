@@ -24,8 +24,11 @@ function App() {
                 <ListItem component={Link} to="/authorisation/permission/create/group">
                     <Typography color="primary">Create Group Permission</Typography>
                 </ListItem>
-                <ListItem component={Link} to="/authorisation/permission/view">
+                <ListItem component={Link} to="/authorisation/permission/view/individual">
                     <Typography color="primary">View Employee&apos;s Permission</Typography>
+                </ListItem>
+                <ListItem component={Link} to="/authorisation/permission/view/group">
+                    <Typography color="primary">Groups</Typography>
                 </ListItem>
             </List>
         </Page>

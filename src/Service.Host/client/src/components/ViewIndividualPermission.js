@@ -12,7 +12,7 @@ import itemTypes from '../itemTypes';
 import useGet from '../hooks/useGet';
 import Page from './Page';
 
-function ViewPermission() {
+function ViewIndividualPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
 
     const {
@@ -70,4 +70,4 @@ function ViewPermission() {
     );
 }
 
-export default ViewPermission;
+export default ViewIndividualPermission;

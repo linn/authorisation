@@ -16,7 +16,8 @@
                 .AddTransient<IHandler, JsonResultHandler<PrivilegeResource>>()
                 .AddTransient<IHandler, JsonResultHandler<IEnumerable<PermissionResource>>>()
                 .AddTransient<IHandler, JsonResultHandler<PermissionResource>>()
-                .AddTransient<IHandler, JsonResultHandler<IEnumerable<GroupResource>>>();
+                .AddTransient<IHandler, JsonResultHandler<IEnumerable<GroupResource>>>()
+                .AddTransient<IHandler, JsonResultHandler<GroupResource>>();
         }
     }
 }
