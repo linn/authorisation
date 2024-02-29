@@ -94,9 +94,7 @@ function CreateGroupPermission() {
                 <Button
                     disabled={privilegeInput === '' || groupValue === ''}
                     variant="contained"
-                    onClick={() => {
-                        send();
-                    }}
+                    onClick={send()}
                 >
                     Save
                 </Button>
