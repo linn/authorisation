@@ -4,12 +4,12 @@ import Typography from '@mui/material/Typography';
 import { Loading, Dropdown, InputField } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-//import Snackbar from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
-//import usePost from '../hooks/usePost';
+import usePost from '../hooks/usePost';
 import Page from './Page';
 
 function CreateGroupPermission() {
@@ -19,22 +19,19 @@ function CreateGroupPermission() {
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
         itemTypes.privileges.url
     );
-    // const { data: group, isGetLoading: isGroupLoading } = useInitialise(
-    //     itemTypes.group.url
-    // );
 
-    // const { send, isPostLoading, postResult } = usePost(
-    //     itemTypes.permissions.url,
-    //     null,
-    //     {
-    //         Privilegeid: privilegeInput,
-    //         GranteeUri: `/employees/${employeeInput}`
-    //     },
-    //     true
-    // );
+    const { send, isPostLoading, postResult } = usePost(
+        itemTypes.permissions.url,
+        null,
+        {
+            Privilegeid: privilegeInput,
+            GranteeGroupId: groupValue
+        },
+        true
+    );
 
     const spinningWheel = () => {
-        if (privilegesLoading) {
+        if (privilegesLoading || isPostLoading) {
             return <Loading />;
         }
         return <div />;
@@ -97,19 +94,18 @@ function CreateGroupPermission() {
                 <Button
                     disabled={privilegeInput === '' || groupValue === ''}
                     variant="contained"
-                    // onClick={() => {
-                    //     send();
-                    // }}
+                    onClick={() => {
+                        send();
+                    }}
                 >
                     Save
                 </Button>
             </Grid>
-
-            {/* <Snackbar
-                open={!!postResult?.privilegeId}
+            <Snackbar
+                open={!!postResult?.granteeGroupId}
                 autoHideDuration={5000}
                 message="Save Successful"
-            /> */}
+            />
         </Page>
     );
 }
