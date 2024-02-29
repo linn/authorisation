@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, InputField } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -14,24 +14,26 @@ import Page from './Page';
 
 function CreateGroupPermission() {
     const [privilegeInput, setPrivilegeInput] = useState('');
-    const [groupValue, setGroupValue] = useState('');
+    const [groupInput, setGroupInput] = useState('');
 
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
         itemTypes.privileges.url
     );
+
+    const { data: groups, isGetLoading: isgroupLoading } = useInitialise(itemTypes.groups.url);
 
     const { send, isPostLoading, postResult } = usePost(
         itemTypes.permissions.url,
         null,
         {
             Privilegeid: privilegeInput,
-            GranteeGroupId: groupValue
+            GranteeGroupId: groupInput
         },
         true
     );
 
     const spinningWheel = () => {
-        if (privilegesLoading || isPostLoading) {
+        if (privilegesLoading || isPostLoading || isgroupLoading) {
             return <Loading />;
         }
         return <div />;
@@ -54,8 +56,8 @@ function CreateGroupPermission() {
         setPrivilegeInput(newValue);
     };
 
-    const handleGroupChange = (propertyName, newValue) => {
-        setGroupValue(newValue);
+    const handleGroupDropDownChange = (propertyName, newValue) => {
+        setGroupInput(newValue);
     };
 
     return (
@@ -80,19 +82,22 @@ function CreateGroupPermission() {
                 />
             </Grid>
             <Grid item xs={4}>
-                <InputField
-                    propertyName="groupValue"
-                    label="Choose a Group"
-                    value={groupValue}
-                    onChange={handleGroupChange}
+                <Dropdown
+                    propertyName="Group choice"
+                    items={groups?.map(group => ({
+                        id: group.id,
+                        displayText: group?.name
+                    }))}
                     required
+                    label="Choose a Group"
                     fullWidth
+                    onChange={handleGroupDropDownChange}
+                    value={groupInput}
                 />
             </Grid>
-
             <Grid item xs={6}>
                 <Button
-                    disabled={privilegeInput === '' || groupValue === ''}
+                    disabled={privilegeInput === '' || groupInput === ''}
                     variant="contained"
                     onClick={send}
                 >
