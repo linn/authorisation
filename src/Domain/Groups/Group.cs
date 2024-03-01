@@ -3,7 +3,6 @@ namespace Linn.Authorisation.Domain.Groups
     using System.Collections.Generic;
     using System.Linq;
     using Exceptions;
-    using Linn.Authorisation.Domain.Permissions;
 
     public class Group : Entity
     {

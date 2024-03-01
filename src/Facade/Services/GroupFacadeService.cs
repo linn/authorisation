@@ -6,9 +6,6 @@
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Domain.Permissions;
-    using Linn.Authorisation.Domain.Services;
-    using Linn.Authorisation.Persistence;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
