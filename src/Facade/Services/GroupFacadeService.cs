@@ -14,7 +14,6 @@
     using Linn.Common.Persistence;
 
     public class GroupFacadeService : FacadeResourceService<Group, int, GroupResource, GroupResource>
-
     {
         private readonly IRepository<Group, int> groupRepository;
 
@@ -46,6 +45,7 @@
                 return(result);
             }
             throw new DuplicateGroupNameException("Group name already taken");
+            
         }
 
         protected override void UpdateFromResource(
