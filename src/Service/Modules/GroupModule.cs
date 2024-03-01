@@ -22,7 +22,7 @@
         {
             endpoints.MapGet("/authorisation/groups", this.GetAll);
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
-            endpoints.MapPost("/authorisation/groups", this.CreatePrivilege);
+            endpoints.MapPost("/authorisation/groups", this.CreateGroup);
         }
         private async Task GetAll(
             HttpResponse res,
@@ -37,15 +37,13 @@
             await res.Negotiate(groupService.GetById(id));
         }
 
-        private async Task CreatePrivilege(
+        private async Task CreateGroup(
             HttpResponse res,
             HttpRequest req,
             GroupResource resource,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
             var result = groupService.Add(resource);
-
-            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
 
             await res.Negotiate(result);
         }

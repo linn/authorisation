@@ -19,7 +19,9 @@
 
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            var active = true;
+            var group = new Group(resource.Name,active);
+            return group;
         }
 
         protected override void UpdateFromResource(Group entity, GroupResource updateResource, IEnumerable<string> privileges = null)
