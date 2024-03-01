@@ -13,6 +13,8 @@
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
+    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Service.Extensions;
 
     public class GroupModule : IModule
     {
@@ -20,6 +22,7 @@
         {
             endpoints.MapGet("/authorisation/groups", this.GetAll);
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
+            endpoints.MapPost("/authorisation/groups", this.CreatePrivilege);
         }
         private async Task GetAll(
             HttpResponse res,
@@ -32,6 +35,19 @@
                                     IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService, int id)
         {
             await res.Negotiate(groupService.GetById(id));
+        }
+
+        private async Task CreatePrivilege(
+            HttpResponse res,
+            HttpRequest req,
+            GroupResource resource,
+            IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
+        {
+            var result = groupService.Add(resource);
+
+            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
+
+            await res.Negotiate(result);
         }
     }
 }
