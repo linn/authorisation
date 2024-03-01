@@ -34,7 +34,7 @@
 
         public void Remove(Group group)
         {
-            this.serviceDbContext.Groups.Add(group);
+            this.serviceDbContext.Groups.Remove(group);
         }
 
         public Group FindBy(Expression<Func<Group, bool>> expression)

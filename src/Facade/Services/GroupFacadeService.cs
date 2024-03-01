@@ -6,6 +6,7 @@
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
+    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -23,26 +24,23 @@
             IRepository<Group, int> groupRepository)
             : base(repository, transactionManager, resourceBuilder)
         {
+            this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
         }
 
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> privileges = null)
         {
             var active = true;
-            var group = new Group(resource.Name, resource.Active);
+            var group = new Group(resource.Name, active);
 
             var groups = this.groupRepository.FilterBy(g => g is Group);
 
             if (group.CheckUnique(groups))
             {
-                this.groupRepository.Add(group);
-                this.transactionManager.Commit();
-
-                var result = new Group { Name = resource.Name, Active = resource.Active, };
-                return(result);
+                return (group);
             }
+
             throw new DuplicateGroupNameException("Group name already taken");
-            
         }
 
         protected override void UpdateFromResource(

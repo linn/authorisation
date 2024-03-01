@@ -44,13 +44,7 @@ function CreatePrivilege() {
                         fullWidth
                     />
 
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            send();
-                        }}
-                        disabled={!inputValue}
-                    >
+                    <Button variant="contained" onClick={send} disabled={!inputValue}>
                         Save
                     </Button>
                 </Grid>
