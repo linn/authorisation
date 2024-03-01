@@ -14,6 +14,7 @@ import CreateGroupPermission from './CreateGroupPermission';
 import ViewIndividualPermission from './ViewIndividualPermission';
 import ViewGroups from './ViewGroups';
 import Group from './Group';
+import CreateGroup from './CreateGroup';
 
 function Root() {
     return (
@@ -63,10 +64,11 @@ function Root() {
                                 path="/authorisation/permission/view/individual"
                                 element={<ViewIndividualPermission />}
                             />
+                            <Route exact path="/authorisation/group" element={<ViewGroups />} />
                             <Route
                                 exact
-                                path="/authorisation/permission/view/group"
-                                element={<ViewGroups />}
+                                path="/authorisation/group/create"
+                                element={<CreateGroup />}
                             />
                             <Route exact path="/authorisation/group/:id" element={<Group />} />
                             <Route element={<NotFoundPage />} />

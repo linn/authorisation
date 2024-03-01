@@ -55,6 +55,18 @@ namespace Linn.Authorisation.Domain.Groups
             this.Members.Add(new GroupMember(group, addedBy));
         }
 
+        public bool CheckUnique(IEnumerable<Group> existingGroups)
+        {
+            foreach (var group in existingGroups)
+            {
+                if (group.Name == this.Name)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void RemoveMember(Member member)
         {
             this.Members.Remove(member);

@@ -23,7 +23,7 @@
                 .AddTransient<IBuilder<Permission>, PermissionResourceBuilder>()
                 .AddTransient<IBuilder<Group>, GroupResourceBuilder>()
                 .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
-                .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupService>()
+                .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>();
         }
 
