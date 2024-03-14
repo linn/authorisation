@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Design;
     using System.Linq.Expressions;
 
     using Linn.Authorisation.Domain.Exceptions;
@@ -48,7 +49,18 @@
             GroupResource updateResource,
             IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            var group = new Group(updateResource.Name, updateResource.Active);
+
+            var groups = this.groupRepository.FilterBy(g => g is Group);
+
+            if (group.CheckUpdatedNameIsUnique(groups))
+            {
+                entity.Update(updateResource.Name, updateResource.Active);
+            }
+            else
+            {
+                throw new DuplicateGroupNameException("Group name already taken");
+            }
         }
 
         protected override Expression<Func<Group, bool>> SearchExpression(string searchTerm)

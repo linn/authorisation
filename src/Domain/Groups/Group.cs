@@ -67,6 +67,18 @@ namespace Linn.Authorisation.Domain.Groups
             return true;
         }
 
+        public bool CheckUpdatedNameIsUnique(IEnumerable<Group> existingGroups)
+        {
+            foreach (var group in existingGroups)
+            {
+                if (group.Name == this.Name && group.Id == this.Id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void RemoveMember(Member member)
         {
             this.Members.Remove(member);
@@ -80,6 +92,12 @@ namespace Linn.Authorisation.Domain.Groups
         public bool IsMemberOf(string who)
         {
             return this.MemberUris().Contains(who);
+        }
+
+        public void Update(string name, bool active)
+        {
+            this.Name = name;
+            this.Active = active;
         }
     }
 }
