@@ -19,7 +19,7 @@ function Group() {
     const [group, setGroup] = useState();
 
     const { send, isPutLoading, putResult } = usePut(
-        itemTypes.privileges.url,
+        itemTypes.groups.url,
         id,
         {
             name: group?.name,
@@ -73,6 +73,7 @@ function Group() {
                         onChange={handleActiveChange}
                         inputProps={{ 'aria-label': 'Switch demo' }}
                         defaultchecked={data?.active}
+                        propertyName="OnOffSwitch"
                     />
                     Active
                 </Typography>
