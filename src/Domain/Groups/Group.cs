@@ -13,6 +13,14 @@ namespace Linn.Authorisation.Domain.Groups
             this.Members = new List<Member>();
         }
 
+        public Group(string name, bool active, int id)
+        {
+            this.Name = name;
+            this.Active = active;
+            this.Id = id;
+            this.Members = new List<Member>();
+        }
+
         public Group()
         {
             this.Members = new List<Member>();
@@ -80,6 +88,12 @@ namespace Linn.Authorisation.Domain.Groups
         public bool IsMemberOf(string who)
         {
             return this.MemberUris().Contains(who);
+        }
+
+        public void Update(string name, bool active)
+        {
+            this.Name = name;
+            this.Active = active;
         }
     }
 }

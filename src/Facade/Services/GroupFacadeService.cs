@@ -48,7 +48,16 @@
             GroupResource updateResource,
             IEnumerable<string> privileges = null)
         {
-            throw new NotImplementedException();
+            var groups = this.groupRepository.FilterBy(g => g.Id != entity.Id);
+            
+            entity.Update(updateResource.Name, updateResource.Active);
+
+            if (entity.CheckUnique(groups))
+            {
+                return;
+            }
+            
+            throw new DuplicateGroupNameException("Group name already taken");
         }
 
         protected override Expression<Func<Group, bool>> SearchExpression(string searchTerm)
