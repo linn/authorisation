@@ -63,7 +63,7 @@ function ViewGroups() {
                     <List>{groups.map(renderPrivilege)}</List>
                 </Grid>
                 <Grid item xs={6}>
-                    <ListItem component={Link} to="/authorisation/group/create">
+                    <ListItem component={Link} to="/authorisation/groups/create">
                         <Typography color="primary">Create a Group</Typography>
                     </ListItem>
                 </Grid>

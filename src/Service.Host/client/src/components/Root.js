@@ -64,13 +64,13 @@ function Root() {
                                 path="/authorisation/permission/view/individual"
                                 element={<ViewIndividualPermission />}
                             />
-                            <Route exact path="/authorisation/group" element={<ViewGroups />} />
+                            <Route exact path="/authorisation/groups" element={<ViewGroups />} />
                             <Route
                                 exact
-                                path="/authorisation/group/create"
+                                path="/authorisation/groups/create"
                                 element={<CreateGroup />}
                             />
-                            <Route exact path="/authorisation/group/:id" element={<Group />} />
+                            <Route exact path="/authorisation/groups/:id" element={<Group />} />
                             <Route element={<NotFoundPage />} />
                         </Routes>
                     </HistoryRouter>

@@ -13,6 +13,14 @@ namespace Linn.Authorisation.Domain.Groups
             this.Members = new List<Member>();
         }
 
+        public Group(string name, bool active, int id)
+        {
+            this.Name = name;
+            this.Active = active;
+            this.Id = id;
+            this.Members = new List<Member>();
+        }
+
         public Group()
         {
             this.Members = new List<Member>();

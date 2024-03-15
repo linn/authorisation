@@ -13,8 +13,6 @@
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
-    using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Service.Extensions;
 
     public class GroupModule : IModule
     {
