@@ -33,8 +33,6 @@ function CreateIndividualPermission() {
         true
     );
 
-    console.log(postResult);
-
     const spinningWheel = () => {
         if (privilegesLoading || isEmployeesLoading || isPostLoading) {
             return <Loading />;
