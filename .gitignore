@@ -70,3 +70,5 @@ src/Service.Host/client/build/
 config.env
 local-update.sh
 *StyleCop.Cache
+
+src/Service.Host/Service.Host.sln
