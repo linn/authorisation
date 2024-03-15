@@ -1,10 +1,8 @@
 namespace Linn.Authorisation.Service.Modules
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
     using Linn.Common.Facade;
