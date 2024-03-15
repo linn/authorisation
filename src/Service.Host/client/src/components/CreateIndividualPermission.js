@@ -67,11 +67,6 @@ function CreateIndividualPermission() {
                 {spinningWheel()}
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
-            {errorMessage && (
-                <Grid item xs={12}>
-                    <ErrorCard errorMessage={errorMessage} />
-                </Grid>
-            )}
 
             <Grid item xs={4}>
                 <Dropdown
@@ -113,6 +108,12 @@ function CreateIndividualPermission() {
                     Save
                 </Button>
             </Grid>
+
+            {errorMessage && (
+                <Grid item xs={12}>
+                    <ErrorCard errorMessage={errorMessage} />
+                </Grid>
+            )}
 
             <Snackbar
                 open={!!postResult?.privilegeId}

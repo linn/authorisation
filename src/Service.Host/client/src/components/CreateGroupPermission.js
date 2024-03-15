@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -22,7 +22,7 @@ function CreateGroupPermission() {
 
     const { data: groups, isGetLoading: isgroupLoading } = useInitialise(itemTypes.groups.url);
 
-    const { send, isPostLoading, postResult } = usePost(
+    const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.permissions.url,
         null,
         {
@@ -103,6 +103,12 @@ function CreateGroupPermission() {
                 >
                     Save
                 </Button>
+
+                {errorMessage && (
+                    <Grid item xs={12}>
+                        <ErrorCard errorMessage={errorMessage} />
+                    </Grid>
+                )}
             </Grid>
             <Snackbar
                 open={!!postResult?.granteeGroupId}

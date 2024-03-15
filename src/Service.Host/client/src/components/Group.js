@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Loading, InputField, OnOffSwitch } from '@linn-it/linn-form-components-library';
+import { Loading, InputField, OnOffSwitch, ErrorCard } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
@@ -18,7 +18,7 @@ function Group() {
     const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
     const [group, setGroup] = useState();
 
-    const { send, isPutLoading, putResult } = usePut(
+    const { send, isPutLoading, errorMessage, putResult } = usePut(
         itemTypes.privileges.url,
         id,
         {
@@ -83,6 +83,11 @@ function Group() {
                 >
                     Save
                 </Button>
+                {errorMessage && (
+                    <Grid item xs={12}>
+                        <ErrorCard errorMessage={errorMessage} />
+                    </Grid>
+                )}
 
                 <Snackbar
                     open={!!putResult?.id}
