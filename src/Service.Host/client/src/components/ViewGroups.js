@@ -30,7 +30,7 @@ function ViewGroups() {
     };
 
     const renderPrivilege = group => (
-        <ListItem component={Link} to={`/authorisation/group/${group.id}`}>
+        <ListItem component={Link} to={`/authorisation/groups/${group.id}`}>
             <Typography color="primary">
                 {group?.active ? `${group.name} - ACTIVE` : `${group.name} - INACTIVE`}
             </Typography>

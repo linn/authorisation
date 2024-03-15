@@ -5,15 +5,25 @@ namespace Linn.Authorisation.Facade.Services
     using System.Linq.Expressions;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Exceptions;
+    using Linn.Authorisation.Persistence;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
     public class PrivilegeFacadeService : FacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>
     {
-        public PrivilegeFacadeService(IRepository<Privilege, int> repository, ITransactionManager transactionManager, IBuilder<Privilege> resourceBuilder) 
-            : base(repository, transactionManager, resourceBuilder)
+        private readonly IRepository<Privilege, int> privilegeRepository;
+
+        private readonly ITransactionManager transactionManager;
+        public PrivilegeFacadeService(
+                IRepository<Privilege, int> repository,
+                ITransactionManager transactionManager,
+                IBuilder<Privilege> resourceBuilder)
+                : base(repository, transactionManager, resourceBuilder)
         {
+            this.transactionManager = transactionManager;
+            this.privilegeRepository = repository;
         }
         
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> privileges = null)
@@ -24,7 +34,15 @@ namespace Linn.Authorisation.Facade.Services
         
         protected override void UpdateFromResource(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
         {
+            var privilegeList = this.privilegeRepository.FilterBy(g => g.Id != entity.Id);
+
             entity.Update(updateResource.Name, updateResource.Active);
+
+            if (entity.CheckUnique(privilegeList))
+            {
+                return;
+            }
+            throw new DuplicatePrivilegeNameException("Privilege name already taken");
         }
         
         protected override Expression<Func<Privilege, bool>> SearchExpression(string searchTerm)
