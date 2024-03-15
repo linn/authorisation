@@ -79,7 +79,9 @@ function Page({
             !auth.isLoading &&
             !hasTriedSignin
         ) {
+            console.log('trying to sign in again');
             auth.signinRedirect();
+            sessionStorage.setItem('auth:redirect', window.location.pathname);
             setHasTriedSignin(true);
         }
     }, [auth, hasTriedSignin]);

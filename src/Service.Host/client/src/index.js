@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { SnackbarProvider } from 'notistack';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -17,14 +17,14 @@ const root = createRoot(container);
 const host = window.location.origin;
 
 const oidcConfig = {
-    authority: config.authorityUri,
+    authority: `${config.authorityUri}`,
     client_id: 'app2',
     response_type: 'code',
     scope: 'openid profile email associations',
-    redirect_uri: `${host}/authorisation`,
+    redirect_uri: `${host}/authorisation/redirect`,
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
-        window.location = `${host}/authorisation`;
+        //window.location = `${host}/authorisation`;
     },
     userStore: new WebStorageStateStore({ store: window.localStorage })
 };
