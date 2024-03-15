@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,7 +23,7 @@ function CreateIndividualPermission() {
         itemTypes.employees.url
     );
 
-    const { send, isPostLoading, postResult } = usePost(
+    const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.permissions.url,
         null,
         {
@@ -32,6 +32,8 @@ function CreateIndividualPermission() {
         },
         true
     );
+
+    console.log(postResult);
 
     const spinningWheel = () => {
         if (privilegesLoading || isEmployeesLoading || isPostLoading) {
@@ -67,6 +69,11 @@ function CreateIndividualPermission() {
                 {spinningWheel()}
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
+            {errorMessage && (
+                <Grid item xs={12}>
+                    <ErrorCard errorMessage={errorMessage} />
+                </Grid>
+            )}
 
             <Grid item xs={4}>
                 <Dropdown

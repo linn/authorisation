@@ -3,7 +3,7 @@ import { useAuth } from 'react-oidc-context';
 
 function usePut(url, id, data, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
-    const [serverError, setServerError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const [putResult, setPutResult] = useState(null);
 
@@ -14,11 +14,10 @@ function usePut(url, id, data, requiresAuth = false) {
         token = auth.user?.access_token;
     }
 
-    const send = () => {
+    const send = async () => {
         setIsLoading(true);
-
         setPutResult(null);
-        setServerError(null);
+        setErrorMessage(null);
 
         const headers = {
             accept: 'application/json',
@@ -29,25 +28,20 @@ function usePut(url, id, data, requiresAuth = false) {
             body: JSON.stringify(data),
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
-        fetch(id ? `${url}/${id}` : url, requestParameters)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(json => {
-                setPutResult(json);
 
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setServerError(error);
-                setIsLoading(false);
-            });
+        const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
+
+        if (response.ok) {
+            setPutResult(await response.json());
+            setIsLoading(false);
+        } else {
+            const text = await response.text();
+            setErrorMessage(text);
+            setIsLoading(false);
+        }
     };
 
-    return { send, isLoading, serverError, putResult };
+    return { send, isLoading, errorMessage, putResult };
 }
 
 export default usePut;
