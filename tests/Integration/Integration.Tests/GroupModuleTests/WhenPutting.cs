@@ -6,6 +6,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
 
@@ -22,11 +23,11 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.updatedResource = new GroupResource { Name = "new.name", Active = false, Id = 12} ;
+            this.updatedResource = new GroupResource { Name = "new.Group.Test.Name", Active = false, Id = 30} ;
 
-            this.current = new Group { Id = 12, Name = "old.name", Active = true };
+            this.current = new Group { Id = 30, Name = "old.Group.Test.Name", Active = true };
             this.GroupRepository.FindById(this.current.Id).Returns(this.current);
-            this.Response = this.Client.PutAsJsonAsync("/authorisation/groups/12", this.updatedResource).Result;
+            this.Response = this.Client.PutAsJsonAsync("/authorisation/groups/30", this.updatedResource).Result;
         }
 
         [Test]
