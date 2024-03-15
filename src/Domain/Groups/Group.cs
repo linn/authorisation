@@ -67,18 +67,6 @@ namespace Linn.Authorisation.Domain.Groups
             return true;
         }
 
-        public bool CheckUpdatedNameIsUnique(IEnumerable<Group> existingGroups)
-        {
-            foreach (var group in existingGroups)
-            {
-                if (group.Name == this.Name)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         public void RemoveMember(Member member)
         {
             this.Members.Remove(member);

@@ -11,8 +11,6 @@
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
-    using Microsoft.EntityFrameworkCore.ChangeTracking;
-
     public class GroupFacadeService : FacadeResourceService<Group, int, GroupResource, GroupResource>
     {
         private readonly IRepository<Group, int> groupRepository;
@@ -54,7 +52,7 @@
             
             entity.Update(updateResource.Name, updateResource.Active);
 
-            if (entity.CheckUpdatedNameIsUnique(groups))
+            if (entity.CheckUnique(groups))
             {
                 return;
             }
