@@ -29,6 +29,8 @@ const oidcConfig = {
         if (redirect) {
             history.push(redirect);
             sessionStorage.removeItem('auth:redirect');
+        } else {
+            history.push(`${host}/authorisation`);
         }
     },
     userStore: new WebStorageStateStore({ store: window.localStorage })
