@@ -5,13 +5,11 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 
     using FluentAssertions;
 
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
 
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenPutting : ContextBase

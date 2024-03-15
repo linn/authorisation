@@ -2,7 +2,6 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Net.Http;
 
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
@@ -14,9 +13,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
     using Linn.Common.Persistence;
 
     using Microsoft.Extensions.DependencyInjection;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class ContextBase
@@ -38,7 +35,6 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         {
             this.TransactionManager = Substitute.For<ITransactionManager>();
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
-
 
             this.FacadeService = new GroupFacadeService(
                 this.GroupRepository,
