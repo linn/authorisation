@@ -16,12 +16,12 @@
         {
             app.MapGet("/", this.Redirect);
             app.MapGet("/authorisation", this.GetApp);
-            app.MapGet("/authorisation/redirect", this.Redirect);
         }
 
-        private async Task Redirect(HttpRequest req, HttpResponse res)
+        private Task Redirect(HttpRequest req, HttpResponse res)
         {
-            await res.Negotiate(new ViewResponse { ViewName = "Index.cshtml" });
+            res.Redirect("/authorisation");
+            return Task.CompletedTask;
         }
 
         private async Task GetApp(HttpRequest req, HttpResponse res)
@@ -30,3 +30,4 @@
         }
     }
 }
+

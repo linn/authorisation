@@ -15,7 +15,6 @@ import ViewIndividualPermission from './ViewIndividualPermission';
 import ViewGroups from './ViewGroups';
 import Group from './Group';
 import CreateGroup from './CreateGroup';
-import AuthRedirect from './AuthRedirect';
 
 function Root() {
     return (
@@ -30,7 +29,6 @@ function Root() {
                                 element={<Navigate to="/authorisation" replace />}
                             />
                             <Route path="/authorisation" element={<App />} />
-                            <Route path="/authorisation/redirect" element={<AuthRedirect />} />
 
                             <Route
                                 exact
@@ -74,6 +72,7 @@ function Root() {
                                 element={<CreateGroup />}
                             />
                             <Route exact path="/authorisation/group/:id" element={<Group />} />
+
                             <Route element={<NotFoundPage />} />
                         </Routes>
                     </HistoryRouter>
