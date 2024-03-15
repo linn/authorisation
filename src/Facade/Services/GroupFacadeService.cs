@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Design;
     using System.Linq.Expressions;
 
     using Linn.Authorisation.Domain.Exceptions;
@@ -11,6 +10,8 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
+
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
 
     public class GroupFacadeService : FacadeResourceService<Group, int, GroupResource, GroupResource>
     {
@@ -49,18 +50,16 @@
             GroupResource updateResource,
             IEnumerable<string> privileges = null)
         {
-            var group = new Group(updateResource.Name, updateResource.Active);
+            var groups = this.groupRepository.FilterBy(g => g.Id != entity.Id);
+            
+            entity.Update(updateResource.Name, updateResource.Active);
 
-            var groups = this.groupRepository.FilterBy(g => g is Group);
-
-            if (group.CheckUpdatedNameIsUnique(groups))
+            if (entity.CheckUpdatedNameIsUnique(groups))
             {
-                entity.Update(updateResource.Name, updateResource.Active);
+                return;
             }
-            else
-            {
-                throw new DuplicateGroupNameException("Group name already taken");
-            }
+            
+            throw new DuplicateGroupNameException("Group name already taken");
         }
 
         protected override Expression<Func<Group, bool>> SearchExpression(string searchTerm)

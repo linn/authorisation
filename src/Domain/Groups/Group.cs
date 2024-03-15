@@ -71,7 +71,7 @@ namespace Linn.Authorisation.Domain.Groups
         {
             foreach (var group in existingGroups)
             {
-                if (group.Name == this.Name && group.Id == this.Id)
+                if (group.Name == this.Name)
                 {
                     return false;
                 }
