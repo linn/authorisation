@@ -75,29 +75,32 @@ namespace Linn.Authorisation.Facade.Services
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
-            var group = this.groupRepository.FindById((int)permissionResource.GranteeGroupId);
-
-            var permission = new GroupPermission(
-                group, privilege, permissionResource.GrantedByUri);
-
-            var permissions = this.permissionsRepository.FilterBy(p => p is GroupPermission);
-
-            var groupPermissions = permissions.Select(p => (GroupPermission)p);
-
-            if (permission.CheckUnique(groupPermissions))
+            if (permissionResource.GranteeGroupId != null)
             {
-                this.permissionsRepository.Add(permission);
-                this.transactionManager.Commit();
+                var group = this.groupRepository.FindById((int)permissionResource.GranteeGroupId);
 
-                var result = new PermissionResource
+                var permission = new GroupPermission(
+                    group, privilege, permissionResource.GrantedByUri);
+
+                var permissions = this.permissionsRepository.FilterBy(p => p is GroupPermission);
+
+                var groupPermissions = permissions.Select(p => (GroupPermission)p);
+
+                if (permission.CheckUnique(groupPermissions))
                 {
-                    DateGranted = permission.DateGranted.ToString("o"),
-                    GrantedByUri = employeeUri,
-                    PrivilegeId = permission.Privilege.Id,
-                    GranteeGroupId = permission.GranteeGroup.Id,
-                    GroupName = permission.GranteeGroup.Name,
-                };
-                return new CreatedResult<PermissionResource>(result);
+                    this.permissionsRepository.Add(permission);
+                    this.transactionManager.Commit();
+
+                    var result = new PermissionResource
+                                     {
+                                         DateGranted = permission.DateGranted.ToString("o"),
+                                         GrantedByUri = employeeUri,
+                                         PrivilegeId = permission.Privilege.Id,
+                                         GranteeGroupId = permission.GranteeGroup.Id,
+                                         GroupName = permission.GranteeGroup.Name,
+                                     };
+                    return new CreatedResult<PermissionResource>(result);
+                }
             }
 
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");

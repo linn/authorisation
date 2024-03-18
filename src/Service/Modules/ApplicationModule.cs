@@ -2,9 +2,9 @@
 {
     using System.Threading.Tasks;
 
+    using Linn.Authorisation.Service.Models;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
-    using Linn.Authorisation.Service.Models;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
@@ -16,8 +16,6 @@
         {
             app.MapGet("/", this.Redirect);
             app.MapGet("/authorisation", this.GetApp);
-            app.MapGet("/authorisation/signin-oidc-client", this.GetApp);
-            app.MapGet("/authorisation/signin-oidc-silent", this.GetSilentRenew);
         }
 
         private Task Redirect(HttpRequest req, HttpResponse res)
@@ -30,10 +28,6 @@
         {
             await res.Negotiate(new ViewResponse { ViewName = "Index.cshtml" });
         }
-
-        private async Task GetSilentRenew(HttpRequest req, HttpResponse res)
-        {
-            await res.Negotiate(new ViewResponse { ViewName = "SilentRenew.html" });
-        }
     }
 }
+

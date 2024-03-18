@@ -23,4 +23,3 @@ namespace Linn.Authorisation.Domain.Permissions
         public string GrantedByUri { get; set; }
     }
 }
-    

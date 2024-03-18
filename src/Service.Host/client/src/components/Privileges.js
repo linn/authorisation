@@ -14,7 +14,7 @@ import Page from './Page';
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
 
-    const { data, isLoading } = useInitialise(itemTypes.privileges.url);
+    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
 
     useEffect(() => {
         if (data) {
@@ -23,7 +23,7 @@ function Privileges() {
     }, [data]);
 
     const spinningWheel = () => {
-        if (isLoading) {
+        if (isGetLoading) {
             return <Loading />;
         }
         return <div />;

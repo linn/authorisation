@@ -19,6 +19,7 @@
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
         }
+
         public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
         {
             return this.permissionRepository.FilterBy(

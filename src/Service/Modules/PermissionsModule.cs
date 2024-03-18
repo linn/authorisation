@@ -5,7 +5,6 @@ namespace Linn.Authorisation.Service.Modules
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
-    using Linn.Common.Facade;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
 

@@ -10,6 +10,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import Root from './components/Root';
 import 'typeface-roboto';
 import config from './config';
+import history from './history';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -17,14 +18,20 @@ const root = createRoot(container);
 const host = window.location.origin;
 
 const oidcConfig = {
-    authority: config.authorityUri,
+    authority: `${config.authorityUri}`,
     client_id: 'app2',
     response_type: 'code',
     scope: 'openid profile email associations',
     redirect_uri: `${host}/authorisation`,
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
-        window.location = `${host}/authorisation`;
+        const redirect = sessionStorage.getItem('auth:redirect');
+        if (redirect) {
+            history.push(redirect);
+            sessionStorage.removeItem('auth:redirect');
+        } else {
+            history.push(`${host}/authorisation`);
+        }
     },
     userStore: new WebStorageStateStore({ store: window.localStorage })
 };

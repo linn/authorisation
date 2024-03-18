@@ -1,18 +1,16 @@
 ﻿namespace Linn.Authorisation.Service.Modules
 {
-    using Linn.Authorisation.Resources;
-    using Linn.Common.Facade;
-    using Linn.Common.Service.Core;
-
-    using Microsoft.AspNetCore.Routing;
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Facade.Services;
+    using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
+    using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
 
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Routing;
 
     public class GroupModule : IModule
     {
@@ -23,6 +21,7 @@
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
         }
+
         private async Task GetAll(
             HttpResponse res,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
@@ -30,8 +29,10 @@
             await res.Negotiate(groupService.GetAll());
         }
 
-        private async Task GetGroup(HttpResponse res,
-                                    IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService, int id)
+        private async Task GetGroup(
+            HttpResponse res,
+            IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService,
+            int id)
         {
             await res.Negotiate(groupService.GetById(id));
         }

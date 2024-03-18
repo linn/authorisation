@@ -6,7 +6,6 @@ namespace Linn.Authorisation.Facade.Services
 
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
-    using Linn.Authorisation.Persistence;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -14,14 +13,13 @@ namespace Linn.Authorisation.Facade.Services
     public class PrivilegeFacadeService : FacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>
     {
         private readonly IRepository<Privilege, int> privilegeRepository;
-        private readonly ITransactionManager transactionManager;
+
         public PrivilegeFacadeService(
-                IRepository<Privilege, int> repository,
-                ITransactionManager transactionManager,
+            IRepository<Privilege, int> repository,
+            ITransactionManager transactionManager,
                 IBuilder<Privilege> resourceBuilder)
                 : base(repository, transactionManager, resourceBuilder)
         {
-            this.transactionManager = transactionManager;
             this.privilegeRepository = repository;
         }
         
