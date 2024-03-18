@@ -3,7 +3,7 @@ import { useAuth } from 'react-oidc-context';
 
 function useGet(url, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
-    const [serverError, setServerError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [result, setResult] = useState(null);
 
     let token = '';
@@ -13,10 +13,10 @@ function useGet(url, requiresAuth = false) {
         token = auth.user?.access_token;
     }
 
-    const send = (id, queryString) => {
+    const send = async (id, queryString) => {
         setIsLoading(true);
         setResult(null);
-        setServerError(null);
+        setErrorMessage(null);
 
         const headers = {
             accept: 'application/json'
@@ -25,24 +25,22 @@ function useGet(url, requiresAuth = false) {
             method: 'GET',
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
-        fetch(id ? `${url}/${id}${queryString}}` : `${url}${queryString}`, requestParameters)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(json => {
-                setResult(json);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setServerError(error);
-                setIsLoading(false);
-            });
+
+        const response = await fetch(
+            id ? `${url}/${id}${queryString}}` : `${url}${queryString}`,
+            requestParameters
+        );
+        if (response.ok) {
+            setResult(await response.json());
+            setIsLoading(false);
+        } else {
+            const text = await response.text();
+            setErrorMessage(text);
+            setIsLoading(false);
+        }
     };
 
-    return { send, isLoading, serverError, result };
+    return { send, isLoading, errorMessage, result };
 }
 
 export default useGet;
