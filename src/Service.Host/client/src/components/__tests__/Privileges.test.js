@@ -51,7 +51,7 @@ describe('When Privileges ', () => {
 
 describe('When loading ', () => {
     beforeEach(() => {
-        useInitialise.mockImplementation(() => ({ isLoading: true }));
+        useInitialise.mockImplementation(() => ({ isGetLoading: true }));
     });
 
     test('renders loading spinner', () => {
