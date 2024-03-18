@@ -23,7 +23,8 @@ namespace Linn.Authorisation.Service.Modules
             endpoints.MapPut("/authorisation/privileges/{id:int}", this.UpdatePrivilege);
         }
 
-        private async Task GetPrivilege(HttpResponse res,
+        private async Task GetPrivilege(
+            HttpResponse res,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service,
             int id)
         {
