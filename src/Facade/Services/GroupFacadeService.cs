@@ -6,7 +6,6 @@
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -15,7 +14,6 @@
     {
         private readonly IRepository<Group, int> groupRepository;
 
-        private readonly ITransactionManager transactionManager;
 
         public GroupFacadeService(
             IRepository<Group, int> repository,
@@ -24,7 +22,6 @@
             IRepository<Group, int> groupRepository)
             : base(repository, transactionManager, resourceBuilder)
         {
-            this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
         }
 

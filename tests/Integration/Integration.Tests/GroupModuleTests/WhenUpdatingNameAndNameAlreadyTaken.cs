@@ -48,6 +48,5 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         {
             this.TransactionManager.DidNotReceive().Commit();
         }
-
     }
 }

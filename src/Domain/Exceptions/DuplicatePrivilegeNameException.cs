@@ -1,8 +1,9 @@
-﻿using Linn.Common.Domain.Exceptions;
-using System;
-
-namespace Linn.Authorisation.Domain.Exceptions
+﻿namespace Linn.Authorisation.Domain.Exceptions
 {
+    using System;
+
+    using Linn.Common.Domain.Exceptions;
+
     public class DuplicatePrivilegeNameException : DomainException
     {
         public DuplicatePrivilegeNameException(string message)
