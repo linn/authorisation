@@ -6,12 +6,30 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+
     public class GroupResourceBuilder : IBuilder<Group>
 
     {
         public object Build(Group model, IEnumerable<string> claims)
         {
-            return new GroupResource { Active = model.Active, Name = model.Name, Id = model.Id };
+            var members = model.Members;
+            var membersResources = new List<MemberResource>();
+
+            foreach (var member in members)
+            {
+                membersResources.Add((MemberResource)member.MemberUris());
+            }
+
+
+            return new GroupResource { 
+                                             Active = model.Active,
+                                            Name = model.Name,
+                                            Id = model.Id,
+                                            Members = (IEnumerable<MemberResource>)model.Members
+
+                                     };
+
         }
 
         public string GetLocation(Group model)

@@ -20,7 +20,6 @@
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("/authorisation/groups", this.GetAll);
-           // endpoints.MapGet("/authorisation/group/{id:int}", this.FindGroup);
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
@@ -37,15 +36,6 @@
         {
             await res.Negotiate(groupService.GetById(id));
         }
-
-/*        private async Task FindGroup(
-            HttpResponse res,
-            GroupRepository groupRepository,
-            int id,
-            IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
-        {
-            await res.Negotiate(groupRepository.FindById(id));
-        }*/
 
         private async Task CreateGroup(
             HttpResponse res,
