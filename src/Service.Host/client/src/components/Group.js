@@ -5,6 +5,7 @@ import { Loading, InputField, OnOffSwitch } from '@linn-it/linn-form-components-
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import history from '../history';
@@ -14,7 +15,6 @@ import Page from './Page';
 
 function Group() {
     const { id } = useParams();
-
     const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
     const [group, setGroup] = useState();
 
@@ -50,6 +50,8 @@ function Group() {
         setGroup({ ...group, name: newValue });
     };
 
+    const renderGroup = groupData => console.log(groupData);
+
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
@@ -58,6 +60,7 @@ function Group() {
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Group</Typography>
             </Grid>
+            {console.log(data)}
             <Grid item xs={6}>
                 <InputField
                     propertyName="inputValue"
@@ -84,12 +87,15 @@ function Group() {
                 >
                     Save
                 </Button>
-
                 <Snackbar
                     open={!!putResult?.id}
                     autoHideDuration={5000}
                     message="Save Successful"
                 />
+
+                <Grid item xs={12}>
+                    <List>{data?.map(renderGroup)}</List>
+                </Grid>
             </Grid>
         </Page>
     );
