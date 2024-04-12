@@ -10,6 +10,7 @@
     public class GroupResourceBuilder : IBuilder<Group>
 
     {
+        private readonly MemberResourceBuilder memberResourceBuilder = new MemberResourceBuilder();
         public object Build(Group model, IEnumerable<string> claims)
         {
             var members = model.Members;
@@ -17,7 +18,7 @@
 
             foreach (var member in members)
             {
-                membersResources.Add(member);
+                //something
             }
 
 
