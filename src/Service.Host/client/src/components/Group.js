@@ -99,6 +99,8 @@ function Group() {
                 />
 
                 <Grid item xs={12}>
+                    <Typography variant="h5">Group Members</Typography>
+
                     <List>{group?.members?.map(renderMembers)}</List>
                 </Grid>
             </Grid>
