@@ -53,9 +53,7 @@ function Group() {
 
     const renderMembers = member => (
         <ListItem>
-            <Typography color="primary">
-                {member?.active ? `${member.name} - ACTIVE` : `${member.name} - INACTIVE`}
-            </Typography>
+            <Typography color="primary">{member.memberUri}</Typography>
         </ListItem>
     );
 
@@ -67,7 +65,7 @@ function Group() {
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Group</Typography>
             </Grid>
-            {console.log(data)}
+            {console.log(group)}
             <Grid item xs={6}>
                 <InputField
                     propertyName="inputValue"
@@ -101,7 +99,7 @@ function Group() {
                 />
 
                 <Grid item xs={12}>
-                    <List>{data.map(renderMembers)}</List>
+                    <List>{group?.members?.map(renderMembers)}</List>
                 </Grid>
             </Grid>
         </Page>
