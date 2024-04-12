@@ -12,14 +12,15 @@
 
     {
         private readonly MemberResourceBuilder memberResourceBuilder = new MemberResourceBuilder();
+
         public object Build(Group model, IEnumerable<string> claims)
         {
             var members = model.Members;
             var membersResources = new List<MemberResource>();
 
-            foreach (var member in members)
+            foreach (Member member in members)
             {
-                membersResources.Add(this.memberResourceBuilder.Build(member , claims));
+                membersResources.Add((MemberResource)this.memberResourceBuilder.Build(member , claims));
             }
 
 
@@ -27,8 +28,7 @@
                                              Active = model.Active,
                                             Name = model.Name,
                                             Id = model.Id,
-                                            //Members = ,
-
+                                            Members = membersResources
                                      };
 
         }

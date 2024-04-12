@@ -7,19 +7,27 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
-    public class MemberResourceBuilder : IBuilder<MemberResource>
+    using Org.BouncyCastle.Crypto.Modes.Gcm;
+
+    public class MemberResourceBuilder : IBuilder<Member>
     {
 
-        public object Build(MemberResource model, IEnumerable<string> claims)
+        public object Build(Member model, IEnumerable<string> claims)
         {
-            return new MemberResource { MemberUri = model.MemberUri };
+            if (model is IndividualMember)
+            {
+                return new MemberResource { MemberUri = ((IndividualMember)model).MemberUri };
+            }
+            //return new MemberResource {Group = ((GroupMember)model).Group }
+
+            return new MemberResource{};
         }
 
-        public string GetLocation(MemberResource model)
+        public string GetLocation(Member model)
         {
             throw new System.NotImplementedException();
         }
-        object IBuilder<MemberResource>.Build(MemberResource model, IEnumerable<string> claims) => this.Build(model, claims);
+        object IBuilder<Member>.Build(Member model, IEnumerable<string> claims) => this.Build(model, claims);
 
     }
 }

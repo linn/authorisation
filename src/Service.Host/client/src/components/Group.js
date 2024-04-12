@@ -59,19 +59,6 @@ function Group() {
         </ListItem>
     );
 
-    data.member.sort((a, b) => {
-        const fa = a.name.toLowerCase();
-        const fb = b.name.toLowerCase();
-
-        if (fa < fb) {
-            return -1;
-        }
-        if (fa > fb) {
-            return 1;
-        }
-        return 0;
-    });
-
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
