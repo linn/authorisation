@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using Linn.Authorisation.Domain.Groups;
+    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
@@ -18,7 +19,7 @@
 
             foreach (var member in members)
             {
-                //something
+                membersResources.Add(this.memberResourceBuilder.Build(member , claims));
             }
 
 
@@ -26,7 +27,7 @@
                                              Active = model.Active,
                                             Name = model.Name,
                                             Id = model.Id,
-                                            Members = membersResources,
+                                            //Members = ,
 
                                      };
 

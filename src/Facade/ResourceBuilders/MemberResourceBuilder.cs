@@ -7,19 +7,19 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
-    public class MemberResourceBuilder : IBuilder<IndividualMember>
+    public class MemberResourceBuilder : IBuilder<MemberResource>
     {
 
-        public object Build(IndividualMember model, IEnumerable<string> claims)
+        public object Build(MemberResource model, IEnumerable<string> claims)
         {
             return new MemberResource { MemberUri = model.MemberUri };
         }
 
-        public string GetLocation(IndividualMember model)
+        public string GetLocation(MemberResource model)
         {
             throw new System.NotImplementedException();
         }
-        object IBuilder<IndividualMember>.Build(IndividualMember model, IEnumerable<string> claims) => this.Build(model, claims);
+        object IBuilder<MemberResource>.Build(MemberResource model, IEnumerable<string> claims) => this.Build(model, claims);
 
     }
 }
