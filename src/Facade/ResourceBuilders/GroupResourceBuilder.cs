@@ -6,7 +6,6 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
-    using Microsoft.EntityFrameworkCore.ChangeTracking;
 
     public class GroupResourceBuilder : IBuilder<Group>
 
@@ -18,7 +17,7 @@
 
             foreach (var member in members)
             {
-                membersResources.Add((MemberResource)member.MemberUris());
+                membersResources.Add(member);
             }
 
 
@@ -26,7 +25,7 @@
                                              Active = model.Active,
                                             Name = model.Name,
                                             Id = model.Id,
-                                            Members = (IEnumerable<MemberResource>)model.Members
+                                            Members = membersResources,
 
                                      };
 

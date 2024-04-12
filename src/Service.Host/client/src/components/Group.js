@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import history from '../history';
@@ -50,7 +51,26 @@ function Group() {
         setGroup({ ...group, name: newValue });
     };
 
-    const renderGroup = groupData => console.log(groupData);
+    const renderMembers = member => (
+        <ListItem>
+            <Typography color="primary">
+                {member?.active ? `${member.name} - ACTIVE` : `${member.name} - INACTIVE`}
+            </Typography>
+        </ListItem>
+    );
+
+    data.member.sort((a, b) => {
+        const fa = a.name.toLowerCase();
+        const fb = b.name.toLowerCase();
+
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -94,7 +114,7 @@ function Group() {
                 />
 
                 <Grid item xs={12}>
-                    <List>{data?.map(renderGroup)}</List>
+                    <List>{data.map(renderMembers)}</List>
                 </Grid>
             </Grid>
         </Page>
