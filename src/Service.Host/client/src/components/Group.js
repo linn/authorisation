@@ -17,7 +17,11 @@ import Page from './Page';
 function Group() {
     const { id } = useParams();
     const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
+    const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
+        itemTypes.employees.url
+    );
     const [group, setGroup] = useState();
+    const [memberNames, setMemberNames] = useState();
 
     const { send, isPutLoading, putResult } = usePut(
         itemTypes.groups.url,
@@ -37,7 +41,7 @@ function Group() {
     }, [data]);
 
     const spinningWheel = () => {
-        if (isGetLoading || isPutLoading) {
+        if (isGetLoading || isPutLoading || isEmployeesLoading) {
             return <Loading />;
         }
         return <div />;
@@ -51,9 +55,18 @@ function Group() {
         setGroup({ ...group, name: newValue });
     };
 
-    const renderMembers = member => (
+    const getMembers = member => {
+        employees?.items?.forEach(e => {
+            if (member.memberUri === e.href) {
+                console.log(`${e?.firstName} ${e?.lastName}`);
+                setMemberNames({ fullname: `${e?.firstName} ${e?.lastName}` }, ...memberNames);
+            }
+        });
+    };
+
+    const displayMembers = member => (
         <ListItem>
-            <Typography color="primary">{member.memberUri}</Typography>
+            <Typography color="primary">member?.fullname</Typography>
         </ListItem>
     );
 
@@ -65,7 +78,6 @@ function Group() {
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Group</Typography>
             </Grid>
-            {console.log(group)}
             <Grid item xs={6}>
                 <InputField
                     propertyName="inputValue"
@@ -101,7 +113,9 @@ function Group() {
                 <Grid item xs={12}>
                     <Typography variant="h5">Group Members</Typography>
 
-                    <List>{group?.members?.map(renderMembers)}</List>
+                    <List>{group?.members?.map(getMembers)}</List>
+                    {console.log(memberNames)}
+                    <List>{memberNames?.map(displayMembers)}</List>
                 </Grid>
             </Grid>
         </Page>
