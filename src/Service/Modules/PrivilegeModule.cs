@@ -1,10 +1,8 @@
 namespace Linn.Authorisation.Service.Modules
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
     using Linn.Common.Facade;
@@ -25,7 +23,8 @@ namespace Linn.Authorisation.Service.Modules
             endpoints.MapPut("/authorisation/privileges/{id:int}", this.UpdatePrivilege);
         }
 
-        private async Task GetPrivilege(HttpResponse res,
+        private async Task GetPrivilege(
+            HttpResponse res,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service,
             int id)
         {

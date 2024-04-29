@@ -80,6 +80,7 @@ function Page({
             !hasTriedSignin
         ) {
             auth.signinRedirect();
+            sessionStorage.setItem('auth:redirect', window.location.pathname);
             setHasTriedSignin(true);
         }
     }, [auth, hasTriedSignin]);

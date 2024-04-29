@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loading, InputField } from '@linn-it/linn-form-components-library';
+import { Loading, InputField, ErrorCard } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -12,7 +12,7 @@ import Page from './Page';
 
 function CreatePrivilege() {
     const [inputValue, setInputValue] = useState('');
-    const { send, isLoading, postResult } = usePost(
+    const { send, isLoading, errorMessage, postResult } = usePost(
         itemTypes.privileges.url,
         null,
         { name: inputValue },
@@ -52,6 +52,12 @@ function CreatePrivilege() {
                     >
                         Save
                     </Button>
+
+                    {errorMessage && (
+                        <Grid item xs={12}>
+                            <ErrorCard errorMessage={errorMessage} />
+                        </Grid>
+                    )}
                 </Grid>
                 <Grid>
                     <Snackbar

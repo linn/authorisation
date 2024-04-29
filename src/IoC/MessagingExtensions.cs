@@ -1,9 +1,10 @@
 ﻿namespace Linn.Authorisation.IoC
 {
-    using Linn.Common.Messaging.RabbitMQ.Configuration;
     using Linn.Authorisation.Messaging.Messages;
+    using Linn.Common.Messaging.RabbitMQ.Configuration;
 
     using Microsoft.Extensions.DependencyInjection;
+
     using RabbitMQ.Client.Events;
 
     public static class MessagingExtensions

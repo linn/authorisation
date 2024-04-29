@@ -3,7 +3,7 @@ import { useAuth } from 'react-oidc-context';
 
 function usePost(url, id, data, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
-    const [serverError, setServerError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [postResult, setPostResult] = useState(null);
 
     let token = '';
@@ -13,10 +13,10 @@ function usePost(url, id, data, requiresAuth = false) {
         token = auth.user?.access_token;
     }
 
-    const send = () => {
+    const send = async () => {
         setIsLoading(true);
         setPostResult(null);
-        setServerError(null);
+        setErrorMessage(null);
 
         const headers = {
             accept: 'application/json',
@@ -27,24 +27,20 @@ function usePost(url, id, data, requiresAuth = false) {
             body: JSON.stringify(data),
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
-        fetch(id ? `${url}/${id}` : url, requestParameters)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(json => {
-                setPostResult(json);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setServerError(error);
-                setIsLoading(false);
-            });
+
+        const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
+
+        if (response.ok) {
+            setPostResult(await response.json());
+            setIsLoading(false);
+        } else {
+            const text = await response.text();
+            setErrorMessage(text);
+            setIsLoading(false);
+        }
     };
 
-    return { send, isLoading, serverError, postResult };
+    return { send, isLoading, errorMessage, postResult };
 }
 
 export default usePost;

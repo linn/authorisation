@@ -1,9 +1,6 @@
 namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -18,7 +15,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using NSubstitute;
 
     using NUnit.Framework;
-    using NUnit.Framework.Internal;
 
     public class WhenPostingGroupPermission : ContextBase
     {

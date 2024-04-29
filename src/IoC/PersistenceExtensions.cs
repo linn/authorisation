@@ -20,7 +20,6 @@
                     r => new EntityFrameworkRepository<Privilege, int>(r.GetService<ServiceDbContext>()?.Privileges))
                 .AddTransient<IRepository<Permission, int>, PermissionsRepository>()
                 .AddTransient<IRepository<Group, int>, GroupRepository>();
-
         }
     }
 }

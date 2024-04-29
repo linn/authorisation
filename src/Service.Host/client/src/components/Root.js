@@ -29,6 +29,7 @@ function Root() {
                                 element={<Navigate to="/authorisation" replace />}
                             />
                             <Route path="/authorisation" element={<App />} />
+
                             <Route
                                 exact
                                 path="/authorisation/example-component"

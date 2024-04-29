@@ -1,7 +1,5 @@
 ﻿namespace Linn.Authorisation.IoC
 {
-    using System;
-
     using Amazon.SQS;
 
     using Linn.Common.Logging;
