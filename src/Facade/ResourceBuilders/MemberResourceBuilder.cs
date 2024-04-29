@@ -7,11 +7,8 @@
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
 
-    using Org.BouncyCastle.Crypto.Modes.Gcm;
-
     public class MemberResourceBuilder : IBuilder<Member>
     {
-
         public object Build(Member model, IEnumerable<string> claims)
         {
             if (model is IndividualMember)

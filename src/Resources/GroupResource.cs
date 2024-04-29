@@ -12,6 +12,5 @@
         public int Id { get; set; }
 
         public IEnumerable<MemberResource> Members { get; set; }
-
     }
 }

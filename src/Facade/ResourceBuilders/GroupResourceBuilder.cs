@@ -23,14 +23,12 @@
                 membersResources.Add((MemberResource)this.memberResourceBuilder.Build(member , claims));
             }
 
-
             return new GroupResource { 
-                                             Active = model.Active,
-                                            Name = model.Name,
-                                            Id = model.Id,
-                                            Members = membersResources
+                                             Active = model.Active, 
+                                             Name = model.Name, 
+                                             Id = model.Id, 
+                                             Members = membersResources
                                      };
-
         }
 
         public string GetLocation(Group model)
