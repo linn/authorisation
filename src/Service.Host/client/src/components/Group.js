@@ -62,6 +62,7 @@ function Group() {
 
         const employee = employees?.items.find(i => member.memberUri === i.href);
 
+        // eslint-disable-next-line consistent-return
         return (
             <ListItem key={employee.href}>
                 <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
