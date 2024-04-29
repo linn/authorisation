@@ -21,7 +21,6 @@ function Group() {
         itemTypes.employees.url
     );
     const [group, setGroup] = useState();
-    const [memberNames, setMemberNames] = useState();
 
     const { send, isPutLoading, errorMessage, putResult } = usePut(
         itemTypes.privileges.url,
@@ -57,19 +56,23 @@ function Group() {
     };
 
     const getMembers = member => {
-        employees?.items?.forEach(e => {
-            if (member.memberUri === e.href) {
-                console.log(`${e?.firstName} ${e?.lastName}`);
-                setMemberNames({ fullname: `${e?.firstName} ${e?.lastName}` }, ...memberNames);
-            }
-        });
-    };
+        // eslint-disable-next-line no-plusplus
+        // for (let i = 0; i < employees?.items.length; i++) {
+        //     if (member.memberUri === employees?.items[i].href) {
+        //         setMemberNames(...memberNames, {
+        //             href: employees.items[i].href,
+        //             fullname: `${employees.items[i].firstName} ${employees.items[i].lastName}`
+        //         });
+        //     }
+        // }
+        const employee = employees?.items.find(i => member.memberUri === i.href);
 
-    const displayMembers = member => (
-        <ListItem>
-            <Typography color="primary">member?.fullname</Typography>
-        </ListItem>
-    );
+        return (
+            <ListItem>
+                <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
+            </ListItem>
+        );
+    };
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -119,10 +122,9 @@ function Group() {
 
                 <Grid item xs={12}>
                     <Typography variant="h5">Group Members</Typography>
-
+                    {console.log(employees)}
                     <List>{group?.members?.map(getMembers)}</List>
-                    {console.log(memberNames)}
-                    <List>{memberNames?.map(displayMembers)}</List>
+                    {/* <List>{memberNames?.map(displayMembers)}</List> */}
                 </Grid>
             </Grid>
         </Page>
