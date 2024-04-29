@@ -56,19 +56,15 @@ function Group() {
     };
 
     const getMembers = member => {
-        // eslint-disable-next-line no-plusplus
-        // for (let i = 0; i < employees?.items.length; i++) {
-        //     if (member.memberUri === employees?.items[i].href) {
-        //         setMemberNames(...memberNames, {
-        //             href: employees.items[i].href,
-        //             fullname: `${employees.items[i].firstName} ${employees.items[i].lastName}`
-        //         });
-        //     }
-        // }
+        if (!employees?.items.find(i => member.memberUri === i.href)) {
+            return;
+        }
+
         const employee = employees?.items.find(i => member.memberUri === i.href);
 
+        // eslint-disable-next-line consistent-return
         return (
-            <ListItem>
+            <ListItem key={employee.href}>
                 <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
             </ListItem>
         );
@@ -122,7 +118,7 @@ function Group() {
 
                 <Grid item xs={12}>
                     <Typography variant="h5">Group Members</Typography>
-                    {console.log(employees)}
+
                     <List>{group?.members?.map(getMembers)}</List>
                     {/* <List>{memberNames?.map(displayMembers)}</List> */}
                 </Grid>
