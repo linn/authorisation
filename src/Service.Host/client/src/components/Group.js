@@ -56,13 +56,15 @@ function Group() {
     };
 
     const getMembers = member => {
-        if (!employees?.items.find(i => member.memberUri === i.href)) {
-            return;
-        }
-
         const employee = employees?.items.find(i => member.memberUri === i.href);
 
-        // eslint-disable-next-line consistent-return
+        if (!employees?.items.find(i => member.memberUri === i.href)) {
+            return (
+                <ListItem key={employee.href}>
+                    <Typography color="primary">{`${employee.href} - Employee not found`}</Typography>
+                </ListItem>
+            );
+        }
         return (
             <ListItem key={employee.href}>
                 <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
