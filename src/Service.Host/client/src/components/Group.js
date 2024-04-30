@@ -5,6 +5,8 @@ import { Loading, InputField, OnOffSwitch, ErrorCard } from '@linn-it/linn-form-
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import history from '../history';
@@ -14,8 +16,10 @@ import Page from './Page';
 
 function Group() {
     const { id } = useParams();
-
     const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
+    const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
+        itemTypes.employees.url
+    );
     const [group, setGroup] = useState();
 
     const { send, isPutLoading, errorMessage, putResult } = usePut(
@@ -37,7 +41,7 @@ function Group() {
     }, [data]);
 
     const spinningWheel = () => {
-        if (isGetLoading || isPutLoading) {
+        if (isGetLoading || isPutLoading || isEmployeesLoading) {
             return <Loading />;
         }
         return <div />;
@@ -49,6 +53,23 @@ function Group() {
 
     const handleNameFieldChange = (_, newValue) => {
         setGroup({ ...group, name: newValue });
+    };
+
+    const getMembers = member => {
+        const employee = employees?.items.find(i => member.memberUri === i.href);
+
+        if (!employees?.items.find(i => member.memberUri === i.href)) {
+            return (
+                <ListItem key={employee.href}>
+                    <Typography color="primary">{`${employee.href} - Employee not found`}</Typography>
+                </ListItem>
+            );
+        }
+        return (
+            <ListItem key={employee.href}>
+                <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
+            </ListItem>
+        );
     };
 
     return (
@@ -96,6 +117,12 @@ function Group() {
                     autoHideDuration={5000}
                     message="Save Successful"
                 />
+
+                <Grid item xs={12}>
+                    <Typography variant="h5">Group Members</Typography>
+
+                    <List>{group?.members?.map(getMembers)}</List>
+                </Grid>
             </Grid>
         </Page>
     );

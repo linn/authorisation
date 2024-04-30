@@ -21,7 +21,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.updatedResource = new GroupResource { Name = "new.Group.Test.Name", Active = false, Id = 30} ;
+            this.updatedResource = new GroupResource { Name = "new.Group.Test.Name", Active = false, Id = 30 };
 
             this.current = new Group { Id = 30, Name = "old.Group.Test.Name", Active = true };
             this.GroupRepository.FindById(this.current.Id).Returns(this.current);

@@ -15,6 +15,7 @@ function useInitialise(url, id) {
                 accept: 'application/json'
             }
         };
+
         fetch(id ? `${url}/${id}` : url, requestParameters)
             .then(response => {
                 if (!response.ok) {
