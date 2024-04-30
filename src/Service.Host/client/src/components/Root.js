@@ -62,7 +62,7 @@ function Root() {
                             />
                             <Route
                                 exact
-                                path="/authorisation/permission/view-individual-permission"
+                                path="/authorisation/view-individual-permission"
                                 element={<ViewIndividualPermission />}
                             />
                             <Route exact path="/authorisation/groups" element={<ViewGroups />} />
