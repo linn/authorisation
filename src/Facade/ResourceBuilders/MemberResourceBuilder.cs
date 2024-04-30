@@ -15,9 +15,8 @@
             {
                 return new MemberResource { MemberUri = ((IndividualMember)model).MemberUri };
             }
-            //return new MemberResource {Group = ((GroupMember)model).Group }
 
-            return new MemberResource{};
+            throw new NotImplementedException();
         }
 
         public string GetLocation(Member model)
