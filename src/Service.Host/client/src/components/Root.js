@@ -52,17 +52,17 @@ function Root() {
                             />
                             <Route
                                 exact
-                                path="/authorisation/permission/create/individual"
+                                path="/authorisation/create-individual-permission"
                                 element={<CreateIndividualPermission />}
                             />
                             <Route
                                 exact
-                                path="/authorisation/permission/create/group"
+                                path="/authorisation/create-group-permission"
                                 element={<CreateGroupPermission />}
                             />
                             <Route
                                 exact
-                                path="/authorisation/permission/view/individual"
+                                path="/authorisation/permission/view-individual-permission"
                                 element={<ViewIndividualPermission />}
                             />
                             <Route exact path="/authorisation/groups" element={<ViewGroups />} />
