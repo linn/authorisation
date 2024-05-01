@@ -18,13 +18,13 @@ function App() {
                 <ListItem component={Link} to="/authorisation/privileges/create">
                     <Typography color="primary">Create Privileges</Typography>
                 </ListItem>
-                <ListItem component={Link} to="/authorisation/permission/create/individual">
+                <ListItem component={Link} to="/authorisation/create-individual-permission">
                     <Typography color="primary">Create Individual Permission</Typography>
                 </ListItem>
-                <ListItem component={Link} to="/authorisation/permission/create/group">
+                <ListItem component={Link} to="/authorisation/create-group-permission">
                     <Typography color="primary">Create Group Permission</Typography>
                 </ListItem>
-                <ListItem component={Link} to="/authorisation/permission/view/individual">
+                <ListItem component={Link} to="/authorisation/view-individual-permission">
                     <Typography color="primary">View Employee&apos;s Permission</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/groups">
