@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Loading, InputField, ErrorCard } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
+import ListItem from '@mui/material/ListItem';
+import { List } from '@mui/material';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
@@ -62,6 +65,19 @@ function CreatePrivilege() {
                     />
                     <Grid item xs={12}>
                         {spinningWheel()}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <List>
+                            <ListItem
+                                component={Link}
+                                to="/authorisation/groups/add-individual-member"
+                            >
+                                <Typography color="primary">Add a Member to a Group</Typography>
+                            </ListItem>
+                            <ListItem component={Link} to="/authorisation/groups/add-group-member">
+                                <Typography color="primary">Add a Group to a Group</Typography>
+                            </ListItem>
+                        </List>
                     </Grid>
                 </Grid>
             </Grid>
