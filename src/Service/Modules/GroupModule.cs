@@ -6,6 +6,7 @@
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Persistence;
     using Linn.Authorisation.Resources;
+    using Linn.Authorisation.Service.Extensions;
     using Linn.Common.Facade;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
@@ -22,6 +23,7 @@
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
+            endpoints.MapPost("/authorisation/members/{id:int}", this.AddMember);
         }
 
         private async Task GetAll(
@@ -58,6 +60,26 @@
         {
 
             await res.Negotiate(groupService.Update(id, resource));
+        }
+
+        private async Task AddMember(
+            HttpResponse res,
+            HttpRequest req,
+            MemberResource resource,
+            MembersFacadeService service,
+            IFacadeResourceService<Member, int, MemberResource, MemberResource> groupService)
+
+        {
+
+            if (resource.Group == null)
+            {
+                await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl()));
+            }
+            else
+            {
+                await res.Negotiate(service.ad(resource, req.HttpContext.User.GetEmployeeUrl())); ;
+            }
+
         }
     }
 }
