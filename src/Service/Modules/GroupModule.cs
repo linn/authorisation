@@ -66,20 +66,9 @@
             HttpResponse res,
             HttpRequest req,
             MemberResource resource,
-            MembersFacadeService service,
-            IFacadeResourceService<Member, int, MemberResource, MemberResource> groupService)
-
+            IMembersFacadeService service)
         {
-
-            if (resource.Group == null)
-            {
-                await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl()));
-            }
-            else
-            {
-                await res.Negotiate(service.ad(resource, req.HttpContext.User.GetEmployeeUrl())); ;
-            }
-
+            await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl()));
         }
     }
 }

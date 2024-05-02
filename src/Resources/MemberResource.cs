@@ -4,7 +4,7 @@
     {
         public string MemberUri { get; set; }
 
-        public string Group { get; set; }
+        public int? GroupId { get; set; }
     }
 }
 

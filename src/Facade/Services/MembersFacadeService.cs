@@ -11,93 +11,54 @@ using System.Threading.Tasks;
 
 namespace Linn.Authorisation.Facade.Services
 {
+    using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
+    using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Resources;
 
-    public class MembersFacadeService
+    public class MembersFacadeService : IMembersFacadeService
     {
-        private readonly IBuilder<Member> resourceBuilder;
-
-        private readonly IRepository<Member, int> memberRepository;
+        private readonly MemberResourceBuilder resourceBuilder;
 
         private readonly IRepository<Group, int> groupRepository;
 
         private readonly ITransactionManager transactionManager;
 
         public MembersFacadeService(
-            IPermissionService permissionService,
-            IBuilder<Member> resourceBuilder,
-            IRepository<Member, int> memberRepository,
+            MemberResourceBuilder resourceBuilder,
             IRepository<Group, int> groupRepository,
             ITransactionManager transactionManager)
         {
             this.resourceBuilder = resourceBuilder;
-            this.memberRepository = memberRepository;
             this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
         }
-        public IResult<IndividualMember> AddIndividualMember(MemberResource memberResource, string employeeUri)
+
+        public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri)
         {
-            var group = this.groupRepository.FindById((int)memberResource.MemberUri);
+            var group = this.groupRepository.FindById(memberResource.GroupId.Value);
 
-            var newMember = new IndividualMember(
-                employeeUri, memberResource.MemberUri);
+            group.AddIndividualMember(memberResource.MemberUri, employeeUri);
 
-            var members = this.memberRepository.FilterBy(m => m is IndividualMember);
+            this.transactionManager.Commit();
 
-            var individualMembers = members.Select(m => (IndividualMember)m);
 
-            if (newMember.CheckUnique(individualMembers))
+            // TODO implement try catch and return a bad request if bad action caught
+            // Complete
+
+            try
             {
-                this.memberRepository.Add(newMember);
-
-                this.transactionManager.Commit();
-
-                var result = new IndividualMember
-                                 {
-                                     DateAdded = newMember.DateAdded,
-                                     AddedByUri = newMember.AddedByUri,
-                                     MemberUri = newMember.MemberUri,
-                                     Id = newMember.Id
-                                 };
-
-                return new CreatedResult<IndividualMember>(result);
+                return new CreatedResult<MemberResource>(new MemberResource { MemberUri = memberResource.MemberUri });
             }
-
-            return new BadRequestResult<IndividualMember>("Grantee already has privilege");
-        }
-
-        public IResult<GroupMember> AddGroupPermission(MemberResource memberResource, string groupId)
-        {
-            var privilege = this.groupRepository.FindById(memberResource.MemberUri);
-
-            if (memberResource.Group != null)
+            catch (Exception MemberAlreadyInGroupException)
             {
-                var group = this.groupRepository.FindById((int)memberResource.Group);
-
-                var newGroupMember = new GroupMember(
-                    group, memberResource.MemberUri);
-
-                var members = this.memberRepository.FilterBy(m => m is GroupMember);
-
-                var groupMembers = members.Select(m => (GroupMember)m);
-
-                if (newGroupMember.CheckUnique(groupMembers))
-                {
-                    this.memberRepository.Add(newGroupMember);
-
-                    this.transactionManager.Commit();
-
-                    var result = new GroupMember
-                                     {
-                                         Group = newGroupMember.Group;
-                                         AddedByUri = newGroupMember.addedByUri;
-                                         DateAdded = DateTime.UtcNow;DateGranted = permission.DateGranted.ToString("o"),
-                                     };
-                    return new CreatedResult<GroupMember>(result);
-                }
+                throw new MemberAlreadyInGroupException($"{memberResource.MemberUri} already exists in group");
             }
+            
 
-            return new BadRequestResult<GroupMember>("Grantee already has privilege");
+            //TODO use the resource builder to construct a resource
+
+
         }
+    }
 }
