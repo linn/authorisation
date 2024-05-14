@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
+import usePut from '../hooks/usePut';
 import itemTypes from '../itemTypes';
 
 import Page from './Page';
@@ -15,13 +17,25 @@ function AddIndividualMember() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [groupInput, setGroupInput] = useState('');
 
+    const { data: members, isGetLoading: isMembersLoading } = useInitialise(itemTypes.members.url);
     const { data: groups, isGetLoading: isGroupsLoading } = useInitialise(itemTypes.groupData.url);
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
 
+    const { send, isPutLoading, errorMessage, putResult } = usePut(
+        itemTypes.members.url,
+        groupInput,
+        {
+            memberUri: employeeInput.memberUri,
+            GroupId: groupInput.id,
+            ...members
+        },
+        true
+    );
+
     const spinningWheel = () => {
-        if (isGroupsLoading || isEmployeesLoading) {
+        if (isGroupsLoading || isEmployeesLoading || isPutLoading || isMembersLoading) {
             return <Loading />;
         }
         return <div />;
@@ -90,11 +104,23 @@ function AddIndividualMember() {
                     disabled={employeeInput === '' || groupInput === ''}
                     variant="contained"
                     onClick={() => {
-                        //send();
+                        send();
                     }}
                 >
                     Save
                 </Button>
+
+                {errorMessage && (
+                    <Grid item xs={12}>
+                        <ErrorCard errorMessage={errorMessage} />
+                    </Grid>
+                )}
+
+                <Snackbar
+                    open={!!putResult?.id}
+                    autoHideDuration={5000}
+                    message="Save Successful"
+                />
             </Grid>
         </Page>
     );

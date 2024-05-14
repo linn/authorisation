@@ -50,7 +50,7 @@ namespace Linn.Authorisation.Facade.Services
             {
                 return new CreatedResult<MemberResource>(new MemberResource { MemberUri = memberResource.MemberUri });
             }
-            catch (Exception MemberAlreadyInGroupException)
+            catch (MemberAlreadyInGroupException)
             {
                 throw new MemberAlreadyInGroupException($"{memberResource.MemberUri} already exists in group");
             }

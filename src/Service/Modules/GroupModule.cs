@@ -23,7 +23,7 @@
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
-            endpoints.MapPost("/authorisation/members/{id:int}", this.AddMember);
+            endpoints.MapPut("/authorisation/members/{id:int}", this.AddMember);
         }
 
         private async Task GetAll(

@@ -27,7 +27,7 @@
                 .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>()
                 .AddTransient<IMembersFacadeService, MembersFacadeService>()
-                .AddTransient<IBuilder<Member>MemberResourceBuilder>();
+                .AddTransient<IBuilder<Member>, MemberResourceBuilder>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
