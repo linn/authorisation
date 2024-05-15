@@ -56,7 +56,6 @@ function AddIndividualMember() {
 
     const handleEmployeeDropDownChange = (propertyName, newValue) => {
         setEmployeeInput(newValue);
-        console.log(employeeInput);
     };
 
     const handleGroupDropDownChange = (propertyName, newValue) => {
@@ -100,7 +99,7 @@ function AddIndividualMember() {
                 />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Button
                     disabled={employeeInput === '' || groupInput === ''}
                     variant="contained"
@@ -117,11 +116,7 @@ function AddIndividualMember() {
                     </Grid>
                 )}
 
-                <Snackbar
-                    open={!!putResult?.id}
-                    autoHideDuration={5000}
-                    message="Save Successful"
-                />
+                <Snackbar open={!!putResult} autoHideDuration={5000} message="Save Successful" />
             </Grid>
         </Page>
     );
