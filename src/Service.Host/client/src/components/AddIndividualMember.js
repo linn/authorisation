@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
-import usePut from '../hooks/usePut';
+import usePost from '../hooks/usePost';
 import itemTypes from '../itemTypes';
 
 import Page from './Page';
@@ -23,7 +23,7 @@ function AddIndividualMember() {
         itemTypes.employees.url
     );
 
-    const { send, isPutLoading, errorMessage, putResult } = usePut(
+    const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.members.url,
         groupInput,
         {
@@ -35,7 +35,7 @@ function AddIndividualMember() {
     );
 
     const spinningWheel = () => {
-        if (isGroupsLoading || isEmployeesLoading || isPutLoading || isMembersLoading) {
+        if (isGroupsLoading || isEmployeesLoading || isPostLoading || isMembersLoading) {
             return <Loading />;
         }
         return <div />;
@@ -116,7 +116,7 @@ function AddIndividualMember() {
                     </Grid>
                 )}
 
-                <Snackbar open={!!putResult} autoHideDuration={5000} message="Save Successful" />
+                <Snackbar open={!!postResult} autoHideDuration={5000} message="Save Successful" />
             </Grid>
         </Page>
     );

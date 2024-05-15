@@ -8,5 +8,3 @@
         IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri);
     }
 }
-    
-

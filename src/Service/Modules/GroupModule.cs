@@ -4,7 +4,7 @@
 
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Facade.Services;
-    using Linn.Authorisation.Persistence;
+
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
     using Linn.Common.Facade;

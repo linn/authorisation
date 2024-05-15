@@ -6,7 +6,6 @@
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-    using Linn.Common.Persistence;
 
     public class MemberResourceBuilder : IBuilder<Member>
     {
