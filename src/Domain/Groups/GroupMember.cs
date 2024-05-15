@@ -23,6 +23,5 @@ namespace Linn.Authorisation.Domain.Groups
         {
             return this.Group.MemberUris();
         }
-
     }
 }

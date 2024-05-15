@@ -20,7 +20,6 @@ namespace Linn.Authorisation.Domain.Groups
                     return false;
                 }
             }
-
             return true;
         }
     }
