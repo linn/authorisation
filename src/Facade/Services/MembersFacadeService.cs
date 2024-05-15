@@ -13,18 +13,14 @@ namespace Linn.Authorisation.Facade.Services
 
     public class MembersFacadeService : IMembersFacadeService
     {
-        private readonly IBuilder<Member> resourceBuilder;
-
         private readonly IRepository<Group, int> groupRepository;
 
         private readonly ITransactionManager transactionManager;
 
         public MembersFacadeService(
-            IBuilder<Member> resourceBuilder,
             IRepository<Group, int> groupRepository,
             ITransactionManager transactionManager)
         {
-            this.resourceBuilder = resourceBuilder;
             this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
         }
@@ -39,9 +35,9 @@ namespace Linn.Authorisation.Facade.Services
                 this.transactionManager.Commit();
                 return new CreatedResult<MemberResource>(new MemberResource { MemberUri = memberResource.MemberUri });
             }
-            catch (MemberAlreadyInGroupException)
+            catch (MemberAlreadyInGroupException ex)
             {
-                throw new MemberAlreadyInGroupException($"{memberResource.MemberUri} already exists in group");
+                return new BadRequestResult<MemberResource>(ex.Message);
             }
             catch (Exception ex)
             {

@@ -17,7 +17,6 @@ function AddIndividualMember() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [groupInput, setGroupInput] = useState('');
 
-    const { data: members, isGetLoading: isMembersLoading } = useInitialise(itemTypes.members.url);
     const { data: groups, isGetLoading: isGroupsLoading } = useInitialise(itemTypes.groupData.url);
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
@@ -25,17 +24,16 @@ function AddIndividualMember() {
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.members.url,
-        groupInput,
+        null,
         {
             memberUri: `/employees/${employeeInput}`,
-            GroupId: groupInput,
-            ...members
+            GroupId: groupInput
         },
         true
     );
 
     const spinningWheel = () => {
-        if (isGroupsLoading || isEmployeesLoading || isPostLoading || isMembersLoading) {
+        if (isGroupsLoading || isEmployeesLoading || isPostLoading) {
             return <Loading />;
         }
         return <div />;
