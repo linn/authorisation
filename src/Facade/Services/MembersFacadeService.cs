@@ -1,7 +1,4 @@
-﻿
-
-
-namespace Linn.Authorisation.Facade.Services
+﻿namespace Linn.Authorisation.Facade.Services
 {
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -41,7 +38,6 @@ namespace Linn.Authorisation.Facade.Services
             }
             catch (Exception ex)
             {
-
                 return new BadRequestResult<MemberResource>(ex.Message);
             }
         }
