@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Linn.Authorisation.Facade.Services
 {
+    using Amazon.Auth.AccessControlPolicy;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Facade.ResourceBuilders;
@@ -18,14 +19,14 @@ namespace Linn.Authorisation.Facade.Services
 
     public class MembersFacadeService : IMembersFacadeService
     {
-        private readonly MemberResourceBuilder resourceBuilder;
+        private readonly IBuilder<Member> resourceBuilder;
 
         private readonly IRepository<Group, int> groupRepository;
 
         private readonly ITransactionManager transactionManager;
 
         public MembersFacadeService(
-            MemberResourceBuilder resourceBuilder,
+            IBuilder<Member> resourceBuilder,
             IRepository<Group, int> groupRepository,
             ITransactionManager transactionManager)
         {
@@ -36,15 +37,13 @@ namespace Linn.Authorisation.Facade.Services
 
         public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri)
         {
-            var group = this.groupRepository.FindById(memberResource.GroupId.Value);
+            var group = this.groupRepository.FindById((int)memberResource.GroupId);
+
+            var resource = this.resourceBuilder;
 
             group.AddIndividualMember(memberResource.MemberUri, employeeUri);
 
             this.transactionManager.Commit();
-
-
-            // TODO implement try catch and return a bad request if bad action caught
-            // Complete
 
             try
             {
@@ -54,9 +53,13 @@ namespace Linn.Authorisation.Facade.Services
             {
                 throw new MemberAlreadyInGroupException($"{memberResource.MemberUri} already exists in group");
             }
+            catch (Exception ex)
+            {
+                return new BadRequestResult<MemberResource>(ex.Message);
+            }
             
 
-            //TODO use the resource builder to construct a resource
+            
 
 
         }

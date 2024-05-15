@@ -27,8 +27,8 @@ function AddIndividualMember() {
         itemTypes.members.url,
         groupInput,
         {
-            memberUri: employeeInput.memberUri,
-            GroupId: groupInput.id,
+            memberUri: `/employees/${employeeInput}`,
+            GroupId: groupInput,
             ...members
         },
         true
@@ -56,6 +56,7 @@ function AddIndividualMember() {
 
     const handleEmployeeDropDownChange = (propertyName, newValue) => {
         setEmployeeInput(newValue);
+        console.log(employeeInput);
     };
 
     const handleGroupDropDownChange = (propertyName, newValue) => {
