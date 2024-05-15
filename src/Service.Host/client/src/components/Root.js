@@ -16,7 +16,6 @@ import ViewGroups from './ViewGroups';
 import Group from './Group';
 import CreateGroup from './CreateGroup';
 import AddIndividualMember from './AddIndividualMember';
-import AddGroupMember from './AddGroupMember';
 
 function Root() {
     return (
@@ -77,11 +76,6 @@ function Root() {
                                 exact
                                 path="/authorisation/groups/add-individual-member"
                                 element={<AddIndividualMember />}
-                            />
-                            <Route
-                                exact
-                                path="/authorisation/groups/add-group-member"
-                                element={<AddGroupMember />}
                             />
                             <Route exact path="/authorisation/groups/:id" element={<Group />} />
                             <Route element={<NotFoundPage />} />

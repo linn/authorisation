@@ -57,11 +57,6 @@ namespace Linn.Authorisation.Facade.Services
             {
                 return new BadRequestResult<MemberResource>(ex.Message);
             }
-            
-
-            
-
-
         }
     }
 }

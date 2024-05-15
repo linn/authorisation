@@ -74,9 +74,6 @@ function CreatePrivilege() {
                             >
                                 <Typography color="primary">Add a Member to a Group</Typography>
                             </ListItem>
-                            <ListItem component={Link} to="/authorisation/groups/add-group-member">
-                                <Typography color="primary">Add a Group to a Group</Typography>
-                            </ListItem>
                         </List>
                     </Grid>
                 </Grid>
