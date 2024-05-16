@@ -30,6 +30,8 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 
         protected IRepository<Group, int> GroupRepository { get; private set; }
 
+        protected IMembersFacadeService MembersFacadeService { get; private set;}
+
         [SetUp]
         public void SetUpContext()
         {
@@ -42,6 +44,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
                 new GroupResourceBuilder(),
                 this.GroupRepository);
             this.Log = Substitute.For<ILog>();
+            this.MembersFacadeService = new MembersFacadeService(this.GroupRepository, this.TransactionManager);
 
             this.Client = TestClient.With<GroupModule>(
                 services =>
@@ -51,6 +54,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
                         services.AddSingleton(this.Log);
                         services.AddHandlers();
                         services.AddRouting();
+                        services.AddSingleton(this.MembersFacadeService);
                     },
                 FakeAuthMiddleware.EmployeeMiddleware);
         }

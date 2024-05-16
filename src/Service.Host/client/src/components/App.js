@@ -33,6 +33,9 @@ function App() {
                 <ListItem component={Link} to="/authorisation/groups/create">
                     <Typography color="primary">Create a Group</Typography>
                 </ListItem>
+                <ListItem component={Link} to="/authorisation/groups/add-individual-member">
+                    <Typography color="primary">Add a Member to a Group</Typography>
+                </ListItem>
             </List>
         </Page>
     );

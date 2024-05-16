@@ -30,7 +30,6 @@ function usePut(url, id, data, requiresAuth = false) {
         };
 
         const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
-
         if (response.ok) {
             setPutResult(await response.json());
             setIsLoading(false);

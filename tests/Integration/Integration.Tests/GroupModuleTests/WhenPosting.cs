@@ -1,40 +1,40 @@
-namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Net;
     using System.Net.Http.Json;
-
     using FluentAssertions;
 
-    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenPosting : ContextBase
     {
-        private PrivilegeResource resource;
+        private MemberResource resource;
 
         [SetUp]
         public void SetUp()
         {
-            this.resource = new PrivilegeResource { Name = "test-permission" };
+            var group = new Group 
+                            { 
+                                Id = 20, 
+                                Name = "test.group", 
+                                Active = true
+                            };
 
-            this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
+            this.GroupRepository.FindById(group.Id).Returns(group);
+
+            this.resource = new MemberResource{ MemberUri = "test-member", GroupId = 20};
+
+            this.Response = this.Client.PostAsJsonAsync("/authorisation/members", this.resource).Result;
         }
 
         [Test]
         public void ShouldReturnCreated()
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
-        }
-
-        [Test]
-        public void ShouldCallAddRepository()
-        { 
-            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "test-permission" && p.Active == true));
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [Test]
         public void ShouldReturnJsonBody()
         {
-            var result = this.Response.DeserializeBody<PrivilegeResource>();
-            result.Name.Should().Be("test-permission");
+            var result = this.Response.DeserializeBody<MemberResource>();
+            result.MemberUri.Should().Be("test-member");
         }
     }
 }
