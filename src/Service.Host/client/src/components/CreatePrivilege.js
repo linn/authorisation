@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Loading, InputField, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    InputField,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
@@ -18,6 +22,8 @@ function CreatePrivilege() {
         { name: inputValue },
         true
     );
+    const [snackbarVisible, setSnackbarVisible] = useState(!!postResult?.id);
+    console.log(snackbarVisible);
 
     const spinningWheel = () => {
         if (isLoading) {
@@ -60,14 +66,14 @@ function CreatePrivilege() {
                     )}
                 </Grid>
                 <Grid>
-                    <Snackbar
-                        open={!!postResult?.id}
-                        autoHideDuration={5000}
-                        message="Save Successful"
-                    />
                     <Grid item xs={12}>
                         {spinningWheel()}
                     </Grid>
+                    <SnackbarMessage
+                        open={!!postResult?.id}
+                        onClose={() => setSnackbarVisible(false)}
+                        message="Save Successful"
+                    />
                 </Grid>
             </Grid>
         </Page>
