@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Loading,
     InputField,
@@ -22,8 +22,11 @@ function CreatePrivilege() {
         { name: inputValue },
         true
     );
-    const [snackbarVisible, setSnackbarVisible] = useState(!!postResult?.id);
-    console.log(snackbarVisible);
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     const spinningWheel = () => {
         if (isLoading) {
@@ -70,7 +73,7 @@ function CreatePrivilege() {
                         {spinningWheel()}
                     </Grid>
                     <SnackbarMessage
-                        open={!!postResult?.id}
+                        visible={snackbarVisible}
                         onClose={() => setSnackbarVisible(false)}
                         message="Save Successful"
                     />

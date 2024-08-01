@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Dropdown,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
@@ -32,6 +36,12 @@ function CreateIndividualPermission() {
         },
         true
     );
+
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     const spinningWheel = () => {
         if (privilegesLoading || isEmployeesLoading || isPostLoading) {
@@ -65,7 +75,7 @@ function CreateIndividualPermission() {
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
                 {spinningWheel()}
-                <Typography variant="h4">Create a new Permission</Typography>
+                <Typography variant="h4">Create a new Individual Permission</Typography>
             </Grid>
 
             <Grid item xs={4}>
@@ -115,9 +125,9 @@ function CreateIndividualPermission() {
                 </Grid>
             )}
 
-            <Snackbar
-                open={!!postResult?.privilegeId}
-                autoHideDuration={5000}
+            <SnackbarMessage
+                visible={snackbarVisible}
+                onClose={() => setSnackbarVisible(false)}
                 message="Save Successful"
             />
         </Page>

@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Loading, InputField, OnOffSwitch, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    InputField,
+    OnOffSwitch,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -39,6 +44,12 @@ function Group() {
             setGroup(data);
         }
     }, [data]);
+
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!putResult);
+    }, [putResult]);
 
     const spinningWheel = () => {
         if (isGetLoading || isPutLoading || isEmployeesLoading) {
@@ -112,9 +123,9 @@ function Group() {
                     </Grid>
                 )}
 
-                <Snackbar
-                    open={!!putResult?.id}
-                    autoHideDuration={5000}
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
                     message="Save Successful"
                 />
 

@@ -35,8 +35,11 @@ function Privilege() {
         true
     );
 
-    const [snackbarVisible, setSnackbarVisible] = useState(putResult?.id);
-    console.log(!!putResult?.id);
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!putResult);
+    }, [putResult]);
 
     useEffect(() => {
         if (data) {

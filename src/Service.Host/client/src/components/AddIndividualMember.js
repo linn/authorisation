@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Dropdown,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
@@ -31,6 +34,12 @@ function AddIndividualMember() {
         },
         true
     );
+
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     const spinningWheel = () => {
         if (isGroupsLoading || isEmployeesLoading || isPostLoading) {
@@ -114,7 +123,11 @@ function AddIndividualMember() {
                     </Grid>
                 )}
 
-                <Snackbar open={!!postResult} autoHideDuration={5000} message="Save Successful" />
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
+                    message="Save Successful"
+                />
             </Grid>
         </Page>
     );

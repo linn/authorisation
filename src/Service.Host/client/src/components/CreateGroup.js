@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { Loading, InputField, ErrorCard } from '@linn-it/linn-form-components-library';
+import React, { useState, useEffect } from 'react';
+import {
+    Loading,
+    InputField,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 import ListItem from '@mui/material/ListItem';
 import { List } from '@mui/material';
 import usePost from '../hooks/usePost';
@@ -29,6 +33,12 @@ function CreatePrivilege() {
         }
         return <div />;
     };
+
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     const handleFieldChange = (propertyName, newValue) => {
         setInputValue(newValue);
@@ -58,9 +68,9 @@ function CreatePrivilege() {
                     )}
                 </Grid>
                 <Grid>
-                    <Snackbar
-                        open={!!postResult?.id}
-                        autoHideDuration={5000}
+                    <SnackbarMessage
+                        visible={snackbarVisible}
+                        onClose={() => setSnackbarVisible(false)}
                         message="Save Successful"
                     />
                     <Grid item xs={12}>
