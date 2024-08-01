@@ -28,7 +28,7 @@ function Group() {
     const [group, setGroup] = useState();
 
     const { send, isPutLoading, errorMessage, putResult } = usePut(
-        itemTypes.privileges.url,
+        itemTypes.groups.url,
 
         id,
         {
