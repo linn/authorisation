@@ -25,13 +25,6 @@ function ViewIndividualPermission() {
         itemTypes.employees.url
     );
 
-    const spinningWheel = () => {
-        if (isEmployeesLoading || isGetLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const renderEmployeesPermission = permission => (
         <ListItem key={permission.privilegeId}>
             <Typography color="primary">{permission.privilege}</Typography>
@@ -41,10 +34,11 @@ function ViewIndividualPermission() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {isEmployeesLoading && isGetLoading && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="employee choice"

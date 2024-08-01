@@ -18,7 +18,6 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Privilege() {
-    // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
@@ -47,13 +46,6 @@ function Privilege() {
         }
     }, [data]);
 
-    const spinningWheel = () => {
-        if (isGetLoading || isPutLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
     };
@@ -65,7 +57,7 @@ function Privilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
+                {isGetLoading && isPutLoading && <Loading />}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Privilege</Typography>

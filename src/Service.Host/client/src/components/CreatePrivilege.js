@@ -28,13 +28,6 @@ function CreatePrivilege() {
         setSnackbarVisible(!!postResult);
     }, [postResult]);
 
-    const spinningWheel = () => {
-        if (isLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const handleFieldChange = (propertyName, newValue) => {
         setInputValue(newValue);
     };
@@ -42,6 +35,9 @@ function CreatePrivilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    {isLoading && <Loading />}
+                </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h4">Create a new Privilege</Typography>
                     <InputField
@@ -69,9 +65,6 @@ function CreatePrivilege() {
                     )}
                 </Grid>
                 <Grid>
-                    <Grid item xs={12}>
-                        {spinningWheel()}
-                    </Grid>
                     <SnackbarMessage
                         visible={snackbarVisible}
                         onClose={() => setSnackbarVisible(false)}

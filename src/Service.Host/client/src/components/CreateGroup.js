@@ -27,13 +27,6 @@ function CreatePrivilege() {
         true
     );
 
-    const spinningWheel = () => {
-        if (isLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     useEffect(() => {
@@ -47,6 +40,9 @@ function CreatePrivilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    {isLoading && <Loading />}
+                </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h4">Create a new Group</Typography>
                     <InputField
@@ -73,9 +69,6 @@ function CreatePrivilege() {
                         onClose={() => setSnackbarVisible(false)}
                         message="Save Successful"
                     />
-                    <Grid item xs={12}>
-                        {spinningWheel()}
-                    </Grid>
                     <Grid item xs={12}>
                         <List>
                             <ListItem

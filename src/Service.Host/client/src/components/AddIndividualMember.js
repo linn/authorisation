@@ -41,13 +41,6 @@ function AddIndividualMember() {
         setSnackbarVisible(!!postResult);
     }, [postResult]);
 
-    const spinningWheel = () => {
-        if (isGroupsLoading || isEmployeesLoading || isPostLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     groups?.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
@@ -72,10 +65,11 @@ function AddIndividualMember() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">Add an Employee to a Group</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {isGroupsLoading && isEmployeesLoading && isPostLoading && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="employee choice"

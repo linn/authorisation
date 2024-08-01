@@ -43,13 +43,6 @@ function CreateIndividualPermission() {
         setSnackbarVisible(!!postResult);
     }, [postResult]);
 
-    const spinningWheel = () => {
-        if (privilegesLoading || isEmployeesLoading || isPostLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     privileges?.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
@@ -74,10 +67,11 @@ function CreateIndividualPermission() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">Create a new Individual Permission</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {privilegesLoading && isPostLoading && isEmployeesLoading && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"

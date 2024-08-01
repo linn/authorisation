@@ -51,13 +51,6 @@ function Group() {
         setSnackbarVisible(!!putResult);
     }, [putResult]);
 
-    const spinningWheel = () => {
-        if (isGetLoading || isPutLoading || isEmployeesLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const handleActiveChange = (_, newValue) => {
         setGroup({ ...group, active: newValue });
     };
@@ -86,10 +79,10 @@ function Group() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
+                <Typography variant="h4">Edit Group</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h4">Edit Group</Typography>
+                {isGetLoading && isPutLoading && isEmployeesLoading && <Loading />}
             </Grid>
             <Grid item xs={6}>
                 <InputField

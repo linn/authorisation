@@ -22,13 +22,6 @@ function Privileges() {
         }
     }, [data]);
 
-    const spinningWheel = () => {
-        if (isGetLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const renderPrivilege = privilege => (
         <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
             <Typography color="primary">
@@ -37,9 +30,9 @@ function Privileges() {
         </ListItem>
     );
 
-    privileges.sort((a, b) => {
-        const fa = a.name.toLowerCase();
-        const fb = b.name.toLowerCase();
+    privileges?.sort((a, b) => {
+        const fa = a?.name.toLowerCase();
+        const fb = b?.name.toLowerCase();
 
         if (fa < fb) {
             return -1;
@@ -57,7 +50,7 @@ function Privileges() {
                     <Typography variant="h4">Privileges</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    {spinningWheel()}
+                    {isGetLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>

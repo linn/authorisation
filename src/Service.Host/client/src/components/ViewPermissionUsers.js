@@ -29,13 +29,6 @@ function ViewPermissionUsers() {
         result: permissionEmployees
     } = useGet(itemTypes.permissions.url);
 
-    const spinningWheel = () => {
-        if (isEmployeesLoading || isPrivilegeLoading || isGetLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const getPermissionEmployees = member => {
         const employee = employees?.items.find(i => member.granteeUri === i.href);
 
@@ -46,13 +39,27 @@ function ViewPermissionUsers() {
         );
     };
 
+    privileges?.sort((a, b) => {
+        const fa = a.name.toLowerCase();
+        const fb = b.name.toLowerCase();
+
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
+
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">View all Employees with a Permission</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {isEmployeesLoading && isPrivilegeLoading && isGetLoading && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
