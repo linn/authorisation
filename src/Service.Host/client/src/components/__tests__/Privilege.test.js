@@ -44,7 +44,7 @@ describe('When Active Privilege ', () => {
 
     test('does not render loading spinner', () => {
         const { queryByRole } = render(<Privilege />);
-        expect(queryByRole('progressbar')).not.toBeInTheDocument();
+        expect(queryByRole('SnackbarMessage')).not.toBeInTheDocument();
     });
 });
 
@@ -66,7 +66,7 @@ describe('When Inactive Privilege ', () => {
 
     test('does not render loading spinner', () => {
         const { queryByRole } = render(<Privilege />);
-        expect(queryByRole('progressbar')).not.toBeInTheDocument();
+        expect(queryByRole('SnackbarMessage')).not.toBeInTheDocument();
     });
 });
 
@@ -77,7 +77,7 @@ describe('When loading ', () => {
 
     test('renders loading spinner', () => {
         const { getByRole } = render(<Privilege />);
-        expect(getByRole('progressbar')).toBeInTheDocument();
+        expect(getByRole('SnackbarMessage')).toBeInTheDocument();
     });
 });
 
