@@ -44,6 +44,11 @@ namespace Linn.Authorisation.Domain.Groups
 
             this.Members.Add(new IndividualMember(uri, addedBy));
         }
+        
+        public void AddGroupMember(Group group, string addedBy)
+        {
+            this.Members.Add(new GroupMember(group, addedBy));
+        }
 
         public bool CheckUnique(IEnumerable<Group> existingGroups)
         {
