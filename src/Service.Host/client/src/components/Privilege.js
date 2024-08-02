@@ -57,7 +57,7 @@ function Privilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {isGetLoading && isPutLoading && <Loading />}
+                {(isGetLoading || isPutLoading) && <Loading />}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Privilege</Typography>
