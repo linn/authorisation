@@ -35,7 +35,7 @@ namespace Linn.Authorisation.Domain.Groups
         public void AddIndividualMember(string uri, string addedBy)
         {
             var existingIndividualMember =
-                this.Members.SingleOrDefault(m => m is IndividualMember && (((IndividualMember) m).MemberUri == uri));
+                this.Members.SingleOrDefault(m => m is IndividualMember member && (member.MemberUri == uri));
 
             if (existingIndividualMember != null)
             {
@@ -44,17 +44,29 @@ namespace Linn.Authorisation.Domain.Groups
 
             this.Members.Add(new IndividualMember(uri, addedBy));
         }
+        
+        public void AddGroupMember(Group group, string addedBy)
+        {
+            if (group.Id == this.Id)
+            {
+                throw new GroupRecursionException("Cannot add a group to itself");
+            }
+
+            var existingGroupMember =
+                (GroupMember)this.Members.SingleOrDefault(m => m is GroupMember member && (member.Id == group.Id));
+
+            if (existingGroupMember != null)
+            {
+                throw new MemberAlreadyInGroupException(
+                    $"Group {existingGroupMember.Group.Name} already exists in group {this.Name}");
+            }
+
+            this.Members.Add(new GroupMember(group, addedBy));
+        }
 
         public bool CheckUnique(IEnumerable<Group> existingGroups)
         {
-            foreach (var group in existingGroups)
-            {
-                if (group.Name == this.Name)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return existingGroups.All(group => group.Name != this.Name);
         }
 
         public void RemoveMember(Member member)
