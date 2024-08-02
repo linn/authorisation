@@ -21,7 +21,7 @@ describe('When loading ', () => {
 
     test('renders loading spinner', () => {
         const { getByRole } = render(<CreatePrivilege />);
-        expect(getByRole('SnackbarMessage')).toBeInTheDocument();
+        expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });
 

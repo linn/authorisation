@@ -45,7 +45,7 @@ describe('When Privileges ', () => {
 
     test('does not render loading spinner', () => {
         const { queryByRole } = render(<Privileges />);
-        expect(queryByRole('SnackbarMessage')).not.toBeInTheDocument();
+        expect(queryByRole('progressbar')).not.toBeInTheDocument();
     });
 });
 
@@ -56,6 +56,6 @@ describe('When loading ', () => {
 
     test('renders loading spinner', () => {
         const { getByRole } = render(<Privileges />);
-        expect(getByRole('SnackbarMessage')).toBeInTheDocument();
+        expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });
