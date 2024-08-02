@@ -82,7 +82,7 @@ function Group() {
                 <Typography variant="h4">Edit Group</Typography>
             </Grid>
             <Grid item xs={12}>
-                {isGetLoading && isPutLoading && isEmployeesLoading && <Loading />}
+                {(isGetLoading || isPutLoading || isEmployeesLoading) && <Loading />}
             </Grid>
             <Grid item xs={6}>
                 <InputField

@@ -70,7 +70,7 @@ function CreateIndividualPermission() {
                 <Typography variant="h4">Create a new Individual Permission</Typography>
             </Grid>
             <Grid item xs={12}>
-                {privilegesLoading && isPostLoading && isEmployeesLoading && <Loading />}
+                {(privilegesLoading || isEmployeesLoading || isPostLoading) && <Loading />}
             </Grid>
             <Grid item xs={4}>
                 <Dropdown

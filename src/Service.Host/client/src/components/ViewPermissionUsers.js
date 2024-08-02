@@ -58,7 +58,7 @@ function ViewPermissionUsers() {
                 <Typography variant="h4">View all Employees with a Permission</Typography>
             </Grid>
             <Grid item xs={12}>
-                {isEmployeesLoading && isPrivilegeLoading && isGetLoading && <Loading />}
+                {(isEmployeesLoading || isPrivilegeLoading || isGetLoading) && <Loading />}
             </Grid>
             <Grid item xs={4}>
                 <Dropdown

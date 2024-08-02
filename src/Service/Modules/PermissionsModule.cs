@@ -36,7 +36,6 @@ namespace Linn.Authorisation.Service.Modules
             {
                 await res.Negotiate(service.GetPermissionsForPrivilege(privilegeId.Value));
             }
-            
         }
 
         private async Task CreatePermission(

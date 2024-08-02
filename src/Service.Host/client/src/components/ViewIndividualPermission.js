@@ -37,7 +37,7 @@ function ViewIndividualPermission() {
                 <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
             </Grid>
             <Grid item xs={12}>
-                {isEmployeesLoading && isGetLoading && <Loading />}
+                {(isEmployeesLoading || isGetLoading) && <Loading />}
             </Grid>
             <Grid item xs={4}>
                 <Dropdown

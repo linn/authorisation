@@ -69,7 +69,7 @@ function CreateGroupPermission() {
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
             <Grid item xs={12}>
-                {privilegesLoading && isPostLoading && isgroupLoading && <Loading />}
+                {(privilegesLoading || isPostLoading || isgroupLoading) && <Loading />}
             </Grid>
             <Grid item xs={4}>
                 <Dropdown

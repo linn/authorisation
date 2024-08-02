@@ -63,12 +63,6 @@ namespace Linn.Authorisation.Facade.Services
                                                                   GranteeUri = memberUri
                                                               });
                     }
-
-                    // result.Add(new PermissionResource
-                    //                {
-                    //                    GranteeGroupId = ((GroupPermission)permission).GranteeGroup.MemberUris(),
-                    //                    GroupName = ((GroupPermission)permission).GranteeGroup.Name,
-                    // });
                 }
             }
 

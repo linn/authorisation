@@ -68,7 +68,7 @@ function AddIndividualMember() {
                 <Typography variant="h4">Add an Employee to a Group</Typography>
             </Grid>
             <Grid item xs={12}>
-                {isGroupsLoading && isEmployeesLoading && isPostLoading && <Loading />}
+                {(isGroupsLoading || isEmployeesLoading || isPostLoading) && <Loading />}
             </Grid>
             <Grid item xs={4}>
                 <Dropdown
