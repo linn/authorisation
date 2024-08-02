@@ -49,7 +49,7 @@ namespace Linn.Authorisation.Domain.Groups
         {
             if (group.Id == this.Id)
             {
-                throw new CannotAddGroupToItselfException("Cannot add a group to itself");
+                throw new GroupRecursionException("Cannot add a group to itself");
             }
 
             var existingGroupMember =
