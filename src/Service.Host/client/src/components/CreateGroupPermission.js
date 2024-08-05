@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Dropdown,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
@@ -32,12 +36,11 @@ function CreateGroupPermission() {
         true
     );
 
-    const spinningWheel = () => {
-        if (privilegesLoading || isPostLoading || isgroupLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     privileges?.sort((a, b) => {
         const fa = a.name.toLowerCase();
@@ -63,10 +66,11 @@ function CreateGroupPermission() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">Create a new Permission</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {(privilegesLoading || isPostLoading || isgroupLoading) && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
@@ -110,9 +114,9 @@ function CreateGroupPermission() {
                     </Grid>
                 )}
             </Grid>
-            <Snackbar
-                open={!!postResult?.granteeGroupId}
-                autoHideDuration={5000}
+            <SnackbarMessage
+                visible={snackbarVisible}
+                onClose={() => setSnackbarVisible(false)}
                 message="Save Successful"
             />
         </Page>

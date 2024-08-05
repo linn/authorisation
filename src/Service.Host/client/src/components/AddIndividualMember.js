@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Dropdown,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 import Grid from '@mui/material/Grid';
 import config from '../config';
 import history from '../history';
@@ -32,12 +35,11 @@ function AddIndividualMember() {
         true
     );
 
-    const spinningWheel = () => {
-        if (isGroupsLoading || isEmployeesLoading || isPostLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     groups?.sort((a, b) => {
         const fa = a.name.toLowerCase();
@@ -63,10 +65,11 @@ function AddIndividualMember() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
                 <Typography variant="h4">Add an Employee to a Group</Typography>
             </Grid>
-
+            <Grid item xs={12}>
+                {(isGroupsLoading || isEmployeesLoading || isPostLoading) && <Loading />}
+            </Grid>
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="employee choice"
@@ -114,7 +117,11 @@ function AddIndividualMember() {
                     </Grid>
                 )}
 
-                <Snackbar open={!!postResult} autoHideDuration={5000} message="Save Successful" />
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
+                    message="Save Successful"
+                />
             </Grid>
         </Page>
     );

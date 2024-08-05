@@ -2,9 +2,11 @@ namespace Linn.Authorisation.Service.Modules
 {
     using System.Threading.Tasks;
 
+    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Extensions;
+    using Linn.Common.Facade;
     using Linn.Common.Service.Core;
     using Linn.Common.Service.Core.Extensions;
 
@@ -23,9 +25,17 @@ namespace Linn.Authorisation.Service.Modules
         private async Task GetPermissions(
             HttpResponse res,
             string who,
+            int? privilegeId,
             IPermissionFacadeService service)
         {
-            await res.Negotiate(service.GetAllPermissionsForUser(who));
+            if (!string.IsNullOrEmpty(who))
+            {
+                await res.Negotiate(service.GetAllPermissionsForUser(who));
+            }
+            else if (privilegeId.HasValue)
+            {
+                await res.Negotiate(service.GetPermissionsForPrivilege(privilegeId.Value));
+            }
         }
 
         private async Task CreatePermission(

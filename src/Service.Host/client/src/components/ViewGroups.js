@@ -22,13 +22,6 @@ function ViewGroups() {
         }
     }, [data]);
 
-    const spinningWheel = () => {
-        if (isLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
-
     const renderPrivilege = group => (
         <ListItem component={Link} to={`/authorisation/groups/${group.id}`}>
             <Typography color="primary">
@@ -57,7 +50,7 @@ function ViewGroups() {
                     <Typography variant="h4">Groups</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    {spinningWheel()}
+                    {isLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{groups.map(renderPrivilege)}</List>

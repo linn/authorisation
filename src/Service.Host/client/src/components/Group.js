@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Loading, InputField, OnOffSwitch, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    InputField,
+    OnOffSwitch,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,7 +28,7 @@ function Group() {
     const [group, setGroup] = useState();
 
     const { send, isPutLoading, errorMessage, putResult } = usePut(
-        itemTypes.privileges.url,
+        itemTypes.groups.url,
 
         id,
         {
@@ -40,12 +45,11 @@ function Group() {
         }
     }, [data]);
 
-    const spinningWheel = () => {
-        if (isGetLoading || isPutLoading || isEmployeesLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!putResult);
+    }, [putResult]);
 
     const handleActiveChange = (_, newValue) => {
         setGroup({ ...group, active: newValue });
@@ -75,10 +79,10 @@ function Group() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
+                <Typography variant="h4">Edit Group</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h4">Edit Group</Typography>
+                {(isGetLoading || isPutLoading || isEmployeesLoading) && <Loading />}
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -112,9 +116,9 @@ function Group() {
                     </Grid>
                 )}
 
-                <Snackbar
-                    open={!!putResult?.id}
-                    autoHideDuration={5000}
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
                     message="Save Successful"
                 />
 

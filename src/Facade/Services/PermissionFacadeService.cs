@@ -40,6 +40,35 @@ namespace Linn.Authorisation.Facade.Services
             this.groupRepository = groupRepository;
         }
 
+        public IResult<IEnumerable<PermissionResource>> GetPermissionsForPrivilege(int privilegeId)
+        {
+            var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
+
+            var result = new List<PermissionResource>();
+
+            foreach (var permission in permissions)
+            {
+                if (permission is IndividualPermission)
+                {
+                    result.Add(new PermissionResource
+                                   {
+                                       GranteeUri = ((IndividualPermission)permission).GranteeUri
+                                   });
+                }
+                else
+                {
+                    foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
+                    {
+                        result.Add(new PermissionResource {
+                                                                  GranteeUri = memberUri
+                                                              });
+                    }
+                }
+            }
+
+            return new SuccessResult<IEnumerable<PermissionResource>>(result);
+        }
+
         public IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);

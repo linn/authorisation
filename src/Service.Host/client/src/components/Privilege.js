@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { Loading, InputField, OnOffSwitch, ErrorCard } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    InputField,
+    OnOffSwitch,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import config from '../config';
 import usePut from '../hooks/usePut';
@@ -13,7 +18,6 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Privilege() {
-    // below is how you determine the id of the privilege in question if the browser is at location /authorisation/privileges/<id>
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
@@ -30,18 +34,17 @@ function Privilege() {
         true
     );
 
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+    useEffect(() => {
+        setSnackbarVisible(!!putResult);
+    }, [putResult]);
+
     useEffect(() => {
         if (data) {
             setPrivilege(data);
         }
     }, [data]);
-
-    const spinningWheel = () => {
-        if (isGetLoading || isPutLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
 
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
@@ -54,7 +57,7 @@ function Privilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {spinningWheel()}
+                {(isGetLoading || isPutLoading) && <Loading />}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Privilege</Typography>
@@ -93,9 +96,9 @@ function Privilege() {
                     </Grid>
                 )}
 
-                <Snackbar
-                    open={!!putResult?.id}
-                    autoHideDuration={5000}
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
                     message="Save Successful"
                 />
             </Grid>

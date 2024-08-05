@@ -16,6 +16,7 @@ import ViewGroups from './ViewGroups';
 import Group from './Group';
 import CreateGroup from './CreateGroup';
 import AddIndividualMember from './AddIndividualMember';
+import ViewPermissionUsers from './ViewPermissionUsers';
 
 function Root() {
     return (
@@ -50,6 +51,11 @@ function Root() {
                                 exact
                                 path="/authorisation/privileges/:id"
                                 element={<Privilege />}
+                            />
+                            <Route
+                                exact
+                                path="/authorisation/view-permission-users"
+                                element={<ViewPermissionUsers />}
                             />
                             <Route
                                 exact

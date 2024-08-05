@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
-import { Loading, InputField, ErrorCard } from '@linn-it/linn-form-components-library';
+import React, { useState, useEffect } from 'react';
+import {
+    Loading,
+    InputField,
+    ErrorCard,
+    SnackbarMessage
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 import usePost from '../hooks/usePost';
 import config from '../config';
 import history from '../history';
@@ -18,13 +22,11 @@ function CreatePrivilege() {
         { name: inputValue },
         true
     );
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
 
-    const spinningWheel = () => {
-        if (isLoading) {
-            return <Loading />;
-        }
-        return <div />;
-    };
+    useEffect(() => {
+        setSnackbarVisible(!!postResult);
+    }, [postResult]);
 
     const handleFieldChange = (propertyName, newValue) => {
         setInputValue(newValue);
@@ -33,6 +35,9 @@ function CreatePrivilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    {isLoading && <Loading />}
+                </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h4">Create a new Privilege</Typography>
                     <InputField
@@ -60,14 +65,11 @@ function CreatePrivilege() {
                     )}
                 </Grid>
                 <Grid>
-                    <Snackbar
-                        open={!!postResult?.id}
-                        autoHideDuration={5000}
+                    <SnackbarMessage
+                        visible={snackbarVisible}
+                        onClose={() => setSnackbarVisible(false)}
                         message="Save Successful"
                     />
-                    <Grid item xs={12}>
-                        {spinningWheel()}
-                    </Grid>
                 </Grid>
             </Grid>
         </Page>
