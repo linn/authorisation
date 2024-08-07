@@ -37,7 +37,7 @@
         public IEnumerable<Permission> DeletePermission(int id)
         {
             IQueryable<Permission> permissions = this.permissionRepository.FilterBy(p => p.Id == id);
-            return this.permissionRepository.Remove(id);
+            return this.permissionRepository.Remove(permissions);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)

@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import config from '../config';
 import useDelete from '../hooks/useDelete';
+import useInitialise from '../hooks/useInitialise';
 import history from '../history';
 import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
@@ -18,8 +19,16 @@ import Page from './Page';
 
 function Permission() {
     const { id } = useParams();
+
     const { permission, isGetLoading } = useGet(itemTypes.permissions.url, id);
-    const [privilege, setPrivilege] = useState();
+    const { privilege, isPrivilegeGetLoading } = useInitialise(
+        itemTypes.privileges.url,
+        permission.privilegeId
+    );
+    const { data: employee, isGetLoading: isEmployeesLoading } = useInitialise(
+        itemTypes.employees.url,
+        `?who=/links.href/${permission.GranteeUri}`
+    );
 
     const { send, isPutLoading, errorMessage, putResult } = useDelete(
         itemTypes.privileges.url,
@@ -38,12 +47,6 @@ function Permission() {
         setSnackbarVisible(!!putResult);
     }, [putResult]);
 
-    useEffect(() => {
-        if (permission) {
-            setPrivilege(permission);
-        }
-    }, [permission]);
-
     console.log(permission);
 
     return (
@@ -59,7 +62,7 @@ function Permission() {
                     <InputField
                         propertyName="inputValue"
                         label="Employee"
-                        value={permission?.privilegeId}
+                        value={employee?.fullName}
                         disabled
                         fullWidth
                     />
@@ -68,7 +71,7 @@ function Permission() {
                     <InputField
                         propertyName="inputValue"
                         label="Privilege"
-                        value={permission?.GranteeUri}
+                        value={privilege?.Name}
                         disabled
                         fullWidth
                     />
