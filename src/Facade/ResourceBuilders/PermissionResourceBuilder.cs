@@ -8,25 +8,25 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
     using Linn.Common.Facade;
     using Linn.Common.Resources;
 
-    public class PermissionResourceBuilder : IBuilder<Permission>
+    public class PermissionResourceBuilder : IResourceBuilder<Permission>
     {
-        public object Build(Permission model, IEnumerable<string> claims)
+        public PermissionResource Build(Permission model)
         {
             return new PermissionResource
-                       {
-                           Privilege = model.Privilege.Name,
-                           PrivilegeId = model.Privilege.Id,
-                           Links = this.BuildLinks(model).ToArray()
-                       };
+                             {
+                                 Privilege = model.Privilege.Name,
+                                 PrivilegeId = model.Privilege.Id,
+                                 Links = this.BuildLinks(model).ToArray()
+                             };
         }
         
         public string GetLocation(Permission model)
         {
             return $"/authorisation/permissions/{model.Id}";
         }
-        
-        object IBuilder<Permission>.Build(Permission model, IEnumerable<string> claims) => this.Build(model, claims);
-        
+
+        object IResourceBuilder<Permission>.Build(Permission model) => this.Build(model);
+
         private IEnumerable<LinkResource> BuildLinks(Permission permission)
         {
             yield return new LinkResource

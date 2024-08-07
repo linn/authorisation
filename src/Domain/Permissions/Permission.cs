@@ -15,11 +15,12 @@ namespace Linn.Authorisation.Domain.Permissions
             this.DateGranted = DateTime.UtcNow;
             this.GrantedByUri = grantedByUri;
         }
-
         public Privilege Privilege { get; set; }
 
         public DateTime DateGranted { get; set; }
 
         public string GrantedByUri { get; set; }
+
+        public int Id { get; set; }
     }
 }

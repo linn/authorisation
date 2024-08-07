@@ -11,5 +11,7 @@
         IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId);
 
         IEnumerable<Permission> GetAllPermissionsForUser(string who);
+
+        IEnumerable<Permission> DeletePermission(int id);
     }
 }

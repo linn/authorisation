@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
@@ -26,10 +26,16 @@ function ViewIndividualPermission() {
     );
 
     const renderEmployeesPermission = permission => (
-        <ListItem key={permission.privilegeId}>
+        <ListItem
+            component={Link}
+            key={permission.privilegeId}
+            to={`/authorisation/view-individual-permission/${permission.Id}`}
+        >
             <Typography color="primary">{permission.privilege}</Typography>
         </ListItem>
     );
+
+    console.log(permissions);
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -57,7 +63,7 @@ function ViewIndividualPermission() {
                 />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
                 <List>{permissions?.map(renderEmployeesPermission)}</List>
             </Grid>
         </Page>

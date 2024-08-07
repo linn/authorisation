@@ -4,6 +4,8 @@ namespace Linn.Authorisation.Resources
 
     public class PermissionResource : HypermediaResource
     {
+        public int Id { get; set; }
+
         public string Privilege { get; set; }
 
         public int PrivilegeId { get; set; }

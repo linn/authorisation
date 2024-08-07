@@ -6,6 +6,7 @@ namespace Linn.Authorisation.Facade.Services
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Domain.Services;
+    using Linn.Authorisation.Facade.Extensions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
@@ -28,7 +29,7 @@ namespace Linn.Authorisation.Facade.Services
             IPermissionService permissionService,
             IBuilder<Permission> resourceBuilder,
             IRepository<Permission, int> permissionRepository,
-            IRepository<Privilege,int> privilegeRepository,
+            IRepository<Privilege, int> privilegeRepository,
             IRepository<Group, int> groupRepository,
             ITransactionManager transactionManager)
         {
@@ -50,18 +51,13 @@ namespace Linn.Authorisation.Facade.Services
             {
                 if (permission is IndividualPermission)
                 {
-                    result.Add(new PermissionResource
-                                   {
-                                       GranteeUri = ((IndividualPermission)permission).GranteeUri
-                                   });
+                    result.Add(new PermissionResource { GranteeUri = ((IndividualPermission)permission).GranteeUri });
                 }
                 else
                 {
                     foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
                     {
-                        result.Add(new PermissionResource {
-                                                                  GranteeUri = memberUri
-                                                              });
+                        result.Add(new PermissionResource { GranteeUri = memberUri });
                     }
                 }
             }
@@ -69,12 +65,16 @@ namespace Linn.Authorisation.Facade.Services
             return new SuccessResult<IEnumerable<PermissionResource>>(result);
         }
 
-        public IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri)
+        public IResult<PermissionResource> CreateIndividualPermission(
+            PermissionResource permissionResource,
+            string employeeUri)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
             var permission = new IndividualPermission(
-                permissionResource.GranteeUri, privilege, permissionResource.GrantedByUri);
+                permissionResource.GranteeUri,
+                privilege,
+                permissionResource.GrantedByUri);
 
             var permissions = this.permissionsRepository.FilterBy(p => p is IndividualPermission);
 
@@ -87,12 +87,12 @@ namespace Linn.Authorisation.Facade.Services
                 this.transactionManager.Commit();
 
                 var result = new PermissionResource
-                {
-                    DateGranted = permission.DateGranted.ToString("o"),
-                    GrantedByUri = employeeUri,
-                    GranteeUri = permission.GranteeUri,
-                    PrivilegeId = permission.Privilege.Id
-                };
+                                 {
+                                     DateGranted = permission.DateGranted.ToString("o"),
+                                     GrantedByUri = employeeUri,
+                                     GranteeUri = permission.GranteeUri,
+                                     PrivilegeId = permission.Privilege.Id
+                                 };
 
                 return new CreatedResult<PermissionResource>(result);
             }
@@ -100,7 +100,9 @@ namespace Linn.Authorisation.Facade.Services
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
         }
 
-        public IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri)
+        public IResult<PermissionResource> CreateGroupPermission(
+            PermissionResource permissionResource,
+            string employeeUri)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
@@ -108,8 +110,7 @@ namespace Linn.Authorisation.Facade.Services
             {
                 var group = this.groupRepository.FindById((int)permissionResource.GranteeGroupId);
 
-                var permission = new GroupPermission(
-                    group, privilege, permissionResource.GrantedByUri);
+                var permission = new GroupPermission(group, privilege, permissionResource.GrantedByUri);
 
                 var permissions = this.permissionsRepository.FilterBy(p => p is GroupPermission);
 
@@ -141,6 +142,22 @@ namespace Linn.Authorisation.Facade.Services
             var resources = result.Select(x => (PermissionResource)this.resourceBuilder.Build(x, null));
 
             return new SuccessResult<IEnumerable<PermissionResource>>(resources);
+        }
+
+        public IResult<PermissionResource> DeletePermission(int Id)
+        {
+            var result = this.permissionsRepository.FindById(Id);
+
+            if (result == null)
+            {
+                return new BadRequestResult<PermissionResource>("Unable to remove Permission");
+            }
+
+            this.permissionsRepository.Remove(result);
+
+            this.transactionManager.Commit();
+
+            return new SuccessResult<PermissionResource>(result.ToResource());
         }
     }
 }

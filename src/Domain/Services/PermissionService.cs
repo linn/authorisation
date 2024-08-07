@@ -1,7 +1,10 @@
 ﻿namespace Linn.Authorisation.Domain.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
+
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
@@ -29,6 +32,12 @@
         public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
         {
             return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
+        }
+
+        public IEnumerable<Permission> DeletePermission(int id)
+        {
+            IQueryable<Permission> permissions = this.permissionRepository.FilterBy(p => p.Id == id);
+            return this.permissionRepository.Remove(id);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)

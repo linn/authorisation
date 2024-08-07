@@ -20,7 +20,7 @@
         public static IServiceCollection AddFacade(this IServiceCollection services)
         {
             return services.AddTransient<IBuilder<Privilege>, PrivilegeResourceBuilder>()
-                .AddTransient<IBuilder<Permission>, PermissionResourceBuilder>()
+                .AddTransient<IResourceBuilder<Permission>, PermissionResourceBuilder>()
                 .AddTransient<IBuilder<Group>, GroupResourceBuilder>()
                 .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
                 .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
