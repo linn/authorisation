@@ -153,7 +153,7 @@ namespace Linn.Authorisation.Facade.Services
                 return new BadRequestResult<PermissionResource>("Unable to remove Permission");
             }
 
-            this.permissionsRepository.Remove(result);
+            this.permissionService.DeletePermission(Id);
 
             this.transactionManager.Commit();
 

@@ -21,6 +21,7 @@ function useInitialise(url, id) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(`${url}/${id}`);
                 return response.json();
             })
             .then(json => {

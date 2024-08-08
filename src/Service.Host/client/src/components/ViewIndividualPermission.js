@@ -57,7 +57,7 @@ function ViewIndividualPermission() {
                     fullWidth
                     onChange={(propertyName, newValue) => {
                         setEmployeeInput(newValue);
-                        send(null, `?who=/employees/${newValue}`);
+                        send(null, `?who=${newValue}`);
                     }}
                     value={employeeInput}
                 />

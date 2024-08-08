@@ -10,6 +10,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.IoC;
     using Linn.Authorisation.Service.Modules;
+    using Linn.Common.Facade;
     using Linn.Common.Logging;
     using Linn.Common.Persistence;
 
@@ -28,7 +29,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         protected IPermissionFacadeService FacadeService { get; private set; }
 
         protected ILog Log { get; private set; }
-        
+
+        protected IBuilder<Permission> PermissionBuilder { get; private set; }
+
         protected IPermissionService DomainService { get; private set; }
 
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
@@ -47,10 +50,11 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
             this.GroupRespository = Substitute.For<IRepository<Domain.Groups.Group, int>>();
             this.TransactionManager = Substitute.For<ITransactionManager>();
+            this.PermissionBuilder = Substitute.For<IBuilder<Permission>>();
 
             this.FacadeService = new PermissionFacadeService(
                 this.DomainService,
-                new PermissionResourceBuilder(),
+                this.PermissionBuilder,
                 this.PermissionRepository,
                 this.PrivilegeRepository,
                 this.GroupRespository,

@@ -27,16 +27,16 @@ namespace Linn.Authorisation.Service.Modules
         private async Task GetPermissions(
             HttpResponse res,
             string who,
-            int? privilegeId,
+            int? id,
             IPermissionFacadeService service)
         {
             if (!string.IsNullOrEmpty(who))
             {
                 await res.Negotiate(service.GetAllPermissionsForUser(who));
             }
-            else if (privilegeId.HasValue)
+            else if (id.HasValue)
             {
-                await res.Negotiate(service.GetPermissionsForPrivilege(privilegeId.Value));
+                await res.Negotiate(service.GetPermissionsForPrivilege(id.Value));
             }
         }
 

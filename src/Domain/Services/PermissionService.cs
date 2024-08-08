@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
@@ -17,10 +16,12 @@
 
         public PermissionService(
             IRepository<Group, int> groupRepository,
+
             IRepository<Permission, int> permissionRepository)
         {
             this.groupRepository = groupRepository;
             this.permissionRepository = permissionRepository;
+
         }
 
         public IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId)
@@ -34,10 +35,11 @@
             return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
         }
 
-        public IEnumerable<Permission> DeletePermission(int id)
+        public void DeletePermission(int id)
         {
-            IQueryable<Permission> permissions = this.permissionRepository.FilterBy(p => p.Id == id);
-            return this.permissionRepository.Remove(permissions);
+            var permission = this.permissionRepository.FindById(id);
+
+            this.permissionRepository.Remove(permission);
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)

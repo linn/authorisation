@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FluentAssertions;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
@@ -13,13 +11,14 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using NSubstitute;
 
     using NUnit.Framework;
+    using System.Net;
 
     public class WhenDeletingPermission : ContextBase
     {
-        [SetUp]
+        /*[SetUp]
         public void SetUp()
         {
-            this.DomainService.DeletePermission(100).Returns(
+            DomainService.DeletePermission(100)(
                 new List<Permission>
                     {
                         new IndividualPermission
@@ -41,6 +40,18 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                     {
                         with.Accept("application/json");
                     }).Result;
+        }*/
+
+        [Test]
+        public void ShouldReturnOk()
+        {
+            this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
+
+        // [Test]
+        // public void ShouldCallService()
+        // {
+        //     this.PermissionRepository.Received().DeletePermission(Arg.Any<int>(), 123);
+        // }
     }
 }

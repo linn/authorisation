@@ -21,11 +21,11 @@ function Permission() {
     const { id } = useParams();
 
     const { permission, isGetLoading } = useGet(itemTypes.permissions.url, id);
-    const { privilege, isPrivilegeGetLoading } = useInitialise(
+    const { privilege, isPrivilegeGetLoading } = useGet(
         itemTypes.privileges.url,
         permission.privilegeId
     );
-    const { data: employee, isGetLoading: isEmployeesLoading } = useInitialise(
+    const { data: employee, isGetLoading: isEmployeesLoading } = useGet(
         itemTypes.employees.url,
         `?who=/links.href/${permission.GranteeUri}`
     );
@@ -52,7 +52,9 @@ function Permission() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {(isGetLoading || isPutLoading) && <Loading />}
+                {(isGetLoading || isPrivilegeGetLoading || isEmployeesLoading || isPutLoading) && (
+                    <Loading />
+                )}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Privilege</Typography>
