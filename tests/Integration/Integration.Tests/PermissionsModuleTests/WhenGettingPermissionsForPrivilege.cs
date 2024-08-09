@@ -19,9 +19,18 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
     internal class WhenGettingPermissionsForPrivilege : ContextBase
     {
+        private Group group;
+
         [SetUp]
         public void SetUp()
         {
+            this.group = new Group
+                             {
+                                 Id = 2,
+                                 Name = "testing-get-group"
+                             };
+            this.group.AddIndividualMember("/employees/2", "/1");
+
             this.DomainService.GetAllPermissionsForPrivilege(privilegeId : 1).Returns(
                 new List<Permission>
                     {
@@ -32,23 +41,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                         new GroupPermission
                             { 
                                 Privilege = new Privilege { Name = "2", Id = 1 },
-                                GranteeGroup = new Group
-                                                   {
-                                                       Id = 2,
-                                                       Name = "testing-get-group"
-                                                   }
+                                GranteeGroup = this.group 
                             }
-                    }.AsQueryable()
-                new IndividualMember
-                        {
-                            MemberUri = "/employees/2",
-                            GroupId = 2
-
-
-                }
-                );
-
-
+                    }.AsQueryable());
 
             this.Response = this.Client.Get(
                 "/authorisation/permissions/privilege?privilegeId=1",
@@ -77,8 +72,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
             resources.Should().Contain(a => a.GranteeUri == "/employees/1");
             resources.Should().Contain(a => a.GranteeUri == "/employees/2");
-
-
         }
     }
 }
