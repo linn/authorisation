@@ -37,7 +37,7 @@
                             },
                         new GroupPermission
                             { 
-                                Privilege = new Privilege { Name = "2", Id = 1 },
+                                Privilege = new Privilege { Name = "1", Id = 1 },
                                 GranteeGroup = this.group 
                             }
                     }.AsQueryable());
