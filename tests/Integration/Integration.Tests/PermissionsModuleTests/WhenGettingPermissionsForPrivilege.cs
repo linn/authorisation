@@ -3,8 +3,6 @@ using System.Linq;
 
 namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
-    using System.Collections;
-
     using FluentAssertions;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
