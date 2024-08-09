@@ -25,6 +25,8 @@ function ViewIndividualPermission() {
         itemTypes.employees.url
     );
 
+    console.log(permissions);
+
     const renderEmployeesPermission = permission => (
         <ListItem key={permission.privilegeId}>
             <Typography color="primary">{permission.privilege}</Typography>
