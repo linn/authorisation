@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using FluentAssertions;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
@@ -15,7 +14,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using NUnit.Framework;
     using System.Net;
 
-    internal class WhenGettingPermissionsForPrivilege : ContextBase
+    public class WhenGettingPermissionsForPrivilege : ContextBase
     {
         private Group group;
 
@@ -62,7 +61,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         }
 
         [Test]
-
         public void ShouldReturnJsonBody()
         {
             var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
@@ -73,4 +71,3 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         }
     }
 }
-
