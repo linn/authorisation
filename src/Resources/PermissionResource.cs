@@ -17,5 +17,7 @@ namespace Linn.Authorisation.Resources
         public string DateGranted { get; set; }
 
         public int? GranteeGroupId { get; set; }
+
+        public int Id { get; set; }
     }
 }

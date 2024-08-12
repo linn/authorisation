@@ -45,7 +45,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.DomainService = Substitute.For<IPermissionService>();
             this.PermissionRepository = Substitute.For<IRepository<Permission, int>>();
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
-            this.GroupRespository = Substitute.For<IRepository<Domain.Groups.Group, int>>();
+            this.GroupRespository = Substitute.For<IRepository<Group, int>>();
             this.TransactionManager = Substitute.For<ITransactionManager>();
 
             this.FacadeService = new PermissionFacadeService(
