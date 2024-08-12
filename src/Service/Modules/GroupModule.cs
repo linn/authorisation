@@ -4,11 +4,7 @@
 
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Facade.Services;
-
-    using Linn.Authorisation.Resources;
-    using Linn.Authorisation.Service.Extensions;
-    using Linn.Common.Facade;
-    using Linn.Common.Service.Core;
+    using Linn.Authorisation.Persistence;
     using Linn.Common.Service.Core.Extensions;
 
     using Microsoft.AspNetCore.Builder;
@@ -20,6 +16,7 @@
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("/authorisation/groups", this.GetAll);
+           // endpoints.MapGet("/authorisation/group/{id:int}", this.FindGroup);
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
@@ -40,6 +37,15 @@
         {
             await res.Negotiate(groupService.GetById(id));
         }
+
+/*        private async Task FindGroup(
+            HttpResponse res,
+            GroupRepository groupRepository,
+            int id,
+            IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
+        {
+            await res.Negotiate(groupRepository.FindById(id));
+        }*/
 
         private async Task CreateGroup(
             HttpResponse res,

@@ -84,6 +84,7 @@ function Group() {
             <Grid item xs={12}>
                 {(isGetLoading || isPutLoading || isEmployeesLoading) && <Loading />}
             </Grid>
+            {console.log(data)}
             <Grid item xs={6}>
                 <InputField
                     propertyName="inputValue"
