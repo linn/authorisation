@@ -23,13 +23,21 @@
         [SetUp]
         public void SetUp()
         {
-            individualPermissionCheckTrue = new IndividualPermission
+            this.individualPermissionCheckTrue = new IndividualPermission
             {
                 GranteeUri = "/employees/100",
                 Privilege = new Privilege(privilegeName2),
                 GrantedByUri = "/employees/7004",
                 DateGranted = DateTime.UtcNow
             };
+
+            this.individualPermissionCheckFalse = new IndividualPermission 
+                                                      { 
+                                                          GranteeUri = "/employees/3006", 
+                                                          Privilege = new Privilege(privilegeName3), 
+                                                          GrantedByUri = "/employees/7004", 
+                                                          DateGranted = DateTime.UtcNow
+                                                      };
 
             permissions = new List<IndividualPermission>
             {
@@ -55,6 +63,14 @@
             var result = individualPermissionCheckTrue.CheckUnique(permissions);
 
             result.Should().BeTrue();
+        }
+
+        [Test]
+        public void ShouldReturnFalse()
+        {
+            var result = individualPermissionCheckFalse.CheckUnique(permissions);
+
+            result.Should().BeFalse();
         }
     }
 }
