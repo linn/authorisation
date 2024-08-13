@@ -1,23 +1,16 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Net;
-    using System.Net.Http.Json;
 
     using FluentAssertions;
 
-    using Linn.Authorisation.Domain;
-    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenDeletingPermission : ContextBase
@@ -26,9 +19,9 @@
         public void SetUp()
         {
             this.FacadeService.DeletePermission(1).Returns(new SuccessResult<PermissionResource>(new PermissionResource
-                    {
-                        Id = 1,
-                    }));
+                {
+                    Id = 1
+                }));
 
             this.Response = this.Client.Delete(
                 "/authorisation/permissions/1",
@@ -47,7 +40,11 @@
         [Test]
         public void ShouldRemoveFromRepository()
         {
-            this.FacadeService.DeletePermission(1);
+            var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
+            resources.Should().HaveCount(0);
+
+            this.FacadeService.Received().DeletePermission(1);
+            this.TransactionManager.Received(1).Commit();
         }
     }
 }

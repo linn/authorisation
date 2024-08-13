@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,6 +15,7 @@ import Page from './Page';
 
 function ViewIndividualsPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     const {
         send,
@@ -31,6 +32,10 @@ function ViewIndividualsPermission() {
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
+
+    useEffect(() => {
+        setSnackbarVisible(!!deleteResult);
+    }, [deleteResult]);
 
     const renderEmployeesPermission = permission => (
         <Grid container spacing={1}>
@@ -80,6 +85,14 @@ function ViewIndividualsPermission() {
 
             <Grid item xs={4}>
                 <List>{permissions?.map(renderEmployeesPermission)}</List>
+            </Grid>
+
+            <Grid item xs={4}>
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
+                    message="Delete Successful"
+                />
             </Grid>
         </Page>
     );
