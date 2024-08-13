@@ -39,9 +39,11 @@
                                       Id = 1, Privilege = privilege, GranteeUri = "/employees/1"
                                   };
 
-            this.permissions= new List<Permission>{ this.permission};
+            this.permissions = new List<Permission> { this.permission };
 
-            this.Response = this.Client.PostAsJsonAsync("/authorisation/permissions/1", this.resource).Result;
+           // this.FacadeService.DeletePermission(1).Returns(new IndividualPermission { Id = 1, Privilege = null });
+
+            this.Response = this.Client.DeleteFromJsonAsync("/authorisation/permissions/1").Result;
         }
 
         [Test]
@@ -53,7 +55,7 @@
         [Test]
         public void ShouldRemoveFromRepository()
         {
-            this.PermissionRepository.Remove(this.PermissionRepository.FindById(1));
+            this.FacadeService.DeletePermission(1);
         }
     }
 }
