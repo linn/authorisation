@@ -140,10 +140,6 @@ namespace Linn.Authorisation.Facade.Services
         {
             var permission = this.permissionsRepository.FindById(permissionId);
 
-            var privilege = this.privilegeRepository.FindById(permission.PrivilegeId);
-
-            //var privilege = this.privilegeRepository.FindById(permissionId);
-
             if (permission == null)
             {
                 return new BadRequestResult<PermissionResource>("Unable to remove Permission");
@@ -155,8 +151,7 @@ namespace Linn.Authorisation.Facade.Services
 
             var result = new PermissionResource
                              {
-                                 Id = permission.Id
-                                 //PrivilegeId = permission.Privilege.Id
+                                 Id = permission.Id,
                              };
 
             return new SuccessResult<PermissionResource>(result);
