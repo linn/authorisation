@@ -4,7 +4,6 @@ import { useAuth } from 'react-oidc-context';
 function useDelete(url, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-
     const [deleteResult, setDeleteResult] = useState(null);
 
     let token = '';
@@ -38,7 +37,6 @@ function useDelete(url, requiresAuth = false) {
             setIsLoading(false);
         }
     };
-
     return { send, isLoading, errorMessage, deleteResult };
 }
 

@@ -14,6 +14,7 @@
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
 
     using NSubstitute;
 
@@ -21,29 +22,20 @@
 
     public class WhenDeletingPermission : ContextBase
     {
-        private PermissionResource resource;
-
-        private int id;
-
-        private IndividualPermission permission;
-
-        private List<Permission> permissions;
-
         [SetUp]
         public void SetUp()
         {
-            var privilege = new Privilege { Id = 100, Name = "test.privilege", Active = true };
-            
-            this.permission = new IndividualPermission 
-                                  { 
-                                      Id = 1, Privilege = privilege, GranteeUri = "/employees/1"
-                                  };
+            this.FacadeService.DeletePermission(1).Returns(new SuccessResult<PermissionResource>(new PermissionResource
+                    {
+                        Id = 1,
+                    }));
 
-            this.permissions = new List<Permission> { this.permission };
-
-           // this.FacadeService.DeletePermission(1).Returns(new IndividualPermission { Id = 1, Privilege = null });
-
-            this.Response = this.Client.DeleteFromJsonAsync("/authorisation/permissions/1").Result;
+            this.Response = this.Client.Delete(
+                "/authorisation/permissions/1",
+                with =>
+                    {
+                        with.Accept("application/json");
+                    }).Result;
         }
 
         [Test]
