@@ -23,9 +23,7 @@
         {
             this.permission = new IndividualPermission("/employees/1", new Privilege("test-privilege"), "/employees/2");
 
-
             this.PermissionRepository.FindById(1).Returns(this.permission);
-
 
             this.Response = this.Client.Delete(
                 "/authorisation/permissions/1",
@@ -51,7 +49,6 @@
         [Test]
         public void ShouldRemoveFromRepository()
         {
-
             this.PermissionRepository.Received().Remove(this.permission);
             this.TransactionManager.Received(1).Commit();
         }

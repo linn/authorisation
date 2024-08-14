@@ -16,19 +16,17 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
     using NUnit.Framework;
 
-    public class WhenGettingAll : ContextBase
+    public class WhenGettingAllPermissionsForEmployee : ContextBase
     {
-        private Group group;
-
         [SetUp]
         public void SetUp()
         {
-            this.group = new Group
+            var group = new Group
                              {
                                  Id = 2,
                                  Name = "testing-get-group"
                              };
-            this.group.AddIndividualMember("/employees/1234", "/1");
+            group.AddIndividualMember("/employees/1234", "/1");
 
             this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
                 new List<Permission>
