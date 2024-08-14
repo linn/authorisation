@@ -1,5 +1,6 @@
 namespace Linn.Authorisation.Facade.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Linn.Authorisation.Domain;
@@ -133,6 +134,27 @@ namespace Linn.Authorisation.Facade.Services
             }
 
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
+        }
+
+        public IResult<PermissionResource> DeletePermission(int permissionId)
+        {
+            var permission = this.permissionsRepository.FindById(permissionId);
+
+            if (permission == null)
+            {
+                return new BadRequestResult<PermissionResource>("Unable to remove Permission");
+            }
+
+            this.permissionsRepository.Remove(permission);
+
+            this.transactionManager.Commit();
+
+            var result = new PermissionResource
+                             {
+                                 Id = permission.Id,
+                             };
+
+            return new SuccessResult<PermissionResource>(result);
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri)

@@ -1,5 +1,7 @@
 namespace Linn.Authorisation.Service.Modules
 {
+    using System;
+    using System.Net;
     using System.Threading.Tasks;
 
     using Linn.Authorisation.Domain.Permissions;
@@ -21,6 +23,7 @@ namespace Linn.Authorisation.Service.Modules
             endpoints.MapGet("/authorisation/permissions", this.GetAllPermissionsForUser);
             endpoints.MapGet("/authorisation/permissions/privilege", this.GetPermissionsForPrivilege);
             endpoints.MapPost("/authorisation/permissions", this.CreatePermission);
+            endpoints.MapDelete("/authorisation/permissions/{id:int}", this.DeletePermission);
         }
 
         private async Task GetAllPermissionsForUser(
@@ -56,6 +59,14 @@ namespace Linn.Authorisation.Service.Modules
             {
                 await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
             }
+        }
+
+        private async Task DeletePermission(
+            HttpResponse res,
+            int id,
+            IPermissionFacadeService service)
+        {
+            await res.Negotiate(service.DeletePermission(id));
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using FluentAssertions;
 
     using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -15,26 +16,35 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
     using NUnit.Framework;
 
-    public class WhenGettingAll : ContextBase
+    public class WhenGettingAllPermissionsForEmployee : ContextBase
     {
         [SetUp]
         public void SetUp()
         {
-            this.DomainService.GetAllPermissionsForUser("1234").Returns(
+            var group = new Group
+                             {
+                                 Id = 2,
+                                 Name = "testing-get-group"
+                             };
+            group.AddIndividualMember("/employees/1234", "/1");
+
+            this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
                 new List<Permission>
                     {
                         new IndividualPermission
                             {
-                                Privilege = new Privilege { Name = "1" }
+                                Privilege = new Privilege { Name = "1" },
+                                GranteeUri = "/employees/1234"
                             },
                         new GroupPermission
                             {
-                                Privilege = new Privilege { Name = "2" }
+                                Privilege = new Privilege { Name = "2" },
+                                Id = 2
                             }
                     }.AsQueryable());
 
             this.Response = this.Client.Get(
-                "/authorisation/permissions?who=1234",
+                "/authorisation/permissions?who=/employees/1234",
                 with =>
                     {
                         with.Accept("application/json");
