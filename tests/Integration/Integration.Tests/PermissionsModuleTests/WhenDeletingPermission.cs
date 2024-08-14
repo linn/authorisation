@@ -6,6 +6,7 @@
 
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -15,13 +16,16 @@
 
     public class WhenDeletingPermission : ContextBase
     {
+        private IndividualPermission permission;
+
         [SetUp]
         public void SetUp()
         {
-            this.FacadeService.DeletePermission(1).Returns(new SuccessResult<PermissionResource>(new PermissionResource
-                {
-                    Id = 1
-                }));
+            this.permission = new IndividualPermission("/employees/1", new Privilege("test-privilege"), "/employees/2");
+
+
+            this.PermissionRepository.FindById(1).Returns(this.permission);
+
 
             this.Response = this.Client.Delete(
                 "/authorisation/permissions/1",
@@ -38,12 +42,17 @@
         }
 
         [Test]
+        public void ShouldReturnJsonContentType()
+        {
+            this.Response.Content.Headers.ContentType.Should().NotBeNull();
+            this.Response.Content.Headers.ContentType?.ToString().Should().Be("application/json");
+        }
+
+        [Test]
         public void ShouldRemoveFromRepository()
         {
-            var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
-            resources.Should().HaveCount(0);
 
-            this.FacadeService.Received().DeletePermission(1);
+            this.PermissionRepository.Received().Remove(this.permission);
             this.TransactionManager.Received(1).Commit();
         }
     }
