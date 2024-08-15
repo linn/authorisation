@@ -45,14 +45,18 @@ function ViewIndividualsPermission() {
                 </ListItem>
             </Grid>
             <Grid item xs={1}>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        deleteSend(permission.id);
-                    }}
-                >
-                    Delete
-                </Button>
+                {permission.groupName ? (
+                    <Typography color="primary">[{permission.groupName}]</Typography>
+                ) : (
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            deleteSend(permission.id);
+                        }}
+                    >
+                        Delete
+                    </Button>
+                )}
             </Grid>
         </Grid>
     );

@@ -60,9 +60,12 @@ namespace Linn.Authorisation.Facade.Services
                 {
                     foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
                     {
-                        result.Add(new PermissionResource {
-                                                                  GranteeUri = memberUri
-                                                              });
+                        result.Add(
+                            new PermissionResource 
+                                {
+                                    GranteeUri = memberUri,
+                                    GroupName = ((GroupPermission)permission).GranteeGroup.Name
+                                });
                     }
                 }
             }
