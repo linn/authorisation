@@ -27,13 +27,13 @@ function ViewPermissionUsers() {
         send,
         isLoading: isGetLoading,
         result: permissionEmployees
-    } = useGet(itemTypes.permissions.url);
+    } = useGet(`${itemTypes.permissions.url}/privilege`);
 
     const getPermissionEmployees = member => {
-        const employee = employees?.items.find(i => member.granteeUri === i.href);
+        const employee = employees?.items.find(i => member.granteeUri === i?.href);
 
         return (
-            <ListItem key={employee.href}>
+            <ListItem key={employee?.href}>
                 <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
             </ListItem>
         );
