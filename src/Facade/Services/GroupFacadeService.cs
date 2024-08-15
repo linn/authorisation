@@ -14,7 +14,6 @@
     {
         private readonly IRepository<Group, int> groupRepository;
 
-
         public GroupFacadeService(
             IRepository<Group, int> repository,
             ITransactionManager transactionManager,
@@ -27,10 +26,9 @@
 
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> privileges = null)
         {
-            var active = true;
-            var group = new Group(resource.Name, active);
+            var group = new Group(resource.Name, true);
 
-            var groups = this.groupRepository.FilterBy(g => g is Group);
+            var groups = this.groupRepository.FindAll();
 
             if (group.CheckUnique(groups))
             {

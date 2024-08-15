@@ -26,7 +26,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                                  Id = 2,
                                  Name = "testing-get-group"
                              };
-            group.AddIndividualMember("/employees/1234", "/1");
 
             this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
                 new List<Permission>
@@ -38,6 +37,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                             },
                         new GroupPermission
                             {
+                                GranteeGroup = group,
                                 Privilege = new Privilege { Name = "2" },
                                 Id = 2
                             }

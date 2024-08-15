@@ -59,13 +59,12 @@ function Group() {
         setGroup({ ...group, name: newValue });
     };
 
-    const getMembers = member => {
+    const renderListItem = member => {
         const employee = employees?.items.find(i => member.memberUri === i.href);
-
-        if (!employees?.items.find(i => member.memberUri === i.href)) {
+        if (!employee) {
             return (
-                <ListItem key={employee.href}>
-                    <Typography color="primary">{`${employee.href} - Employee not found`}</Typography>
+                <ListItem key={member.memberUri}>
+                    <Typography color="primary">{`${member.memberUri} - Employee not found`}</Typography>
                 </ListItem>
             );
         }
@@ -125,7 +124,7 @@ function Group() {
                 <Grid item xs={12}>
                     <Typography variant="h5">Group Members</Typography>
 
-                    <List>{group?.members?.map(getMembers)}</List>
+                    <List>{group?.members?.map(renderListItem)}</List>
                 </Grid>
             </Grid>
         </Page>

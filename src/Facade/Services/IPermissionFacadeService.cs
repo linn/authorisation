@@ -15,6 +15,6 @@ namespace Linn.Authorisation.Facade.Services
 
         IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri);
 
-        IResult<PermissionResource> DeletePermission(int  permissionId);
+        IResult<PermissionResource> DeletePermission(int permissionId);
     }
 }
