@@ -38,60 +38,62 @@ function ViewIndividualsPermission() {
     }, [deleteResult]);
 
     const renderEmployeesPermission = permission => (
-        <Grid container spacing={1}>
-            <Grid item xs={10}>
-                <ListItem key={permission.privilegeId}>
+        <Grid item xs={12}>
+            <ListItem key={permission.privilegeId}>
+                <Grid item xs={4}>
                     <Typography color="primary">{permission.privilege}</Typography>
-                </ListItem>
-            </Grid>
-            <Grid item xs={1}>
-                {permission.groupName ? (
-                    <Typography color="primary">[{permission.groupName}]</Typography>
-                ) : (
-                    <Button
-                        variant="outlined"
-                        onClick={() => {
-                            deleteSend(permission.id);
-                        }}
-                    >
-                        Delete
-                    </Button>
-                )}
-            </Grid>
+                </Grid>
+                <Grid item xs={8}>
+                    {permission.groupName ? (
+                        <Typography color="primary">
+                            [Has via group membership {permission.groupName}]
+                        </Typography>
+                    ) : (
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                                deleteSend(permission.id);
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </Grid>
+            </ListItem>
         </Grid>
     );
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Grid item xs={12}>
-                <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                {(isEmployeesLoading || isGetLoading || isDeleteLoading) && <Loading />}
-            </Grid>
-            <Grid item xs={4}>
-                <Dropdown
-                    propertyName="employee choice"
-                    items={employees?.items?.map(employee => ({
-                        id: employee.id,
-                        displayText: `${employee?.firstName} ${employee?.lastName}`
-                    }))}
-                    required
-                    label="Choose an Employee"
-                    fullWidth
-                    onChange={(propertyName, newValue) => {
-                        setEmployeeInput(newValue);
-                        send(null, `?who=/employees/${newValue}`);
-                    }}
-                    value={employeeInput}
-                />
-            </Grid>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    {(isEmployeesLoading || isGetLoading || isDeleteLoading) && <Loading />}
+                </Grid>
+                <Grid item xs={12}>
+                    <Dropdown
+                        propertyName="employee choice"
+                        items={employees?.items?.map(employee => ({
+                            id: employee.id,
+                            displayText: `${employee?.firstName} ${employee?.lastName}`
+                        }))}
+                        required
+                        label="Choose an Employee"
+                        fullWidth
+                        onChange={(propertyName, newValue) => {
+                            setEmployeeInput(newValue);
+                            send(null, `?who=/employees/${newValue}`);
+                        }}
+                        value={employeeInput}
+                    />
+                </Grid>
 
-            <Grid item xs={4}>
-                <List>{permissions?.map(renderEmployeesPermission)}</List>
-            </Grid>
+                <Grid item xs={12}>
+                    <List>{permissions?.map(renderEmployeesPermission)}</List>
+                </Grid>
 
-            <Grid item xs={4}>
                 <SnackbarMessage
                     visible={snackbarVisible}
                     onClose={() => setSnackbarVisible(false)}
