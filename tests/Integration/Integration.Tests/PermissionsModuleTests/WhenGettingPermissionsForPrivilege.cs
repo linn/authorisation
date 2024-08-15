@@ -2,7 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+
     using FluentAssertions;
+
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
@@ -12,7 +15,6 @@
     using NSubstitute;
 
     using NUnit.Framework;
-    using System.Net;
 
     public class WhenGettingPermissionsForPrivilege : ContextBase
     {

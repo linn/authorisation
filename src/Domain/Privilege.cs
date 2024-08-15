@@ -34,6 +34,7 @@ namespace Linn.Authorisation.Domain
                     return false;
                 }
             }
+
             return true;
         }
     }

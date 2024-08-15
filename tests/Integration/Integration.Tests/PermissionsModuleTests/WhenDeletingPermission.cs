@@ -1,7 +1,5 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
 
     using FluentAssertions;
@@ -9,8 +7,6 @@
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
-    using Linn.Authorisation.Resources;
-    using Linn.Common.Facade;
     using NSubstitute;
     using NUnit.Framework;
 

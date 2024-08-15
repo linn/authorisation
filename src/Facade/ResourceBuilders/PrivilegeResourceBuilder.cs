@@ -10,7 +10,6 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
     public class PrivilegeResourceBuilder : IBuilder<Privilege>
     {
-
         public object Build(Privilege model, IEnumerable<string> claims)
         {
             return new PrivilegeResource

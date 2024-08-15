@@ -11,9 +11,9 @@
     {
         public object Build(Member model, IEnumerable<string> claims)
         {
-            if (model is IndividualMember)
+            if (model is IndividualMember member)
             {
-                return new MemberResource { MemberUri = ((IndividualMember)model).MemberUri };
+                return new MemberResource { MemberUri = member.MemberUri };
             }
 
             throw new NotImplementedException();
@@ -23,7 +23,7 @@
         {
             throw new System.NotImplementedException();
         }
-        object IBuilder<Member>.Build(Member model, IEnumerable<string> claims) => this.Build(model, claims);
 
+        object IBuilder<Member>.Build(Member model, IEnumerable<string> claims) => this.Build(model, claims);
     }
 }

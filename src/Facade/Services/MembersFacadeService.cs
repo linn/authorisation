@@ -1,12 +1,12 @@
 ﻿namespace Linn.Authorisation.Facade.Services
 {
-    using Linn.Common.Facade;
-    using Linn.Common.Persistence;
     using System;
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Facade;
+    using Linn.Common.Persistence;
 
     public class MembersFacadeService : IMembersFacadeService
     {

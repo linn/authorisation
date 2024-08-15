@@ -39,6 +39,7 @@ namespace Linn.Authorisation.Facade.Services
             {
                 return;
             }
+
             throw new DuplicatePrivilegeNameException("Privilege name already taken");
         }
         
