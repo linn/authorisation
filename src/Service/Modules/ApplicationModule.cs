@@ -21,7 +21,6 @@
             app.MapGet("/authorisation/create-group-permission", this.GetApp);
             app.MapGet("/authorisation/view-permission-users", this.GetApp);
             app.MapGet("/authorisation/view-individual-permission", this.GetApp);
-            app.MapGet("/authorisation/groups", this.GetApp);
             app.MapGet("/authorisation/groups/create", this.GetApp);
             app.MapGet("/authorisation/groups/add-individual-member", this.GetApp);
         }
