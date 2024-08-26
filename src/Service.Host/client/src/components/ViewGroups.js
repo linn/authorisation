@@ -14,7 +14,7 @@ import Page from './Page';
 function ViewGroups() {
     const [groups, setGroups] = useState([]);
 
-    const { data, isLoading } = useInitialise(itemTypes.groupData.url);
+    const { data, isLoading } = useInitialise(itemTypes.groups.url);
 
     useEffect(() => {
         if (data) {

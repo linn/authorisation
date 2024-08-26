@@ -24,7 +24,7 @@ function CreateGroupPermission() {
         itemTypes.privileges.url
     );
 
-    const { data: groups, isGetLoading: isgroupLoading } = useInitialise(itemTypes.groupData.url);
+    const { data: groups, isGetLoading: isgroupLoading } = useInitialise(itemTypes.groups.url);
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.permissions.url,

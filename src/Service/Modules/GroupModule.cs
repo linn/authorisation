@@ -19,7 +19,7 @@
     {
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapGet("/authorisation/groupsInfo", this.GetAll);
+            endpoints.MapGet("/authorisation/groups", this.GetAll);
             endpoints.MapGet("/authorisation/groups/{id:int}", this.GetGroup);
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
