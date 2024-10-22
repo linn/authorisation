@@ -21,7 +21,7 @@ import Page from './Page';
 
 function Group() {
     const { id } = useParams();
-    const { data, isGetLoading } = useInitialise(itemTypes.groupData.url, id);
+    const { data, isGetLoading } = useInitialise(itemTypes.groups.url, id);
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
