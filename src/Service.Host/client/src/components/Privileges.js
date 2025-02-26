@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import { Loading } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    utilities,
+    CreateButton,
+    PermissionIndicator
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,6 +20,8 @@ function Privileges() {
     const [privileges, setPrivileges] = useState([]);
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
+
+    const hasViewPermission = utilities.getHref(data?.[0], 'view');
 
     useEffect(() => {
         if (data) {
@@ -49,16 +56,21 @@ function Privileges() {
                 <Grid item xs={12}>
                     <Typography variant="h4">Privileges</Typography>
                 </Grid>
+                <Grid item xs={4}>
+                    <CreateButton createUrl="/authorisation/privileges/create" />
+                </Grid>
+                <Grid item xs={1}>
+                    <PermissionIndicator
+                        hasPermission={hasViewPermission}
+                        hasPermissionMessage="You have view cashbook permissions"
+                        noPermissionMessage="You do not have view cashbook permissions"
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>
-                </Grid>
-                <Grid item xs={6}>
-                    <ListItem component={Link} to="/authorisation/privileges/create">
-                        <Typography color="primary">Create Privileges</Typography>
-                    </ListItem>
                 </Grid>
             </Grid>
         </Page>

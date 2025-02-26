@@ -6,39 +6,60 @@ import {
     InputField,
     OnOffSwitch,
     ErrorCard,
-    SnackbarMessage
+    SnackbarMessage,
+    PermissionIndicator,
+    utilities
 } from '@linn-it/linn-form-components-library';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import config from '../config';
 import usePut from '../hooks/usePut';
+import usePost from '../hooks/usePost';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
 import Page from './Page';
 
-function Privilege() {
+function Privilege({ creating }) {
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
     const [privilege, setPrivilege] = useState();
 
-    const { send, isPutLoading, errorMessage, putResult } = usePut(
-        itemTypes.privileges.url,
-        id,
-        {
-            name: privilege?.name,
-            active: privilege?.active,
-            ...privilege
-        },
-        true
-    );
+    const [errorMessage, setErrorMessage] = useState();
+
+    const hasPermission = creating
+        ? utilities.getHref(data?.[0], 'create')
+        : utilities.getHref(data?.[0], 'update');
+
+    const {
+        send: sendUpdate,
+        isPutLoading,
+        updateErrorMessage,
+        putResult
+    } = usePut(itemTypes.privileges.url, id, privilege, true);
+
+    const {
+        send: sendCreate,
+        isCreateLoading,
+        createErrorMessage,
+        postResult
+    } = usePost(itemTypes.privileges.url, null, privilege, true);
 
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     useEffect(() => {
-        setSnackbarVisible(!!putResult);
-    }, [putResult]);
+        setSnackbarVisible(!!putResult || !!postResult);
+    }, [postResult, putResult]);
+
+    useEffect(() => {
+        if (updateErrorMessage) {
+            setErrorMessage(updateErrorMessage);
+        } else if (createErrorMessage) {
+            setErrorMessage(createErrorMessage);
+        }
+    }, [updateErrorMessage, createErrorMessage]);
 
     useEffect(() => {
         if (data) {
@@ -57,10 +78,25 @@ function Privilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {(isGetLoading || isPutLoading) && <Loading />}
+                {(isGetLoading || isCreateLoading || isPutLoading) && <Loading />}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4">Edit Privilege</Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <PermissionIndicator
+                    hasPermission={hasPermission}
+                    hasPermissionMessage={
+                        creating
+                            ? 'You have create privilege permissions'
+                            : 'You have update privilege permissions'
+                    }
+                    noPermissionMessage={
+                        creating
+                            ? 'You do not have create privilege permissions'
+                            : 'You do not have update privilege permissions'
+                    }
+                />
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -84,7 +120,11 @@ function Privilege() {
                     variant="contained"
                     disabled={data?.name === privilege?.name && data?.active === privilege?.active}
                     onClick={() => {
-                        send();
+                        if (creating) {
+                            sendCreate(privilege);
+                        } else {
+                            sendUpdate(id, privilege);
+                        }
                     }}
                 >
                     Save
@@ -105,5 +145,8 @@ function Privilege() {
         </Page>
     );
 }
+
+Privilege.propTypes = { creating: PropTypes.bool };
+Privilege.defaultProps = { creating: false };
 
 export default Privilege;

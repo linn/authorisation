@@ -5,36 +5,63 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Resources;
 
     public class PrivilegeResourceBuilder : IBuilder<Privilege>
     {
+        private readonly IAuthorisationService authService;
+
+        public PrivilegeResourceBuilder(
+            IAuthorisationService authService)
+        {
+            this.authService = authService;
+        }
+
         public object Build(Privilege model, IEnumerable<string> claims)
         {
             return new PrivilegeResource
-                       {
-                           Id = model.Id,
-                           Name = model.Name,
-                           Active = model.Active,
-                           Links = this.BuildLinks(model).ToArray()
-                       };
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Active = model.Active,
+                Links = this.BuildLinks(model, claims).ToArray()
+            };
         }
-        
+
         public string GetLocation(Privilege model)
         {
             return $"/authorisation/privileges/{model.Id}";
         }
-        
+
         object IBuilder<Privilege>.Build(Privilege model, IEnumerable<string> claims) => this.Build(model, claims);
-        
-        private IEnumerable<LinkResource> BuildLinks(Privilege privilege)
+
+        private IEnumerable<LinkResource> BuildLinks(Privilege model, IEnumerable<string> claims)
         {
-            yield return new LinkResource
-                             {
-                                 Rel = "self",
-                                 Href = $"/privileges/{privilege.Id}"
-                             };
+            var privileges = claims == null ? new List<string>() : claims.ToList();
+
+            var department = model.Name.Split('.')[0];
+
+            var aa = this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges) ||
+                     this.authService.HasPermissionFor($"{department}.admin", privileges);
+
+            if (model != null)
+            {
+                yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
+
+                if (aa)
+                {
+                    yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
+                }
+            }
+
+            if (aa)
+            {
+                yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
+
+                yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
+            }
         }
     }
 }

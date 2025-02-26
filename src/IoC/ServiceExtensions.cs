@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.IoC
+﻿using Linn.Common.Authorisation;
+
+namespace Linn.Authorisation.IoC
 {
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
@@ -32,6 +34,7 @@
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddTransient<IRazorEngine, RazorEngine>()
+                .AddTransient<IAuthorisationService, AuthorisationService>()
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
                 .AddTransient<IPermissionService, PermissionService>();
         }

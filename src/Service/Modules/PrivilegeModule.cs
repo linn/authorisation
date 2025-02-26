@@ -24,18 +24,20 @@ namespace Linn.Authorisation.Service.Modules
         }
 
         private async Task GetPrivilege(
+            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service,
             int id)
         {
-            await res.Negotiate(service.GetById(id));
+            await res.Negotiate(service.GetById(id, req.HttpContext.GetPrivileges()));
         }
 
         private async Task GetAll(
+            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
-            await res.Negotiate(service.GetAll());
+            await res.Negotiate(service.GetAll(req.HttpContext.GetPrivileges()));
         }
 
         private async Task UpdatePrivilege(
