@@ -48,13 +48,11 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
             if (authorisedUser && model != null)
             {
-
                 yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
 
                 yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
 
                 yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
-
             }
 
             yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };

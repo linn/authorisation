@@ -80,7 +80,6 @@
             var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
             resources.Should().NotBeNull();
             resources.Should().HaveCount(2);
-            //resources[0].Links.Should().Contain(a => a.Links);
         }
 
     }

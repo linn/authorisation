@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import {
@@ -17,6 +18,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import config from '../config';
 import usePut from '../hooks/usePut';
+import useGet from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
@@ -26,7 +28,22 @@ import Page from './Page';
 function Privilege({ creating }) {
     const { id } = useParams();
 
-    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
+    const {
+        send: fetchPrivileges,
+        isLoading: isGetLoading,
+        result: privilegeResult
+    } = useGet(itemTypes.privileges.url, true);
+
+    const auth = useAuth();
+    const token = auth.user?.access_token;
+
+    const [hasFetched, setHasFetched] = useState(false);
+
+    if (!hasFetched && token && !creating) {
+        fetchPrivileges(id);
+        setHasFetched(true);
+    }
+
     const { data: permissionEmployees, isGetLoading: isPermissionEmployeesLoading } = useInitialise(
         `${itemTypes.permissions.url}/privilege`,
         `?privilegeId=${id}`
@@ -38,9 +55,7 @@ function Privilege({ creating }) {
 
     const [errorMessage, setErrorMessage] = useState();
 
-    const hasPermission = creating
-        ? utilities.getHref(data?.[0], 'create')
-        : utilities.getHref(data?.[0], 'update');
+    const hasPermission = creating ? true : utilities.getHref(privilege, 'edit');
 
     const {
         send: sendUpdate,
@@ -71,10 +86,10 @@ function Privilege({ creating }) {
     }, [updateErrorMessage, createErrorMessage]);
 
     useEffect(() => {
-        if (data) {
-            setPrivilege(data);
+        if (privilegeResult) {
+            setPrivilege(privilegeResult);
         }
-    }, [data, id]);
+    }, [privilegeResult, id]);
 
     const getPermissionEmployees = member => {
         const employee = employees?.items.find(i => member.granteeUri === i?.href);
@@ -107,7 +122,7 @@ function Privilege({ creating }) {
                 </Grid>
                 <Grid item xs={1}>
                     <PermissionIndicator
-                        hasPermission={hasPermission}
+                        hasPermission={!!hasPermission}
                         hasPermissionMessage={
                             creating
                                 ? 'You have create privilege permissions'
@@ -144,15 +159,15 @@ function Privilege({ creating }) {
                                     value={privilege?.active}
                                     onChange={handleActiveChange}
                                     inputProps={{ 'aria-label': 'Switch demo' }}
-                                    defaultChecked={data?.active}
+                                    defaultChecked={privilege?.active}
                                 />
                                 Active
                             </Typography>
                             <Button
                                 variant="contained"
                                 disabled={
-                                    data?.name === privilege?.name &&
-                                    data?.active === privilege?.active
+                                    privilegeResult?.name === privilege?.name &&
+                                    privilegeResult?.active === privilege?.active
                                 }
                                 onClick={() => {
                                     if (creating) {

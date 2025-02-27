@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import {
@@ -12,21 +13,38 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
-import useInitialise from '../hooks/useInitialise';
+import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Privileges() {
     const [privilegesWithView, setPrivilegesWithView] = useState([]);
 
-    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
+    const {
+        send: fetchPrivileges,
+        isLoading: isGetLoading,
+        result: privileges
+    } = useGet(itemTypes.privileges.url, true);
+
+    const auth = useAuth();
+    const token = auth.user?.access_token;
+
+    const [hasFetched, setHasFetched] = useState(false);
+
+    if (!hasFetched && token) {
+        fetchPrivileges();
+        setHasFetched(true);
+    }
+
+    const hasViewPermission = utilities.getHref(privileges?.[0], 'edit');
+    const hasCreatePermission = utilities.getHref(privileges?.[0], 'create');
 
     useEffect(() => {
-        if (data) {
-            const withView = data?.filter(privilege => utilities.getHref(privilege, 'view'));
+        if (privileges) {
+            const withView = privileges?.filter(privilege => utilities.getHref(privilege, 'view'));
             setPrivilegesWithView(withView);
         }
-    }, [data]);
+    }, [privileges]);
 
     const renderPrivilege = privilege => (
         <ListItem component={Link} to={`/authorisation/privileges/${privilege?.id}`}>
@@ -56,11 +74,14 @@ function Privileges() {
                     <Typography variant="h4">Privileges</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                    <CreateButton createUrl="/authorisation/privileges/create" />
+                    <CreateButton
+                        disabled={!hasCreatePermission}
+                        createUrl="/authorisation/privileges/create"
+                    />
                 </Grid>
                 <Grid item xs={1}>
                     <PermissionIndicator
-                        hasPermission={privilegesWithView?.length > 0}
+                        hasPermission={!!hasViewPermission}
                         hasPermissionMessage="You can only view these privileges"
                         noPermissionMessage="You do not have permission to view any privileges"
                     />

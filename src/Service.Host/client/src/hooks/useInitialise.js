@@ -1,19 +1,29 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from 'react-oidc-context';
 
-function useInitialise(url, id) {
+function useInitialise(url, id, requiresAuth = false) {
     const [isGetLoading, setIsGetLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
     const [data, setData] = useState(null);
+
+    let token = '';
+
+    const auth = useAuth();
+    if (requiresAuth) {
+        token = auth.user?.access_token;
+    }
 
     useEffect(() => {
         setIsGetLoading(true);
         setData(null);
         setServerError(null);
+
+        const headers = {
+            accept: 'application/json'
+        };
         const requestParameters = {
             method: 'GET',
-            headers: {
-                accept: 'application/json'
-            }
+            headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
 
         fetch(id ? `${url}/${id}` : url, requestParameters)
@@ -31,7 +41,7 @@ function useInitialise(url, id) {
                 setServerError(error);
                 setIsGetLoading(false);
             });
-    }, [url, id]);
+    }, [url, id, requiresAuth, token]);
     return { isGetLoading, serverError, data };
 }
 
