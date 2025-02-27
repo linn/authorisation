@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, utilities } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,9 +14,16 @@ import Page from './Page';
 function ViewPermissionUsers() {
     const [privilegeInput, setPrivilegeInput] = useState('');
 
-    const { data: privileges, isGetLoading: isPrivilegeLoading } = useInitialise(
-        itemTypes.privileges.url
-    );
+    const [privilegesWithView, setPrivilegesWithView] = useState([]);
+
+    const { data, isPrivilegeLoading } = useInitialise(itemTypes.privileges.url);
+
+    useEffect(() => {
+        if (data) {
+            const withView = data.filter(privilege => utilities.getHref(privilege, 'view'));
+            setPrivilegesWithView(withView);
+        }
+    }, [data]);
 
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
@@ -39,7 +45,7 @@ function ViewPermissionUsers() {
         );
     };
 
-    privileges?.sort((a, b) => {
+    privilegesWithView?.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
 
@@ -63,7 +69,7 @@ function ViewPermissionUsers() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="privilege choice"
-                    items={privileges?.map(privilege => ({
+                    items={privilegesWithView?.map(privilege => ({
                         id: privilege.id,
                         displayText: privilege?.name
                     }))}

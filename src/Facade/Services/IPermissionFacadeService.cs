@@ -11,9 +11,9 @@ namespace Linn.Authorisation.Facade.Services
 
         IResult<IEnumerable<PermissionResource>> GetPermissionsForPrivilege(int privilegeId);
 
-        IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri);
+        IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri, IEnumerable<string> privileges = null);
 
-        IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri);
+        IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri, IEnumerable<string> privileges = null);
 
         IResult<PermissionResource> DeletePermission(int permissionId);
     }

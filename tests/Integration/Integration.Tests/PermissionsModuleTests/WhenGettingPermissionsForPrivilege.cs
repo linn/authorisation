@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -11,9 +12,7 @@
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     public class WhenGettingPermissionsForPrivilege : ContextBase
@@ -23,6 +22,9 @@
         [SetUp]
         public void SetUp()
         {
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.group = new Group
                              {
                                  Id = 2,
@@ -35,7 +37,7 @@
                     {
                         new IndividualPermission
                             {
-                                Privilege = new Privilege { Name = "1", Id = 1 }, GranteeUri = "/employees/1"
+                                Privilege = new Privilege { Name = "finance.priv1", Id = 1 }, GranteeUri = "/employees/1"
                             },
                         new GroupPermission
                             { 
@@ -71,5 +73,15 @@
             resources.Should().Contain(a => a.GranteeUri == "/employees/1");
             resources.Should().Contain(a => a.GranteeUri == "/employees/2");
         }
+
+        [Test]
+        public void ShouldReturnJsonBodyWithRelLink()
+        {
+            var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
+            resources.Should().NotBeNull();
+            resources.Should().HaveCount(2);
+            //resources[0].Links.Should().Contain(a => a.Links);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -22,6 +23,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.PrivilegeRepository.FindById(100).Returns(new Privilege { Id = 100, Name = "test.privilege", Active = true });
 
             this.resource = new PermissionResource

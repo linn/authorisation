@@ -77,58 +77,67 @@ function Privilege({ creating }) {
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Grid item xs={12}>
-                {(isGetLoading || isCreateLoading || isPutLoading) && <Loading />}
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h4">Edit Privilege</Typography>
-            </Grid>
-            <Grid item xs={1}>
-                <PermissionIndicator
-                    hasPermission={hasPermission}
-                    hasPermissionMessage={
-                        creating
-                            ? 'You have create privilege permissions'
-                            : 'You have update privilege permissions'
-                    }
-                    noPermissionMessage={
-                        creating
-                            ? 'You do not have create privilege permissions'
-                            : 'You do not have update privilege permissions'
-                    }
-                />
-            </Grid>
-            <Grid item xs={6}>
-                <InputField
-                    propertyName="inputValue"
-                    label="Name"
-                    value={privilege?.name}
-                    onChange={handleNameFieldChange}
-                    fullWidth
-                />
-                <Typography color="black">
-                    Inactive
-                    <OnOffSwitch
-                        value={privilege?.active}
-                        onChange={handleActiveChange}
-                        inputProps={{ 'aria-label': 'Switch demo' }}
-                        defaultchecked={data?.active}
-                    />
-                    Active
-                </Typography>
-                <Button
-                    variant="contained"
-                    disabled={data?.name === privilege?.name && data?.active === privilege?.active}
-                    onClick={() => {
-                        if (creating) {
-                            sendCreate(privilege);
-                        } else {
-                            sendUpdate(id, privilege);
+            <Grid container spacing={3}>
+                <Grid item xs={11}>
+                    <Typography variant="h4">
+                        {creating ? `Create Privilege` : `Edit Privilege`}
+                    </Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <PermissionIndicator
+                        hasPermission={hasPermission}
+                        hasPermissionMessage={
+                            creating
+                                ? 'You have create privilege permissions'
+                                : 'You have update privilege permissions'
                         }
-                    }}
-                >
-                    Save
-                </Button>
+                        noPermissionMessage={
+                            creating
+                                ? 'You do not have create privilege permissions'
+                                : 'You do not have update privilege permissions'
+                        }
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    {(isGetLoading || isCreateLoading || isPutLoading) && <Loading />}
+                </Grid>
+                {hasPermission && (
+                    <Grid item xs={6}>
+                        <InputField
+                            propertyName="inputValue"
+                            label="Name"
+                            value={privilege?.name}
+                            onChange={handleNameFieldChange}
+                            fullWidth
+                        />
+
+                        <Typography color="black">
+                            Inactive
+                            <OnOffSwitch
+                                value={privilege?.active}
+                                onChange={handleActiveChange}
+                                inputProps={{ 'aria-label': 'Switch demo' }}
+                                defaultChecked={data?.active}
+                            />
+                            Active
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            disabled={
+                                data?.name === privilege?.name && data?.active === privilege?.active
+                            }
+                            onClick={() => {
+                                if (creating) {
+                                    sendCreate(privilege);
+                                } else {
+                                    sendUpdate(id, privilege);
+                                }
+                            }}
+                        >
+                            Save
+                        </Button>
+                    </Grid>
+                )}
 
                 {errorMessage && (
                     <Grid item xs={12}>

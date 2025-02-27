@@ -17,27 +17,26 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Privileges() {
-    const [privileges, setPrivileges] = useState([]);
+    const [privilegesWithView, setPrivilegesWithView] = useState([]);
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
 
-    const hasViewPermission = utilities.getHref(data?.[0], 'view');
-
     useEffect(() => {
         if (data) {
-            setPrivileges(data);
+            const withView = data?.filter(privilege => utilities.getHref(privilege, 'view'));
+            setPrivilegesWithView(withView);
         }
     }, [data]);
 
     const renderPrivilege = privilege => (
-        <ListItem component={Link} to={`/authorisation/privileges/${privilege.id}`}>
+        <ListItem component={Link} to={`/authorisation/privileges/${privilege?.id}`}>
             <Typography color="primary">
                 {privilege?.active ? `${privilege.name} - ACTIVE` : `${privilege.name} - INACTIVE`}
             </Typography>
         </ListItem>
     );
 
-    privileges?.sort((a, b) => {
+    privilegesWithView?.sort((a, b) => {
         const fa = a?.name.toLowerCase();
         const fb = b?.name.toLowerCase();
 
@@ -53,7 +52,7 @@ function Privileges() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={7}>
                     <Typography variant="h4">Privileges</Typography>
                 </Grid>
                 <Grid item xs={4}>
@@ -61,16 +60,16 @@ function Privileges() {
                 </Grid>
                 <Grid item xs={1}>
                     <PermissionIndicator
-                        hasPermission={hasViewPermission}
-                        hasPermissionMessage="You have view cashbook permissions"
-                        noPermissionMessage="You do not have view cashbook permissions"
+                        hasPermission={privilegesWithView?.length > 0}
+                        hasPermissionMessage="You can only view these privileges"
+                        noPermissionMessage="You do not have permission to view any privileges"
                     />
                 </Grid>
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
-                    <List>{privileges.map(renderPrivilege)}</List>
+                    <List>{privilegesWithView?.map(renderPrivilege)}</List>
                 </Grid>
             </Grid>
         </Page>

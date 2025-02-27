@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown, SnackbarMessage } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    Dropdown,
+    SnackbarMessage,
+    PermissionIndicator,
+    utilities
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -16,12 +22,22 @@ import Page from './Page';
 function ViewIndividualsPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [permissionsWithEdit, setPermissionsWithEdit] = useState([]);
 
     const {
         send,
         isLoading: isGetLoading,
         result: permissions
     } = useGet(itemTypes.permissions.url);
+
+    useEffect(() => {
+        if (permissions) {
+            const withEdit = permissions.filter(permission =>
+                utilities.getHref(permission, 'edit')
+            );
+            setPermissionsWithEdit(withEdit);
+        }
+    }, [permissions]);
 
     const {
         send: deleteSend,
@@ -43,6 +59,15 @@ function ViewIndividualsPermission() {
                 <Grid item xs={4}>
                     <Typography color="primary">{permission.privilege}</Typography>
                 </Grid>
+                {employeeInput && (
+                    <Grid item xs={1}>
+                        <PermissionIndicator
+                            hasPermission={permissionsWithEdit.length > 0}
+                            hasPermissionMessage="You can only view these privileges"
+                            noPermissionMessage="You do not have permission to view any privileges"
+                        />
+                    </Grid>
+                )}
                 <Grid item xs={8}>
                     {permission.groupName ? (
                         <Typography color="primary">
@@ -91,7 +116,7 @@ function ViewIndividualsPermission() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <List>{permissions?.map(renderEmployeesPermission)}</List>
+                    <List>{permissionsWithEdit?.map(renderEmployeesPermission)}</List>
                 </Grid>
 
                 <SnackbarMessage

@@ -67,7 +67,8 @@ namespace Linn.Authorisation.Facade.Services
 
         public IResult<PermissionResource> CreateIndividualPermission(
             PermissionResource permissionResource,
-            string employeeUri)
+            string employeeUri,
+            IEnumerable<string> privileges = null)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 
@@ -80,29 +81,28 @@ namespace Linn.Authorisation.Facade.Services
 
             var individualPermissions = permissions.Select(p => (IndividualPermission)p);
 
-            if (permission.CheckUnique(individualPermissions))
+            if (!permission.CheckUnique(individualPermissions))
             {
-                this.permissionsRepository.Add(permission);
-
-                this.transactionManager.Commit();
-
-                var result = new PermissionResource
-                                 {
-                                     DateGranted = permission.DateGranted.ToString("o"),
-                                     GrantedByUri = employeeUri,
-                                     GranteeUri = permission.GranteeUri,
-                                     PrivilegeId = permission.Privilege.Id
-                                 };
-
-                return new CreatedResult<PermissionResource>(result);
+                return new BadRequestResult<PermissionResource>("Grantee already has privilege");
             }
+            this.permissionsRepository.Add(permission);
 
-            return new BadRequestResult<PermissionResource>("Grantee already has privilege");
+            this.transactionManager.Commit();
+
+            var result = new PermissionResource
+            {
+                DateGranted = permission.DateGranted.ToString("o"),
+                GrantedByUri = employeeUri,
+                GranteeUri = permission.GranteeUri,
+                PrivilegeId = permission.Privilege.Id
+            };
+
+            return new CreatedResult<PermissionResource>(result);
         }
 
         public IResult<PermissionResource> CreateGroupPermission(
             PermissionResource permissionResource,
-            string employeeUri)
+            string employeeUri, IEnumerable<string> privileges = null)
         {
             var privilege = this.privilegeRepository.FindById(permissionResource.PrivilegeId);
 

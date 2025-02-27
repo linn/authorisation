@@ -23,6 +23,7 @@ namespace Linn.Authorisation.Service.Modules
         }
 
         private async Task GetAllPermissionsForUser(
+            HttpRequest req,
             HttpResponse res,
             string who,
             IPermissionFacadeService service)
@@ -34,6 +35,7 @@ namespace Linn.Authorisation.Service.Modules
         }
 
         private async Task GetPermissionsForPrivilege(
+            HttpRequest req,
             HttpResponse res,
             int privilegeId,
             IPermissionFacadeService service)
@@ -49,11 +51,11 @@ namespace Linn.Authorisation.Service.Modules
         {
             if (resource.GranteeGroupId == null) 
             {
-                await res.Negotiate(service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
+                await res.Negotiate(service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
             }
             else
             {
-                await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
+                await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
             }
         }
 
