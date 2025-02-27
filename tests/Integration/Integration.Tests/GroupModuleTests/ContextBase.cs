@@ -8,6 +8,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
     using Linn.Authorisation.IoC;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Logging;
     using Linn.Common.Persistence;
@@ -32,16 +33,19 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 
         protected IMembersFacadeService MembersFacadeService { get; private set;}
 
+        protected IAuthorisationService AuthService { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
             this.TransactionManager = Substitute.For<ITransactionManager>();
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
+            this.AuthService = Substitute.For<IAuthorisationService>();
 
             this.FacadeService = new GroupFacadeService(
                 this.GroupRepository,
                 this.TransactionManager,
-                new GroupResourceBuilder(),
+                new GroupResourceBuilder(this.AuthService),
                 this.GroupRepository);
             this.Log = Substitute.For<ILog>();
             this.MembersFacadeService = new MembersFacadeService(this.GroupRepository, this.TransactionManager);

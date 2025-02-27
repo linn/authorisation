@@ -10,6 +10,8 @@ import {
     PermissionIndicator,
     utilities
 } from '@linn-it/linn-form-components-library';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -25,6 +27,13 @@ function Privilege({ creating }) {
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
+    const { data: permissionEmployees, isGetLoading: isPermissionEmployeesLoading } = useInitialise(
+        `${itemTypes.permissions.url}/privilege`,
+        `?privilegeId=${id}`
+    );
+    const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
+        itemTypes.employees.url
+    );
     const [privilege, setPrivilege] = useState();
 
     const [errorMessage, setErrorMessage] = useState();
@@ -65,7 +74,20 @@ function Privilege({ creating }) {
         if (data) {
             setPrivilege(data);
         }
-    }, [data]);
+    }, [data, id]);
+
+    const getPermissionEmployees = member => {
+        const employee = employees?.items.find(i => member.granteeUri === i?.href);
+
+        if (employee) {
+            return (
+                <ListItem key={employee?.href}>
+                    <Typography color="primary">{`${employee?.firstName} ${employee?.lastName}`}</Typography>
+                </ListItem>
+            );
+        }
+        return null;
+    };
 
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
@@ -99,52 +121,61 @@ function Privilege({ creating }) {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    {(isGetLoading || isCreateLoading || isPutLoading) && <Loading />}
+                    {(isGetLoading ||
+                        isEmployeesLoading ||
+                        isCreateLoading ||
+                        isPermissionEmployeesLoading ||
+                        isPutLoading) && <Loading />}
                 </Grid>
                 {hasPermission && (
-                    <Grid item xs={6}>
-                        <InputField
-                            propertyName="inputValue"
-                            label="Name"
-                            value={privilege?.name}
-                            onChange={handleNameFieldChange}
-                            fullWidth
-                        />
-
-                        <Typography color="black">
-                            Inactive
-                            <OnOffSwitch
-                                value={privilege?.active}
-                                onChange={handleActiveChange}
-                                inputProps={{ 'aria-label': 'Switch demo' }}
-                                defaultChecked={data?.active}
+                    <>
+                        <Grid item xs={6}>
+                            <InputField
+                                propertyName="inputValue"
+                                label="Name"
+                                value={privilege?.name}
+                                onChange={handleNameFieldChange}
+                                fullWidth
                             />
-                            Active
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            disabled={
-                                data?.name === privilege?.name && data?.active === privilege?.active
-                            }
-                            onClick={() => {
-                                if (creating) {
-                                    sendCreate(privilege);
-                                } else {
-                                    sendUpdate(id, privilege);
-                                }
-                            }}
-                        >
-                            Save
-                        </Button>
-                    </Grid>
-                )}
 
+                            <Typography color="black">
+                                Inactive
+                                <OnOffSwitch
+                                    value={privilege?.active}
+                                    onChange={handleActiveChange}
+                                    inputProps={{ 'aria-label': 'Switch demo' }}
+                                    defaultChecked={data?.active}
+                                />
+                                Active
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                disabled={
+                                    data?.name === privilege?.name &&
+                                    data?.active === privilege?.active
+                                }
+                                onClick={() => {
+                                    if (creating) {
+                                        sendCreate(privilege);
+                                    } else {
+                                        sendUpdate(id, privilege);
+                                    }
+                                }}
+                            >
+                                Save
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <List>{permissionEmployees?.map(getPermissionEmployees)}</List>
+                        </Grid>
+                    </>
+                )}
                 {errorMessage && (
                     <Grid item xs={12}>
                         <ErrorCard errorMessage={errorMessage} />
                     </Grid>
                 )}
-
                 <SnackbarMessage
                     visible={snackbarVisible}
                     onClose={() => setSnackbarVisible(false)}

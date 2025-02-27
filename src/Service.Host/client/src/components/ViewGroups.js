@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
-import { Loading } from '@linn-it/linn-form-components-library';
+import { Link, useNavigate } from 'react-router-dom';
+import { Loading, CreateButton } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
@@ -12,6 +13,7 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function ViewGroups() {
+    const navigate = useNavigate();
     const [groups, setGroups] = useState([]);
 
     const { data, isLoading } = useInitialise(itemTypes.groups.url);
@@ -46,22 +48,25 @@ function ViewGroups() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={8}>
                     <Typography variant="h4">Groups</Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <CreateButton createUrl="/authorisation/groups/create" />
+                </Grid>
+                <Grid item xs={3}>
+                    <Button
+                        variant="contained"
+                        onClick={() => navigate('/authorisation/groups/add-individual-member')}
+                    >
+                        Add Member to Group
+                    </Button>
                 </Grid>
                 <Grid item xs={12}>
                     {isLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{groups.map(renderPrivilege)}</List>
-                </Grid>
-                <Grid item xs={6}>
-                    <ListItem component={Link} to="/authorisation/groups/create">
-                        <Typography color="primary">Create a Group</Typography>
-                    </ListItem>
-                    <ListItem component={Link} to="/authorisation/groups/add-individual-member">
-                        <Typography color="primary">Add a Member to a Group</Typography>
-                    </ListItem>
                 </Grid>
             </Grid>
         </Page>
