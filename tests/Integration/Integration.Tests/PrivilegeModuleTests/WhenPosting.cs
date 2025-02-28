@@ -21,10 +21,10 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+            this.AuthService.HasPermissionFor(AuthorisedAction.FinanceAdmin, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
-            this.resource = new PrivilegeResource { Name = "test-permission" };
+            this.resource = new PrivilegeResource { Name = "finance.test-permission" };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
         }
@@ -38,7 +38,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [Test]
         public void ShouldCallAddRepository()
         { 
-            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "test-permission" && p.Active == true));
+            this.PrivilegeRepository.Received().Add(Arg.Is<Privilege>(p => p.Name == "finance.test-permission" && p.Active == true));
         }
 
         [Test]
@@ -58,14 +58,14 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         public void ShouldReturnJsonBody()
         {
             var result = this.Response.DeserializeBody<PrivilegeResource>();
-            result.Name.Should().Be("test-permission");
+            result.Name.Should().Be("finance.test-permission");
         }
 
         [Test]
         public void ShouldReturnJsonBodyWithRelLink()
         {
             var result = this.Response.DeserializeBody<PrivilegeResource>();
-            result.Name.Should().Be("test-permission");
+            result.Name.Should().Be("finance.test-permission");
             result.Links.Should().Contain(link => link.Rel == "view");
         }
 

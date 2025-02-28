@@ -43,10 +43,9 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
             var department = model.Name.Split('.')[0];
 
-            var authorisedUser = this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges) ||
-                                 this.authService.HasPermissionFor($"{department}.admin", privileges);
+            var a = this.authService.HasPermissionFor($"{department}.admin", privileges);
 
-            if (authorisedUser && model != null)
+            if ((this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges) || this.authService.HasPermissionFor($"{department}.admin", privileges)) && model != null)
             {
                 yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
 
@@ -54,6 +53,15 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
                 yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
             }
+
+            //if (this.authService.HasPermissionFor($"{department}.admin", privileges) && model != null)
+            //{
+            //    yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
+
+            //    yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
+
+            //    yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
+            //}
 
             yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
         }

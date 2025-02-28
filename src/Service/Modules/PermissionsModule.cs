@@ -30,7 +30,7 @@ namespace Linn.Authorisation.Service.Modules
         {
             if (!string.IsNullOrEmpty(who))
             {
-                await res.Negotiate(service.GetAllPermissionsForUser(who));
+                await res.Negotiate(service.GetAllPermissionsForUser(who, req.HttpContext.GetPrivileges()));
             }
         }
 

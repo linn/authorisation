@@ -26,24 +26,24 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
             if (model is IndividualPermission)
             {
                 return new PermissionResource
-                           {
-                               GranteeUri = ((IndividualPermission)model).GranteeUri,
-                               Privilege = model.Privilege.Name,
-                               PrivilegeId = model.Privilege.Id,
-                               Links = this.BuildLinks(model, claims).ToArray(),
-                               Id = model.Id
-                           };
+                {
+                    GranteeUri = ((IndividualPermission)model).GranteeUri,
+                    Privilege = model.Privilege.Name,
+                    PrivilegeId = model.Privilege.Id,
+                    Links = this.BuildLinks(model, claims).ToArray(),
+                    Id = model.Id
+                };
             }
 
             return new PermissionResource
-                       {
-                           Privilege = model.Privilege.Name,
-                           PrivilegeId = model.Privilege.Id,
-                           Links = this.BuildLinks(model, claims).ToArray(),
-                           Id = model.Id,
-                           GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
-                           GroupName = ((GroupPermission)model).GranteeGroup.Name
-                       };
+            {
+                Privilege = model.Privilege.Name,
+                PrivilegeId = model.Privilege.Id,
+                Links = this.BuildLinks(model, claims).ToArray(),
+                Id = model.Id,
+                GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
+                GroupName = ((GroupPermission)model).GranteeGroup.Name
+            };
         }
 
         public string GetLocation(Permission model)
@@ -56,25 +56,31 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
         private IEnumerable<LinkResource> BuildLinks(Permission model, IEnumerable<string> claims)
         {
             var privileges = claims == null ? new List<string>() : claims.ToList();
+
             var department = model.Privilege.Name.Split('.')[0];
 
             var authorisedUser = this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges) ||
-                     this.authService.HasPermissionFor($"{department}.admin", privileges);
+                                 this.authService.HasPermissionFor($"{department}.admin", privileges);
 
-            if (authorisedUser && model != null)
+            if (this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges) && model != null)
             {
-
                 yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
 
                 yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
 
                 yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
+            }
 
+            if (this.authService.HasPermissionFor($"{department}.admin", privileges) && model != null)
+            {
+                yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
+
+                yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
+
+                yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };
             }
 
             yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
-
-            
         }
     }
 }

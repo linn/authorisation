@@ -154,10 +154,10 @@ namespace Linn.Authorisation.Facade.Services
             return new SuccessResult<PermissionResource>(result);
         }
 
-        public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri)
+        public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri, IEnumerable<string> privileges = null)
         {
             var result = this.permissionService.GetAllPermissionsForUser(granteeUri);
-            var resources = result.Select(x => (PermissionResource)this.resourceBuilder.Build(x, null));
+            var resources = result.Select(x => (PermissionResource)this.resourceBuilder.Build(x, privileges));
 
             return new SuccessResult<IEnumerable<PermissionResource>>(resources);
         }

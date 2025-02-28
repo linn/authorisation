@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from 'react-oidc-context';
 import Typography from '@mui/material/Typography';
 import {
     Loading,
@@ -25,10 +26,13 @@ function ViewIndividualsPermission() {
     const [permissionsWithEdit, setPermissionsWithEdit] = useState([]);
 
     const {
-        send,
+        send: fetchPermissions,
         isLoading: isGetLoading,
         result: permissions
-    } = useGet(itemTypes.permissions.url);
+    } = useGet(itemTypes.permissions.url, true);
+
+    const auth = useAuth();
+    const token = auth.user?.access_token;
 
     useEffect(() => {
         if (permissions) {
@@ -109,7 +113,9 @@ function ViewIndividualsPermission() {
                         fullWidth
                         onChange={(propertyName, newValue) => {
                             setEmployeeInput(newValue);
-                            send(null, `?who=/employees/${newValue}`);
+                            if (token) {
+                                fetchPermissions(null, `?who=/employees/${newValue}`);
+                            }
                         }}
                         value={employeeInput}
                     />
@@ -118,6 +124,8 @@ function ViewIndividualsPermission() {
                 <Grid item xs={12}>
                     <List>{permissionsWithEdit?.map(renderEmployeesPermission)}</List>
                 </Grid>
+
+                {console.log(permissionsWithEdit)}
 
                 <SnackbarMessage
                     visible={snackbarVisible}
