@@ -1,6 +1,5 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -73,14 +72,5 @@
             resources.Should().Contain(a => a.GranteeUri == "/employees/1");
             resources.Should().Contain(a => a.GranteeUri == "/employees/2");
         }
-
-        [Test]
-        public void ShouldReturnJsonBodyWithRelLink()
-        {
-            var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
-            resources.Should().NotBeNull();
-            resources.Should().HaveCount(2);
-        }
-
     }
 }

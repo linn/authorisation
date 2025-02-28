@@ -1,8 +1,7 @@
-﻿using Linn.Common.Resources;
-
-namespace Linn.Authorisation.Resources
+﻿namespace Linn.Authorisation.Resources
 {
-    using System;
+    using Linn.Common.Resources;
+
     using System.Collections.Generic;
 
     public class GroupResource : HypermediaResource

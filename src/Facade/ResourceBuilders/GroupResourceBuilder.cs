@@ -1,8 +1,8 @@
-﻿using Linn.Authorisation.Domain;
-using Linn.Common.Resources;
-
-namespace Linn.Authorisation.Facade.ResourceBuilders
+﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
+    using Linn.Authorisation.Domain;
+    using Linn.Common.Resources;
+
     using System.Collections.Generic;
     using System.Linq;
 

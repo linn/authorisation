@@ -1,9 +1,8 @@
-using Linn.Common.Authorisation;
-
 namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 {
     using System.Net.Http;
 
+    using Linn.Common.Authorisation;
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
