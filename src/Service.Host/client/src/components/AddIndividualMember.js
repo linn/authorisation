@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from 'react-oidc-context';
 import Typography from '@mui/material/Typography';
 import {
     Loading,
     Dropdown,
     ErrorCard,
+    utilities,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
@@ -12,18 +14,41 @@ import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import usePost from '../hooks/usePost';
+import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
-
 import Page from './Page';
 
 function AddIndividualMember() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [groupInput, setGroupInput] = useState('');
+    const [groupsWithView, setGroupsWithView] = useState([]);
 
-    const { data: groups, isGetLoading: isGroupsLoading } = useInitialise(itemTypes.groups.url);
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
+
+    const {
+        send: fetchGroups,
+        isLoading: isGroupsLoading,
+        result: groups
+    } = useGet(itemTypes.groups.url, true);
+
+    const auth = useAuth();
+    const token = auth.user?.access_token;
+
+    const [hasFetched, setHasFetched] = useState(false);
+
+    if (!hasFetched && token) {
+        fetchGroups();
+        setHasFetched(true);
+    }
+
+    useEffect(() => {
+        if (groups) {
+            const withView = groups.filter(group => utilities.getHref(group, 'view'));
+            setGroupsWithView(withView);
+        }
+    }, [groups]);
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.members.url,
@@ -41,7 +66,7 @@ function AddIndividualMember() {
         setSnackbarVisible(!!postResult);
     }, [postResult]);
 
-    groups?.sort((a, b) => {
+    groupsWithView?.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
 
@@ -88,7 +113,7 @@ function AddIndividualMember() {
             <Grid item xs={4}>
                 <Dropdown
                     propertyName="Group choice"
-                    items={groups?.map(group => ({
+                    items={groupsWithView?.map(group => ({
                         id: group.id,
                         displayText: group?.name
                     }))}

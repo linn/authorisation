@@ -36,7 +36,7 @@ function Privileges() {
         setHasFetched(true);
     }
 
-    const hasViewPermission = utilities.getHref(privileges?.[0], 'edit');
+    const hasViewPermission = utilities.getHref(privileges?.[0], 'view');
     const hasCreatePermission = utilities.getHref(privileges?.[0], 'create');
 
     useEffect(() => {

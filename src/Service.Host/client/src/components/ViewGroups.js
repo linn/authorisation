@@ -1,28 +1,48 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
 import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
-import { Loading, CreateButton } from '@linn-it/linn-form-components-library';
+import {
+    Loading,
+    CreateButton,
+    utilities,
+    PermissionIndicator
+} from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import history from '../history';
-import useInitialise from '../hooks/useInitialise';
+import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function ViewGroups() {
     const navigate = useNavigate();
-    const [groups, setGroups] = useState([]);
+    const [groupswithView, setGroupsWithView] = useState([]);
 
-    const { data, isLoading } = useInitialise(itemTypes.groups.url);
+    const { send: fetchGroups, isLoading, result: groups } = useGet(itemTypes.groups.url, true);
+
+    const auth = useAuth();
+    const token = auth.user?.access_token;
+
+    const [hasFetched, setHasFetched] = useState(false);
+
+    const hasViewPermission = utilities.getHref(groups?.[0], 'view');
+    const hasCreatePermission = utilities.getHref(groups?.[0], 'create');
+
+    if (!hasFetched && token) {
+        fetchGroups();
+        setHasFetched(true);
+    }
 
     useEffect(() => {
-        if (data) {
-            setGroups(data);
+        if (groups) {
+            const withView = groups.filter(group => utilities.getHref(group, 'view'));
+            setGroupsWithView(withView);
         }
-    }, [data]);
+    }, [groups]);
 
     const renderPrivilege = group => (
         <ListItem component={Link} to={`/authorisation/groups/${group.id}`}>
@@ -32,7 +52,7 @@ function ViewGroups() {
         </ListItem>
     );
 
-    groups.sort((a, b) => {
+    groupswithView?.sort((a, b) => {
         const fa = a.name.toLowerCase();
         const fb = b.name.toLowerCase();
 
@@ -48,25 +68,36 @@ function ViewGroups() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                     <Typography variant="h4">Groups</Typography>
                 </Grid>
                 <Grid item xs={1}>
-                    <CreateButton createUrl="/authorisation/groups/create" />
+                    <CreateButton
+                        disabled={!hasCreatePermission}
+                        createUrl="/authorisation/groups/create"
+                    />
                 </Grid>
                 <Grid item xs={3}>
                     <Button
                         variant="contained"
+                        disabled={!hasCreatePermission}
                         onClick={() => navigate('/authorisation/groups/add-individual-member')}
                     >
                         Add Member to Group
                     </Button>
                 </Grid>
+                <Grid item xs={1}>
+                    <PermissionIndicator
+                        hasPermission={!!hasViewPermission}
+                        hasPermissionMessage="You can only view these groups"
+                        noPermissionMessage="You do not have permission to view any groups"
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     {isLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
-                    <List>{groups.map(renderPrivilege)}</List>
+                    <List>{groupswithView.map(renderPrivilege)}</List>
                 </Grid>
             </Grid>
         </Page>

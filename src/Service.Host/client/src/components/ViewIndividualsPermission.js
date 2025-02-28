@@ -23,7 +23,7 @@ import Page from './Page';
 function ViewIndividualsPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [snackbarVisible, setSnackbarVisible] = useState(false);
-    const [permissionsWithEdit, setPermissionsWithEdit] = useState([]);
+    const [permissionsWithView, setPermissionsWithView] = useState([]);
 
     const {
         send: fetchPermissions,
@@ -36,10 +36,10 @@ function ViewIndividualsPermission() {
 
     useEffect(() => {
         if (permissions) {
-            const withEdit = permissions.filter(permission =>
-                utilities.getHref(permission, 'edit')
+            const withView = permissions.filter(permission =>
+                utilities.getHref(permission, 'view')
             );
-            setPermissionsWithEdit(withEdit);
+            setPermissionsWithView(withView);
         }
     }, [permissions]);
 
@@ -66,7 +66,7 @@ function ViewIndividualsPermission() {
                 {employeeInput && (
                     <Grid item xs={1}>
                         <PermissionIndicator
-                            hasPermission={permissionsWithEdit.length > 0}
+                            hasPermission={permissionsWithView.length > 0}
                             hasPermissionMessage="You can only view these privileges"
                             noPermissionMessage="You do not have permission to view any privileges"
                         />
@@ -122,10 +122,10 @@ function ViewIndividualsPermission() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <List>{permissionsWithEdit?.map(renderEmployeesPermission)}</List>
+                    <List>{permissionsWithView?.map(renderEmployeesPermission)}</List>
                 </Grid>
 
-                {console.log(permissionsWithEdit)}
+                {console.log(permissionsWithView)}
 
                 <SnackbarMessage
                     visible={snackbarVisible}
