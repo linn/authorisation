@@ -15,9 +15,6 @@ function App() {
                 <ListItem component={Link} to="/authorisation/privileges">
                     <Typography color="primary">Privileges</Typography>
                 </ListItem>
-                <ListItem component={Link} to="/authorisation/privileges/create">
-                    <Typography color="primary">Create Privileges</Typography>
-                </ListItem>
                 <ListItem component={Link} to="/authorisation/create-individual-permission">
                     <Typography color="primary">Create Individual Permission</Typography>
                 </ListItem>
@@ -29,9 +26,6 @@ function App() {
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/groups">
                     <Typography color="primary">Groups</Typography>
-                </ListItem>
-                <ListItem component={Link} to="/authorisation/groups/create">
-                    <Typography color="primary">Create a Group</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/groups/add-individual-member">
                     <Typography color="primary">Add a Member to a Group</Typography>
