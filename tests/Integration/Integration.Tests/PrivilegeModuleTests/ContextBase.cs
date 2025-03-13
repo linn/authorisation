@@ -1,3 +1,5 @@
+using Linn.Common.Authorisation;
+
 namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 {
     using System.Net.Http;
@@ -32,16 +34,19 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
         protected IRepository<Privilege, int> PrivilegeRepository { get; private set; }
 
+        protected IAuthorisationService AuthService { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
             this.TransactionManager = Substitute.For<ITransactionManager>();
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
+            this.AuthService = Substitute.For<IAuthorisationService>();
 
             this.FacadeService = new PrivilegeFacadeService(
                 this.PrivilegeRepository,
                 this.TransactionManager,
-                new PrivilegeResourceBuilder());
+                new PrivilegeResourceBuilder(this.AuthService));
             this.Log = Substitute.For<ILog>();
 
             this.Client = TestClient.With<PrivilegeModule>(

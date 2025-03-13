@@ -1,5 +1,6 @@
 namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -20,6 +21,9 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.resource = new PrivilegeResource { Name = "test-permission" };
 
             this.Response = this.Client.PostAsJsonAsync("/authorisation/privileges", this.resource).Result;
