@@ -14,6 +14,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
+    using Org.BouncyCastle.Ocsp;
 
     public class GroupModule : IModule
     {
@@ -27,18 +28,20 @@
         }
 
         private async Task GetAll(
+            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
-            await res.Negotiate(groupService.GetAll());
+            await res.Negotiate(groupService.GetAll(req.HttpContext.GetPrivileges()));
         }
 
         private async Task GetGroup(
+            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService,
             int id)
         {
-            await res.Negotiate(groupService.GetById(id));
+            await res.Negotiate(groupService.GetById(id, req.HttpContext.GetPrivileges()));
         }
 
         private async Task CreateGroup(
