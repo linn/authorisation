@@ -1,16 +1,14 @@
-﻿using Linn.Authorisation.Domain;
-
-namespace Linn.Authorisation.Facade.ResourceBuilders
+﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
     using System.Collections.Generic;
     using System.Linq;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
     using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Resources;
-    using Org.BouncyCastle.Utilities;
 
     public class GroupResourceBuilder : IBuilder<Group>
     {
