@@ -7,6 +7,7 @@
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Pdf;
 
@@ -33,6 +34,7 @@
         {
             return services.AddTransient<IRazorEngine, RazorEngine>()
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
+                .AddTransient<IAuthorisationService, AuthorisationService>()
                 .AddTransient<IPermissionService, PermissionService>();
         }
     }
