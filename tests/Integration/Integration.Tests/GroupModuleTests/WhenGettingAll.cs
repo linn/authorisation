@@ -5,6 +5,7 @@
     using System.Net;
 
     using FluentAssertions;
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -18,6 +19,9 @@
         [SetUp]
         public void SetUp()
         {
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.GroupRepository.FindAll().Returns(
                 new List<Group>
                     {
