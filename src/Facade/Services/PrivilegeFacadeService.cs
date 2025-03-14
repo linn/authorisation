@@ -2,37 +2,59 @@ namespace Linn.Authorisation.Facade.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq.Expressions;
 
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
+    using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
-    public class PrivilegeFacadeService : FacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>
+    public class PrivilegeFacadeService : IPrivilegeFacadeService
     {
         private readonly IRepository<Privilege, int> privilegeRepository;
 
+        private readonly IPrivilegeService privilegeService;
+
+        private readonly IBuilder<Privilege> resourceBuilder;
+
+        private readonly ITransactionManager transactionManager;
+
         public PrivilegeFacadeService(
-            IRepository<Privilege, int> repository,
-            ITransactionManager transactionManager,
-                IBuilder<Privilege> resourceBuilder)
-                : base(repository, transactionManager, resourceBuilder)
+            IRepository<Privilege, int> privilegeRepository,
+            IPrivilegeService privilegeService,
+            IBuilder<Privilege> resourceBuilder,
+            ITransactionManager transactionManager)
         {
-            this.privilegeRepository = repository;
+            this.privilegeRepository = privilegeRepository;
+            this.privilegeService = privilegeService;
+            this.resourceBuilder = resourceBuilder;
+            this.transactionManager = transactionManager;
         }
-        
-        protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> privileges = null)
+
+        public IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser(IEnumerable<string> privileges = null)
         {
-            var privilege = new Privilege(resource.Name);
-            return privilege;
+            throw new NotImplementedException();
         }
-        
-        protected override void UpdateFromResource(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
+
+        public IResult<IEnumerable<PrivilegeResource>> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivlege(PrivilegeResource privilegeResource, string employeeUri, IEnumerable<string> privileges)
+        {
+            var privilege = new Privilege(privilegeResource.Name);
+
+            return new SuccessResult<PrivilegeResource>(privilegeResource);
+        }
+
+        public void UpdatePrivilege(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
         {
             var privilegeList = this.privilegeRepository.FilterBy(g => g.Id != entity.Id);
-
             entity.Update(updateResource.Name, updateResource.Active);
 
             if (entity.CheckUnique(privilegeList))
@@ -42,18 +64,8 @@ namespace Linn.Authorisation.Facade.Services
 
             throw new DuplicatePrivilegeNameException("Privilege name already taken");
         }
-        
-        protected override Expression<Func<Privilege, bool>> SearchExpression(string searchTerm)
-        {
-            throw new NotImplementedException();
-        }
-        
-        protected override void SaveToLogTable(string actionType, int userNumber, Privilege entity, PrivilegeResource resource, PrivilegeResource updateResource)
-        {
-            throw new NotImplementedException();
-        }
-        
-        protected override void DeleteOrObsoleteResource(Privilege entity, IEnumerable<string> privileges = null)
+
+        public IResult<PrivilegeResource> DeletePrivilege(int privilegeId)
         {
             throw new NotImplementedException();
         }

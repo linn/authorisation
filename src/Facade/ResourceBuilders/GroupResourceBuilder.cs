@@ -23,24 +23,15 @@
 
         public object Build(Group model, IEnumerable<string> claims)
         {
-            var privileges = claims == null ? new List<string>() : claims.ToList();
-            var department = model.Name.Split('.')[0];
+            var members = model.Members;
+            var membersResources = members
+                .Select(member => (MemberResource)this.memberResourceBuilder.Build(member, claims)).ToList();
 
-            if ((this.authService.HasPermissionFor($"{department}.admin", privileges) ||
-                 this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges)) && model != null)
+            return new GroupResource
             {
-                var members = model.Members;
-                var membersResources = members
-                    .Select(member => (MemberResource)this.memberResourceBuilder.Build(member, claims)).ToList();
-
-                return new GroupResource
-                {
-                    Active = model.Active, Name = model.Name, Id = model.Id, Members = membersResources,
-                    Links = this.BuildLinks(model, claims).ToArray()
-                };
-            }
-
-            return null;
+                Active = model.Active, Name = model.Name, Id = model.Id, Members = membersResources,
+                Links = this.BuildLinks(model, claims).ToArray()
+            };
         }
 
         public string GetLocation(Group model)
@@ -56,7 +47,6 @@
 
             if (model != null)
             {
-                yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
                 yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
 
                 if (this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))

@@ -22,38 +22,30 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
         public object Build(Permission model, IEnumerable<string> claims)
         {
-            var privileges = claims == null ? new List<string>() : claims.ToList();
-            var department = model.Privilege.Name.Split('.')[0];
-
-            if ((this.authService.HasPermissionFor($"{department}.admin", privileges) ||
-                 this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges)) && model != null)
+            if (model is IndividualPermission)
             {
-                if (model is IndividualPermission)
-                {
-
-                    return new PermissionResource
-                    {
-                        GranteeUri = ((IndividualPermission)model).GranteeUri,
-                        Privilege = model.Privilege.Name,
-                        PrivilegeId = model.Privilege.Id,
-                        Links = this.BuildLinks(model, claims).ToArray(),
-                        Id = model.Id
-                    };
-                }
 
                 return new PermissionResource
                 {
+                    GranteeUri = ((IndividualPermission)model).GranteeUri,
                     Privilege = model.Privilege.Name,
                     PrivilegeId = model.Privilege.Id,
                     Links = this.BuildLinks(model, claims).ToArray(),
-                    Id = model.Id,
-                    GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
-                    GroupName = ((GroupPermission)model).GranteeGroup.Name
+                    Id = model.Id
                 };
             }
 
-            return null;
+            return new PermissionResource
+            {
+                Privilege = model.Privilege.Name,
+                PrivilegeId = model.Privilege.Id,
+                Links = this.BuildLinks(model, claims).ToArray(),
+                Id = model.Id,
+                GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
+                GroupName = ((GroupPermission)model).GranteeGroup.Name
+            };
         }
+
 
         public string GetLocation(Permission model)
         {
@@ -68,7 +60,6 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
             if (model != null)
             {
-                yield return new LinkResource { Rel = "view", Href = this.GetLocation(model) };
                 yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
 
                 if (this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
