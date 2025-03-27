@@ -48,7 +48,6 @@ namespace Linn.Authorisation.Service.Modules
             PrivilegeResource resource,
             IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
-            
             await res.Negotiate(service.Update(id, resource)); 
         }
 

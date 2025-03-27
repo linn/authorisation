@@ -11,7 +11,7 @@ namespace Linn.Authorisation.Facade.Services
     {
         IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser( IEnumerable<string> privileges = null);
 
-        IResult<IEnumerable<PrivilegeResource>> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null);
+        IResult<PrivilegeResource> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null);
 
         IResult<PrivilegeResource> CreatePrivlege(PrivilegeResource privilegeResource, string employeeUri, IEnumerable<string> privileges = null);
 

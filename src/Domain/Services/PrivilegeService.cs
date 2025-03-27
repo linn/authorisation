@@ -7,8 +7,6 @@ namespace Linn.Authorisation.Domain.Services
     using System.Reflection;
     using System.Security.Claims;
     using Linn.Authorisation.Domain.Exceptions;
-    using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Domain.Permissions;
     using Linn.Common.Persistence;
 
     public class PrivilegeService : IPrivilegeService
@@ -22,14 +20,21 @@ namespace Linn.Authorisation.Domain.Services
 
         public IEnumerable<Privilege> GetPrivilegesForPermission(IEnumerable<string> userPrivileges = null)
         {
+            if (userPrivileges.Contains("authorisation.super-user"))
+            {
+                var a = this.privilegeRepository.FindAll();
+
+                return a;
+            }
+
             if (userPrivileges == null || !userPrivileges.Any())
             {
                 throw new LackingPermissionException("You do not have any permissions");
             }
 
             var adminDepartments = userPrivileges
-                .Where(p => p.ToLower().Contains("admin")) 
-                .Select(p => p.Split('.')[0])  
+                .Where(p => p.ToLower().Contains("super-user"))
+                .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 
@@ -38,12 +43,15 @@ namespace Linn.Authorisation.Domain.Services
                 throw new LackingPermissionException("You are not an super user of any department");
             }
 
-            var resultList = this.privilegeRepository.FilterBy(p =>
-                adminDepartments.Any(dept => p.Name.StartsWith(dept + "."))).ToList();
+            var resultList = this.privilegeRepository
+                .FilterBy(p => true)
+                .AsEnumerable()
+                .Where(p => adminDepartments.Contains(p.Name.Split('.')[0]))
+                .ToList();
+
 
             return resultList;
         }
-
 
         public Privilege GetPrivilegeById(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
@@ -56,7 +64,7 @@ namespace Linn.Authorisation.Domain.Services
 
             var adminDepartments = userPrivileges
                 .Where(p => p.ToLower().Contains("admin"))
-                .Select(p => p.Split('.')[0]) 
+                .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 

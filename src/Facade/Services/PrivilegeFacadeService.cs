@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Linq;
+
 namespace Linn.Authorisation.Facade.Services
 {
     using System;
@@ -35,14 +38,22 @@ namespace Linn.Authorisation.Facade.Services
             this.transactionManager = transactionManager;
         }
 
-        public IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser(IEnumerable<string> privileges = null)
+        public IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser(IEnumerable<string> userPrivileges = null)
         {
-            throw new NotImplementedException();
+            var privileges = this.privilegeService.GetPrivilegesForPermission(userPrivileges);
+
+            var resources = privileges.Select(x => (PrivilegeResource)this.resourceBuilder.Build(x, userPrivileges));
+
+            return new SuccessResult<IEnumerable<PrivilegeResource>>(resources);
         }
 
-        public IResult<IEnumerable<PrivilegeResource>> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null)
+        public IResult<PrivilegeResource> GetPrivilegeById(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            throw new NotImplementedException();
+            var privilege = this.privilegeService.GetPrivilegeById(privilegeId, userPrivileges);
+
+            var resource = (PrivilegeResource)this.resourceBuilder.Build(privilege, userPrivileges);
+
+            return new SuccessResult<PrivilegeResource>(resource);
         }
 
         IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivlege(PrivilegeResource privilegeResource, string employeeUri, IEnumerable<string> privileges)
@@ -66,6 +77,11 @@ namespace Linn.Authorisation.Facade.Services
         }
 
         public IResult<PrivilegeResource> DeletePrivilege(int privilegeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult<PrivilegeResource> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null)
         {
             throw new NotImplementedException();
         }
