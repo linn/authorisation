@@ -14,7 +14,7 @@
 
     using NUnit.Framework;
 
-    public class WhenGettingPermissionForValidUser : ContextBase
+    public class WhenGettingPrivilegesForValidUser : ContextBase
     {
         private IEnumerable<Privilege> result;
 

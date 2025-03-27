@@ -19,7 +19,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.DomainService.GetPrivilegesForPermission().Returns(

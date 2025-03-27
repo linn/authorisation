@@ -49,7 +49,7 @@
             {
                 yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
 
-                if (this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, privileges))
+                if (this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, privileges))
                 {
                     yield return new LinkResource { Rel = "edit", Href = this.GetLocation(model) };
                     yield return new LinkResource { Rel = "create", Href = this.GetLocation(model) };

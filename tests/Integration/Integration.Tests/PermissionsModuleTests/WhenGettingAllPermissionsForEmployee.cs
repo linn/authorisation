@@ -21,7 +21,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAdmin, Arg.Any<IEnumerable<string>>())
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             var group = new Group

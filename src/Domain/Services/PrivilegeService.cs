@@ -55,26 +55,36 @@ namespace Linn.Authorisation.Domain.Services
 
         public Privilege GetPrivilegeById(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
+            if (userPrivileges.Contains("authorisation.super-user"))
+            {
+                return this.privilegeRepository.FindById(privilegeId); ;
+            }
+
             if (userPrivileges == null || !userPrivileges.Any())
             {
                 throw new LackingPermissionException("You do not have any permissions");
             }
 
-            var isSuperUser = userPrivileges.Any(p => p.Equals("authorisation.superuser", StringComparison.OrdinalIgnoreCase));
-
             var adminDepartments = userPrivileges
-                .Where(p => p.ToLower().Contains("admin"))
+                .Where(p => p.ToLower().Contains("super-user"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 
-            if (!isSuperUser && !adminDepartments.Any())
+            if (!adminDepartments.Any())
             {
-                throw new LackingPermissionException("You are not an admin of any department, nor a superuser.");
+                throw new LackingPermissionException("You are not an super user of any department");
             }
 
-            return this.privilegeRepository.FindBy(p =>
-                p.Id == privilegeId && (isSuperUser || adminDepartments.Any(dept => p.Name.StartsWith(dept + "."))));
+            var result = this.privilegeRepository
+                .FindById(privilegeId);
+
+            if (adminDepartments.Contains(result.Name.Split(".")[0]))
+            {
+                return result;
+            }
+
+            throw new LackingPermissionException("Null");
         }
 
     }
