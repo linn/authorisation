@@ -1,10 +1,9 @@
 ﻿namespace Linn.Authorisation.Resources
 {
-    using Linn.Common.Resources;
-
+    using System;
     using System.Collections.Generic;
 
-    public class GroupResource : HypermediaResource
+    public class GroupResource
     {
         public string Name { get; set; }
 

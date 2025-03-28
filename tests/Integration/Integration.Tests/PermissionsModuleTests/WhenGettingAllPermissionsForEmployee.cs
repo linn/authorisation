@@ -21,14 +21,11 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
-                .Returns(true);
-
             var group = new Group
-                             {
-                                 Id = 2,
-                                 Name = "testing-get-group"
-                             };
+            {
+                Id = 2,
+                Name = "testing-get-group"
+            };
 
             this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
                 new List<Permission>
@@ -49,9 +46,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.Response = this.Client.Get(
                 "/authorisation/permissions?who=/employees/1234",
                 with =>
-                    {
-                        with.Accept("application/json");
-                    }).Result;
+                {
+                    with.Accept("application/json");
+                }).Result;
         }
 
         [Test]

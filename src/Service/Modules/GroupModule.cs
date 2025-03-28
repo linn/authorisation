@@ -27,20 +27,18 @@
         }
 
         private async Task GetAll(
-            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
-            await res.Negotiate(groupService.GetAll(req.HttpContext.GetPrivileges()));
+            await res.Negotiate(groupService.GetAll());
         }
 
         private async Task GetGroup(
-            HttpRequest req,
             HttpResponse res,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService,
             int id)
         {
-            await res.Negotiate(groupService.GetById(id, req.HttpContext.GetPrivileges()));
+            await res.Negotiate(groupService.GetById(id));
         }
 
         private async Task CreateGroup(

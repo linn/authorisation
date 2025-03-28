@@ -10,7 +10,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.IoC;
     using Linn.Authorisation.Service.Modules;
-    using Linn.Common.Authorisation;
     using Linn.Common.Logging;
     using Linn.Common.Persistence;
 
@@ -25,11 +24,11 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         protected HttpClient Client { get; set; }
 
         protected HttpResponseMessage Response { get; set; }
-        
+
         protected IPermissionFacadeService FacadeService { get; private set; }
 
         protected ILog Log { get; private set; }
-        
+
         protected IPermissionService DomainService { get; private set; }
 
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
@@ -40,8 +39,6 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
         protected ITransactionManager TransactionManager { get; set; }
 
-        protected IAuthorisationService AuthService { get; private set; }
-
         [SetUp]
         public void SetUpContext()
         {
@@ -50,11 +47,10 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
             this.GroupRespository = Substitute.For<IRepository<Group, int>>();
             this.TransactionManager = Substitute.For<ITransactionManager>();
-            this.AuthService = Substitute.For<IAuthorisationService>();
 
             this.FacadeService = new PermissionFacadeService(
                 this.DomainService,
-                new PermissionResourceBuilder(this.AuthService),
+                new PermissionResourceBuilder(),
                 this.PermissionRepository,
                 this.PrivilegeRepository,
                 this.GroupRespository,
@@ -63,12 +59,12 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
             this.Client = TestClient.With<PermissionsModule>(
                 services =>
-                    {
-                        services.AddSingleton(this.FacadeService);
-                        services.AddSingleton(this.Log);
-                        services.AddHandlers();
-                        services.AddRouting();
-                    },
+                {
+                    services.AddSingleton(this.FacadeService);
+                    services.AddSingleton(this.Log);
+                    services.AddHandlers();
+                    services.AddRouting();
+                },
                 FakeAuthMiddleware.EmployeeMiddleware);
         }
     }

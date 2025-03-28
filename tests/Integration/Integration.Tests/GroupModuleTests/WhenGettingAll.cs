@@ -5,7 +5,6 @@
     using System.Net;
 
     using FluentAssertions;
-    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -19,22 +18,19 @@
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
-                .Returns(true);
-
             this.GroupRepository.FindAll().Returns(
                 new List<Group>
-                    {
-                        new Group { Name = "1" },
-                        new Group { Name = "2" }
-                    }.AsQueryable());
+                {
+                    new Group { Name = "1" },
+                    new Group { Name = "2" }
+                }.AsQueryable());
 
             this.Response = this.Client.Get(
                 "/authorisation/groups",
                 with =>
-                    {
-                        with.Accept("application/json");
-                    }).Result;
+                {
+                    with.Accept("application/json");
+                }).Result;
         }
 
         [Test]
