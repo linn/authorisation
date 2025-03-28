@@ -51,7 +51,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
             this.FacadeService = new PrivilegeFacadeService(
                 this.PrivilegeRepository,
                 this.DomainService,
-                new PrivilegeResourceBuilder(this.AuthService),
+                new PrivilegeResourceBuilder(),
                 this.TransactionManager
                 );
             this.Log = Substitute.For<ILog>();
