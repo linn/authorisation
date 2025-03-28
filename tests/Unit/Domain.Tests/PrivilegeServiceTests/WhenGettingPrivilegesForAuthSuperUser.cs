@@ -34,7 +34,7 @@
             this.PrivilegeRepository.FindAll()
                 .Returns(privileges.AsQueryable());
 
-            this.result = this.Sut.GetPrivilegesForPermission(userPrivileges);
+            this.result = this.Sut.GetAllPrivilegesForUser(userPrivileges);
         }
 
         [Test]

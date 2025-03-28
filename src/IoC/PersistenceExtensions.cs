@@ -16,9 +16,8 @@
         {
             return services.AddScoped<ServiceDbContext>().AddTransient<DbContext>(a => a.GetService<ServiceDbContext>())
                 .AddTransient<ITransactionManager, TransactionManager>()
-                .AddTransient<IRepository<Privilege, int>, EntityFrameworkRepository<Privilege, int>>(
-                    r => new EntityFrameworkRepository<Privilege, int>(r.GetService<ServiceDbContext>()?.Privileges))
                 .AddTransient<IRepository<Permission, int>, PermissionsRepository>()
+                .AddTransient<IRepository<Privilege,int>, PrivilegeRepository>()
                 .AddTransient<IRepository<Group, int>, GroupRepository>();
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.IoC
+﻿using Linn.Common.Proxy.LinnApps;
+
+namespace Linn.Authorisation.IoC
 {
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
@@ -25,7 +27,6 @@
                 .AddTransient<IBuilder<Group>, GroupResourceBuilder>()
                 .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>()
-                .AddTransient<IPermissionFacadeService, PermissionFacadeService>()
                 .AddTransient<IPrivilegeFacadeService, PrivilegeFacadeService>()
                 .AddTransient<IBuilder<Member>, MemberResourceBuilder>();
         }
@@ -36,6 +37,7 @@
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
                 .AddTransient<IAuthorisationService, AuthorisationService>()
                 .AddTransient<IPermissionService, PermissionService>()
+                .AddTransient<IDatabaseService, DatabaseService>()
                 .AddTransient<IPrivilegeService, PrivilegeService>();
         }
     }

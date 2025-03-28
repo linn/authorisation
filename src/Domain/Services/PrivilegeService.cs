@@ -18,7 +18,7 @@ namespace Linn.Authorisation.Domain.Services
             this.privilegeRepository = privilegeRepository;
         }
 
-        public IEnumerable<Privilege> GetPrivilegesForPermission(IEnumerable<string> userPrivileges = null)
+        public IEnumerable<Privilege> GetAllPrivilegesForUser(IEnumerable<string> userPrivileges = null)
         {
             if (userPrivileges.Contains("authorisation.super-user"))
             {

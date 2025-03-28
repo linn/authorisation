@@ -1,4 +1,5 @@
 using Linn.Authorisation.Domain.Services;
+using Linn.Authorisation.Facade.Services;
 
 namespace Linn.Authorisation.Service.Modules
 {
@@ -28,7 +29,7 @@ namespace Linn.Authorisation.Service.Modules
         private async Task GetPrivilege(
             HttpRequest req,
             HttpResponse res,
-            IPrivilegeService service,
+            IPrivilegeFacadeService service,
             int id)
         {
             await res.Negotiate(service.GetPrivilegeById(id, req.HttpContext.GetPrivileges()));
@@ -37,30 +38,30 @@ namespace Linn.Authorisation.Service.Modules
         private async Task GetAll(
             HttpRequest req,
             HttpResponse res,
-            IPrivilegeService service)
+            IPrivilegeFacadeService service)
         {
-            await res.Negotiate(service.GetPrivilegesForPermission(req.HttpContext.GetPrivileges()));
+            await res.Negotiate(service.GetAllPrivilegesForUser(req.HttpContext.GetPrivileges()));
         }
 
         private async Task UpdatePrivilege(
+            HttpRequest req,
             HttpResponse res,
             int id,
             PrivilegeResource resource,
-            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
+            IPrivilegeFacadeService service)
         {
-            await res.Negotiate(service.Update(id, resource)); 
+            await res.Negotiate(service.UpdatePrivilege(id, resource, req.HttpContext.GetPrivileges()));
         }
+
 
 
         private async Task CreatePrivilege(
             HttpResponse res,
             HttpRequest req,
             PrivilegeResource resource,
-            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
+            IPrivilegeFacadeService service)
         {
-            var result = service.Add(resource);
-
-            var authenticatedUser = req.HttpContext.User.GetEmployeeUrl();
+            var result = service.CreatePrivilege(resource, req.HttpContext.GetPrivileges());
 
             await res.Negotiate(result);
         }

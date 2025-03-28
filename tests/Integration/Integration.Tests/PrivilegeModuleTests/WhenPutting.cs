@@ -29,6 +29,9 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
             this.current = new Privilege { Id = 12, Name = "old.name", Active = true };
             this.PrivilegeRepository.FindById(this.current.Id).Returns(this.current);
+            this.DomainService.GetPrivilegeById(12, Arg.Any<IEnumerable<string>>()).Returns(
+                new Privilege { Id = 12, Name = "name", Active = true }
+            );
             this.Response = this.Client.PutAsJsonAsync("/authorisation/privileges/12", this.updatedResource).Result;
         }
 

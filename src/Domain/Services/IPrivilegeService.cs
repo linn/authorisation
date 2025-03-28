@@ -6,7 +6,7 @@
 
     public interface IPrivilegeService
     {
-        IEnumerable<Privilege> GetPrivilegesForPermission(IEnumerable<string> privileges = null);
+        IEnumerable<Privilege> GetAllPrivilegesForUser(IEnumerable<string> privileges = null);
 
         Privilege GetPrivilegeById(int privilegeId, IEnumerable<string> privileges = null);
     }

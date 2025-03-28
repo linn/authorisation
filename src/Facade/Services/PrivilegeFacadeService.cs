@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Linn.Common.Proxy.LinnApps;
 
 namespace Linn.Authorisation.Facade.Services
 {
@@ -38,9 +39,9 @@ namespace Linn.Authorisation.Facade.Services
             this.transactionManager = transactionManager;
         }
 
-        public IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser(IEnumerable<string> userPrivileges = null)
+        public IResult<IEnumerable<PrivilegeResource>> GetAllPrivilegesForUser(IEnumerable<string> userPrivileges = null)
         {
-            var privileges = this.privilegeService.GetPrivilegesForPermission(userPrivileges);
+            var privileges = this.privilegeService.GetAllPrivilegesForUser(userPrivileges);
 
             var resources = privileges.Select(x => (PrivilegeResource)this.resourceBuilder.Build(x, userPrivileges));
 
@@ -56,21 +57,36 @@ namespace Linn.Authorisation.Facade.Services
             return new SuccessResult<PrivilegeResource>(resource);
         }
 
-        IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivlege(PrivilegeResource privilegeResource, string employeeUri, IEnumerable<string> privileges)
+        IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivilege(PrivilegeResource privilegeResource, IEnumerable<string> userPrivileges)
         {
-            var privilege = new Privilege(privilegeResource.Name);
+            if (!userPrivileges.Contains($"{privilegeResource.Name.Split('.')[0]}.super-user") && !userPrivileges.Contains("authorisation.super-user"))
+            {
+                throw new LackingPermissionException("You do not have permission to create this privilege");
+            }
 
-            return new SuccessResult<PrivilegeResource>(privilegeResource);
+            var privilege = new Privilege
+            {
+                Active = true,
+                Name = privilegeResource.Name,
+            };
+
+            this.privilegeRepository.Add(privilege);
+            this.transactionManager.Commit();
+
+            return new CreatedResult<PrivilegeResource>(privilegeResource);
         }
 
-        public void UpdatePrivilege(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null)
+        public IResult<PrivilegeResource> UpdatePrivilege(int id, PrivilegeResource updateResource, IEnumerable<string> userPrivileges = null)
         {
+            var entity = this.privilegeService.GetPrivilegeById(id, userPrivileges);
+
             var privilegeList = this.privilegeRepository.FilterBy(g => g.Id != entity.Id);
+
             entity.Update(updateResource.Name, updateResource.Active);
 
             if (entity.CheckUnique(privilegeList))
             {
-                return;
+                return new SuccessResult<PrivilegeResource>(updateResource);
             }
 
             throw new DuplicatePrivilegeNameException("Privilege name already taken");
@@ -81,9 +97,5 @@ namespace Linn.Authorisation.Facade.Services
             throw new NotImplementedException();
         }
 
-        public IResult<PrivilegeResource> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

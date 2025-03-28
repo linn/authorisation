@@ -9,13 +9,13 @@ namespace Linn.Authorisation.Facade.Services
 
     public interface IPrivilegeFacadeService
     {
-        IResult<IEnumerable<PrivilegeResource>> GetAllPrivlegesForUser( IEnumerable<string> privileges = null);
+        IResult<IEnumerable<PrivilegeResource>> GetAllPrivilegesForUser( IEnumerable<string> privileges = null);
 
-        IResult<PrivilegeResource> GetPrivlegeById(int privilegeId, IEnumerable<string> privileges = null);
+        IResult<PrivilegeResource> GetPrivilegeById(int privilegeId, IEnumerable<string> privileges = null);
 
-        IResult<PrivilegeResource> CreatePrivlege(PrivilegeResource privilegeResource, string employeeUri, IEnumerable<string> privileges = null);
+        IResult<PrivilegeResource> CreatePrivilege(PrivilegeResource privilegeResource, IEnumerable<string> privileges = null);
 
-        void UpdatePrivilege(Privilege entity, PrivilegeResource updateResource, IEnumerable<string> privileges = null);
+        IResult<PrivilegeResource> UpdatePrivilege(int id, PrivilegeResource updateResource, IEnumerable<string> userPrivileges = null);
 
         IResult<PrivilegeResource> DeletePrivilege(int privilegeId);
     }

@@ -36,7 +36,7 @@
 
             this.PrivilegeRepository.FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>())
                 .Returns(privileges.AsQueryable());
-            this.result = this.Sut.GetPrivilegesForPermission(userPrivileges);
+            this.result = this.Sut.GetAllPrivilegesForUser(userPrivileges);
         }
 
         [Test]
