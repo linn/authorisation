@@ -28,6 +28,7 @@ namespace Linn.Authorisation.IoC
                 .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>()
                 .AddTransient<IPrivilegeFacadeService, PrivilegeFacadeService>()
+                .AddTransient<IMembersFacadeService, MembersFacadeService>()
                 .AddTransient<IBuilder<Member>, MemberResourceBuilder>();
         }
 

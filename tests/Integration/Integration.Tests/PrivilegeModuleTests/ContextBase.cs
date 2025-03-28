@@ -52,7 +52,8 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
                 this.PrivilegeRepository,
                 this.DomainService,
                 new PrivilegeResourceBuilder(),
-                this.TransactionManager
+                this.TransactionManager,
+                this.AuthService
                 );
             this.Log = Substitute.For<ILog>();
             this.Sut = new PrivilegeService(this.PrivilegeRepository);

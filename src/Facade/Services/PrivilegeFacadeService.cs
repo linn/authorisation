@@ -14,6 +14,7 @@ namespace Linn.Authorisation.Facade.Services
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
@@ -27,16 +28,20 @@ namespace Linn.Authorisation.Facade.Services
 
         private readonly ITransactionManager transactionManager;
 
+        private readonly IAuthorisationService authService;
+
         public PrivilegeFacadeService(
             IRepository<Privilege, int> privilegeRepository,
             IPrivilegeService privilegeService,
             IBuilder<Privilege> resourceBuilder,
-            ITransactionManager transactionManager)
+            ITransactionManager transactionManager,
+            IAuthorisationService authService)
         {
             this.privilegeRepository = privilegeRepository;
             this.privilegeService = privilegeService;
             this.resourceBuilder = resourceBuilder;
             this.transactionManager = transactionManager;
+            this.authService = authService;
         }
 
         public IResult<IEnumerable<PrivilegeResource>> GetAllPrivilegesForUser(IEnumerable<string> userPrivileges = null)
@@ -59,7 +64,7 @@ namespace Linn.Authorisation.Facade.Services
 
         IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivilege(PrivilegeResource privilegeResource, IEnumerable<string> userPrivileges)
         {
-            if (!userPrivileges.Contains($"{privilegeResource.Name.Split('.')[0]}.super-user") && !userPrivileges.Contains("authorisation.super-user"))
+            if (!userPrivileges.Contains($"{privilegeResource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
             {
                 throw new LackingPermissionException("You do not have permission to create this privilege");
             }
