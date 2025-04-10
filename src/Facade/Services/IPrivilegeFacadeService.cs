@@ -7,7 +7,7 @@
 
     public interface IPrivilegeFacadeService
     {
-        IResult<IEnumerable<PrivilegeResource>> GetAllPrivilegesForUser( IEnumerable<string> privileges = null);
+        IResult<IEnumerable<PrivilegeResource>> GetAllPrivilegesForUser(IEnumerable<string> privileges = null);
 
         IResult<PrivilegeResource> GetPrivilegeById(int privilegeId, IEnumerable<string> privileges = null);
 

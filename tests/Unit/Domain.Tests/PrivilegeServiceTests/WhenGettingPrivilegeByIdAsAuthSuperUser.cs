@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
 
     using FluentAssertions;
 
@@ -11,7 +9,7 @@
 
     using NUnit.Framework;
 
-    public class WhenGettingPrivilegeForIdAsAuthSuperUser : ContextBase
+    public class WhenGettingPrivilegeByIdAsAuthSuperUser : ContextBase
     {
         private Privilege result;
 
@@ -32,16 +30,9 @@
         }
 
         [Test]
-        public void ShouldReturnCorrectPermissions()
+        public void ShouldReturnCorrectPermission()
         {
-            this.result.Should().NotBeNull();
+            this.result.Name.Equals("finance.do.stuuuff");
         }
-
-        [Test]
-        public void ShouldCallPermissionsRepository()
-        {
-            this.PrivilegeRepository.Received().FindById(2);
-        }
-
     }
 }

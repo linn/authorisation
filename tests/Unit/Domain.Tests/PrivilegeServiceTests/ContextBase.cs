@@ -1,13 +1,11 @@
 ﻿namespace Linn.Authorisation.Domain.Tests.PrivilegeServiceTests
 {
-    using global::Linn.Authorisation.Domain.Permissions;
-    using global::Linn.Authorisation.Domain.Services;
-    using global::Linn.Common.Persistence;
+    using Linn.Authorisation.Domain.Services;
+    using Linn.Common.Persistence;
 
     using NSubstitute;
 
     using NUnit.Framework;
-    using System.Net.Http;
 
     public class ContextBase
     {

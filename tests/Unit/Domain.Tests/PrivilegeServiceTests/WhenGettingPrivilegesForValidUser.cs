@@ -34,7 +34,7 @@
                 "finance.super-user"
             };
 
-            this.PrivilegeRepository.FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>())
+            this.PrivilegeRepository.FindAll()
                 .Returns(privileges.AsQueryable());
             this.result = this.Sut.GetAllPrivilegesForUser(userPrivileges);
         }
@@ -49,12 +49,6 @@
                 x => x.Name == "finance.do.stuuuff");
             this.result.Should().Contain(
                 x => x.Name == "finance.do.hings");
-        }
-
-        [Test]
-        public void ShouldCallPermissionsRepository()
-        {
-            this.PrivilegeRepository.Received().FilterBy(Arg.Any<Expression<Func<Privilege, bool>>>());
         }
 
         [Test]

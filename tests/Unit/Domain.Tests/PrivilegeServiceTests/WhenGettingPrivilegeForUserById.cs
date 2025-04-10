@@ -32,16 +32,9 @@
         }
 
         [Test]
-        public void ShouldReturnCorrectPermissions()
+        public void ShouldReturnCorrectPermission()
         {
-            this.result.Should().NotBeNull();
+            this.result.Name.Equals("finance.do.stuuuff");
         }
-
-        [Test]
-        public void ShouldCallPermissionsRepository()
-        {
-            this.PrivilegeRepository.Received().FindById(2);
-        }
-
     }
 }

@@ -37,7 +37,6 @@
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
                 .AddTransient<IAuthorisationService, AuthorisationService>()
                 .AddTransient<IPermissionService, PermissionService>()
-                .AddTransient<IDatabaseService, DatabaseService>()
                 .AddTransient<IPrivilegeService, PrivilegeService>();
         }
     }

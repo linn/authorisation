@@ -23,7 +23,7 @@
 
             if (userPrivileges == null || !userPrivileges.Any())
             {
-                throw new LackingPermissionException("You do not have any permissions");
+                return new List<Privilege>();
             }
 
             var adminDepartments = userPrivileges
@@ -34,11 +34,11 @@
 
             if (!adminDepartments.Any())
             {
-                throw new LackingPermissionException("You are not an super user of any department");
+                return new List<Privilege>();
             }
 
             var resultList = this.privilegeRepository
-                .FilterBy(p => true)
+                .FindAll()
                 .AsEnumerable()
                 .Where(p => adminDepartments.Contains(p.Name.Split('.')[0]))
                 .ToList();
@@ -56,7 +56,7 @@
 
             if (userPrivileges == null || !userPrivileges.Any())
             {
-                throw new LackingPermissionException("You do not have any permissions");
+                throw new UnauthorisedActionException("You do not have any permissions");
             }
 
             var adminDepartments = userPrivileges
@@ -64,11 +64,6 @@
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
-
-            if (!adminDepartments.Any())
-            {
-                throw new LackingPermissionException("You are not an super user of any department");
-            }
 
             var result = this.privilegeRepository
                 .FindById(privilegeId);
@@ -78,7 +73,7 @@
                 return result;
             }
 
-            throw new LackingPermissionException("You do not have the permission to access this privilege");
+            throw new UnauthorisedActionException("You do not have the permission to access this privilege");
         }
 
     }

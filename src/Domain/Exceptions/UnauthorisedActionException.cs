@@ -4,14 +4,14 @@
 
     using Linn.Common.Domain.Exceptions;
 
-    public class LackingPermissionException : DomainException
+    public class UnauthorisedActionException : DomainException
     {
-        public LackingPermissionException(string message)
+        public UnauthorisedActionException(string message)
             : base(message)
         {
         }
 
-        public LackingPermissionException(string message, Exception innerException)
+        public UnauthorisedActionException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

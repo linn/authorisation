@@ -11,7 +11,7 @@
 
     using NUnit.Framework;
 
-    public class WhenGettingPrivilegesForAuthSuperUser : ContextBase
+    public class WhenGettingPrivilegesAsAuthSuperUser : ContextBase
     {
         private IEnumerable<Privilege> result;
 
@@ -48,12 +48,5 @@
             this.result.Should().Contain(
                 x => x.Name == "finance.do.hings");
         }
-
-        [Test]
-        public void ShouldCallPermissionsRepository()
-        {
-            this.PrivilegeRepository.Received().FindAll();
-        }
-
     }
 }

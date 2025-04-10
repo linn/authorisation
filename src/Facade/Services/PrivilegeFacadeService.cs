@@ -60,7 +60,7 @@ namespace Linn.Authorisation.Facade.Services
         {
             if (!userPrivileges.Contains($"{privilegeResource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
             {
-                throw new LackingPermissionException("You do not have permission to create this privilege");
+                throw new UnauthorisedActionException("You do not have permission to create this privilege");
             }
 
             var privilege = new Privilege
