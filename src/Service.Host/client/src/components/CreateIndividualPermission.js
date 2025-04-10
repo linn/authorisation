@@ -21,7 +21,9 @@ function CreateIndividualPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
 
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
-        itemTypes.privileges.url
+        itemTypes.privileges.url,
+        null,
+        true
     );
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
