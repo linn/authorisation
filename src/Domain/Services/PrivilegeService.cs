@@ -5,6 +5,7 @@ namespace Linn.Authorisation.Domain.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Resources;
     using System.Security.Claims;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Common.Persistence;
@@ -84,7 +85,7 @@ namespace Linn.Authorisation.Domain.Services
                 return result;
             }
 
-            throw new LackingPermissionException("Null");
+            throw new LackingPermissionException("You do not have the permission to access this privilege");
         }
 
     }

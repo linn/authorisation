@@ -22,7 +22,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
             this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
-            this.DomainService.GetAllPrivilegesForUser().Returns(
+            this.DomainService.GetAllPrivilegesForUser(Arg.Any<IEnumerable<string>>()).Returns(
                 new List<Privilege>
                     {
                         new Privilege { Name = "1" },

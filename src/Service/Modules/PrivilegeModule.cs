@@ -53,8 +53,6 @@ namespace Linn.Authorisation.Service.Modules
             await res.Negotiate(service.UpdatePrivilege(id, resource, req.HttpContext.GetPrivileges()));
         }
 
-
-
         private async Task CreatePrivilege(
             HttpResponse res,
             HttpRequest req,

@@ -91,6 +91,7 @@ namespace Linn.Authorisation.Facade.Services
 
             if (entity.CheckUnique(privilegeList))
             {
+                this.transactionManager.Commit();
                 return new SuccessResult<PrivilegeResource>(updateResource);
             }
 
