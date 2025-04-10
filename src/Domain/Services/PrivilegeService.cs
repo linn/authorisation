@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace Linn.Authorisation.Domain.Services
+﻿namespace Linn.Authorisation.Domain.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-    using System.Resources;
-    using System.Security.Claims;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Common.Persistence;
 

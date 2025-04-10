@@ -1,17 +1,11 @@
-using System.Collections;
-using System.Linq;
-using Linn.Common.Proxy.LinnApps;
-
 namespace Linn.Authorisation.Facade.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Linq.Expressions;
+    using System.Linq;
 
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
-    using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Resources;
     using Linn.Common.Authorisation;

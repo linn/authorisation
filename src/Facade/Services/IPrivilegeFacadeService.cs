@@ -1,6 +1,4 @@
-﻿using Linn.Authorisation.Domain;
-
-namespace Linn.Authorisation.Facade.Services
+﻿namespace Linn.Authorisation.Facade.Services
 {
     using System.Collections.Generic;
 
