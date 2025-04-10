@@ -1,6 +1,4 @@
-﻿using Linn.Common.Proxy.LinnApps;
-
-namespace Linn.Authorisation.IoC
+﻿namespace Linn.Authorisation.IoC
 {
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
@@ -12,6 +10,7 @@ namespace Linn.Authorisation.IoC
     using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Pdf;
+    using Linn.Common.Proxy.LinnApps;
 
     using Microsoft.Extensions.DependencyInjection;
 

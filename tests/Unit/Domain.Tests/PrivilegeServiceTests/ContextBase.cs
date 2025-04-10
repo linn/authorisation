@@ -13,8 +13,6 @@
     {
         protected IRepository<Privilege, int> PrivilegeRepository { get; private set; }
 
-
-
         protected IPrivilegeService Sut { get; private set; }
 
         [SetUp]

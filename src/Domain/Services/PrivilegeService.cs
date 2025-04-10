@@ -23,9 +23,7 @@ namespace Linn.Authorisation.Domain.Services
         {
             if (userPrivileges.Contains("authorisation.super-user"))
             {
-                var a = this.privilegeRepository.FindAll();
-
-                return a;
+                return this.privilegeRepository.FindAll();
             }
 
             if (userPrivileges == null || !userPrivileges.Any())

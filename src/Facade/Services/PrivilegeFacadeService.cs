@@ -62,7 +62,7 @@ namespace Linn.Authorisation.Facade.Services
             return new SuccessResult<PrivilegeResource>(resource);
         }
 
-        IResult<PrivilegeResource> IPrivilegeFacadeService.CreatePrivilege(PrivilegeResource privilegeResource, IEnumerable<string> userPrivileges)
+        public IResult<PrivilegeResource> CreatePrivilege(PrivilegeResource privilegeResource, IEnumerable<string> userPrivileges)
         {
             if (!userPrivileges.Contains($"{privilegeResource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
             {
@@ -102,6 +102,5 @@ namespace Linn.Authorisation.Facade.Services
         {
             throw new NotImplementedException();
         }
-
     }
 }
