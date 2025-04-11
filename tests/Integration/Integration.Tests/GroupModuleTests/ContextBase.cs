@@ -54,6 +54,11 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
                 this.GroupRepository,
                 this.AuthorisationService,
                 this.GroupService);
+
+            this.MembersFacadeService = new MembersFacadeService(
+                this.GroupRepository,
+                this.TransactionManager);
+
             this.Log = Substitute.For<ILog>();
             this.MembersFacadeService = new MembersFacadeService(this.GroupRepository, this.TransactionManager);
 

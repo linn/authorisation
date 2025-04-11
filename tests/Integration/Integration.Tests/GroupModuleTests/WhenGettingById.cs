@@ -27,15 +27,12 @@
             this.group = new Group
             {
                 Name = "test.group.1",
-                Id = 1
+                Id = 1,
+                Active = true
             };
 
-            this.GroupService.GetAllGroupsForUser(Arg.Any<IEnumerable<string>>()).Returns(
-                new List<Group>
-                {
-                    this.group,
-                    new Group { Name = "test.group.2", Id = 2}
-                }.AsQueryable());
+            this.GroupService.GetGroupById(this.group.Id, Arg.Any<IEnumerable<string>>()).Returns(
+                this.group);
 
             this.Response = this.Client.Get(
                 $"/authorisation/groups/{this.group.Id}",
@@ -63,7 +60,7 @@
         {
             var resource = this.Response.DeserializeBody<PrivilegeResource>();
             resource.Id.Should().Be(1);
-            resource.Name.Should().Be("name");
+            resource.Name.Should().Be("test.group.1");
             resource.Active.Should().BeTrue();
         }
     }
