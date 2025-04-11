@@ -1,3 +1,5 @@
+using Linn.Common.Authorisation;
+
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Net.Http;
@@ -32,17 +34,21 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 
         protected IMembersFacadeService MembersFacadeService { get; private set;}
 
+        protected IAuthorisationService AuthorisationService { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
             this.TransactionManager = Substitute.For<ITransactionManager>();
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
+            this.AuthorisationService = Substitute.For<IAuthorisationService>();
 
             this.FacadeService = new GroupFacadeService(
                 this.GroupRepository,
                 this.TransactionManager,
                 new GroupResourceBuilder(),
-                this.GroupRepository);
+                this.GroupRepository,
+                this.AuthorisationService);
             this.Log = Substitute.For<ILog>();
             this.MembersFacadeService = new MembersFacadeService(this.GroupRepository, this.TransactionManager);
 

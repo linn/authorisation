@@ -1,9 +1,11 @@
 ﻿using System;
+using Linn.Authorisation.Domain.Exceptions;
 using Linn.Authorisation.Domain.Groups;
 
 namespace Linn.Authorisation.Domain.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Linn.Common.Persistence;
 
     public class GroupService : IGroupService
@@ -17,12 +19,63 @@ namespace Linn.Authorisation.Domain.Services
 
         public IEnumerable<Group> GetAllGroupsForUser(IEnumerable<string> userPrivileges = null)
         {
-            throw new NotImplementedException();
+            if (userPrivileges.Contains("authorisation.super-user"))
+            {
+                return this.groupRepository.FindAll();
+            }
+
+            if (userPrivileges == null || !userPrivileges.Any())
+            {
+                return new List<Group>();
+            }
+
+            var adminDepartments = userPrivileges
+                .Where(p => p.ToLower().Contains("super-user"))
+                .Select(p => p.Split('.')[0])
+                .Distinct()
+                .ToList();
+
+            if (!adminDepartments.Any())
+            {
+                return new List<Group>();
+            }
+
+            var resultList = this.groupRepository
+                .FindAll()
+                .AsEnumerable()
+                .Where(p => adminDepartments.Contains(p.Name.Split('.')[0]))
+                .ToList();
+
+            return resultList;
         }
 
-        public Group GetGroupById(int privilegeId, IEnumerable<string> userPrivileges = null)
+        public Group GetGroupById(int groupId, IEnumerable<string> userPrivileges = null)
         {
-            throw new NotImplementedException();
+            if (userPrivileges.Contains("authorisation.super-user"))
+            {
+                return this.groupRepository.FindById(groupId); ;
+            }
+
+            if (userPrivileges == null || !userPrivileges.Any())
+            {
+                throw new UnauthorisedActionException("You do not have any permissions");
+            }
+
+            var adminDepartments = userPrivileges
+                .Where(p => p.ToLower().Contains("super-user"))
+                .Select(p => p.Split('.')[0])
+                .Distinct()
+                .ToList();
+
+            var result = this.groupRepository
+                .FindById(groupId);
+
+            if (adminDepartments.Contains(result.Name.Split(".")[0]))
+            {
+                return result;
+            }
+
+            throw new UnauthorisedActionException("You do not have the permission to access this group");
         }
 
     }

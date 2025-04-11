@@ -1,3 +1,5 @@
+using Linn.Authorisation.Domain;
+
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System;
@@ -23,6 +25,9 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.updatedResource = new Group { Name = "Group.Test.Name-2", Active = true, Id = 30};
             this.currentGroups = new List<Group>
                                {
