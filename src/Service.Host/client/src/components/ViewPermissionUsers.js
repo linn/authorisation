@@ -16,7 +16,9 @@ function ViewPermissionUsers() {
     const [privilegeInput, setPrivilegeInput] = useState('');
 
     const { data: privileges, isGetLoading: isPrivilegeLoading } = useInitialise(
-        itemTypes.privileges.url
+        itemTypes.privileges.url,
+        null,
+        true
     );
 
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(

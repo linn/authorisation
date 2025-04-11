@@ -21,10 +21,16 @@ function CreateGroupPermission() {
     const [groupInput, setGroupInput] = useState('');
 
     const { data: privileges, isGetLoading: privilegesLoading } = useInitialise(
-        itemTypes.privileges.url
+        itemTypes.privileges.url,
+        null,
+        true
     );
 
-    const { data: groups, isGetLoading: isgroupLoading } = useInitialise(itemTypes.groups.url);
+    const { data: groups, isGetLoading: isgroupLoading } = useInitialise(
+        itemTypes.groups.url,
+        null,
+        true
+    );
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(
         itemTypes.permissions.url,
