@@ -1,10 +1,5 @@
-﻿using Linn.Authorisation.Domain;
-using Linn.Common.Facade;
-using Microsoft.AspNetCore.Http;
-
-namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
-    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
     using FluentAssertions;
@@ -12,44 +7,40 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
-
     using NSubstitute;
     using NUnit.Framework;
 
     public class WhenAddingMember : ContextBase
     {
-        private MemberResource newResource;
-
-        private Group group;
+        private MemberResource resource;
 
         [SetUp]
         public void SetUp()
         {
-            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
-                .Returns(true);
-
-            this.group = new Group { Id = 1, Name = "Group 1" };
-
-            this.GroupService.GetGroupById(this.group.Id, Arg.Any<IEnumerable<string>>()).Returns(
-                this.group);
-
-            this.newResource = new MemberResource
+            var group = new Group
             {
-                GroupId  = 1,
-                MemberUri = "employee-1"
+                Id = 20,
+                Name = "test.group",
+                Active = true
             };
 
-            this.MembersFacadeService
-                .AddIndividualMember(new MemberResource(), "employee-1", Arg.Any<IEnumerable<string>>())
-                .Returns((IResult<MemberResource>)this.newResource);
+            this.GroupRepository.FindById(group.Id).Returns(group);
 
-            this.Response = this.Client.PutAsJsonAsync("/authorisation/members", this.newResource).Result;
+            this.resource = new MemberResource { MemberUri = "test-member", GroupId = 20 };
+
+            this.Response = this.Client.PostAsJsonAsync("/authorisation/members", this.resource).Result;
         }
 
         [Test]
-        public void ShouldReturnSuccess()
+        public void ShouldReturnCreated()
         {
-            this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+            this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+        [Test]
+        public void ShouldCommit()
+        {
+            this.TransactionManager.Received(1).Commit();
         }
 
         [Test]
@@ -60,11 +51,10 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         }
 
         [Test]
-        public void ShouldReturnUpdated()
+        public void ShouldReturnJsonBody()
         {
             var result = this.Response.DeserializeBody<MemberResource>();
-            result.MemberUri.Should().Be(this.newResource.MemberUri);
-            result.GroupId.Should().Be(1);
+            result.MemberUri.Should().Be("test-member");
         }
     }
 }
