@@ -49,6 +49,15 @@ namespace Linn.Authorisation.Facade.Services
             return new SuccessResult<IEnumerable<GroupResource>>(resources);
         }
 
+        public override IResult<GroupResource> GetById(int id, IEnumerable<string> userPrivileges = null)
+        {
+            var entity = this.groupService.GetGroupById(id, userPrivileges);
+
+            var resource = (GroupResource)this.resourceBuilder.Build(entity, userPrivileges);
+
+            return new SuccessResult<GroupResource>(resource);
+        }
+
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> userPrivileges = null)
         {
             if (!userPrivileges.Contains($"{resource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))

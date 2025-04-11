@@ -1,5 +1,9 @@
-﻿namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
+﻿using System.Runtime.InteropServices.JavaScript;
+using Linn.Authorisation.Domain;
+
+namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
     using FluentAssertions;
@@ -14,21 +18,22 @@
     {
         private MemberResource resource;
 
+        private Group group;
+
         [SetUp]
         public void SetUp()
         {
-            var group = new Group 
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
+            this.group = new Group 
                             { 
                                 Id = 20, 
                                 Name = "test.group", 
                                 Active = true
                             };
 
-            this.GroupRepository.FindById(group.Id).Returns(group);
-
-            this.resource = new MemberResource{ MemberUri = "test-member", GroupId = 20};
-
-            this.Response = this.Client.PostAsJsonAsync("/authorisation/members", this.resource).Result;
+            this.Response = this.Client.PostAsJsonAsync("/authorisation/groups", this.group).Result;
         }
 
         [Test]
@@ -48,13 +53,6 @@
         {
             this.Response.Content.Headers.ContentType.Should().NotBeNull();
             this.Response.Content.Headers.ContentType?.ToString().Should().Be("application/json");
-        }
-
-        [Test]
-        public void ShouldReturnJsonBody()
-        {
-            var result = this.Response.DeserializeBody<MemberResource>();
-            result.MemberUri.Should().Be("test-member");
         }
     }
 }

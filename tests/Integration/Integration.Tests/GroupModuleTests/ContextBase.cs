@@ -1,3 +1,4 @@
+using Linn.Authorisation.Domain.Services;
 using Linn.Common.Authorisation;
 
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
@@ -36,19 +37,23 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 
         protected IAuthorisationService AuthorisationService { get; private set; }
 
+        protected IGroupService GroupService { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
             this.TransactionManager = Substitute.For<ITransactionManager>();
             this.GroupRepository = Substitute.For<IRepository<Group, int>>();
             this.AuthorisationService = Substitute.For<IAuthorisationService>();
+            this.GroupService = Substitute.For<IGroupService>();
 
             this.FacadeService = new GroupFacadeService(
                 this.GroupRepository,
                 this.TransactionManager,
                 new GroupResourceBuilder(),
                 this.GroupRepository,
-                this.AuthorisationService);
+                this.AuthorisationService,
+                this.GroupService);
             this.Log = Substitute.For<ILog>();
             this.MembersFacadeService = new MembersFacadeService(this.GroupRepository, this.TransactionManager);
 
