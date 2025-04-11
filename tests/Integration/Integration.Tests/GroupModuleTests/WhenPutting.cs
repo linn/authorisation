@@ -38,7 +38,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-        
+
         [Test]
         public void ShouldReturnJsonContentType()
         {

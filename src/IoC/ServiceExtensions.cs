@@ -7,8 +7,10 @@
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Pdf;
+    using Linn.Common.Proxy.LinnApps;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -22,9 +24,9 @@
             return services.AddTransient<IBuilder<Privilege>, PrivilegeResourceBuilder>()
                 .AddTransient<IBuilder<Permission>, PermissionResourceBuilder>()
                 .AddTransient<IBuilder<Group>, GroupResourceBuilder>()
-                .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
                 .AddTransient<IFacadeResourceService<Group, int, GroupResource, GroupResource>, GroupFacadeService>()
                 .AddTransient<IPermissionFacadeService, PermissionFacadeService>()
+                .AddTransient<IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource>, PrivilegeFacadeService>()
                 .AddTransient<IMembersFacadeService, MembersFacadeService>()
                 .AddTransient<IBuilder<Member>, MemberResourceBuilder>();
         }
@@ -33,7 +35,9 @@
         {
             return services.AddTransient<IRazorEngine, RazorEngine>()
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
-                .AddTransient<IPermissionService, PermissionService>();
+                .AddTransient<IAuthorisationService, AuthorisationService>()
+                .AddTransient<IPermissionService, PermissionService>()
+                .AddTransient<IPrivilegeService, PrivilegeService>();
         }
     }
 }

@@ -22,10 +22,10 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         public void SetUp()
         {
             var group = new Group
-                             {
-                                 Id = 2,
-                                 Name = "testing-get-group"
-                             };
+            {
+                Id = 2,
+                Name = "testing-get-group"
+            };
 
             this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
                 new List<Permission>
@@ -46,9 +46,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             this.Response = this.Client.Get(
                 "/authorisation/permissions?who=/employees/1234",
                 with =>
-                    {
-                        with.Accept("application/json");
-                    }).Result;
+                {
+                    with.Accept("application/json");
+                }).Result;
         }
 
         [Test]

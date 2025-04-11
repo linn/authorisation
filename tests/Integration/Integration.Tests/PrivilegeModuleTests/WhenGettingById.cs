@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
 
     using FluentAssertions;
@@ -17,7 +18,12 @@
         [SetUp]
         public void SetUp()
         {
-            this.PrivilegeRepository.FindById(1).Returns(new Privilege { Id = 1, Name = "name", Active = true });
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
+            this.DomainService.GetPrivilegeById(1, Arg.Any<IEnumerable<string>>()).Returns(
+                new Privilege { Id = 1, Name = "name", Active = true }
+                );
 
             this.Response = this.Client.Get(
                 "/authorisation/privileges/1",

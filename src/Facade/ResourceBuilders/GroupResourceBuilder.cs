@@ -9,7 +9,7 @@
 
     public class GroupResourceBuilder : IBuilder<Group>
     {
-        private readonly MemberResourceBuilder memberResourceBuilder = new ();
+        private readonly MemberResourceBuilder memberResourceBuilder = new();
 
         public object Build(Group model, IEnumerable<string> claims)
         {
@@ -18,9 +18,12 @@
                 .Select(member => (MemberResource)this.memberResourceBuilder.Build(member, claims)).ToList();
 
             return new GroupResource
-                       {
-                           Active = model.Active, Name = model.Name, Id = model.Id, Members = membersResources
-                       };
+            {
+                Active = model.Active,
+                Name = model.Name,
+                Id = model.Id,
+                Members = membersResources
+            };
         }
 
         public string GetLocation(Group model)

@@ -1,5 +1,6 @@
 namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -22,10 +23,17 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.updatedResource = new PrivilegeResource { Name = "new.name", Active = false, Id = 12} ;
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
 
+            this.updatedResource = new PrivilegeResource { Name = "new.name", Active = false, Id = 12};
             this.current = new Privilege { Id = 12, Name = "old.name", Active = true };
+
             this.PrivilegeRepository.FindById(this.current.Id).Returns(this.current);
+            this.DomainService.GetPrivilegeById(12, Arg.Any<IEnumerable<string>>()).Returns(
+                this.current
+            );
+
             this.Response = this.Client.PutAsJsonAsync("/authorisation/privileges/12", this.updatedResource).Result;
         }
 

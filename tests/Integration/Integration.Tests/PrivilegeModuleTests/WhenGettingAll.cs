@@ -19,7 +19,10 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.PrivilegeRepository.FindAll().Returns(
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
+            this.DomainService.GetAllPrivilegesForUser(Arg.Any<IEnumerable<string>>()).Returns(
                 new List<Privilege>
                     {
                         new Privilege { Name = "1" },
@@ -46,13 +49,12 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
             this.Response.Content.Headers.ContentType.Should().NotBeNull();
             this.Response.Content.Headers.ContentType?.ToString().Should().Be("application/json");
         }
-
+        
         [Test]
         public void ShouldReturnJsonBody()
         {
             var resources = this.Response.DeserializeBody<IEnumerable<PrivilegeResource>>()?.ToArray();
             resources.Should().HaveCount(2);
-
             resources.Should().Contain(a => a.Name == "1");
             resources.Should().Contain(a => a.Name == "2");
         }

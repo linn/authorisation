@@ -14,7 +14,7 @@ import Page from './Page';
 function Privileges() {
     const [privileges, setPrivileges] = useState([]);
 
-    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url);
+    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, null, true);
 
     useEffect(() => {
         if (data) {
