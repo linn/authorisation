@@ -53,7 +53,7 @@ namespace Linn.Authorisation.Domain.Services
         {
             if (userPrivileges.Contains("authorisation.super-user"))
             {
-                return this.groupRepository.FindById(groupId); ;
+                return this.groupRepository.FindById(groupId);
             }
 
             if (userPrivileges == null || !userPrivileges.Any())
