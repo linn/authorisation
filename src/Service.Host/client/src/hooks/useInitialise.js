@@ -14,37 +14,42 @@ function useInitialise(url, id, requiresAuth = false) {
     }
 
     useEffect(() => {
-        setIsGetLoading(true);
-        setData(null);
-        setServerError(null);
+        const fetchData = async () => {
+            setIsGetLoading(true);
+            setData(null);
+            setServerError(null);
 
-        const headers = {
-            accept: 'application/json'
-        };
+            const headers = {
+                accept: 'application/json'
+            };
 
-        const requestParameters = {
-            method: 'GET',
-            headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
-        };
+            const requestParameters = {
+                method: 'GET',
+                headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
+            };
 
-        if (token || !requiresAuth) {
-            fetch(id ? `${url}/${id}` : url, requestParameters)
-                .then(response => {
+            try {
+                if (token || !requiresAuth) {
+                    const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
+
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Network response was not ok');
                     }
-                    return response.json();
-                })
-                .then(json => {
+
+                    const json = await response.json();
                     setData(json);
-                    setIsGetLoading(false);
-                })
-                .catch(error => {
-                    setServerError(error);
-                    setIsGetLoading(false);
-                });
-        }
+                }
+            } catch (error) {
+                setServerError(error.message || 'An error occurred');
+            } finally {
+                setIsGetLoading(false);
+            }
+        };
+
+        fetchData();
     }, [url, id, token, requiresAuth]);
+
     return { isGetLoading, serverError, data };
 }
 

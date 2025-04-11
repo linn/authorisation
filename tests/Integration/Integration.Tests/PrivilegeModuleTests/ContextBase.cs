@@ -26,7 +26,7 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
         protected HttpResponseMessage Response { get; set; }
 
-        protected IPrivilegeFacadeService FacadeService { get; private set; }
+        protected IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> FacadeService { get; private set; }
 
         protected ITransactionManager TransactionManager { get; set; }
 
@@ -50,9 +50,9 @@ namespace Linn.Authorisation.Integration.Tests.PrivilegeModuleTests
 
             this.FacadeService = new PrivilegeFacadeService(
                 this.PrivilegeRepository,
-                this.DomainService,
                 new PrivilegeResourceBuilder(),
                 this.TransactionManager,
+                this.DomainService,
                 this.AuthService
                 );
             this.Log = Substitute.For<ILog>();

@@ -11,6 +11,8 @@ namespace Linn.Authorisation.Service.Modules
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
+    using Linn.Authorisation.Domain;
+    using Linn.Common.Facade;
 
     public class PrivilegeModule : IModule
     {
@@ -25,18 +27,18 @@ namespace Linn.Authorisation.Service.Modules
         private async Task GetPrivilege(
             HttpRequest req,
             HttpResponse res,
-            IPrivilegeFacadeService service,
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service,
             int id)
         {
-            await res.Negotiate(service.GetPrivilegeById(id, req.HttpContext.GetPrivileges()));
+            await res.Negotiate(service.GetById(id, req.HttpContext.GetPrivileges()));
         }
 
         private async Task GetAll(
             HttpRequest req,
             HttpResponse res,
-            IPrivilegeFacadeService service)
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
-            await res.Negotiate(service.GetAllPrivilegesForUser(req.HttpContext.GetPrivileges()));
+            await res.Negotiate(service.GetAll(req.HttpContext.GetPrivileges()));
         }
 
         private async Task UpdatePrivilege(
@@ -44,18 +46,18 @@ namespace Linn.Authorisation.Service.Modules
             HttpResponse res,
             int id,
             PrivilegeResource resource,
-            IPrivilegeFacadeService service)
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
-            await res.Negotiate(service.UpdatePrivilege(id, resource, req.HttpContext.GetPrivileges()));
+            await res.Negotiate(service.Update(id, resource, req.HttpContext.GetPrivileges()));
         }
 
         private async Task CreatePrivilege(
             HttpResponse res,
             HttpRequest req,
             PrivilegeResource resource,
-            IPrivilegeFacadeService service)
+            IFacadeResourceService<Privilege, int, PrivilegeResource, PrivilegeResource> service)
         {
-            var result = service.CreatePrivilege(resource, req.HttpContext.GetPrivileges());
+            var result = service.Add(resource, req.HttpContext.GetPrivileges());
 
             await res.Negotiate(result);
         }
