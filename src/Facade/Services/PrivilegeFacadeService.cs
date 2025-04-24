@@ -1,10 +1,9 @@
-using System.Linq.Expressions;
-
 namespace Linn.Authorisation.Facade.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
