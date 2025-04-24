@@ -13,8 +13,6 @@
 
     public class WhenPosting : ContextBase
     {
-        private MemberResource resource;
-
         private Group group;
 
         [SetUp]

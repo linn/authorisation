@@ -1,8 +1,6 @@
 ﻿namespace Linn.Authorisation.Domain.Tests.GroupServiceTests
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Linn.Authorisation.Domain.Groups;
 
     using NSubstitute;
@@ -22,13 +20,13 @@
             {
                 new Group { Id = 1, Name = "finance.super-user" },
                 group,
-                new Group{ Id = 3, Name = "finance.do.hings" },
-                new Group{ Id = 4, Name = "purchasing.do.hings" }
+                new Group { Id = 3, Name = "finance.do.hings" },
+                new Group { Id = 4, Name = "purchasing.do.hings" },
             };
 
-            var userPrivileges = new List<String>
+            var userPrivileges = new List<string>
             {
-                "finance.super-user"
+                "finance.super-user",
             };
 
             this.GroupRepository.FindById(group.Id)

@@ -17,17 +17,17 @@ namespace Linn.Authorisation.Domain.Tests.GroupTests
         // of any inner groups within the group, or indeed inner-inner groups within that first
         // inner group, and so on ad infinitum
         private Group Sut { get; set; }
-        
+
         [SetUp]
         public void SetUp()
         {
             this.Sut = new Group { Name = "OUTER GROUP", Id = 1 };
             var innerGroup = new Group { Name = "INNER GROUP", Id = 2 };
             var innerInnerGroup = new Group { Name = "INNER INNER GROUP", Id = 3 };
-            
+
             // the innermost group has one Individual Member
             innerInnerGroup.AddIndividualMember("oliver", string.Empty);
-            
+
             // the 'middle' group has three Individual member
             innerGroup.AddIndividualMember("ross", string.Empty);
             innerGroup.AddIndividualMember("kyle", string.Empty);
@@ -35,12 +35,12 @@ namespace Linn.Authorisation.Domain.Tests.GroupTests
 
             // and also of course contains the innermost group
             innerGroup.AddGroupMember(innerInnerGroup, string.Empty);
-            
+
             // The outermost Group i.e. the group under test
             // has two individual members
             this.Sut.AddIndividualMember("andrew", string.Empty);
             this.Sut.AddIndividualMember("colin", string.Empty);
-            
+
             // and contains one group, the middle group
             this.Sut.AddGroupMember(innerGroup, string.Empty);
         }

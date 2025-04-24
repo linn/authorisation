@@ -23,12 +23,12 @@
                                       new Privilege("finance.super-user"),
                                       new Privilege("finance.do.stuuuff"),
                                       new Privilege("finance.do.hings"),
-                                      new Privilege("purchasing.do.hings")
+                                      new Privilege("purchasing.do.hings"),
                                   };
 
-            var userPrivileges = new List<String>
+            var userPrivileges = new List<string>
             {
-                "authorisation.super-user"
+                "authorisation.super-user",
             };
 
             this.PrivilegeRepository.FindAll()

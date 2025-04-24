@@ -21,14 +21,14 @@
             var groups = new List<Group>
             {
                 group,
-                new Group{Id = 2, Name ="finance.do.stuuuff"},
-                new Group{ Id = 3, Name = "finance.do.hings" },
-                new Group{ Id = 4, Name = "purchasing.do.hings" }
+                new Group { Id = 2, Name = "finance.do.stuuuff" },
+                new Group { Id = 3, Name = "finance.do.hings" },
+                new Group { Id = 4, Name = "purchasing.do.hings" },
             };
 
-            var userPrivileges = new List<String>
+            var userPrivileges = new List<string>
             {
-                "authorisation.super-user"
+                "authorisation.super-user",
             };
 
             this.GroupRepository.FindById(group.Id)

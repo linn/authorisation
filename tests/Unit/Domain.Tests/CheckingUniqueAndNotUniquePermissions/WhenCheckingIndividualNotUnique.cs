@@ -32,7 +32,7 @@
                                                           GranteeUri = "/employees/133",
                                                           Privilege = new Privilege(this.privilegeName),
                                                           GrantedByUri = "/employees/7004",
-                                                          DateGranted = DateTime.UtcNow
+                                                          DateGranted = DateTime.UtcNow,
                                                       };
 
             this.permissions = new List<IndividualPermission>
@@ -42,15 +42,15 @@
                                                GranteeUri = "/employees/133",
                                                Privilege = new Privilege(this.privilegeName),
                                                GrantedByUri = "/employees/7004",
-                                               DateGranted = DateTime.UtcNow
+                                               DateGranted = DateTime.UtcNow,
                                            },
                                        new IndividualPermission
                                            {
                                                GranteeUri = "/employees/3006",
                                                Privilege = new Privilege(this.privilegeName3),
                                                GrantedByUri = "/employees/7004",
-                                               DateGranted = DateTime.UtcNow
-                                           }
+                                               DateGranted = DateTime.UtcNow,
+                                           },
                                    };
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(this.permissions.AsQueryable());

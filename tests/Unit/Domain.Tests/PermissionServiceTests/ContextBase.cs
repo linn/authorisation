@@ -12,9 +12,9 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
     public class ContextBase
     {
         protected IRepository<Group, int> GroupRepository { get; private set; }
-        
+
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
-        
+
         protected IPermissionService Sut { get; private set; }
 
         [SetUp]

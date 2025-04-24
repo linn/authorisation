@@ -1,14 +1,17 @@
 ﻿namespace Linn.Authorisation.Domain.Tests.CheckingUniqueAndNotUniquePermissions
 {
-    using FluentAssertions;
-    using Linn.Authorisation.Domain.Permissions;
-    using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
-    using NSubstitute;
-    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+
+    using FluentAssertions;
+
+    using Linn.Authorisation.Domain.Permissions;
+    using Linn.Authorisation.Domain.Tests.PermissionServiceTests;
+
+    using NSubstitute;
+    using NUnit.Framework;
 
     public class WhenCheckingIndividualUnique : ContextBase
     {
@@ -26,41 +29,44 @@
             this.individualPermissionCheckTrue = new IndividualPermission
             {
                 GranteeUri = "/employees/100",
-                Privilege = new Privilege(privilegeName2),
+                Privilege = new Privilege(this.privilegeName2),
                 GrantedByUri = "/employees/7004",
-                DateGranted = DateTime.UtcNow
+                DateGranted = DateTime.UtcNow,
             };
 
             this.individualPermissionCheckFalse = new IndividualPermission
-                                                          { 
-                                                              GranteeUri = "/employees/3006", 
-                                                              Privilege = new Privilege(privilegeName3), 
-                                                              GrantedByUri = "/employees/7004", 
-                                                              DateGranted = DateTime.UtcNow
+                                                          {
+                                                              GranteeUri = "/employees/3006",
+                                                              Privilege = new Privilege(this.privilegeName3),
+                                                              GrantedByUri = "/employees/7004",
+                                                              DateGranted = DateTime.UtcNow,
                                                           };
 
-            permissions = new List<IndividualPermission>
+            this.permissions = new List<IndividualPermission>
             {
-                new IndividualPermission{
+                new IndividualPermission
+                {
                 GranteeUri = "/employees/133",
-                Privilege = new Privilege(privilegeName),
+                Privilege = new Privilege(this.privilegeName),
                 GrantedByUri = "/employees/7004",
-                DateGranted = DateTime.UtcNow
+                DateGranted = DateTime.UtcNow,
                 },
-                new IndividualPermission{
+                new IndividualPermission
+                {
                 GranteeUri = "/employees/3006",
-                Privilege = new Privilege(privilegeName3),
+                Privilege = new Privilege(this.privilegeName3),
                 GrantedByUri = "/employees/7004",
-                DateGranted = DateTime.UtcNow
-                }
+                DateGranted = DateTime.UtcNow,
+                },
             };
-            PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(permissions.AsQueryable());
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+                .Returns(this.permissions.AsQueryable());
         }
+
         [Test]
         public void ShouldReturnTrue()
         {
-            var result = this.individualPermissionCheckTrue.CheckUnique(permissions);
+            var result = this.individualPermissionCheckTrue.CheckUnique(this.permissions);
 
             result.Should().BeTrue();
         }
@@ -68,7 +74,7 @@
         [Test]
         public void ShouldReturnFalse()
         {
-            var result = this.individualPermissionCheckFalse.CheckUnique(permissions);
+            var result = this.individualPermissionCheckFalse.CheckUnique(this.permissions);
 
             result.Should().BeFalse();
         }

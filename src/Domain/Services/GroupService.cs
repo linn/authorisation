@@ -28,13 +28,13 @@
                 return new List<Group>();
             }
 
-            var adminDepartments = userPrivileges
+            var groupSuperUsers = userPrivileges
                 .Where(p => p.ToLower().Contains("super-user"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 
-            if (!adminDepartments.Any())
+            if (!groupSuperUsers.Any())
             {
                 return new List<Group>();
             }
@@ -42,7 +42,7 @@
             var resultList = this.groupRepository
                 .FindAll()
                 .AsEnumerable()
-                .Where(p => adminDepartments.Contains(p.Name.Split('.')[0]))
+                .Where(p => groupSuperUsers.Contains(p.Name.Split('.')[0]))
                 .ToList();
 
             return resultList;
@@ -60,7 +60,7 @@
                 throw new UnauthorisedActionException("You do not have any permissions");
             }
 
-            var adminDepartments = userPrivileges
+            var groupSuperUsers = userPrivileges
                 .Where(p => p.ToLower().Contains("super-user"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
@@ -69,7 +69,7 @@
             var result = this.groupRepository
                 .FindById(groupId);
 
-            if (adminDepartments.Contains(result.Name.Split(".")[0]))
+            if (groupSuperUsers.Contains(result.Name.Split(".")[0]))
             {
                 return result;
             }

@@ -18,9 +18,9 @@
         {
             var wantedPrivilege = new Privilege { Name = "finance.do.stuuuff", Id = 2 };
 
-            var userPrivileges = new List<String>
+            var userPrivileges = new List<string>
             {
-                "authorisation.super-user"
+                "authorisation.super-user",
             };
 
             this.PrivilegeRepository.FindById(2)
