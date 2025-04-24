@@ -29,7 +29,7 @@ function useInitialise(url, id, requiresAuth = false) {
             };
 
             try {
-                if (token || !requiresAuth) {
+                if (!requiresAuth || token) {
                     const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
 
                     if (!response.ok) {

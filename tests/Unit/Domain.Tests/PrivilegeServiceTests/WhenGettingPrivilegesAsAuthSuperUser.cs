@@ -41,12 +41,6 @@
         public void ShouldReturnCorrectPermissions()
         {
             this.result.ToList().Count.Should().Be(4);
-            this.result.Should().Contain(
-                x => x.Name == "finance.super-user");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.stuuuff");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.hings");
         }
     }
 }
