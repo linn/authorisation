@@ -7,7 +7,6 @@ import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
-import CreatePrivilege from './CreatePrivilege';
 import Privilege from './Privilege';
 import CreateIndividualPermission from './CreateIndividualPermission';
 import CreateGroupPermission from './CreateGroupPermission';
@@ -44,7 +43,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/privileges/create"
-                                element={<CreatePrivilege />}
+                                element={<Privilege creating />}
                             />
                             <Route
                                 exact
