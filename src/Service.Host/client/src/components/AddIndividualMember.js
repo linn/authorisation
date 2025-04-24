@@ -20,7 +20,11 @@ function AddIndividualMember() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [groupInput, setGroupInput] = useState('');
 
-    const { data: groups, isGetLoading: isGroupsLoading } = useInitialise(itemTypes.groups.url);
+    const { data: groups, isGetLoading: isGroupsLoading } = useInitialise(
+        itemTypes.groups.url,
+        null,
+        true
+    );
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );

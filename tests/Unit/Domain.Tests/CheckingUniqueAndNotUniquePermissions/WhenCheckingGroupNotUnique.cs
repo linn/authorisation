@@ -37,7 +37,7 @@
                                                      GranteeGroup = new Group(this.groupName, true),
                                                      Privilege = new Privilege(this.privilegeName),
                                                      GrantedByUri = "/employees/7004",
-                                                     DateGranted = DateTime.UtcNow
+                                                     DateGranted = DateTime.UtcNow,
                                                  };
 
             this.permissions = new List<GroupPermission>
@@ -47,17 +47,17 @@
                                           GranteeGroup = new Group(this.groupName, true),
                                           Privilege = new Privilege(this.privilegeName),
                                           GrantedByUri = "/employees/7004",
-                                          DateGranted = DateTime.UtcNow
+                                          DateGranted = DateTime.UtcNow,
                                       },
                                   new GroupPermission
                                       {
                                           GranteeGroup = new Group(this.groupName2, true),
                                           Privilege = new Privilege(this.privilegeName3),
                                           GrantedByUri = "/employees/7004",
-                                          DateGranted = DateTime.UtcNow
-                                      }
+                                          DateGranted = DateTime.UtcNow,
+                                      },
                               };
-            PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
+            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(this.permissions.AsQueryable());
         }
 

@@ -1,10 +1,11 @@
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
-
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
@@ -21,6 +22,9 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.updatedResource = new GroupResource { Name = "new.Group.Test.Name", Active = false, Id = 30 };
 
             this.current = new Group { Id = 30, Name = "old.Group.Test.Name", Active = true };

@@ -1,6 +1,7 @@
 ﻿namespace Linn.Authorisation.Facade.Services
 {
     using System;
+    using System.Collections.Generic;
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
@@ -22,7 +23,7 @@
             this.groupRepository = groupRepository;
         }
 
-        public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri)
+        public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri, IEnumerable<string> userPrivileges = null)
         {
             var group = this.groupRepository.FindById((int)memberResource.GroupId);
 

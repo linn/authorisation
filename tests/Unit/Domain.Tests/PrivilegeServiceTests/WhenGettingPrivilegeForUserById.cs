@@ -11,7 +11,7 @@
 
     using NUnit.Framework;
 
-    public class GetPrivilegeForUserById : ContextBase
+    public class WhenGettingPrivilegeForUserById : ContextBase
     {
         private Privilege result;
 
@@ -20,9 +20,9 @@
         {
             var wantedPrivilege = new Privilege { Name = "finance.do.stuuuff", Id = 2 };
 
-            var userPrivileges = new List<String>
+            var userPrivileges = new List<string>
                 {
-                    "finance.super-user"
+                    "finance.super-user",
                 };
 
             this.PrivilegeRepository.FindById(2)

@@ -28,7 +28,7 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
                                   {
                                       new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
                                       new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
-                                      new GroupPermission(new Group("adminz", true), new Privilege(this.privilegeName3), "/employees/7004")
+                                      new GroupPermission(new Group("adminz", true), new Privilege(this.privilegeName3), "/employees/7004"),
                                   };
 
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())

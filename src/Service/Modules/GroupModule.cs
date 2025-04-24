@@ -28,17 +28,19 @@
 
         private async Task GetAll(
             HttpResponse res,
+            HttpRequest req,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
-            await res.Negotiate(groupService.GetAll());
+            await res.Negotiate(groupService.GetAll(req.HttpContext.GetPrivileges()));
         }
 
         private async Task GetGroup(
             HttpResponse res,
+            HttpRequest req,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService,
             int id)
         {
-            await res.Negotiate(groupService.GetById(id));
+            await res.Negotiate(groupService.GetById(id, req.HttpContext.GetPrivileges()));
         }
 
         private async Task CreateGroup(
@@ -47,19 +49,20 @@
             GroupResource resource,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
-            var result = groupService.Add(resource);
+            var result = groupService.Add(resource, req.HttpContext.GetPrivileges());
 
             await res.Negotiate(result);
         }
 
         private async Task UpdateGroup(
             HttpResponse res,
+            HttpRequest req,
             int id,
             GroupResource resource,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
 
-            await res.Negotiate(groupService.Update(id, resource));
+            await res.Negotiate(groupService.Update(id, resource, req.HttpContext.GetPrivileges()));
         }
 
         private async Task AddMember(
@@ -68,7 +71,7 @@
             MemberResource resource,
             IMembersFacadeService service)
         {
-            await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl()));
+            await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
         }
     }
 }

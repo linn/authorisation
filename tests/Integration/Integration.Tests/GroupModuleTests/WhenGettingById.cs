@@ -14,23 +14,28 @@
 
     using NUnit.Framework;
 
-    public class WhenGettingAll : ContextBase
+    public class WhenGettingById : ContextBase
     {
+        private Group group;
+
         [SetUp]
         public void SetUp()
         {
             this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
-            this.GroupService.GetAllGroupsForUser(Arg.Any<IEnumerable<string>>()).Returns(
-                new List<Group>
-                {
-                    new Group { Name = "1" },
-                    new Group { Name = "2" }
-                }.AsQueryable());
+            this.group = new Group
+            {
+                Name = "test.group.1",
+                Id = 1,
+                Active = true
+            };
+
+            this.GroupService.GetGroupById(this.group.Id, Arg.Any<IEnumerable<string>>()).Returns(
+                this.group);
 
             this.Response = this.Client.Get(
-                "/authorisation/groups",
+                $"/authorisation/groups/{this.group.Id}",
                 with =>
                 {
                     with.Accept("application/json");
@@ -53,11 +58,10 @@
         [Test]
         public void ShouldReturnJsonBody()
         {
-            var resources = this.Response.DeserializeBody<IEnumerable<GroupResource>>()?.ToArray();
-            resources.Should().HaveCount(2);
-
-            resources.Should().Contain(a => a.Name == "1");
-            resources.Should().Contain(a => a.Name == "2");
+            var resource = this.Response.DeserializeBody<PrivilegeResource>();
+            resource.Id.Should().Be(1);
+            resource.Name.Should().Be("test.group.1");
+            resource.Active.Should().BeTrue();
         }
     }
 }
