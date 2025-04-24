@@ -133,9 +133,7 @@ function Group({ creating }) {
                 <Button
                     variant="contained"
                     disabled={
-                        data?.name === group?.name &&
-                        data?.active === group?.active &&
-                        group?.name === ''
+                        data?.name === group?.name && data?.active === group?.active && !group?.name
                     }
                     onClick={creating ? postSend : putSend}
                 >
