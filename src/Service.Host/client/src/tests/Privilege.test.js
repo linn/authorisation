@@ -33,7 +33,7 @@ describe('When Active Privilege ', () => {
 
     test('fetches data', () => {
         render(<Privilege />);
-        expect(useInitialise).toBeCalledWith(`${config.appRoot}/authorisation/privileges`, 1);
+        expect(useInitialise).toBeCalledWith(`${config.appRoot}/authorisation/privileges`, 1, true);
     });
 
     test('renders privilege', () => {
@@ -55,7 +55,7 @@ describe('When Inactive Privilege ', () => {
 
     test('fetches data', () => {
         render(<Privilege />);
-        expect(useInitialise).toBeCalledWith(`${config.appRoot}/authorisation/privileges`, 1);
+        expect(useInitialise).toBeCalledWith(`${config.appRoot}/authorisation/privileges`, 1, true);
     });
 
     test('renders privilege', () => {
