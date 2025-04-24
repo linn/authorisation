@@ -12,7 +12,7 @@ import Privilege from './Privilege';
 import CreateIndividualPermission from './CreateIndividualPermission';
 import CreateGroupPermission from './CreateGroupPermission';
 import ViewIndividualPermission from './ViewIndividualsPermission';
-import ViewGroups from './ViewGroups';
+import ViewGroups from './Groups';
 import Group from './Group';
 import CreateGroup from './CreateGroup';
 import AddIndividualMember from './AddIndividualMember';
