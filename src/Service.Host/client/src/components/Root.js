@@ -14,7 +14,6 @@ import CreateGroupPermission from './CreateGroupPermission';
 import ViewIndividualPermission from './ViewIndividualsPermission';
 import ViewGroups from './Groups';
 import Group from './Group';
-import CreateGroup from './CreateGroup';
 import AddIndividualMember from './AddIndividualMember';
 import ViewPermissionUsers from './ViewPermissionUsers';
 
@@ -76,7 +75,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/groups/create"
-                                element={<CreateGroup />}
+                                element={<Group creating />}
                             />
                             <Route
                                 exact
