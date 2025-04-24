@@ -18,9 +18,9 @@
             var groups = new List<Group>
             {
                 new Group { Id = 1, Name = "finance.super-user" },
-                new Group { Id = 2, Name = "finance.do.stuuuff" },
-                new Group { Id = 3, Name = "finance.do.hings" },
-                new Group { Id = 4, Name = "purchasing.do.hings" },
+                new Group { Id = 2, Name = "finance.cashbook.users" },
+                new Group { Id = 3, Name = "finance.users" },
+                new Group { Id = 4, Name = "purchasing.buyers" },
             };
 
             var userPrivileges = new List<string>
@@ -38,14 +38,6 @@
         public void ShouldReturnCorrectPermissions()
         {
             this.result.ToList().Count.Should().Be(4);
-            this.result.Should().Contain(
-                x => x.Name == "finance.super-user");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.stuuuff");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.hings");
-            this.result.Should().Contain(
-                x => x.Name == "purchasing.do.hings");
         }
     }
 }

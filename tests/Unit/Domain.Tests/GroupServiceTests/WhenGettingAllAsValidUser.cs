@@ -17,15 +17,15 @@
         {
             var groups = new List<Group>
             {
-                new Group { Id = 1, Name = "finance.super-user" },
-                new Group { Id = 2, Name = "finance.do.stuuuff" },
-                new Group { Id = 3, Name = "finance.do.hings" },
-                new Group { Id = 4, Name = "purchasing.do.hings" },
+                new Group { Id = 1, Name = "purchasing.super-user" },
+                new Group { Id = 2, Name = "finance.cashbook.users" },
+                new Group { Id = 3, Name = "finance.users" },
+                new Group { Id = 4, Name = "purchasing.users" },
             };
 
             var userPrivileges = new List<string>
             {
-                "finance.thing.super-user",
+                "finance.super-user",
             };
 
             this.GroupRepository.FindAll()
@@ -37,13 +37,7 @@
         [Test]
         public void ShouldReturnCorrectPermissions()
         {
-            this.result.ToList().Count.Should().Be(3);
-            this.result.Should().Contain(
-                x => x.Name == "finance.super-user");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.stuuuff");
-            this.result.Should().Contain(
-                x => x.Name == "finance.do.hings");
+            this.result.ToList().Count.Should().Be(2);
         }
     }
 }

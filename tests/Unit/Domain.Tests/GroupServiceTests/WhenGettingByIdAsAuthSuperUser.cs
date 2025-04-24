@@ -16,14 +16,14 @@
         [SetUp]
         public void SetUp()
         {
-            var group = new Group { Id = 1, Name = "finance.super-user" };
+            var group = new Group { Id = 1, Name = "finance.super-users" };
 
             var groups = new List<Group>
             {
                 group,
-                new Group { Id = 2, Name = "finance.do.stuuuff" },
-                new Group { Id = 3, Name = "finance.do.hings" },
-                new Group { Id = 4, Name = "purchasing.do.hings" },
+                new Group { Id = 2, Name = "finance.users" },
+                new Group { Id = 3, Name = "finance.cashbook.users" },
+                new Group { Id = 4, Name = "purchasing.users" },
             };
 
             var userPrivileges = new List<string>
@@ -40,7 +40,7 @@
         [Test]
         public void ShouldReturnCorrectPermissions()
         {
-            this.result.Name.Equals("finance.super-user");
+            this.result.Name.Equals("finance.super-users");
         }
     }
 }

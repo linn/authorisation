@@ -17,15 +17,15 @@
         {
             var groups = new List<Group>
             {
-                new Group { Id = 1, Name = "finance.super-user" },
-                new Group { Id = 2, Name = "finance.do.stuuuff" },
-                new Group { Id = 3, Name = "finance.do.hings" },
-                new Group { Id = 4, Name = "purchasing.do.hings" },
+                new Group { Id = 1, Name = "finance.super-users" },
+                new Group { Id = 2, Name = "finance.cashbook.users" },
+                new Group { Id = 3, Name = "finance.users" },
+                new Group { Id = 4, Name = "purchasing.buyers" },
             };
 
             var userPrivileges = new List<string>
             {
-                "finance.do.stuuuff",
+                "purchasing.buyers",
             };
 
             this.GroupRepository.FindAll()
