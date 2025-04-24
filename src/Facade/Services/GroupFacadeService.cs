@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using Linn.Authorisation.Domain;
-using Linn.Authorisation.Domain.Services;
-using Linn.Common.Authorisation;
-
-namespace Linn.Authorisation.Facade.Services
+﻿namespace Linn.Authorisation.Facade.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
+    using Linn.Authorisation.Domain.Services;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 

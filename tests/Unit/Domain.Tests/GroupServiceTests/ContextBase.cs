@@ -1,8 +1,7 @@
-﻿using Linn.Authorisation.Domain.Groups;
-using Linn.Authorisation.Domain.Services;
-
-namespace Linn.Authorisation.Domain.Tests.GroupServiceTests
+﻿namespace Linn.Authorisation.Domain.Tests.GroupServiceTests
 {
+    using Linn.Authorisation.Domain.Groups;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Common.Persistence;
 
     using NSubstitute;

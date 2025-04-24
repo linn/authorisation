@@ -1,16 +1,15 @@
-using Linn.Authorisation.Domain.Services;
-using Linn.Common.Authorisation;
-
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Net.Http;
 
     using Linn.Authorisation.Domain.Groups;
+    using Linn.Authorisation.Domain.Services;
     using Linn.Authorisation.Facade.ResourceBuilders;
     using Linn.Authorisation.Facade.Services;
     using Linn.Authorisation.IoC;
     using Linn.Authorisation.Resources;
     using Linn.Authorisation.Service.Modules;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Logging;
     using Linn.Common.Persistence;

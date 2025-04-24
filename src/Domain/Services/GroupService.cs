@@ -1,12 +1,11 @@
-﻿using System;
-using Linn.Authorisation.Domain.Exceptions;
-using Linn.Authorisation.Domain.Groups;
-
-namespace Linn.Authorisation.Domain.Services
+﻿namespace Linn.Authorisation.Domain.Services
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Linn.Common.Persistence;
+    using Linn.Authorisation.Domain.Exceptions;
+    using Linn.Authorisation.Domain.Groups;
 
     public class GroupService : IGroupService
     {

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Linn.Authorisation.Facade.Services
+﻿namespace Linn.Authorisation.Facade.Services
 {
     using System;
+    using System.Collections.Generic;
 
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;

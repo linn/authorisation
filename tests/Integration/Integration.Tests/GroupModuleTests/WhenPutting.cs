@@ -1,5 +1,3 @@
-using Linn.Authorisation.Domain;
-
 namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Collections.Generic;
@@ -7,6 +5,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
     using System.Net.Http.Json;
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using Linn.Authorisation.Resources;
