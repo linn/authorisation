@@ -16,7 +16,7 @@ function Groups() {
     const navigate = useNavigate();
 
     const [groups, setGroups] = useState([]);
-    const { data, isLoading } = useInitialise(itemTypes.groups.url, null, true);
+    const { data, isGetLoading } = useInitialise(itemTypes.groups.url, null, true);
 
     useEffect(() => {
         if (data) {
@@ -68,7 +68,7 @@ function Groups() {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    {isLoading && <Loading />}
+                    {isGetLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{groups.map(renderPrivilege)}</List>
