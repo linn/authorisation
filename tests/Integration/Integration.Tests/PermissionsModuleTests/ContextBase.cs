@@ -24,11 +24,11 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         protected HttpClient Client { get; set; }
 
         protected HttpResponseMessage Response { get; set; }
-        
+
         protected IPermissionFacadeService FacadeService { get; private set; }
 
         protected ILog Log { get; private set; }
-        
+
         protected IPermissionService DomainService { get; private set; }
 
         protected IRepository<Permission, int> PermissionRepository { get; private set; }
@@ -59,12 +59,12 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
             this.Client = TestClient.With<PermissionsModule>(
                 services =>
-                    {
-                        services.AddSingleton(this.FacadeService);
-                        services.AddSingleton(this.Log);
-                        services.AddHandlers();
-                        services.AddRouting();
-                    },
+                {
+                    services.AddSingleton(this.FacadeService);
+                    services.AddSingleton(this.Log);
+                    services.AddHandlers();
+                    services.AddRouting();
+                },
                 FakeAuthMiddleware.EmployeeMiddleware);
         }
     }

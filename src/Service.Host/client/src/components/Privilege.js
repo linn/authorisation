@@ -20,7 +20,7 @@ import Page from './Page';
 function Privilege() {
     const { id } = useParams();
 
-    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id);
+    const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id, true);
     const [privilege, setPrivilege] = useState();
 
     const { send, isPutLoading, errorMessage, putResult } = usePut(

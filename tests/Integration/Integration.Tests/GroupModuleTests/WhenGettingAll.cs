@@ -20,17 +20,17 @@
         {
             this.GroupRepository.FindAll().Returns(
                 new List<Group>
-                    {
-                        new Group { Name = "1" },
-                        new Group { Name = "2" }
-                    }.AsQueryable());
+                {
+                    new Group { Name = "1" },
+                    new Group { Name = "2" }
+                }.AsQueryable());
 
             this.Response = this.Client.Get(
                 "/authorisation/groups",
                 with =>
-                    {
-                        with.Accept("application/json");
-                    }).Result;
+                {
+                    with.Accept("application/json");
+                }).Result;
         }
 
         [Test]

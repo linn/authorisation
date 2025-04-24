@@ -15,24 +15,24 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
             if (model is IndividualPermission)
             {
                 return new PermissionResource
-                           {
-                               GranteeUri = ((IndividualPermission)model).GranteeUri,
-                               Privilege = model.Privilege.Name,
-                               PrivilegeId = model.Privilege.Id,
-                               Links = this.BuildLinks(model).ToArray(),
-                               Id = model.Id
-                           };
+                {
+                    GranteeUri = ((IndividualPermission)model).GranteeUri,
+                    Privilege = model.Privilege.Name,
+                    PrivilegeId = model.Privilege.Id,
+                    Links = this.BuildLinks(model).ToArray(),
+                    Id = model.Id
+                };
             }
 
             return new PermissionResource
-                       {
-                           Privilege = model.Privilege.Name,
-                           PrivilegeId = model.Privilege.Id,
-                           Links = this.BuildLinks(model).ToArray(),
-                           Id = model.Id,
-                           GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
-                           GroupName = ((GroupPermission)model).GranteeGroup.Name
-                       };
+            {
+                Privilege = model.Privilege.Name,
+                PrivilegeId = model.Privilege.Id,
+                Links = this.BuildLinks(model).ToArray(),
+                Id = model.Id,
+                GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
+                GroupName = ((GroupPermission)model).GranteeGroup.Name
+            };
         }
 
         public string GetLocation(Permission model)

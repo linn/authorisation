@@ -2,6 +2,6 @@
 {
     public class AuthorisedAction
     {
-        public const string AuthorisationAdmin = "authorisation.admin";
+        public const string AuthorisationSuperUser = "authorisation.super-user";
     }
 }
