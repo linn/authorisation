@@ -79,7 +79,7 @@ function AddIndividualMember() {
                     propertyName="employee choice"
                     items={employees?.items.map(employee => ({
                         id: employee.id,
-                        displayText: `${employee?.firstName} ${employee?.lastName}`
+                        displayText: employee?.fullName
                     }))}
                     required
                     label="Choose an Employee"

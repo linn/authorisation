@@ -87,6 +87,7 @@ function Group({ creating }) {
 
     const renderListItem = member => {
         const employee = employees?.items.find(i => member.memberUri === i.href);
+
         if (!employee) {
             return (
                 <ListItem key={member.memberUri}>
@@ -96,7 +97,7 @@ function Group({ creating }) {
         }
         return (
             <ListItem key={employee.href}>
-                <Typography color="primary">{`${employee.firstName} ${employee.lastName}`}</Typography>
+                <Typography color="primary">{employee.fullName}</Typography>
             </ListItem>
         );
     };
