@@ -1,3 +1,5 @@
+using Org.BouncyCastle.Crypto.Prng;
+
 namespace Linn.Authorisation.Facade.Services
 {
     using System.Collections.Generic;
@@ -62,6 +64,26 @@ namespace Linn.Authorisation.Facade.Services
                 }
             }
 
+            return new SuccessResult<IEnumerable<PermissionResource>>(result);
+        }
+        public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForGroup(int groupId, IEnumerable<string> privileges = null)
+        {
+            var permissions = this.permissionService.GetImmediatePermissionsForGroup(groupId);
+
+            var result = new List<PermissionResource>();
+
+            foreach (var permission in permissions)
+            {
+                if (permission is GroupPermission)
+                {
+                    result.Add(new PermissionResource
+                    {
+                        GroupName = ((GroupPermission)permission).GranteeGroup.Name,
+                        PrivilegeId = permission.Privilege.Id,
+                        Privilege = permission.Privilege.Name,
+                    });
+                }
+            }
             return new SuccessResult<IEnumerable<PermissionResource>>(result);
         }
 

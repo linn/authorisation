@@ -9,10 +9,10 @@ import {
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
+import { DataGrid } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import usePost from '../hooks/usePost';
@@ -23,10 +23,20 @@ import Page from './Page';
 
 function Group({ creating }) {
     const { id } = useParams();
-    const { data, isGetLoading } = useInitialise(itemTypes.groups.url, id, true);
+    const {
+        data,
+        isGetLoading,
+        errorMessage: getErrorMessage
+    } = useInitialise(itemTypes.groups.url, id, true);
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
+    const { data: privileges, isGetLoading: isPrivilegesLoading } = useInitialise(
+        itemTypes.permissions.url,
+        id,
+        false
+    );
+
     const [group, setGroup] = useState();
     const [errorMessage, setErrorMessage] = useState();
 
@@ -60,12 +70,14 @@ function Group({ creating }) {
     }, [data, creating]);
 
     useEffect(() => {
-        if (putErrorMessage) {
+        if (getErrorMessage) {
+            setErrorMessage(getErrorMessage);
+        } else if (putErrorMessage) {
             setErrorMessage(putErrorMessage);
         } else if (postErrorMessage) {
             setErrorMessage(postErrorMessage);
         }
-    }, [putErrorMessage, postErrorMessage]);
+    }, [putErrorMessage, postErrorMessage, getErrorMessage]);
 
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -85,22 +97,35 @@ function Group({ creating }) {
         setGroup({ ...group, name: newValue });
     };
 
-    const renderListItem = member => {
-        const employee = employees?.items.find(i => member.memberUri === i.href);
+    const groupMembers = employees?.items?.filter(employee =>
+        group?.members?.some(member => member?.memberUri === employee?.href)
+    );
 
-        if (!employee) {
-            return (
-                <ListItem key={member.memberUri}>
-                    <Typography color="primary">{`${member.memberUri} - Employee not found`}</Typography>
-                </ListItem>
-            );
+    const employeeColumns = [
+        {
+            field: 'id',
+            headerName: 'ID',
+            width: 75
+        },
+        {
+            field: 'fullName',
+            headerName: 'Name',
+            width: 150
         }
-        return (
-            <ListItem key={employee.href}>
-                <Typography color="primary">{employee?.fullName}</Typography>
-            </ListItem>
-        );
-    };
+    ];
+
+    const privilegeColumns = [
+        {
+            field: 'privilegeId',
+            headerName: 'ID',
+            width: 75
+        },
+        {
+            field: 'privilege',
+            headerName: 'Name',
+            width: 350
+        }
+    ];
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -108,9 +133,11 @@ function Group({ creating }) {
                 <Typography variant="h4">{creating ? `Create a Group` : `Edit Group`}</Typography>
             </Grid>
             <Grid item xs={12}>
-                {(isGetLoading || isPutLoading || isEmployeesLoading || isPostLoading) && (
-                    <Loading />
-                )}
+                {(isGetLoading ||
+                    isPutLoading ||
+                    isEmployeesLoading ||
+                    isPrivilegesLoading ||
+                    isPostLoading) && <Loading />}
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -152,11 +179,47 @@ function Group({ creating }) {
                     message="Save Successful"
                 />
 
+                <Box mt={3} />
+
                 {!creating && (
                     <Grid item xs={12}>
                         <Typography variant="h5">Group Members</Typography>
 
-                        <List>{group?.members?.map(renderListItem)}</List>
+                        <Grid item xs={6}>
+                            <DataGrid
+                                rows={
+                                    groupMembers?.map(e => ({
+                                        ...e,
+                                        id: e.id
+                                    })) || []
+                                }
+                                columns={employeeColumns}
+                                density="comfortable"
+                                rowHeight={34}
+                                disableMultipleSelection
+                                hideFooter
+                            />
+                        </Grid>
+                        <Box mt={3} />
+                        <Grid item xs={12}>
+                            <Typography variant="h5">Privileges</Typography>
+
+                            <Grid item xs={12}>
+                                <DataGrid
+                                    rows={
+                                        privileges?.map(e => ({
+                                            ...e,
+                                            id: e.privilegeId
+                                        })) || []
+                                    }
+                                    columns={privilegeColumns}
+                                    density="comfortable"
+                                    rowHeight={34}
+                                    disableMultipleSelection
+                                    hideFooter
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
                 )}
             </Grid>

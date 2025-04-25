@@ -17,6 +17,7 @@ namespace Linn.Authorisation.Service.Modules
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGet("/authorisation/permissions", this.GetAllPermissionsForUser);
+            endpoints.MapGet("/authorisation/permissions/{groupId:int}", this.GetAllPermissionsForGroup);
             endpoints.MapGet("/authorisation/permissions/privilege", this.GetPermissionsForPrivilege);
             endpoints.MapPost("/authorisation/permissions", this.CreatePermission);
             endpoints.MapDelete("/authorisation/permissions/{id:int}", this.DeletePermission);
@@ -31,6 +32,14 @@ namespace Linn.Authorisation.Service.Modules
             {
                 await res.Negotiate(service.GetAllPermissionsForUser(who));
             }
+        }
+
+        private async Task GetAllPermissionsForGroup(
+            HttpResponse res,
+            int groupId,
+            IPermissionFacadeService service)
+        { 
+            await res.Negotiate(service.GetAllPermissionsForGroup(groupId));
         }
 
         private async Task GetPermissionsForPrivilege(
