@@ -7,14 +7,12 @@ import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import ExampleComponent from './ExampleComponent';
 import Privileges from './Privileges';
-import CreatePrivilege from './CreatePrivilege';
 import Privilege from './Privilege';
 import CreateIndividualPermission from './CreateIndividualPermission';
 import CreateGroupPermission from './CreateGroupPermission';
 import ViewIndividualPermission from './ViewIndividualsPermission';
-import ViewGroups from './ViewGroups';
+import ViewGroups from './Groups';
 import Group from './Group';
-import CreateGroup from './CreateGroup';
 import AddIndividualMember from './AddIndividualMember';
 import ViewPermissionUsers from './ViewPermissionUsers';
 
@@ -45,7 +43,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/privileges/create"
-                                element={<CreatePrivilege />}
+                                element={<Privilege creating />}
                             />
                             <Route
                                 exact
@@ -76,7 +74,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/groups/create"
-                                element={<CreateGroup />}
+                                element={<Group creating />}
                             />
                             <Route
                                 exact

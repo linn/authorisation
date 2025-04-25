@@ -16,7 +16,7 @@ function App() {
                     <Typography color="primary">Privileges</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/privileges/create">
-                    <Typography color="primary">Create Privileges</Typography>
+                    <Typography color="primary">Create a Privilege</Typography>
                 </ListItem>
                 <ListItem component={Link} to="/authorisation/create-individual-permission">
                     <Typography color="primary">Create Individual Permission</Typography>

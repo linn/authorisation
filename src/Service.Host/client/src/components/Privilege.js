@@ -8,22 +8,30 @@ import {
     ErrorCard,
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import config from '../config';
 import usePut from '../hooks/usePut';
+import usePost from '../hooks/usePost';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
 import Page from './Page';
 
-function Privilege() {
+function Privilege({ creating }) {
     const { id } = useParams();
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, id, true);
     const [privilege, setPrivilege] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
-    const { send, isPutLoading, errorMessage, putResult } = usePut(
+    const {
+        send: putSend,
+        isPutLoading,
+        errorMessage: putErrorMessage,
+        putResult
+    } = usePut(
         itemTypes.privileges.url,
         id,
         {
@@ -34,17 +42,36 @@ function Privilege() {
         true
     );
 
+    const {
+        send: postSend,
+        isLoading: isPostLoading,
+        errorMessage: postErrorMessage,
+        postResult
+    } = usePost(itemTypes.privileges.url, null, privilege, true);
+
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     useEffect(() => {
-        setSnackbarVisible(!!putResult);
-    }, [putResult]);
+        if (putErrorMessage) {
+            setErrorMessage(putErrorMessage);
+        } else if (postErrorMessage) {
+            setErrorMessage(postErrorMessage);
+        }
+    }, [putErrorMessage, postErrorMessage]);
 
     useEffect(() => {
-        if (data) {
+        if (putResult) {
+            setSnackbarVisible(!!putResult);
+        } else if (postResult) {
+            setSnackbarVisible(!!postResult);
+        }
+    }, [postResult, putResult]);
+
+    useEffect(() => {
+        if (!creating && data) {
             setPrivilege(data);
         }
-    }, [data]);
+    }, [data, creating]);
 
     const handleActiveChange = (_, newValue) => {
         setPrivilege({ ...privilege, active: newValue });
@@ -57,10 +84,12 @@ function Privilege() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid item xs={12}>
-                {(isGetLoading || isPutLoading) && <Loading />}
+                {(isGetLoading || isPutLoading || isPostLoading) && <Loading />}
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h4">Edit Privilege</Typography>
+                <Typography variant="h4">
+                    {creating ? `Create Privilege` : `Edit Privilege`}
+                </Typography>
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -83,9 +112,7 @@ function Privilege() {
                 <Button
                     variant="contained"
                     disabled={data?.name === privilege?.name && data?.active === privilege?.active}
-                    onClick={() => {
-                        send();
-                    }}
+                    onClick={creating ? postSend : putSend}
                 >
                     Save
                 </Button>
@@ -105,5 +132,8 @@ function Privilege() {
         </Page>
     );
 }
+
+Privilege.propTypes = { creating: PropTypes.bool };
+Privilege.defaultProps = { creating: false };
 
 export default Privilege;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Loading } from '@linn-it/linn-form-components-library';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,6 +13,7 @@ import itemTypes from '../itemTypes';
 import Page from './Page';
 
 function Privileges() {
+    const navigate = useNavigate();
     const [privileges, setPrivileges] = useState([]);
 
     const { data, isGetLoading } = useInitialise(itemTypes.privileges.url, null, true);
@@ -46,19 +48,22 @@ function Privileges() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={10}>
                     <Typography variant="h4">Privileges</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button
+                        variant="contained"
+                        onClick={() => navigate(`/authorisation/privileges/create`)}
+                    >
+                        Create Privilege
+                    </Button>
                 </Grid>
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <List>{privileges.map(renderPrivilege)}</List>
-                </Grid>
-                <Grid item xs={6}>
-                    <ListItem component={Link} to="/authorisation/privileges/create">
-                        <Typography color="primary">Create Privileges</Typography>
-                    </ListItem>
                 </Grid>
             </Grid>
         </Page>
