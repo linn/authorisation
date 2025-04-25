@@ -36,7 +36,7 @@ function ViewPermissionUsers() {
 
         return (
             <ListItem key={employee?.href}>
-                <Typography color="primary">{employee.fullName}</Typography>
+                <Typography color="primary">{employee?.fullName}</Typography>
             </ListItem>
         );
     };
