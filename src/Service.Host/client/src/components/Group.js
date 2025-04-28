@@ -181,7 +181,7 @@ function Group({ creating }) {
 
                 <Box mt={3} />
 
-                {!creating && (
+                {!creating && group && (
                     <Grid item xs={12}>
                         <Typography variant="h5">Group Members</Typography>
 
