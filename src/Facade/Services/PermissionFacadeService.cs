@@ -53,12 +53,8 @@ namespace Linn.Authorisation.Facade.Services
             {
                 if (permission is IndividualPermission)
                 {
-                    var individualUri = ((IndividualPermission)permission).GranteeUri;
-                    if (!individualUris.Contains(individualUri))
-                    {
-                        result.Add(new PermissionResource{GranteeUri = individualUri });
-                        individualUris.Add(individualUri);
-                    }
+                    result.Add(new PermissionResource{GranteeUri = ((IndividualPermission)permission).GranteeUri });
+                    individualUris.Add(((IndividualPermission)permission).GranteeUri);
                 }
                 else
                 {
