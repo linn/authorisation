@@ -45,16 +45,7 @@ function Group({ creating }) {
         isPutLoading,
         errorMessage: putErrorMessage,
         putResult
-    } = usePut(
-        itemTypes.groups.url,
-        id,
-        {
-            name: group?.name,
-            active: group?.active,
-            ...group
-        },
-        true
-    );
+    } = usePut(itemTypes.groups.url, id, group, true);
 
     const {
         send: postSend,
@@ -109,7 +100,7 @@ function Group({ creating }) {
         },
         {
             field: 'fullName',
-            headerName: 'Name',
+            headerName: 'Employee Name',
             width: 150
         }
     ];
@@ -122,7 +113,7 @@ function Group({ creating }) {
         },
         {
             field: 'privilege',
-            headerName: 'Name',
+            headerName: 'Privilege Name',
             width: 350
         }
     ];
@@ -181,26 +172,30 @@ function Group({ creating }) {
 
                 <Box mt={3} />
 
-                {!creating && group && (
-                    <Grid item xs={12}>
-                        <Typography variant="h5">Group Members</Typography>
+                {!creating && groupMembers && group && privileges && (
+                    <>
+                        <Grid item xs={12}>
+                            <Typography variant="h5">Group Members</Typography>
 
-                        <Grid item xs={6}>
-                            <DataGrid
-                                rows={
-                                    groupMembers?.map(e => ({
-                                        ...e,
-                                        id: e.id
-                                    })) || []
-                                }
-                                columns={employeeColumns}
-                                density="comfortable"
-                                rowHeight={34}
-                                disableMultipleSelection
-                                hideFooter
-                            />
+                            <Grid item xs={12}>
+                                <DataGrid
+                                    rows={
+                                        groupMembers?.map(e => ({
+                                            ...e,
+                                            id: e?.privilegeId
+                                        })) || []
+                                    }
+                                    columns={employeeColumns}
+                                    density="comfortable"
+                                    rowHeight={34}
+                                    disableMultipleSelection
+                                    hideFooter
+                                />
+                            </Grid>
                         </Grid>
+
                         <Box mt={3} />
+
                         <Grid item xs={12}>
                             <Typography variant="h5">Privileges</Typography>
 
@@ -209,7 +204,7 @@ function Group({ creating }) {
                                     rows={
                                         privileges?.map(e => ({
                                             ...e,
-                                            id: e.privilegeId
+                                            id: e?.privilegeId
                                         })) || []
                                     }
                                     columns={privilegeColumns}
@@ -220,7 +215,7 @@ function Group({ creating }) {
                                 />
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </>
                 )}
             </Grid>
         </Page>
