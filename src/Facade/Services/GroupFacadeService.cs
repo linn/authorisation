@@ -14,7 +14,7 @@
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
-    public class GroupFacadeService : FacadeResourceService<Group, int, GroupResource, GroupResource>
+    public class GroupFacadeService : IGroupFacadeService
     {
         private readonly IRepository<Group, int> groupRepository;
 
@@ -39,7 +39,7 @@
             this.resourceBuilder = resourceBuilder;
         }
 
-        public override IResult<IEnumerable<GroupResource>> GetAll(IEnumerable<string> userPrivileges = null)
+        public IResult<IEnumerable<GroupResource>> GetAll(IEnumerable<string> userPrivileges = null)
         {
             var groups = this.groupService.GetAllGroupsForUser(userPrivileges);
 
@@ -48,7 +48,7 @@
             return new SuccessResult<IEnumerable<GroupResource>>(resources);
         }
 
-        public override IResult<GroupResource> GetById(int id, IEnumerable<string> userPrivileges = null)
+        public IResult<GroupResource> GetById(int id, IEnumerable<string> userPrivileges = null)
         {
             var entity = this.groupService.GetGroupById(id, userPrivileges);
 
@@ -57,7 +57,7 @@
             return new SuccessResult<GroupResource>(resource);
         }
 
-        protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> userPrivileges = null)
+        protected Group CreateFromResource(GroupResource resource, IEnumerable<string> userPrivileges = null)
         {
             if (!userPrivileges.Contains($"{resource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
             {
@@ -76,7 +76,7 @@
             throw new DuplicateGroupNameException("Group name already taken");
         }
 
-        protected override void UpdateFromResource(
+        protected void UpdateFromResource(
             Group entity,
             GroupResource updateResource,
             IEnumerable<string> userPrivileges = null)
@@ -98,12 +98,12 @@
             throw new DuplicateGroupNameException("Group name already taken");
         }
 
-        protected override Expression<Func<Group, bool>> SearchExpression(string searchTerm)
+        protected Expression<Func<Group, bool>> SearchExpression(string searchTerm)
         {
             throw new NotImplementedException();
         }
 
-        protected override void SaveToLogTable(
+        protected void SaveToLogTable(
             string actionType,
             int userNumber,
             Group entity,
@@ -113,7 +113,12 @@
             throw new NotImplementedException();
         }
 
-        protected override void DeleteOrObsoleteResource(Group entity, IEnumerable<string> privileges = null)
+        protected void DeleteMember(int groupId, string employeeUri, IEnumerable<string> userPrivileges = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected void DeleteOrObsoleteResource(Group entity, IEnumerable<string> privileges = null)
         {
             throw new NotImplementedException();
         }
