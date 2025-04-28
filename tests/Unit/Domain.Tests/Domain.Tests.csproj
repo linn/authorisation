@@ -4,6 +4,8 @@
 	<TargetFramework>net7.0</TargetFramework>
     <AssemblyName>Linn.Authorisation.Domain.Tests</AssemblyName>
     <RootNamespace>Linn.Authorisation.Domain.Tests</RootNamespace>
+	  <NoWarn>$(NoWarn);SA1600</NoWarn>
+	  <NoWarn>$(NoWarn);SA1633</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

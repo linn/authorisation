@@ -4,6 +4,8 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>Linn.Authorisation.Persistence.LinnApps</RootNamespace>
 		<AssemblyName>Linn.Authorisation.Persistence.LinnApps</AssemblyName>
+		<NoWarn>$(NoWarn);SA1600</NoWarn>
+		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +15,10 @@
 		<PackageReference Include="Linn.Common.Persistence.EntityFramework" Version="4.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

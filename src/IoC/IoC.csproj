@@ -4,6 +4,8 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Linn.Authorisation.IoC</AssemblyName>
 		<RootNamespace>Linn.Authorisation.IoC</RootNamespace>
+		<NoWarn>$(NoWarn);SA1600</NoWarn>
+		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +15,10 @@
 		<PackageReference Include="Linn.Common.Logging.AmazonSqs" Version="3.0.0" />
 		<PackageReference Include="Linn.Common.Persistence.EntityFramework" Version="4.0.0" />
 		<PackageReference Include="Linn.Common.Proxy" Version="3.0.1" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

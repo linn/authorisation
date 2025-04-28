@@ -4,10 +4,16 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Linn.Authorisation.Resources</AssemblyName>
 		<RootNamespace>Linn.Authorisation.Resources</RootNamespace>
+		<NoWarn>$(NoWarn);SA1600</NoWarn>
+		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Linn.Common.Resources" Version="2.1.0" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 </Project>

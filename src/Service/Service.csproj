@@ -4,11 +4,17 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Linn.Authorisation.Service</AssemblyName>
 		<RootNamespace>Linn.Authorisation.Service</RootNamespace>
+		<NoWarn>$(NoWarn);SA1600</NoWarn>
+		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Linn.Common.Configuration" Version="2.0.0" />
 		<PackageReference Include="Linn.Common.Service.Core" Version="0.0.3" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
