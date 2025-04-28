@@ -49,17 +49,28 @@ namespace Linn.Authorisation.Facade.Services
 
             var result = new List<PermissionResource>();
 
+            var individualUris = new List<string>();
+
             foreach (var permission in permissions)
             {
                 if (permission is IndividualPermission)
                 {
-                    result.Add(new PermissionResource { GranteeUri = ((IndividualPermission)permission).GranteeUri });
+                    var individualUri = ((IndividualPermission)permission).GranteeUri;
+                    if (!individualUris.Contains(individualUri))
+                    {
+                        result.Add(new PermissionResource{GranteeUri = individualUri });
+                        individualUris.Add(individualUri);
+                    }
                 }
                 else
                 {
                     foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
                     {
-                        result.Add(new PermissionResource { GranteeUri = memberUri });
+                        if (!individualUris.Contains(memberUri))
+                        {
+                            result.Add(new PermissionResource { GranteeUri = memberUri });
+                            individualUris.Add(memberUri);
+                        }
                     }
                 }
             }

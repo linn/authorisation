@@ -32,6 +32,7 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
                 Id = model.Id,
                 GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
                 GroupName = ((GroupPermission)model).GranteeGroup.Name
+                
             };
         }
 
