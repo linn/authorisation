@@ -30,7 +30,7 @@ namespace Linn.Authorisation.Domain.Groups
 
         public bool Active { get; set; }
 
-        public IList<Member> Members { get; private set; }
+        public IList<Member> Members { get; set; }
 
         public void AddIndividualMember(string uri, string addedBy)
         {
