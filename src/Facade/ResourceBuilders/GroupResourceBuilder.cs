@@ -1,6 +1,4 @@
-﻿using Linn.Authorisation.Domain.Permissions;
-
-namespace Linn.Authorisation.Facade.ResourceBuilders
+﻿namespace Linn.Authorisation.Facade.ResourceBuilders
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -11,9 +9,9 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
 
     public class GroupResourceBuilder : IBuilder<Group>
     {
-        private readonly MemberResourceBuilder memberResourceBuilder = new();
+        private readonly MemberResourceBuilder memberResourceBuilder = new ();
 
-        private readonly PermissionResourceBuilder permissionResourceBuilder = new();
+        private readonly PermissionResourceBuilder permissionResourceBuilder = new ();
 
         public object Build(Group model, IEnumerable<string> claims)
         {

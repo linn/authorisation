@@ -23,7 +23,6 @@
                 .Include(g => g.Permissions).ThenInclude(p => p.Privilege).Include(g => g.Members).SingleOrDefault(g => g.Id == id);
         }
 
-
         public IQueryable<Group> FindAll()
         {
             return this.serviceDbContext.Groups.Include(x => x.Members);

@@ -61,7 +61,6 @@
             GroupResource resource,
             IFacadeResourceService<Group, int, GroupResource, GroupResource> groupService)
         {
-
             await res.Negotiate(groupService.Update(id, resource, req.HttpContext.GetPrivileges()));
         }
 

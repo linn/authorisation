@@ -38,7 +38,7 @@ namespace Linn.Authorisation.Service.Modules
             HttpResponse res,
             int groupId,
             IPermissionFacadeService service)
-        { 
+        {
             await res.Negotiate(service.GetAllPermissionsForGroup(groupId));
         }
 

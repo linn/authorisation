@@ -1,7 +1,7 @@
-using Linn.Authorisation.Domain.Permissions;
-
 namespace Linn.Authorisation.Domain.Groups
 {
+    using Linn.Authorisation.Domain.Permissions;
+
     using System.Collections.Generic;
     using System.Linq;
     using Exceptions;
