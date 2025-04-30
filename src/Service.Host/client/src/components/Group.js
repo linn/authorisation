@@ -16,6 +16,7 @@ import ListItem from '@mui/material/ListItem';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import usePost from '../hooks/usePost';
+import useDelete from '../hooks/useDelete';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
@@ -47,6 +48,13 @@ function Group({ creating }) {
     );
 
     const {
+        send: deleteSend,
+        isLoading: isDeleteLoading,
+        errorMessage: deleteErrorMessage,
+        deleteResult
+    } = useDelete(itemTypes.members.url, true);
+
+    const {
         send: postSend,
         isLoading: isPostLoading,
         errorMessage: postErrorMessage,
@@ -64,18 +72,22 @@ function Group({ creating }) {
             setErrorMessage(putErrorMessage);
         } else if (postErrorMessage) {
             setErrorMessage(postErrorMessage);
+        } else if (deleteErrorMessage) {
+            setErrorMessage(deleteErrorMessage);
         }
-    }, [putErrorMessage, postErrorMessage]);
+    }, [putErrorMessage, postErrorMessage, deleteErrorMessage]);
 
-    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbar, setSnackbar] = useState(false);
 
     useEffect(() => {
         if (putResult) {
-            setSnackbarVisible(!!putResult);
+            setSnackbar({ result: !!putResult, message: 'Save Successful' });
         } else if (postResult) {
-            setSnackbarVisible(!!postResult);
+            setSnackbar({ result: !!postResult, message: 'Save Successful' });
+        } else if (deleteResult) {
+            setSnackbar({ result: !!deleteResult, message: 'Delete Successful' });
         }
-    }, [postResult, putResult]);
+    }, [deleteResult, postResult, putResult]);
 
     const handleActiveChange = (_, newValue) => {
         setGroup({ ...group, active: newValue });
@@ -95,9 +107,24 @@ function Group({ creating }) {
                 </ListItem>
             );
         }
+
         return (
             <ListItem key={employee.href}>
-                <Typography color="primary">{employee?.fullName}</Typography>
+                <Grid container direction="row" alignItems="center" spacing={2}>
+                    <Grid item xs={9}>
+                        <Typography color="primary">{employee?.fullName}</Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                                deleteSend(member.id);
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </Grid>
+                </Grid>
             </ListItem>
         );
     };
@@ -108,9 +135,11 @@ function Group({ creating }) {
                 <Typography variant="h4">{creating ? `Create a Group` : `Edit Group`}</Typography>
             </Grid>
             <Grid item xs={12}>
-                {(isGetLoading || isPutLoading || isEmployeesLoading || isPostLoading) && (
-                    <Loading />
-                )}
+                {(isGetLoading ||
+                    isPutLoading ||
+                    isDeleteLoading ||
+                    isEmployeesLoading ||
+                    isPostLoading) && <Loading />}
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -147,13 +176,13 @@ function Group({ creating }) {
                 )}
 
                 <SnackbarMessage
-                    visible={snackbarVisible}
-                    onClose={() => setSnackbarVisible(false)}
-                    message="Save Successful"
+                    visible={snackbar.result}
+                    onClose={() => setSnackbar({ result: false, message: '' })}
+                    message={deleteResult ? 'Delete Successful' : 'Save Successful'}
                 />
 
                 {!creating && (
-                    <Grid item xs={12}>
+                    <Grid>
                         <Typography variant="h5">Group Members</Typography>
 
                         <List>{group?.members?.map(renderListItem)}</List>

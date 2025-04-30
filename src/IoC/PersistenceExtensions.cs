@@ -18,6 +18,7 @@
                 .AddTransient<ITransactionManager, TransactionManager>()
                 .AddTransient<IRepository<Permission, int>, PermissionsRepository>()
                 .AddTransient<IRepository<Privilege,int>, PrivilegeRepository>()
+                .AddTransient<IRepository<Member, int>, MemberRepository>()
                 .AddTransient<IRepository<Group, int>, GroupRepository>();
         }
     }

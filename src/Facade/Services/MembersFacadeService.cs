@@ -55,7 +55,7 @@
 
             this.transactionManager.Commit();
 
-            var result = new MemberResource {GroupId = null, MemberUri = null};
+            var result = new MemberResource { GroupId = null, MemberUri = null };
 
             return new SuccessResult<MemberResource>(result);
         }
