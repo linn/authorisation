@@ -24,6 +24,7 @@
             endpoints.MapPost("/authorisation/groups", this.CreateGroup);
             endpoints.MapPut("/authorisation/groups/{id:int}", this.UpdateGroup);
             endpoints.MapPost("/authorisation/members", this.AddMember);
+            endpoints.MapDelete("/authorisation/members/{id:int}", this.RemoveMember);
         }
 
         private async Task GetAll(
@@ -69,9 +70,17 @@
             HttpResponse res,
             HttpRequest req,
             MemberResource resource,
-            IMembersFacadeService service)
+            IMembersFacadeService memberService)
         {
-            await res.Negotiate(service.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
+            await res.Negotiate(memberService.AddIndividualMember(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
+        }
+
+        private async Task RemoveMember(
+            HttpResponse res,
+            int id,
+            IMembersFacadeService memberService)
+        {
+            await res.Negotiate(memberService.DeleteMember(id));
         }
     }
 }

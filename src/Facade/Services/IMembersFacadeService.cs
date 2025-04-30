@@ -7,5 +7,7 @@
     public interface IMembersFacadeService
     {
         IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri, IEnumerable<string> privileges = null);
+
+        IResult<MemberResource> DeleteMember(int memberId);
     }
 }

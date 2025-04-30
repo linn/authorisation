@@ -8,11 +8,6 @@ namespace Linn.Authorisation.Facade.Services
 
     public interface IGroupFacadeService : IFacadeResourceService<Group, int, GroupResource, GroupResource>
     {
-        void DeleteMember(int groupId, string employeeUri, IEnumerable<string> userPrivileges = null);
-
-        void UpdateFromResource(
-            Group entity,
-            GroupResource updateResource,
-            IEnumerable<string> userPrivileges = null)
+        void DeleteMember(int groupId, string employeeUri, int memberId, IEnumerable<string> userPrivileges = null);
     }
 }
