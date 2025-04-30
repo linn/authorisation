@@ -1,3 +1,5 @@
+using Linn.Authorisation.Domain.Permissions;
+
 namespace Linn.Authorisation.Domain.Groups
 {
     using System.Collections.Generic;
@@ -31,6 +33,8 @@ namespace Linn.Authorisation.Domain.Groups
         public bool Active { get; set; }
 
         public IList<Member> Members { get; set; }
+
+        public IList<GroupPermission> Permissions { get; set; }
 
         public void AddIndividualMember(string uri, string addedBy)
         {

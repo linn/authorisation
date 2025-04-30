@@ -31,7 +31,7 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
                 Links = this.BuildLinks(model).ToArray(),
                 Id = model.Id,
                 GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
-                GroupName = ((GroupPermission)model).GranteeGroup.Name
+                GroupName = ((GroupPermission)model).GranteeGroup.Name,
             };
         }
 

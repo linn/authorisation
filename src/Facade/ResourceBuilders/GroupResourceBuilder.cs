@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.Facade.ResourceBuilders
+﻿using Linn.Authorisation.Domain.Permissions;
+
+namespace Linn.Authorisation.Facade.ResourceBuilders
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -11,18 +13,23 @@
     {
         private readonly MemberResourceBuilder memberResourceBuilder = new();
 
+        private readonly PermissionResourceBuilder permissionResourceBuilder = new();
+
         public object Build(Group model, IEnumerable<string> claims)
         {
-            var members = model.Members;
-            var membersResources = members
+            var membersResources = model.Members?
                 .Select(member => (MemberResource)this.memberResourceBuilder.Build(member, claims)).ToList();
+
+            var permissionResources = model.Permissions?
+                .Select(permission => (PermissionResource)this.permissionResourceBuilder.Build(permission, claims)).ToList();
 
             return new GroupResource
             {
                 Active = model.Active,
                 Name = model.Name,
                 Id = model.Id,
-                Members = membersResources
+                Members = membersResources,
+                Permission = permissionResources,
             };
         }
 

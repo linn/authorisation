@@ -31,11 +31,6 @@ function Group({ creating }) {
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
-    const { data: privileges, isGetLoading: isPrivilegesLoading } = useInitialise(
-        itemTypes.permissions.url,
-        id,
-        false
-    );
 
     const [group, setGroup] = useState();
     const [errorMessage, setErrorMessage] = useState();
@@ -124,11 +119,9 @@ function Group({ creating }) {
                 <Typography variant="h4">{creating ? `Create a Group` : `Edit Group`}</Typography>
             </Grid>
             <Grid item xs={12}>
-                {(isGetLoading ||
-                    isPutLoading ||
-                    isEmployeesLoading ||
-                    isPrivilegesLoading ||
-                    isPostLoading) && <Loading />}
+                {(isGetLoading || isPutLoading || isEmployeesLoading || isPostLoading) && (
+                    <Loading />
+                )}
             </Grid>
             <Grid item xs={6}>
                 <InputField
@@ -172,7 +165,7 @@ function Group({ creating }) {
 
                 <Box mt={3} />
 
-                {!creating && groupMembers && group && privileges && (
+                {!creating && groupMembers && group && (
                     <>
                         <Grid item xs={12}>
                             <Typography variant="h5">Group Members</Typography>
@@ -182,7 +175,7 @@ function Group({ creating }) {
                                     rows={
                                         groupMembers?.map(e => ({
                                             ...e,
-                                            id: e?.privilegeId
+                                            id: e?.id
                                         })) || []
                                     }
                                     columns={employeeColumns}
@@ -202,7 +195,7 @@ function Group({ creating }) {
                             <Grid item xs={12}>
                                 <DataGrid
                                     rows={
-                                        privileges?.map(e => ({
+                                        group.permission?.map(e => ({
                                             ...e,
                                             id: e?.privilegeId
                                         })) || []

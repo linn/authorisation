@@ -58,16 +58,14 @@ namespace Linn.Authorisation.Facade.Services
 
             foreach (var permission in permissions)
             {
-                if (permission is GroupPermission)
-                {
-                    result.Add(new PermissionResource
+                result.Add(new PermissionResource
                     {
                         GroupName = ((GroupPermission)permission).GranteeGroup.Name,
                         PrivilegeId = permission.Privilege.Id,
                         Privilege = permission.Privilege.Name,
                     });
-                }
             }
+
             return new SuccessResult<IEnumerable<PermissionResource>>(result);
         }
 
