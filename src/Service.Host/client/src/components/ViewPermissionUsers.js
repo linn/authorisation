@@ -31,8 +31,8 @@ function ViewPermissionUsers() {
         result: permissionEmployeesUris
     } = useGet(`${itemTypes.permissions.url}/privilege`);
 
-    const getPermissionEmployees = member => {
-        const employee = employees?.items.find(i => member === i?.href);
+    const getPermissionEmployees = employeeUri => {
+        const employee = employees?.items.find(i => employeeUri === i?.href);
 
         return (
             <ListItem key={employee?.href}>
