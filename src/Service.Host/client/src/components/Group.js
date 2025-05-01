@@ -12,6 +12,9 @@ import PropTypes from 'prop-types';
 import { DataGrid } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import config from '../config';
 import usePut from '../hooks/usePut';
@@ -49,6 +52,13 @@ function Group({ creating }) {
         errorMessage: postErrorMessage,
         postResult
     } = usePost(itemTypes.groups.url, null, group, true);
+
+    const {
+        send: deleteMemberSend,
+        isLoading: isDeleteLoading,
+        deleteResult,
+        errorMessage: deleteErrorMessage
+    } = useDelete(itemTypes.members.url, true);
 
     useEffect(() => {
         if (!creating && data) {
@@ -102,6 +112,22 @@ function Group({ creating }) {
             field: 'fullName',
             headerName: 'Employee Name',
             width: 150
+        },
+        {
+            field: 'delete',
+            headerName: ' ',
+            width: 50,
+            renderCell: params => (
+                <Tooltip title="Delete">
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => deleteMemberSend(params)}
+                    >
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            )
         }
     ];
 
