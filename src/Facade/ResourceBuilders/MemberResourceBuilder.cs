@@ -13,7 +13,7 @@
         {
             if (model is IndividualMember member)
             {
-                return new MemberResource { MemberUri = member.MemberUri, Id = member.Id };
+                return new MemberResource { Id = member.Id, MemberUri = member.MemberUri };
             }
 
             throw new NotImplementedException();

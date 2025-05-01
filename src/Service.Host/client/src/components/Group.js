@@ -218,7 +218,9 @@ function Group({ creating }) {
                             <Typography variant="h5">Group Members</Typography>
 
                             {groupMembers?.length === 0 ? (
-                                <Typography color="primary">No Privileges Assigned</Typography>
+                                <Typography color="primary">
+                                    {group.name} does not contain any members
+                                </Typography>
                             ) : (
                                 <Grid item xs={12}>
                                     <DataGrid
@@ -241,10 +243,12 @@ function Group({ creating }) {
                         <Box mt={3} />
 
                         <Grid item xs={12}>
-                            <Typography variant="h5">Privileges</Typography>
+                            <Typography variant="h5">Permissions</Typography>
 
                             {group.permission?.length === 0 ? (
-                                <Typography color="primary">No Privileges Assigned</Typography>
+                                <Typography color="primary">
+                                    {group.name} does not have any permissions
+                                </Typography>
                             ) : (
                                 <Grid item xs={12}>
                                     <DataGrid

@@ -1,12 +1,10 @@
-﻿using Linn.Authorisation.Domain.Groups;
-
-namespace Linn.Authorisation.Persistence
+﻿namespace Linn.Authorisation.Persistence
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Linn.Authorisation.Domain;
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Common.Persistence;
 
     public class MemberRepository : IRepository<Member, int>

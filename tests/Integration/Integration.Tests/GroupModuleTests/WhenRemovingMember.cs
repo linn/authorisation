@@ -1,11 +1,10 @@
-﻿using Linn.Authorisation.Domain.Groups;
-
-namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
     using System.Net;
 
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using NSubstitute;
     using NUnit.Framework;
