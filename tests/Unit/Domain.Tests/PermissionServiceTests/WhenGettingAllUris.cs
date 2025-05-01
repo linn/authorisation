@@ -1,18 +1,12 @@
-﻿using System.Collections;
-
-namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
     using FluentAssertions;
 
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
-
-    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -63,8 +57,6 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
             };
 
             this.result = this.Sut.GetAllGranteeUris(permissions);
-
-
         }
 
         [Test]
