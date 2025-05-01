@@ -9,7 +9,9 @@ namespace Linn.Authorisation.Facade.Services
     {
         IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri, IEnumerable<string> privileges = null);
 
-        IResult<IEnumerable<PermissionResource>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null);
+        IResult<IEnumerable<PermissionResource>> GetAllPermissionsForGroup(int groupId, IEnumerable<string> privileges = null);
+
+        IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null);
 
         IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri);
 

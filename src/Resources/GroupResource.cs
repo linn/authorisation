@@ -12,5 +12,7 @@
         public int Id { get; set; }
 
         public IEnumerable<MemberResource> Members { get; set; }
+
+        public IEnumerable<PermissionResource> Permission { get; set; }
     }
 }

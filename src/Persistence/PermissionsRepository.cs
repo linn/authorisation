@@ -46,8 +46,9 @@
         public IQueryable<Permission> FilterBy(Expression<Func<Permission, bool>> expression)
         {
             var indivPermissions = this.serviceDbContext.Permissions.Where(p => p is IndividualPermission).Include(x => x.Privilege).ToList();
-            var groupPermissions = this.serviceDbContext.Permissions.Where(p => p is GroupPermission).Include(x => ((GroupPermission)x).GranteeGroup).Include(x => x.Privilege).ToList();
-            var allPermissions = groupPermissions.Concat(indivPermissions).AsQueryable().Where(expression);
+            var groupPermissions = this.serviceDbContext.Permissions.Where(p => p is GroupPermission).Include(p => ((GroupPermission)p).GranteeGroup)
+                .ThenInclude(g => g.Members).Include(p => p.Privilege).ToList();
+            var allPermissions = indivPermissions.Concat(groupPermissions).AsQueryable().Where(expression);
             return allPermissions;
         }
     }

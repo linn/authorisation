@@ -28,11 +28,11 @@ function ViewPermissionUsers() {
     const {
         send,
         isLoading: isGetLoading,
-        result: permissionEmployees
+        result: permissionEmployeesUris
     } = useGet(`${itemTypes.permissions.url}/privilege`);
 
-    const getPermissionEmployees = member => {
-        const employee = employees?.items.find(i => member.granteeUri === i?.href);
+    const getPermissionEmployees = employeeUri => {
+        const employee = employees?.items.find(i => employeeUri === i?.href);
 
         return (
             <ListItem key={employee?.href}>
@@ -81,7 +81,7 @@ function ViewPermissionUsers() {
             </Grid>
 
             <Grid item xs={12}>
-                <List>{permissionEmployees?.map(getPermissionEmployees)}</List>
+                <List>{permissionEmployeesUris?.map(getPermissionEmployees)}</List>
             </Grid>
         </Page>
     );

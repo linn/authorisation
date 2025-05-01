@@ -41,25 +41,29 @@ namespace Linn.Authorisation.Facade.Services
             this.groupRepository = groupRepository;
         }
 
-        public IResult<IEnumerable<PermissionResource>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
+        public IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
         {
             var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
+
+            var result = this.permissionService.GetAllGranteeUris(permissions);
+
+            return new SuccessResult<IList<string>>(result);
+        }
+
+        public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForGroup(int groupId, IEnumerable<string> privileges = null)
+        {
+            var permissions = this.permissionService.GetImmediatePermissionsForGroup(groupId);
 
             var result = new List<PermissionResource>();
 
             foreach (var permission in permissions)
             {
-                if (permission is IndividualPermission)
-                {
-                    result.Add(new PermissionResource { GranteeUri = ((IndividualPermission)permission).GranteeUri });
-                }
-                else
-                {
-                    foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
+                result.Add(new PermissionResource
                     {
-                        result.Add(new PermissionResource { GranteeUri = memberUri });
-                    }
-                }
+                        GroupName = ((GroupPermission)permission).GranteeGroup.Name,
+                        PrivilegeId = permission.Privilege.Id,
+                        Privilege = permission.Privilege.Name,
+                    });
             }
 
             return new SuccessResult<IEnumerable<PermissionResource>>(result);

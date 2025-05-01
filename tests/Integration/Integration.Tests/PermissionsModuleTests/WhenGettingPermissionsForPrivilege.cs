@@ -19,30 +19,46 @@
     public class WhenGettingPermissionsForPrivilege : ContextBase
     {
         private Group group;
+        private Privilege privilege;
+        private List<Permission> permissions;
+        private List<string> resource;
+        private GroupMember groupMember;
+        private IndividualMember individualMember;
 
         [SetUp]
         public void SetUp()
         {
-            this.group = new Group
-                             {
-                                 Id = 2,
-                                 Name = "testing-get-group"
-                             };
-            this.group.AddIndividualMember("/employees/2", "/1");
+            this.privilege = new Privilege { Id = 1, Name = "Privilege 1" };
 
-            this.DomainService.GetAllPermissionsForPrivilege(privilegeId : 1).Returns(
-                new List<Permission>
-                    {
-                        new IndividualPermission
-                            {
-                                Privilege = new Privilege { Name = "1", Id = 1 }, GranteeUri = "/employees/1"
-                            },
-                        new GroupPermission
-                            { 
-                                Privilege = new Privilege { Name = "1", Id = 1 },
-                                GranteeGroup = this.group 
-                            }
-                    }.AsQueryable());
+            this.groupMember = new GroupMember
+            {
+                Id = 2,
+                Group = new Group { Name = "group2", Id = 10, Members = new List<Member> { new IndividualMember("/employees/4", "/employees/7004") } },
+            };
+
+            this.individualMember = new IndividualMember("/employees/3", "/employees/7004");
+
+            this.group = new Group
+            {
+                Id = 1,
+                Name = "adminz",
+                Active = true,
+                Members = new List<Member> { this.groupMember, this.individualMember },
+            };
+
+            this.permissions = new List<Permission>
+            {
+                new IndividualPermission("/employees/1", this.privilege, "/employees/7004"),
+                new IndividualPermission("/employees/2", this.privilege, "/employees/7004"),
+                new GroupPermission(this.group, this.privilege, "/employees/7004"),
+            };
+
+            this.resource = new List<string> { "/employees/1", "/employees/2", "/employees/3", "/employees/4" };
+
+            this.DomainService.GetAllPermissionsForPrivilege(this.privilege.Id).Returns(
+                this.permissions);
+
+            this.DomainService.GetAllGranteeUris(this.permissions).Returns(this.resource);
 
             this.Response = this.Client.Get(
                 "/authorisation/permissions/privilege?privilegeId=1",
@@ -65,11 +81,13 @@
         [Test]
         public void ShouldReturnJsonBody()
         {
-            var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
-            resources.Should().HaveCount(2);
+            var resources = this.Response.DeserializeBody<IList<string>>()?.ToArray();
+            resources.Should().HaveCount(4);
 
-            resources.Should().Contain(a => a.GranteeUri == "/employees/1");
-            resources.Should().Contain(a => a.GranteeUri == "/employees/2");
+            resources.Should().Contain("/employees/1");
+            resources.Should().Contain("/employees/2");
+            resources.Should().Contain("/employees/3");
+            resources.Should().Contain("/employees/4");
         }
     }
 }

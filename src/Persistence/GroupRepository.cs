@@ -19,7 +19,8 @@
 
         public Group FindById(int id)
         {
-            return this.serviceDbContext.Groups.Include(g => g.Members).SingleOrDefault(p => p.Id == id);
+            return this.serviceDbContext.Groups
+                .Include(g => g.Permissions).ThenInclude(p => p.Privilege).Include(g => g.Members).SingleOrDefault(g => g.Id == id);
         }
 
         public IQueryable<Group> FindAll()
