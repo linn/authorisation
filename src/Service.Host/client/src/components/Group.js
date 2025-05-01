@@ -80,15 +80,15 @@ function Group({ creating }) {
         }
     }, [putErrorMessage, postErrorMessage, getErrorMessage, deleteErrorMessage]);
 
-    const [snackbar, setSnackbar] = useState(false);
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     useEffect(() => {
         if (putResult) {
-            setSnackbar({ result: !!putResult, message: 'Save Successful' });
+            setSnackbarVisible(!!putResult);
         } else if (postResult) {
-            setSnackbar({ result: !!postResult, message: 'Save Successful' });
+            setSnackbarVisible(!!postResult);
         } else if (deleteResult) {
-            setSnackbar({ result: !!deleteResult, message: 'Delete Successful' });
+            setSnackbarVisible(!!deleteResult);
         }
     }, [deleteResult, id, postResult, putResult]);
 
@@ -205,8 +205,8 @@ function Group({ creating }) {
                 )}
 
                 <SnackbarMessage
-                    visible={snackbar.result}
-                    onClose={() => setSnackbar({ result: false, message: '' })}
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
                     message={deleteResult ? 'Delete Successful' : 'Save Successful'}
                 />
 
