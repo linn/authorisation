@@ -31,6 +31,31 @@
             return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
         }
 
+        public IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions)
+        {
+            var individualUris = new List<string>();
+
+            foreach (var permission in permissions)
+            {
+                if (permission is IndividualPermission)
+                {
+                    individualUris.Add(((IndividualPermission)permission).GranteeUri);
+                }
+                else
+                {
+                    foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
+                    {
+                        if (!individualUris.Contains(memberUri))
+                        {
+                            individualUris.Add(memberUri);
+                        }
+                    }
+                }
+            }
+
+            return individualUris;
+        }
+
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)
         {
             if (string.IsNullOrEmpty(who))
