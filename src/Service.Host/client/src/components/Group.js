@@ -27,11 +27,13 @@ import Page from './Page';
 
 function Group({ creating }) {
     const { id } = useParams();
+
     const {
         data,
         isGetLoading,
         errorMessage: getErrorMessage
     } = useInitialise(itemTypes.groups.url, id, true);
+
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         itemTypes.employees.url
     );
@@ -88,7 +90,7 @@ function Group({ creating }) {
         } else if (deleteResult) {
             setSnackbar({ result: !!deleteResult, message: 'Delete Successful' });
         }
-    }, [deleteResult, postResult, putResult]);
+    }, [deleteResult, id, postResult, putResult]);
 
     const handleActiveChange = (_, newValue) => {
         setGroup({ ...group, active: newValue });
@@ -98,9 +100,13 @@ function Group({ creating }) {
         setGroup({ ...group, name: newValue });
     };
 
-    const groupMembers = employees?.items?.filter(employee =>
-        group?.members?.some(member => member?.memberUri === employee?.href)
-    );
+    const groupMembers = group?.members?.map(member => {
+        const employee = employees?.items?.find(e => member?.memberUri === e?.href);
+        return {
+            ...employee,
+            groupMemberId: member?.id
+        };
+    });
 
     const employeeColumns = [
         {
@@ -122,7 +128,15 @@ function Group({ creating }) {
                     <IconButton
                         aria-label="delete"
                         size="small"
-                        onClick={() => deleteMemberSend(params)}
+                        onClick={() => {
+                            deleteMemberSend(params.row.groupMemberId);
+                            setGroup(prevGroup => ({
+                                ...prevGroup,
+                                members: prevGroup.members.filter(
+                                    member => member.id !== params.row.groupMemberId
+                                )
+                            }));
+                        }}
                     >
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
@@ -203,21 +217,25 @@ function Group({ creating }) {
                         <Grid item xs={12}>
                             <Typography variant="h5">Group Members</Typography>
 
-                            <Grid item xs={12}>
-                                <DataGrid
-                                    rows={
-                                        groupMembers?.map(e => ({
-                                            ...e,
-                                            id: e?.id
-                                        })) || []
-                                    }
-                                    columns={employeeColumns}
-                                    density="comfortable"
-                                    rowHeight={34}
-                                    disableMultipleSelection
-                                    hideFooter
-                                />
-                            </Grid>
+                            {groupMembers?.length === 0 ? (
+                                <Typography color="primary">No Privileges Assigned</Typography>
+                            ) : (
+                                <Grid item xs={12}>
+                                    <DataGrid
+                                        rows={
+                                            groupMembers?.map(e => ({
+                                                ...e,
+                                                id: e?.id
+                                            })) || []
+                                        }
+                                        columns={employeeColumns}
+                                        density="comfortable"
+                                        rowHeight={34}
+                                        disableMultipleSelection
+                                        hideFooter
+                                    />
+                                </Grid>
+                            )}
                         </Grid>
 
                         <Box mt={3} />
@@ -225,21 +243,25 @@ function Group({ creating }) {
                         <Grid item xs={12}>
                             <Typography variant="h5">Privileges</Typography>
 
-                            <Grid item xs={12}>
-                                <DataGrid
-                                    rows={
-                                        group.permission?.map(e => ({
-                                            ...e,
-                                            id: e?.privilegeId
-                                        })) || []
-                                    }
-                                    columns={privilegeColumns}
-                                    density="comfortable"
-                                    rowHeight={34}
-                                    disableMultipleSelection
-                                    hideFooter
-                                />
-                            </Grid>
+                            {group.permission?.length === 0 ? (
+                                <Typography color="primary">No Privileges Assigned</Typography>
+                            ) : (
+                                <Grid item xs={12}>
+                                    <DataGrid
+                                        rows={
+                                            group.permission?.map(e => ({
+                                                ...e,
+                                                id: e?.privilegeId
+                                            })) || []
+                                        }
+                                        columns={privilegeColumns}
+                                        density="comfortable"
+                                        rowHeight={34}
+                                        disableMultipleSelection
+                                        hideFooter
+                                    />
+                                </Grid>
+                            )}
                         </Grid>
                     </>
                 )}
