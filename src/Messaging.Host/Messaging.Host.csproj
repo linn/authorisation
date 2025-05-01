@@ -6,8 +6,6 @@
 		<RootNamespace>Linn.Authorisation.Messaging.Host</RootNamespace>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<NoWarn>$(NoWarn);SA1600</NoWarn>
-		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,10 +13,6 @@
 		<PackageReference Include="Linn.Common.Logging" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 		<PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

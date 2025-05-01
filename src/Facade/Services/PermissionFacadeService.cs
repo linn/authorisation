@@ -41,13 +41,13 @@ namespace Linn.Authorisation.Facade.Services
             this.groupRepository = groupRepository;
         }
 
-        public IResult<List<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
+        public IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
         {
             var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
 
             var result = this.permissionService.GetAllGranteeUris(permissions);
 
-            return new SuccessResult<List<string>>(result);
+            return new SuccessResult<IList<string>>(result);
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForGroup(int groupId, IEnumerable<string> privileges = null)

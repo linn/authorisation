@@ -31,7 +31,7 @@
             return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
         }
 
-        public List<string> GetAllGranteeUris(IEnumerable<Permission> permissions)
+        public IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions)
         {
             var individualUris = new List<string>();
 

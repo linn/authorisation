@@ -1,4 +1,6 @@
-﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿using System.Collections;
+
+namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +23,7 @@
         private GroupMember groupMember;
         private IndividualMember individualMember;
         private Privilege privilege;
-        private List<string> result;
+        private IList<string> result;
 
         [SetUp]
         public void SetUp()
@@ -54,12 +56,15 @@
             };
 
             var permissions = new List<Permission>
-                                  {
-                                      new IndividualPermission("/employees/1", this.privilege, "/employees/7004"),
-                                      new IndividualPermission("/employees/2", this.privilege, "/employees/7004"),
-                                      new GroupPermission(this.group, this.privilege, "/employees/7004"),
-                                  };
+            {
+                new IndividualPermission("/employees/1", this.privilege, "/employees/7004"),
+                new IndividualPermission("/employees/2", this.privilege, "/employees/7004"),
+                new GroupPermission(this.group, this.privilege, "/employees/7004")
+            };
+
             this.result = this.Sut.GetAllGranteeUris(permissions);
+
+
         }
 
         [Test]

@@ -4,8 +4,6 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Linn.Authorisation.Domain.LinnApps</AssemblyName>
 		<RootNamespace>Linn.Authorisation.Domain.LinnApps</RootNamespace>
-		<NoWarn>$(NoWarn);SA1600</NoWarn>
-		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,9 +16,5 @@
 		<PackageReference Include="Linn.Common.Pdf" Version="3.0.0" />
 		<PackageReference Include="Linn.Common.Persistence" Version="3.0.0" />
 		<PackageReference Include="Linn.Common.Reporting" Version="1.7.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 </Project>

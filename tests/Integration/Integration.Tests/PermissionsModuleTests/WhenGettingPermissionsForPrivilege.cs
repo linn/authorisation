@@ -81,7 +81,7 @@
         [Test]
         public void ShouldReturnJsonBody()
         {
-            var resources = this.Response.DeserializeBody<List<string>>()?.ToArray();
+            var resources = this.Response.DeserializeBody<IList<string>>()?.ToArray();
             resources.Should().HaveCount(4);
 
             resources.Should().Contain("/employees/1");

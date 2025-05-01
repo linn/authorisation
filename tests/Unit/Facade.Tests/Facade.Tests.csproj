@@ -4,8 +4,6 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>Linn.Authorisation.Facade.Tests</AssemblyName>
 		<RootNamespace>Linn.Authorisation.Facade.Tests</RootNamespace>
-		<NoWarn>$(NoWarn);SA1600</NoWarn>
-		<NoWarn>$(NoWarn);SA1633</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,10 +16,6 @@
 		<PackageReference Include="NSubstitute" Version="5.0.0" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
