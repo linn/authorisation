@@ -13,14 +13,18 @@
     {
         private readonly IRepository<Group, int> groupRepository;
 
+        private readonly IRepository<Member, int> memberRepository;
+
         private readonly ITransactionManager transactionManager;
 
         public MembersFacadeService(
             IRepository<Group, int> groupRepository,
+            IRepository<Member, int> memberRepository,
             ITransactionManager transactionManager)
         {
             this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
+            this.memberRepository = memberRepository;
         }
 
         public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri, IEnumerable<string> userPrivileges = null)
@@ -41,6 +45,19 @@
             {
                 return new BadRequestResult<MemberResource>(ex.Message);
             }
+        }
+
+        public IResult<MemberResource> DeleteMember(int memberId)
+        {
+            var member = this.memberRepository.FindById(memberId);
+
+            this.memberRepository.Remove(member);
+
+            this.transactionManager.Commit();
+
+            var result = new MemberResource { GroupId = null, MemberUri = null };
+
+            return new SuccessResult<MemberResource>(result);
         }
     }
 }
