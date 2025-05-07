@@ -23,7 +23,7 @@
         {
             var privileges = new List<Privilege>
                                   {
-                                      new Privilege("finance.super-user"),
+                                      new Privilege("finance.auth-manager"),
                                       new Privilege("finance.do.stuuuff"),
                                       new Privilege("finance.do.hings"),
                                       new Privilege("purchasing.do.hings"),
@@ -31,7 +31,7 @@
 
             var userPrivileges = new List<string>
             {
-                "finance.super-user",
+                "finance.auth-manager",
             };
 
             this.PrivilegeRepository.FindAll()
@@ -44,7 +44,7 @@
         {
             this.result.ToList().Count.Should().Be(3);
             this.result.Should().Contain(
-                x => x.Name == "finance.super-user");
+                x => x.Name == "finance.auth-manager");
             this.result.Should().Contain(
                 x => x.Name == "finance.do.stuuuff");
             this.result.Should().Contain(

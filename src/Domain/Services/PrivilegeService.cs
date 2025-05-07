@@ -16,7 +16,7 @@
 
         public IEnumerable<Privilege> GetAllPrivilegesForUser(IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.super-user"))
+            if (userPrivileges.Contains("authorisation.auth-manager"))
             {
                 return this.privilegeRepository.FindAll();
             }
@@ -27,7 +27,7 @@
             }
 
             var adminDepartments = userPrivileges
-                .Where(p => p.ToLower().Contains("super-user"))
+                .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
@@ -49,7 +49,7 @@
 
         public Privilege GetPrivilegeById(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.super-user"))
+            if (userPrivileges.Contains("authorisation.auth-manager"))
             {
                 return this.privilegeRepository.FindById(privilegeId); ;
             }
@@ -60,7 +60,7 @@
             }
 
             var adminDepartments = userPrivileges
-                .Where(p => p.ToLower().Contains("super-user"))
+                .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
