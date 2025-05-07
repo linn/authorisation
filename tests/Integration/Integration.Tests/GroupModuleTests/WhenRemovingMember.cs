@@ -1,9 +1,10 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
-
     using FluentAssertions;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Integration.Tests.Extensions;
     using NSubstitute;
@@ -16,6 +17,9 @@
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.member = new IndividualMember { Id = 1, MemberUri = "/employees/1" };
 
             this.MemberRepository.FindById(member.Id).Returns(this.member);

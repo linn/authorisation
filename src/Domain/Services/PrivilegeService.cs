@@ -51,7 +51,7 @@
         {
             if (userPrivileges.Contains("authorisation.auth-manager"))
             {
-                return this.privilegeRepository.FindById(privilegeId); ;
+                return this.privilegeRepository.FindById(privilegeId);
             }
 
             if (userPrivileges == null || !userPrivileges.Any())

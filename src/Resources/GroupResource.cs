@@ -13,6 +13,6 @@
 
         public IEnumerable<MemberResource> Members { get; set; }
 
-        public IEnumerable<PermissionResource> Permission { get; set; }
+        public IEnumerable<PermissionResource> Permissions { get; set; }
     }
 }

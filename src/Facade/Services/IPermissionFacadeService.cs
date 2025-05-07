@@ -13,10 +13,10 @@ namespace Linn.Authorisation.Facade.Services
 
         IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null);
 
-        IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri);
+        IResult<PermissionResource> CreateIndividualPermission(PermissionResource permissionResource, string employeeUri, IEnumerable<string> privileges = null);
 
-        IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri);
+        IResult<PermissionResource> CreateGroupPermission(PermissionResource permissionResource, string employeeUri, IEnumerable<string> privileges = null);
 
-        IResult<PermissionResource> DeletePermission(int permissionId);
+        IResult<PermissionResource> DeletePermission(int permissionId, IEnumerable<string> privileges = null);
     }
 }

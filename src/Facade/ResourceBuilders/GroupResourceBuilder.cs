@@ -27,7 +27,7 @@
                 Name = model.Name,
                 Id = model.Id,
                 Members = membersResources,
-                Permission = permissionResources,
+                Permissions = permissionResources,
             };
         }
 

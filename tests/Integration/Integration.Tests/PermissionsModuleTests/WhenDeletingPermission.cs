@@ -1,5 +1,6 @@
 ﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
+    using System.Collections.Generic;
     using System.Net;
 
     using FluentAssertions;
@@ -17,6 +18,9 @@
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.permission = new IndividualPermission("/employees/1", new Privilege("test-privilege"), "/employees/2");
 
             this.PermissionRepository.FindById(1).Returns(this.permission);
