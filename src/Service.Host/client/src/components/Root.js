@@ -10,7 +10,7 @@ import Privileges from './Privileges';
 import Privilege from './Privilege';
 import CreateIndividualPermission from './CreateIndividualPermission';
 import CreateGroupPermission from './CreateGroupPermission';
-import ViewIndividualPermission from './ViewIndividualsPermission';
+import ViewEmployeesPermission from './ViewEmployeesPermission';
 import Groups from './Groups';
 import Group from './Group';
 import AddIndividualMember from './AddIndividualMember';
@@ -68,7 +68,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/view-individual-permission"
-                                element={<ViewIndividualPermission />}
+                                element={<ViewEmployeesPermission />}
                             />
                             <Route exact path="/authorisation/groups" element={<Groups />} />
                             <Route

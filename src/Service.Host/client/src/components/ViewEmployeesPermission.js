@@ -13,7 +13,7 @@ import itemTypes from '../itemTypes';
 import useGet from '../hooks/useGet';
 import Page from './Page';
 
-function ViewIndividualsPermission() {
+function ViewEmployeesPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -30,7 +30,7 @@ function ViewIndividualsPermission() {
     } = useDelete(itemTypes.permissions.url, true);
 
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
-        itemTypes.employees.url
+        `${itemTypes.employees.url}?currentEmployees=true`
     );
 
     useEffect(() => {
@@ -104,4 +104,4 @@ function ViewIndividualsPermission() {
     );
 }
 
-export default ViewIndividualsPermission;
+export default ViewEmployeesPermission;
