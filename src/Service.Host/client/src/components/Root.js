@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Route, Routes } from 'react-router';
+import { NavigationUI } from '@linn-it/linn-form-components-library';
 import { Navigate, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import App from './App';
 import 'typeface-roboto';
@@ -21,6 +22,7 @@ function Root() {
         <div>
             <div className="padding-top-when-not-printing">
                 <div>
+                    <NavigationUI />
                     <HistoryRouter history={history}>
                         <Routes>
                             <Route
