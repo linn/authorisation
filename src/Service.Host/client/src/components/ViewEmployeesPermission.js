@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import { Loading, Dropdown, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Button from '@mui/material/Button';
+import { DataGrid } from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import moment from 'moment';
 import config from '../config';
 import history from '../history';
 import useDelete from '../hooks/useDelete';
@@ -20,7 +22,7 @@ function ViewEmployeesPermission() {
     const {
         send,
         isLoading: isGetLoading,
-        result: permissions
+        result: permissionsInfo
     } = useGet(itemTypes.permissions.url);
 
     const {
@@ -28,6 +30,10 @@ function ViewEmployeesPermission() {
         isLoading: isDeleteLoading,
         deleteResult
     } = useDelete(itemTypes.permissions.url, true);
+
+    const { data: currentEmployees, isGetLoading: isCurrentEmployeesLoading } = useInitialise(
+        `${itemTypes.employees.url}?currentEmployees=true`
+    );
 
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
         `${itemTypes.employees.url}?currentEmployees=true`
@@ -37,31 +43,68 @@ function ViewEmployeesPermission() {
         setSnackbarVisible(!!deleteResult);
     }, [deleteResult]);
 
-    const renderEmployeesPermission = permission => (
-        <Grid item xs={12}>
-            <ListItem key={permission.privilegeId}>
-                <Grid item xs={4}>
-                    <Typography color="primary">{permission.privilege}</Typography>
-                </Grid>
-                <Grid item xs={8}>
-                    {permission.groupName ? (
-                        <Typography color="primary">
-                            [Has via group membership {permission.groupName}]
-                        </Typography>
-                    ) : (
-                        <Button
-                            variant="outlined"
+    const permissions = permissionsInfo?.map(permission => {
+        const addedByEmployee = employees?.items?.find(e => permission?.grantedByUri === e?.href);
+        return {
+            id: permission?.id,
+            addedByEmployee: addedByEmployee?.fullName,
+            privilege: permission?.privilege,
+            groupName: permission?.groupName,
+            dateGranted: permission?.dateGranted
+        };
+    });
+
+    const privilegeColumns = [
+        {
+            field: 'id',
+            headerName: 'ID',
+            width: 75
+        },
+        {
+            field: 'privilege',
+            headerName: 'Privilege Name',
+            width: 350
+        },
+        {
+            field: 'addedByEmployeeId',
+            headerName: 'Added By',
+            width: 200,
+            valueGetter: params => params.row.addedByEmployee || 'N/A'
+        },
+        {
+            field: 'dateGranted',
+            headerName: 'Date Granted',
+            width: 150,
+            valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
+        },
+        {
+            field: 'Group',
+            headerName: 'Group',
+            width: 200,
+            valueGetter: params => params.row.groupName || 'N/A'
+        },
+        {
+            field: 'delete',
+            headerName: ' ',
+            width: 50,
+            renderCell: params =>
+                params.row.groupName ? null : (
+                    <Tooltip title="Delete">
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
                             onClick={() => {
-                                deleteSend(permission.id);
+                                deleteSend(params.row.id);
                             }}
                         >
-                            Delete
-                        </Button>
-                    )}
-                </Grid>
-            </ListItem>
-        </Grid>
-    );
+                            <DeleteIcon fontSize="inherit" />
+                        </IconButton>
+                    </Tooltip>
+                )
+        }
+    ];
+
+    console.log(permissions);
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -70,12 +113,15 @@ function ViewEmployeesPermission() {
                     <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    {(isEmployeesLoading || isGetLoading || isDeleteLoading) && <Loading />}
+                    {(isEmployeesLoading ||
+                        isGetLoading ||
+                        isCurrentEmployeesLoading ||
+                        isDeleteLoading) && <Loading />}
                 </Grid>
                 <Grid item xs={12}>
                     <Dropdown
                         propertyName="employee choice"
-                        items={employees?.items?.map(employee => ({
+                        items={currentEmployees?.items?.map(employee => ({
                             id: employee.id,
                             displayText: employee?.fullName
                         }))}
@@ -90,9 +136,23 @@ function ViewEmployeesPermission() {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
-                    <List>{permissions?.map(renderEmployeesPermission)}</List>
-                </Grid>
+                {permissions && (
+                    <Grid item xs={12}>
+                        <DataGrid
+                            rows={
+                                permissions?.map(e => ({
+                                    ...e,
+                                    id: e?.id
+                                })) || []
+                            }
+                            columns={privilegeColumns}
+                            density="comfortable"
+                            rowHeight={34}
+                            disableMultipleSelection
+                            hideFooter
+                        />
+                    </Grid>
+                )}
 
                 <SnackbarMessage
                     visible={snackbarVisible}

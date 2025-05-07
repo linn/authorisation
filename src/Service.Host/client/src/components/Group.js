@@ -290,8 +290,6 @@ function Group({ creating }) {
                     </Grid>
                 )}
 
-                {console.log(snackbarVisible)}
-
                 <SnackbarMessage
                     visible={snackbarVisible}
                     onClose={() => setSnackbarVisible(false)}
