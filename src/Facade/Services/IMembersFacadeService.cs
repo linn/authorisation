@@ -8,6 +8,6 @@
     {
         IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri, IEnumerable<string> privileges = null);
 
-        IResult<MemberResource> DeleteMember(int memberId);
+        IResult<MemberResource> DeleteMember(int memberId, IEnumerable<string> userPrivileges = null);
     }
 }

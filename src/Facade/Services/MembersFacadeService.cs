@@ -47,9 +47,18 @@
             }
         }
 
-        public IResult<MemberResource> DeleteMember(int memberId)
+        public IResult<MemberResource> DeleteMember(int memberId, IEnumerable<string> userPrivileges = null)
         {
             var member = this.memberRepository.FindById(memberId);
+
+            var group = new Group();
+
+            //if (member is IndividualMember)
+            //{
+            //    group = this.groupRepository.FindById((IndividualMember member).)
+            //}
+
+            // group = this.groupRepository.FindById(member)
 
             this.memberRepository.Remove(member);
 
