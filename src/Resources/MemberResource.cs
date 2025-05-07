@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Linn.Authorisation.Resources
+﻿namespace Linn.Authorisation.Resources
 {
     public class MemberResource
     {

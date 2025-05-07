@@ -245,7 +245,7 @@ function Group({ creating }) {
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Typography variant="h4">{creating ? `Create a Group` : `Edit Group`}</Typography>
             </Grid>
             <Grid item xs={12}>
