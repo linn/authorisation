@@ -18,7 +18,7 @@
 
         public IEnumerable<Group> GetAllGroupsForUser(IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.auth-manager"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.groupRepository.FindAll();
             }
@@ -50,7 +50,7 @@
 
         public Group GetGroupById(int groupId, IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.auth-manager"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.groupRepository.FindById(groupId);
             }

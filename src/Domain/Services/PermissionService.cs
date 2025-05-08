@@ -28,7 +28,7 @@
 
         public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.auth-manager"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
             }
