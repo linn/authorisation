@@ -23,7 +23,7 @@
             var userPrivileges = new List<string>
                 {
                     "finance.auth-manager",
-                };  
+                };
 
             this.PrivilegeRepository.FindById(2)
                 .Returns(wantedPrivilege);

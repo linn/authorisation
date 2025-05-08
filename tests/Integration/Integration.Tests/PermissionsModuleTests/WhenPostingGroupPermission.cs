@@ -1,7 +1,6 @@
 namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
     using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http.Json;
 
@@ -23,7 +22,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
         [SetUp]
         public void SetUp()
-        { 
+        {
             this.PrivilegeRepository.FindById(100).Returns(new Privilege { Id = 100, Name = "test.privilege", Active = true });
 
             this.GroupRespository.FindById(10).Returns(new Group { Id = 10, Name = "TestGroup", Active = true });

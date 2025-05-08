@@ -1,6 +1,5 @@
 ﻿namespace Linn.Authorisation.Resources
 {
-    using System;
     using System.Collections.Generic;
 
     public class GroupResource

@@ -27,7 +27,7 @@
 
         public string GetLocation(Member model)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         object IBuilder<Member>.Build(Member model, IEnumerable<string> claims) => this.Build(model, claims);
