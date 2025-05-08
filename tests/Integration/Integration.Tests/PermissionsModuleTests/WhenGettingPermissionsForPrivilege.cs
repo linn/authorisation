@@ -58,7 +58,7 @@
 
             this.resource = new List<string> { "/employees/1", "/employees/2", "/employees/3", "/employees/4" };
 
-            this.DomainService.GetAllPermissionsForPrivilege(this.privilege.Id).Returns(
+            this.DomainService.GetAllPermissionsForPrivilege(this.privilege.Id, Arg.Any<IEnumerable<string>>()).Returns(
                 this.permissions);
 
             this.DomainService.GetAllGranteeUris(this.permissions).Returns(this.resource);

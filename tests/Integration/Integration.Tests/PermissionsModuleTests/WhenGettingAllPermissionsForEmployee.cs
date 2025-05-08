@@ -30,7 +30,7 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
                 Name = "testing-get-group"
             };
 
-            this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
+            this.DomainService.GetAllPermissionsForUser("/employees/1234", Arg.Any<IEnumerable<string>>()).Returns(
                 new List<Permission>
                     {
                         new IndividualPermission
