@@ -17,7 +17,7 @@
         {
             var groups = new List<Group>
             {
-                new Group { Id = 1, Name = "finance.super-user" },
+                new Group { Id = 1, Name = "finance.auth-manager" },
                 new Group { Id = 2, Name = "finance.cashbook.users" },
                 new Group { Id = 3, Name = "finance.users" },
                 new Group { Id = 4, Name = "purchasing.buyers" },
@@ -25,7 +25,7 @@
 
             var userPrivileges = new List<string>
             {
-                "authorisation.super-user",
+                "authorisation.auth-manager",
             };
 
             this.GroupRepository.FindAll()

@@ -2,6 +2,6 @@
 {
     public class AuthorisedAction
     {
-        public const string AuthorisationSuperUser = "authorisation.super-user";
+        public const string AuthorisationAuthManager = "authorisation.auth-manager";
     }
 }
