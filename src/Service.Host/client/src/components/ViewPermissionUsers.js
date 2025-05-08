@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Loading, Dropdown } from '@linn-it/linn-form-components-library';
+import { Loading, Dropdown, SnackbarMessage } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,6 +17,7 @@ import Page from './Page';
 
 function ViewPermissionUsers() {
     const [privilegeInput, setPrivilegeInput] = useState('');
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     const { data: privileges, isGetLoading: isPrivilegeLoading } = useInitialise(
         itemTypes.privileges.url,
@@ -40,6 +40,10 @@ function ViewPermissionUsers() {
         isLoading: isDeleteLoading,
         deleteResult
     } = useDelete(itemTypes.permissions.url, true);
+
+    useEffect(() => {
+        setSnackbarVisible(!!deleteResult);
+    }, [deleteResult]);
 
     privileges?.sort((a, b) => {
         const fa = a.name.toLowerCase();
@@ -67,8 +71,6 @@ function ViewPermissionUsers() {
             dateGranted: permission?.dateGranted
         };
     });
-
-    console.log(permissions);
 
     const permissionColumns = [
         {
@@ -166,6 +168,13 @@ function ViewPermissionUsers() {
                     />
                 </Grid>
             )}
+            <Grid item xs={12}>
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={() => setSnackbarVisible(false)}
+                    message="Delete Successful"
+                />
+            </Grid>
         </Page>
     );
 }
