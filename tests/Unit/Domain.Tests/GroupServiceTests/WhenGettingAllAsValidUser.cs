@@ -17,7 +17,7 @@
         {
             var groups = new List<Group>
             {
-                new Group { Id = 1, Name = "purchasing.auth-managers" },
+                new Group { Id = 1, Name = "purchasing.auth-manager" },
                 new Group { Id = 2, Name = "finance.cashbook.users" },
                 new Group { Id = 3, Name = "finance.users" },
                 new Group { Id = 4, Name = "purchasing.users" },
