@@ -30,8 +30,8 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
             this.updatedResource = new Group { Name = "Group.Test.Name-2", Active = true, Id = 30};
             this.currentGroups = new List<Group>
                                {
-                                    new Group( "Group.Test.Name-1", false, 30),
-                                    new Group( "Group.Test.Name-2", false, 31 )
+                                    new Group("Group.Test.Name-1", false, 30),
+                                    new Group("Group.Test.Name-2", false, 31)
                                };
             
             this.GroupRepository.FindById(this.updatedResource.Id).Returns(this.updatedResource);
