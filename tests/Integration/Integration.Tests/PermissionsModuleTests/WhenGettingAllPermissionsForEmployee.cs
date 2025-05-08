@@ -21,6 +21,9 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             var group = new Group
             {
                 Id = 2,

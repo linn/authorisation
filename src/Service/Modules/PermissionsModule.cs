@@ -25,12 +25,13 @@ namespace Linn.Authorisation.Service.Modules
 
         private async Task GetAllPermissionsForUser(
             HttpResponse res,
+            HttpRequest req,
             string who,
             IPermissionFacadeService service)
         {
             if (!string.IsNullOrEmpty(who))
             {
-                await res.Negotiate(service.GetAllPermissionsForUser(who));
+                await res.Negotiate(service.GetAllPermissionsForUser(who, req.HttpContext.GetPrivileges()));
             }
         }
 
@@ -44,10 +45,11 @@ namespace Linn.Authorisation.Service.Modules
 
         private async Task GetPermissionsForPrivilege(
             HttpResponse res,
+            HttpRequest req,
             int privilegeId,
             IPermissionFacadeService service)
         {
-            await res.Negotiate(service.GetPermissionsForPrivilege(privilegeId));
+            await res.Negotiate(service.GetPermissionsForPrivilege(privilegeId, req.HttpContext.GetPrivileges()));
         }
 
         private async Task CreatePermission(
@@ -58,20 +60,21 @@ namespace Linn.Authorisation.Service.Modules
         {
             if (resource.GranteeGroupId == null)
             {
-                await res.Negotiate(service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
+                await res.Negotiate(service.CreateIndividualPermission(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
             }
             else
             {
-                await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl()));
+                await res.Negotiate(service.CreateGroupPermission(resource, req.HttpContext.User.GetEmployeeUrl(), req.HttpContext.GetPrivileges()));
             }
         }
 
         private async Task DeletePermission(
             HttpResponse res,
+            HttpRequest req,
             int id,
             IPermissionFacadeService service)
         {
-            await res.Negotiate(service.DeletePermission(id));
+            await res.Negotiate(service.DeletePermission(id, req.HttpContext.GetPrivileges()));
         }
     }
 }

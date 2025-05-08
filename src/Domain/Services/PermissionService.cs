@@ -26,9 +26,37 @@
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
         }
 
-        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
+        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
+            if (userPrivileges.Contains("authorisation.auth-manager"))
+            {
+                return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
+            }
+
+            if (userPrivileges == null || !userPrivileges.Any())
+            {
+                return new List<Permission>();
+            }
+
+            var adminDepartments = userPrivileges
+                .Where(p => p.ToLower().Contains("auth-manager"))
+                .Select(p => p.Split('.')[0])
+                .Distinct()
+                .ToList();
+
+            if (!adminDepartments.Any())
+            {
+                return new List<Permission>();
+            }
+
+            var resultList = this.permissionRepository
+                .FindAll()
+                .AsEnumerable()
+                .Where(p => adminDepartments.Contains(
+                                p.Privilege.Name.Split('.')[0]) && p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name)
+                .ToList();
+
+            return resultList;
         }
 
         public IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions)
@@ -56,7 +84,7 @@
             return individualUris;
         }
 
-        public IEnumerable<Permission> GetAllPermissionsForUser(string who)
+        public IEnumerable<Permission> GetAllPermissionsForUser(string who, IEnumerable<string> userPrivileges = null)
         {
             if (string.IsNullOrEmpty(who))
             {

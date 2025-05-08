@@ -55,7 +55,7 @@
 
         public IResult<MemberResource> DeleteMember(int memberId, IEnumerable<string> userPrivileges = null)
         {
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to delete a member");
             }

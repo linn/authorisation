@@ -24,7 +24,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.updatedResource = new Group { Name = "Group.Test.Name-2", Active = true, Id = 30};

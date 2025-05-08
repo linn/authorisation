@@ -59,7 +59,7 @@
 
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> userPrivileges = null)
         {
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to create this group");
             }
@@ -81,7 +81,7 @@
             GroupResource updateResource,
             IEnumerable<string> userPrivileges = null)
         {
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to update this group");
             }

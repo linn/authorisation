@@ -18,7 +18,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.DomainService.GetPrivilegeById(1, Arg.Any<IEnumerable<string>>()).Returns(

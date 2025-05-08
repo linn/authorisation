@@ -29,7 +29,7 @@ function ViewPermissionUsers() {
         send,
         isLoading: isGetLoading,
         result: permissionEmployeesUris
-    } = useGet(`${itemTypes.permissions.url}/privilege`);
+    } = useGet(`${itemTypes.permissions.url}/privilege`, true);
 
     const getPermissionEmployees = employeeUri => {
         const employee = employees?.items.find(i => employeeUri === i?.href);

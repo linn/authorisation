@@ -57,7 +57,7 @@ namespace Linn.Authorisation.Facade.Services
 
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> userPrivileges = null)
         {
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to create this privilege");
             }
@@ -78,7 +78,7 @@ namespace Linn.Authorisation.Facade.Services
             PrivilegeResource updateResource,
             IEnumerable<string> userPrivileges = null)
         { 
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges)) 
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges)) 
             { 
                 throw new UnauthorisedActionException("You do not have permission to create this privilege");
             }

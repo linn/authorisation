@@ -28,6 +28,9 @@
         [SetUp]
         public void SetUp()
         {
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
+                .Returns(true);
+
             this.privilege = new Privilege { Id = 1, Name = "Privilege 1" };
 
             this.groupMember = new GroupMember

@@ -18,7 +18,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.permission = new IndividualPermission("/employees/1", new Privilege("test-privilege"), "/employees/2");

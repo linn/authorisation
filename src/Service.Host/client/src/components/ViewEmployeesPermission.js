@@ -23,7 +23,7 @@ function ViewEmployeesPermission() {
         send,
         isLoading: isGetLoading,
         result: permissionsInfo
-    } = useGet(itemTypes.permissions.url);
+    } = useGet(itemTypes.permissions.url, true);
 
     const {
         send: deleteSend,
@@ -36,7 +36,7 @@ function ViewEmployeesPermission() {
     );
 
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
-        `${itemTypes.employees.url}?currentEmployees=true`
+        itemTypes.employees.url
     );
 
     useEffect(() => {

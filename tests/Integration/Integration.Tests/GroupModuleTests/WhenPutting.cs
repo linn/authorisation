@@ -22,7 +22,7 @@ namespace Linn.Authorisation.Integration.Tests.GroupModuleTests
         [SetUp]
         public void SetUp()
         {
-            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.updatedResource = new GroupResource { Name = "new.Group.Test.Name", Active = false, Id = 30 };

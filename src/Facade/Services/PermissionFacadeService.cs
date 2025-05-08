@@ -50,7 +50,7 @@ namespace Linn.Authorisation.Facade.Services
 
         public IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
         {
-            var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId);
+            var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId, privileges);
 
             var result = this.permissionService.GetAllGranteeUris(permissions);
 
@@ -160,7 +160,7 @@ namespace Linn.Authorisation.Facade.Services
 
         public IResult<PermissionResource> DeletePermission(int permissionId, IEnumerable<string> privileges = null)
         {
-            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, privileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, privileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to delete this permission");
             }
@@ -182,7 +182,7 @@ namespace Linn.Authorisation.Facade.Services
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForUser(string granteeUri, IEnumerable<string> privileges = null)
         {
-            var result = this.permissionService.GetAllPermissionsForUser(granteeUri);
+            var result = this.permissionService.GetAllPermissionsForUser(granteeUri, privileges);
             var resources = result.Select(x => (PermissionResource)this.resourceBuilder.Build(x, privileges));
 
             return new SuccessResult<IEnumerable<PermissionResource>>(resources);
