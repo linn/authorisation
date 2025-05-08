@@ -12,6 +12,6 @@
 
         IEnumerable<Permission> GetAllPermissionsForUser(string who, IEnumerable<string> userPrivileges = null);
 
-        IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions);
+        //IList<Permission> GetAllGranteeUris(IEnumerable<Permission> permissions);
     }
 }

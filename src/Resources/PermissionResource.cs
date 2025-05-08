@@ -18,6 +18,8 @@ namespace Linn.Authorisation.Resources
 
         public int? GranteeGroupId { get; set; }
 
+        public GroupResource Group { get; set; }
+
         public int Id { get; set; }
     }
 }

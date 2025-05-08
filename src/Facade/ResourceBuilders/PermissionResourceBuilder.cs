@@ -3,6 +3,7 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
     using System.Collections.Generic;
     using System.Linq;
 
+    using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Domain.Permissions;
     using Linn.Authorisation.Resources;
     using Linn.Common.Facade;

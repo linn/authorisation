@@ -104,8 +104,6 @@ function ViewEmployeesPermission() {
         }
     ];
 
-    console.log(permissions);
-
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>

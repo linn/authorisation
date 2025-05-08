@@ -48,13 +48,44 @@ namespace Linn.Authorisation.Facade.Services
             this.authService = authService;
         }
 
-        public IResult<IList<string>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
+        public IResult<IEnumerable<PermissionResource>> GetPermissionsForPrivilege(int privilegeId, IEnumerable<string> privileges = null)
         {
             var permissions = this.permissionService.GetAllPermissionsForPrivilege(privilegeId, privileges);
 
-            var result = this.permissionService.GetAllGranteeUris(permissions);
+            var result = new List<Permission>();
 
-            return new SuccessResult<IList<string>>(result);
+            foreach (var permission in permissions)
+            {
+                if (permission is IndividualPermission)
+                {
+                    result.Add(new IndividualPermission
+                                   {
+                                       Id = permission.Id,
+                                       GranteeUri = ((IndividualPermission)permission).GranteeUri,
+                                       DateGranted = permission.DateGranted,
+                                       GrantedByUri = permission.GrantedByUri,
+                                       Privilege = permission.Privilege
+                                   });
+                }
+                else
+                {
+                    foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
+                    {
+                        result.Add(new GroupPermission
+                                       {
+                                           Id = permission.Id,
+                                           GranteeGroup = ((GroupPermission)permission).GranteeGroup,
+                                           DateGranted = permission.DateGranted,
+                                           GrantedByUri = permission.GrantedByUri,
+                                           Privilege = permission.Privilege
+                                       });
+                    }
+                }
+            }
+
+            var resources = permissions.Select(x => (PermissionResource)this.resourceBuilder.Build(x, privileges));
+
+            return new SuccessResult<IEnumerable<PermissionResource>>(resources);
         }
 
         public IResult<IEnumerable<PermissionResource>> GetAllPermissionsForGroup(int groupId, IEnumerable<string> privileges = null)
