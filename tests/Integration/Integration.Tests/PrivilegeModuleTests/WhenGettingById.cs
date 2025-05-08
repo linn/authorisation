@@ -18,12 +18,11 @@
         [SetUp]
         public void SetUp()
         {
-            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.DomainService.GetPrivilegeById(1, Arg.Any<IEnumerable<string>>()).Returns(
-                new Privilege { Id = 1, Name = "name", Active = true }
-                );
+                new Privilege { Id = 1, Name = "name", Active = true });
 
             this.Response = this.Client.Get(
                 "/authorisation/privileges/1",

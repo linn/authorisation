@@ -16,7 +16,7 @@
         [SetUp]
         public void SetUp()
         {
-            var group = new Group { Id = 1, Name = "finance.super-users" };
+            var group = new Group { Id = 1, Name = "finance.auth-managers" };
 
             var groups = new List<Group>
             {
@@ -28,7 +28,7 @@
 
             var userPrivileges = new List<string>
             {
-                "authorisation.super-user",
+                AuthorisedAction.AuthorisationAuthManager,
             };
 
             this.GroupRepository.FindById(group.Id)
@@ -40,7 +40,7 @@
         [Test]
         public void ShouldReturnCorrectPermissions()
         {
-            this.result.Name.Equals("finance.super-users");
+            this.result.Name.Equals("finance.auth-managers");
         }
     }
 }

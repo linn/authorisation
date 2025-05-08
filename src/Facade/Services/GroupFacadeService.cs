@@ -59,7 +59,7 @@
 
         protected override Group CreateFromResource(GroupResource resource, IEnumerable<string> userPrivileges = null)
         {
-            if (!userPrivileges.Contains($"{resource.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!userPrivileges.Contains($"{resource.Name.Split('.')[0]}.auth-manager") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to create this group");
             }
@@ -81,7 +81,7 @@
             GroupResource updateResource,
             IEnumerable<string> userPrivileges = null)
         {
-            if (!userPrivileges.Contains($"{entity.Name.Split('.')[0]}.super-user") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, userPrivileges))
+            if (!userPrivileges.Contains($"{entity.Name.Split('.')[0]}.auth-manager") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to create this group");
             }

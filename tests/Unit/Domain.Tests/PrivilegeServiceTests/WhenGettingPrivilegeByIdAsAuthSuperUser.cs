@@ -20,7 +20,7 @@
 
             var userPrivileges = new List<string>
             {
-                "authorisation.super-user",
+                AuthorisedAction.AuthorisationAuthManager
             };
 
             this.PrivilegeRepository.FindById(2)

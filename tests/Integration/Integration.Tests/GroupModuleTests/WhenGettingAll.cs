@@ -19,7 +19,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationSuperUser, Arg.Any<IEnumerable<string>>())
+            this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
             this.GroupService.GetAllGroupsForUser(Arg.Any<IEnumerable<string>>()).Returns(

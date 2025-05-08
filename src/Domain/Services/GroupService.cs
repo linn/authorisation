@@ -18,7 +18,7 @@
 
         public IEnumerable<Group> GetAllGroupsForUser(IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.super-user"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.groupRepository.FindAll();
             }
@@ -29,7 +29,7 @@
             }
 
             var groupSuperUsers = userPrivileges
-                .Where(p => p.ToLower().Contains("super-user"))
+                .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
@@ -50,7 +50,7 @@
 
         public Group GetGroupById(int groupId, IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.super-user"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.groupRepository.FindById(groupId);
             }
@@ -61,7 +61,7 @@
             }
 
             var groupSuperUsers = userPrivileges
-                .Where(p => p.ToLower().Contains("super-user"))
+                .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
