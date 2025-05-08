@@ -25,7 +25,7 @@
 
             var userPrivileges = new List<string>
             {
-                "authorisation.auth-manager",
+                AuthorisedAction.AuthorisationAuthManager,
             };
 
             this.GroupRepository.FindAll()

@@ -16,7 +16,7 @@
 
         public IEnumerable<Privilege> GetAllPrivilegesForUser(IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.auth-manager"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.privilegeRepository.FindAll();
             }
@@ -49,7 +49,7 @@
 
         public Privilege GetPrivilegeById(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            if (userPrivileges.Contains("authorisation.auth-manager"))
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
                 return this.privilegeRepository.FindById(privilegeId); ;
             }
