@@ -19,8 +19,8 @@ function Privileges() {
     const activePrivileges = data?.filter(h => h.active === true);
 
     function sorting(a, b) {
-        const fa = a.name?.toLowerCase() || ''; 
-        const fb = b.name?.toLowerCase() || ''; 
+        const fa = a.name?.toLowerCase() || '';
+        const fb = b.name?.toLowerCase() || '';
         return fa.localeCompare(fb);
     }
 
