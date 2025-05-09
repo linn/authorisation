@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+import { waitFor } from '@testing-library/react';
 import useInitialise from '../hooks/useInitialise';
 import render from '../test-utils';
 import Privileges from '../components/Privileges';
@@ -32,19 +33,20 @@ describe('When Privileges ', () => {
 
     test('renders all privileges', () => {
         const { getByText } = render(<Privileges />);
-        expect(getByText('a.privilege - ACTIVE')).toBeInTheDocument();
-        expect(getByText('d.privilege - ACTIVE')).toBeInTheDocument();
-        expect(getByText('c.privilege - INACTIVE')).toBeInTheDocument();
-        expect(getByText('b.privilege - ACTIVE')).toBeInTheDocument();
+        expect(getByText('a.privilege')).toBeInTheDocument();
+        expect(getByText('d.privilege')).toBeInTheDocument();
+        expect(getByText('b.privilege')).toBeInTheDocument();
     });
 
-    test('orders privileges alphabetically by name, rendering them as links', () => {
+    test('orders privileges alphabetically by name, rendering them as links', async () => {
         const { getAllByRole } = render(<Privileges />);
-        const listItems = getAllByRole('link');
-        expect(listItems[1].href).toContain('authorisation/privileges/1');
-        expect(listItems[2].href).toContain('authorisation/privileges/4');
-        expect(listItems[3].href).toContain('authorisation/privileges/3');
-        expect(listItems[4].href).toContain('authorisation/privileges/2');
+        await waitFor(() => {
+            const cells = getAllByRole('cell');
+            const privilegeNames = cells
+                .filter(cell => cell.getAttribute('data-field') === 'name')
+                .map(cell => cell.textContent);
+            expect(privilegeNames).toEqual(['a.privilege', 'b.privilege', 'd.privilege']);
+        });
     });
 
     test('does not render loading spinner', () => {

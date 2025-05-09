@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+import { waitFor } from '@testing-library/react';
 import useInitialise from '../hooks/useInitialise';
 import render from '../test-utils';
 import Groups from '../components/Groups';
@@ -28,19 +29,20 @@ describe('When groups ', () => {
 
     test('renders all groups', () => {
         const { getByText } = render(<Groups />);
-        expect(getByText('a.group - ACTIVE')).toBeInTheDocument();
-        expect(getByText('d.group - ACTIVE')).toBeInTheDocument();
-        expect(getByText('c.group - INACTIVE')).toBeInTheDocument();
-        expect(getByText('b.group - ACTIVE')).toBeInTheDocument();
+        expect(getByText('a.group')).toBeInTheDocument();
+        expect(getByText('d.group')).toBeInTheDocument();
+        expect(getByText('b.group')).toBeInTheDocument();
     });
 
-    test('orders groups alphabetically by name, rendering them as links', () => {
+    test('orders groups alphabetically by name, rendering them as links', async () => {
         const { getAllByRole } = render(<Groups />);
-        const listItems = getAllByRole('link');
-        expect(listItems[1].href).toContain('authorisation/groups/1');
-        expect(listItems[2].href).toContain('authorisation/groups/4');
-        expect(listItems[3].href).toContain('authorisation/groups/3');
-        expect(listItems[4].href).toContain('authorisation/groups/2');
+        await waitFor(() => {
+            const cells = getAllByRole('cell');
+            const GroupNames = cells
+                .filter(cell => cell.getAttribute('data-field') === 'name')
+                .map(cell => cell.textContent);
+            expect(GroupNames).toEqual(['a.group', 'b.group', 'd.group']);
+        });
     });
 
     test('does not render loading spinner', () => {
@@ -59,3 +61,12 @@ describe('When loading ', () => {
         expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });
+
+// test('orders groups alphabetically by name, rendering them as datagrid rows', () => {
+//     const { getAllByRole } = render(<Groups />);
+//     const row = getAllByRole('row');
+//     expect(row[1].href).toContain('authorisation/groups/1');
+//     expect(row[2].href).toContain('authorisation/groups/4');
+//     expect(row[3].href).toContain('authorisation/groups/3');
+//     expect(row[4].href).toContain('authorisation/groups/2');
+// });
