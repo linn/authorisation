@@ -21,7 +21,7 @@ function Root() {
     return (
         <div>
             <div className="padding-top-when-not-printing">
-                <Navigation />
+                {/* <Navigation /> */}
                 <div>
                     <HistoryRouter history={history}>
                         <Routes>

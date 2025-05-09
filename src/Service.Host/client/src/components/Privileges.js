@@ -42,19 +42,18 @@ function Privileges() {
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
-                <Grid item xs={12}>
-                    <Typography color="black">
-                        All
-                        <OnOffSwitch
-                            value={activeOnly}
-                            onChange={() => setActiveOnly(currentValue => !currentValue)}
-                            propertyName="dateInvalid"
-                        />
-                        Active Only
-                    </Typography>
-                </Grid>
                 {data?.length > 0 && (
                     <Grid item xs={12}>
+                        <Typography color="black">
+                            All
+                            <OnOffSwitch
+                                value={activeOnly}
+                                onChange={() => setActiveOnly(currentValue => !currentValue)}
+                                propertyName="dateInvalid"
+                            />
+                            Active Only
+                        </Typography>
+
                         <DataGrid
                             rows={activeOnly ? sortedActivePrivilegesInfo : sortedPrivilegesInfo}
                             getRowId={row => row?.id}

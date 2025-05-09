@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Loading, OnOffSwitch } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -15,17 +15,16 @@ function Groups() {
     const navigate = useNavigate();
     const [activeOnly, setActiveOnly] = useState(true);
 
-    const [groups, setGroups] = useState([]);
     const { data, isGetLoading } = useInitialise(itemTypes.groups.url, null, true);
 
     const activePrivileges = data?.filter(h => h.active === true);
 
     function sorting(a, b) {
-        const fa = a.name?.toLowerCase() || ''; 
-        const fb = b.name?.toLowerCase() || ''; 
+        const fa = a.name?.toLowerCase() || '';
+        const fb = b.name?.toLowerCase() || '';
         return fa.localeCompare(fb);
     }
-    
+
     const sortedGroupsInfo = [...(data || [])]?.sort(sorting);
     const sortedActiveGroupsInfo = [...(activePrivileges || [])]?.sort(sorting);
 
@@ -60,19 +59,17 @@ function Groups() {
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
-                <Grid item xs={12}>
-                    <Typography color="black">
-                        All
-                        <OnOffSwitch
-                            value={activeOnly}
-                            onChange={() => setActiveOnly(currentValue => !currentValue)}
-                            propertyName="dateInvalid"
-                        />
-                        Active Only
-                    </Typography>
-                </Grid>
                 {data?.length > 0 && (
                     <Grid item xs={12}>
+                        <Typography color="black">
+                            All
+                            <OnOffSwitch
+                                value={activeOnly}
+                                onChange={() => setActiveOnly(currentValue => !currentValue)}
+                                propertyName="dateInvalid"
+                            />
+                            Active Only
+                        </Typography>
                         <DataGrid
                             rows={activeOnly ? sortedActiveGroupsInfo : sortedGroupsInfo}
                             getRowId={row => row?.id}

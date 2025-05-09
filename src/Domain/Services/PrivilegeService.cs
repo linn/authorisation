@@ -51,9 +51,7 @@
         {
             if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
-                var a = this.privilegeRepository.FindById(privilegeId);
-
-                return a;
+                return this.privilegeRepository.FindById(privilegeId);
             }
 
             if (userPrivileges == null || !userPrivileges.Any())
