@@ -8,6 +8,8 @@ import config from '../config';
 import history from '../history';
 
 function App() {
+    const test = null;
+    console.log(test?.ok);
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Typography variant="h6">Authorisation</Typography>
