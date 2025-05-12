@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router';
 import { Navigate, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import App from './App';
-import Navigation from '../navigation';
+import Navigation from '../containers/Navigation';
 import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
@@ -21,7 +21,7 @@ function Root() {
     return (
         <div>
             <div className="padding-top-when-not-printing">
-                {/* <Navigation /> */}
+                <Navigation />
                 <div>
                     <HistoryRouter history={history}>
                         <Routes>
