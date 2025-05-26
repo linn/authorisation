@@ -29,7 +29,7 @@ function Privileges() {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'name', headerName: 'Name', width: 225 },
+        { field: 'name', headerName: 'Name', width: 400 },
         { field: 'active', headerName: 'Active', width: 225 }
     ];
 
