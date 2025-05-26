@@ -20,8 +20,8 @@ import ViewPermissionUsers from './ViewPermissionUsers';
 function Root() {
     return (
         <div>
+            <Navigation />
             <div className="padding-top-when-not-printing">
-                <Navigation />
                 <div>
                     <HistoryRouter history={history}>
                         <Routes>

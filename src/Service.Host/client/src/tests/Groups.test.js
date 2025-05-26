@@ -61,12 +61,3 @@ describe('When loading ', () => {
         expect(getByRole('progressbar')).toBeInTheDocument();
     });
 });
-
-// test('orders groups alphabetically by name, rendering them as datagrid rows', () => {
-//     const { getAllByRole } = render(<Groups />);
-//     const row = getAllByRole('row');
-//     expect(row[1].href).toContain('authorisation/groups/1');
-//     expect(row[2].href).toContain('authorisation/groups/4');
-//     expect(row[3].href).toContain('authorisation/groups/3');
-//     expect(row[4].href).toContain('authorisation/groups/2');
-// });

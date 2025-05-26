@@ -75,6 +75,5 @@
 
             throw new UnauthorisedActionException("You do not have the permission to access this privilege");
         }
-
     }
 }

@@ -5,11 +5,12 @@ import useInitialise from '../hooks/useInitialise';
 import config from '../config';
 
 function Navigation() {
-    const { isLoading: menuLoading, result: menuData } = useInitialise(
+    const { isGetLoading: menuLoading, data: menuData } = useInitialise(
         'https://app.linn.co.uk/intranet/menu-no-auth'
     );
     const { result: notifcationsData } = useInitialise('https://app.linn.co.uk/notifications');
     const auth = useAuth();
+
     return (
         <NavigationUI
             loading={menuLoading}
