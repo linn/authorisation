@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Link, useNavigate } from 'react-router-dom';
-import { Loading } from '@linn-it/linn-form-components-library';
+import { useNavigate } from 'react-router-dom';
+import { Loading, OnOffSwitch, utilities } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import { DataGrid } from '@mui/x-data-grid';
 import config from '../config';
 import history from '../history';
 import useInitialise from '../hooks/useInitialise';
@@ -14,36 +13,26 @@ import Page from './Page';
 
 function Groups() {
     const navigate = useNavigate();
+    const [activeOnly, setActiveOnly] = useState(true);
 
-    const [groups, setGroups] = useState([]);
     const { data, isGetLoading } = useInitialise(itemTypes.groups.url, null, true);
 
-    useEffect(() => {
-        if (data) {
-            setGroups(data);
-        }
-    }, [data]);
+    const activeGroups = data?.filter(h => h.active === true);
 
-    const renderPrivilege = group => (
-        <ListItem component={Link} to={`/authorisation/groups/${group.id}`}>
-            <Typography color="primary">
-                {group?.active ? `${group.name} - ACTIVE` : `${group.name} - INACTIVE`}
-            </Typography>
-        </ListItem>
-    );
+    function sorting(a, b) {
+        const fa = a.name?.toLowerCase() || '';
+        const fb = b.name?.toLowerCase() || '';
+        return fa.localeCompare(fb);
+    }
 
-    groups.sort((a, b) => {
-        const fa = a.name.toLowerCase();
-        const fb = b.name.toLowerCase();
+    const sortedGroupsInfo = data ? [...data].sort(sorting) : [];
+    const sortedActiveGroupsInfo = activeGroups ? [...activeGroups].sort(sorting) : [];
 
-        if (fa < fb) {
-            return -1;
-        }
-        if (fa > fb) {
-            return 1;
-        }
-        return 0;
-    });
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'name', headerName: 'Name', width: 225 },
+        { field: 'active', headerName: 'Active', width: 225 }
+    ];
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -70,9 +59,33 @@ function Groups() {
                 <Grid item xs={12}>
                     {isGetLoading && <Loading />}
                 </Grid>
-                <Grid item xs={12}>
-                    <List>{groups.map(renderPrivilege)}</List>
-                </Grid>
+                {data?.length > 0 && (
+                    <Grid item xs={12}>
+                        <Typography color="black">
+                            All
+                            <OnOffSwitch
+                                value={activeOnly}
+                                onChange={() => setActiveOnly(currentValue => !currentValue)}
+                                propertyName="dateInvalid"
+                            />
+                            Active Only
+                        </Typography>
+                        <DataGrid
+                            rows={activeOnly ? sortedActiveGroupsInfo : sortedGroupsInfo}
+                            getRowId={row => row?.id}
+                            columns={columns}
+                            editMode="cell"
+                            onRowClick={clicked => {
+                                navigate(utilities.getSelfHref(clicked.row));
+                            }}
+                            autoHeight
+                            columnBuffer={8}
+                            density="comfortable"
+                            rowHeight={34}
+                            loading={isGetLoading}
+                        />
+                    </Grid>
+                )}
             </Grid>
         </Page>
     );

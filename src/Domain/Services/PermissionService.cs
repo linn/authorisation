@@ -26,34 +26,37 @@
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.Id == groupId).OrderBy(p => p.Privilege.Name);
         }
 
-        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId)
+        public IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId, IEnumerable<string> userPrivileges = null)
         {
-            return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
-        }
-
-        public IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions)
-        {
-            var individualUris = new List<string>();
-
-            foreach (var permission in permissions)
+            if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
-                if (permission is IndividualPermission)
-                {
-                    individualUris.Add(((IndividualPermission)permission).GranteeUri);
-                }
-                else
-                {
-                    foreach (var memberUri in ((GroupPermission)permission).GranteeGroup.MemberUris())
-                    {
-                        if (!individualUris.Contains(memberUri))
-                        {
-                            individualUris.Add(memberUri);
-                        }
-                    }
-                }
+                return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
             }
 
-            return individualUris;
+            if (userPrivileges == null || !userPrivileges.Any())
+            {
+                return new List<Permission>();
+            }
+
+            var privilegesUserCanManage = userPrivileges
+                .Where(p => p.ToLower().Contains("auth-manager"))
+                .Select(p => p.Split('.')[0])
+                .Distinct()
+                .ToList();
+
+            if (!privilegesUserCanManage.Any())
+            {
+                return new List<Permission>();
+            }
+
+            var resultList = this.permissionRepository
+                .FindAll()
+                .AsEnumerable()
+                .Where(p => privilegesUserCanManage.Contains(
+                                p.Privilege.Name.Split('.')[0]) && p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name)
+                .ToList();
+
+            return resultList;
         }
 
         public IEnumerable<Permission> GetAllPermissionsForUser(string who)

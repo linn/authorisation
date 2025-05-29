@@ -9,31 +9,21 @@ import IconButton from '@mui/material/IconButton';
 import moment from 'moment';
 import config from '../config';
 import history from '../history';
+import useDelete from '../hooks/useDelete';
 import useInitialise from '../hooks/useInitialise';
 import itemTypes from '../itemTypes';
 import useGet from '../hooks/useGet';
-import useDelete from '../hooks/useDelete';
 import Page from './Page';
 
-function ViewPermissionUsers() {
-    const [privilegeInput, setPrivilegeInput] = useState('');
+function ViewEmployeesPermission() {
+    const [employeeInput, setEmployeeInput] = useState('');
     const [snackbarVisible, setSnackbarVisible] = useState(false);
-
-    const { data: privileges, isGetLoading: isPrivilegeLoading } = useInitialise(
-        itemTypes.privileges.url,
-        null,
-        true
-    );
-
-    const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
-        itemTypes.employees.url
-    );
 
     const {
         send,
         isLoading: isGetLoading,
         result: permissionsInfo
-    } = useGet(`${itemTypes.permissions.url}/privilege`, true);
+    } = useGet(itemTypes.permissions.url, true);
 
     const {
         send: deleteSend,
@@ -41,30 +31,22 @@ function ViewPermissionUsers() {
         deleteResult
     } = useDelete(itemTypes.permissions.url, true);
 
+    const { data: currentEmployees, isGetLoading: isCurrentEmployeesLoading } = useInitialise(
+        `${itemTypes.employees.url}?currentEmployees=true`
+    );
+
+    const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
+        itemTypes.employees.url
+    );
+
     useEffect(() => {
         setSnackbarVisible(!!deleteResult);
     }, [deleteResult]);
 
-    privileges?.sort((a, b) => {
-        const fa = a.name.toLowerCase();
-        const fb = b.name.toLowerCase();
-
-        if (fa < fb) {
-            return -1;
-        }
-        if (fa > fb) {
-            return 1;
-        }
-        return 0;
-    });
-
     const permissions = permissionsInfo?.map(permission => {
         const addedByEmployee = employees?.items?.find(e => permission?.grantedByUri === e?.href);
-        const granteeEmployee = employees?.items?.find(e => permission?.granteeUri === e?.href);
-
         return {
             id: permission?.id,
-            granteeEmployee: granteeEmployee?.fullName,
             addedByEmployee: addedByEmployee?.fullName,
             privilege: permission?.privilege,
             groupName: permission?.groupName,
@@ -72,26 +54,19 @@ function ViewPermissionUsers() {
         };
     });
 
-    const permissionColumns = [
+    const privilegeColumns = [
         {
             field: 'id',
             headerName: 'ID',
             width: 75
         },
         {
-            field: 'granteeEmployee',
-            headerName: 'Employee',
-            width: 200,
-            valueGetter: params => params.row.granteeEmployee || 'N/A'
+            field: 'privilege',
+            headerName: 'Privilege Name',
+            width: 350
         },
         {
-            field: 'Group',
-            headerName: 'Group',
-            width: 200,
-            valueGetter: params => params.row.groupName || 'N/A'
-        },
-        {
-            field: 'addedByEmployee',
+            field: 'addedByEmployeeId',
             headerName: 'Added By',
             width: 200,
             valueGetter: params => params.row.addedByEmployee || 'N/A'
@@ -101,6 +76,12 @@ function ViewPermissionUsers() {
             headerName: 'Date Granted',
             width: 150,
             valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
+        },
+        {
+            field: 'Group',
+            headerName: 'Group',
+            width: 200,
+            valueGetter: params => params.row.groupName || 'N/A'
         },
         {
             field: 'delete',
@@ -125,46 +106,48 @@ function ViewPermissionUsers() {
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Grid item xs={12}>
-                <Typography variant="h4">View all Employees with a Permission</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                {(isEmployeesLoading || isDeleteLoading || isPrivilegeLoading || isGetLoading) && (
-                    <Loading />
-                )}
-            </Grid>
-            <Grid item xs={4}>
-                <Dropdown
-                    propertyName="privilege choice"
-                    items={privileges?.map(privilege => ({
-                        id: privilege.id,
-                        displayText: privilege?.name
-                    }))}
-                    required
-                    label="Choose a Privilege"
-                    fullWidth
-                    onChange={(propertyName, newValue) => {
-                        setPrivilegeInput(newValue);
-                        send(null, `?privilegeId=${newValue}`);
-                    }}
-                    value={privilegeInput}
-                />
-            </Grid>
-
-            {permissions && (
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <DataGrid
-                        rows={permissions}
-                        getRowId={row => row?.id}
-                        columns={permissionColumns}
-                        density="comfortable"
-                        rowHeight={34}
-                        disableMultipleSelection
-                        hideFooter
+                    <Typography variant="h4">View an Employee&apos;s Permissions</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    {(isEmployeesLoading ||
+                        isGetLoading ||
+                        isCurrentEmployeesLoading ||
+                        isDeleteLoading) && <Loading />}
+                </Grid>
+                <Grid item xs={12}>
+                    <Dropdown
+                        propertyName="employee choice"
+                        items={currentEmployees?.items?.map(employee => ({
+                            id: employee.id,
+                            displayText: employee?.fullName
+                        }))}
+                        required
+                        label="Choose an Employee"
+                        fullWidth
+                        onChange={(propertyName, newValue) => {
+                            setEmployeeInput(newValue);
+                            send(null, `?who=/employees/${newValue}`);
+                        }}
+                        value={employeeInput}
                     />
                 </Grid>
-            )}
-            <Grid item xs={12}>
+
+                {permissions && (
+                    <Grid item xs={12}>
+                        <DataGrid
+                            rows={permissions}
+                            getRowId={row => row.id}
+                            columns={privilegeColumns}
+                            density="comfortable"
+                            rowHeight={34}
+                            disableMultipleSelection
+                            hideFooter
+                        />
+                    </Grid>
+                )}
+
                 <SnackbarMessage
                     visible={snackbarVisible}
                     onClose={() => setSnackbarVisible(false)}
@@ -175,4 +158,4 @@ function ViewPermissionUsers() {
     );
 }
 
-export default ViewPermissionUsers;
+export default ViewEmployeesPermission;

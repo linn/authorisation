@@ -33,7 +33,7 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
             yield return new LinkResource
             {
                 Rel = "self",
-                Href = $"/privileges/{privilege.Id}"
+                Href = this.GetLocation(privilege)
             };
         }
     }

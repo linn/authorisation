@@ -26,7 +26,7 @@ function AddIndividualMember() {
         true
     );
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
-        itemTypes.employees.url
+        `${itemTypes.employees.url}?currentEmployees=true`
     );
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(
