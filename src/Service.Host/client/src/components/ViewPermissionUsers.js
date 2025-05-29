@@ -154,12 +154,8 @@ function ViewPermissionUsers() {
             {permissions && (
                 <Grid item xs={12}>
                     <DataGrid
-                        rows={
-                            permissions?.map(e => ({
-                                ...e,
-                                id: e?.id
-                            })) || []
-                        }
+                        rows={permissions}
+                        getRowId={row => row?.id}
                         columns={permissionColumns}
                         density="comfortable"
                         rowHeight={34}

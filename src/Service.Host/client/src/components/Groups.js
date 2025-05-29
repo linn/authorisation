@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { Loading, OnOffSwitch } from '@linn-it/linn-form-components-library';
+import { Loading, OnOffSwitch, utilities } from '@linn-it/linn-form-components-library';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
@@ -17,7 +17,7 @@ function Groups() {
 
     const { data, isGetLoading } = useInitialise(itemTypes.groups.url, null, true);
 
-    const activePrivileges = data?.filter(h => h.active === true);
+    const activeGroups = data?.filter(h => h.active === true);
 
     function sorting(a, b) {
         const fa = a.name?.toLowerCase() || '';
@@ -25,8 +25,8 @@ function Groups() {
         return fa.localeCompare(fb);
     }
 
-    const sortedGroupsInfo = [...(data || [])]?.sort(sorting);
-    const sortedActiveGroupsInfo = [...(activePrivileges || [])]?.sort(sorting);
+    const sortedGroupsInfo = data ? [...data].sort(sorting) : [];
+    const sortedActiveGroupsInfo = activeGroups ? [...activeGroups].sort(sorting) : [];
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
@@ -76,7 +76,7 @@ function Groups() {
                             columns={columns}
                             editMode="cell"
                             onRowClick={clicked => {
-                                navigate(`/authorisation/groups/${clicked.row.id}`);
+                                navigate(utilities.getSelfHref(clicked.row));
                             }}
                             autoHeight
                             columnBuffer={8}

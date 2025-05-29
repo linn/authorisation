@@ -80,7 +80,7 @@ namespace Linn.Authorisation.Facade.Services
         { 
             if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges)) 
             { 
-                throw new UnauthorisedActionException("You do not have permission to create this privilege");
+                throw new UnauthorisedActionException("You do not have permission to update this privilege");
             }
 
             var privilegeList = this.repository.FilterBy(g => g.Id != entity.Id);

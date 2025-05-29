@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { Loading, OnOffSwitch } from '@linn-it/linn-form-components-library';
+import { Loading, OnOffSwitch, utilities } from '@linn-it/linn-form-components-library';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import config from '../config';
@@ -24,8 +24,8 @@ function Privileges() {
         return fa.localeCompare(fb);
     }
 
-    const sortedPrivilegesInfo = [...(data || [])]?.sort(sorting);
-    const sortedActivePrivilegesInfo = [...(activePrivileges || [])]?.sort(sorting);
+    const sortedPrivilegesInfo = data ? [...data].sort(sorting) : [];
+    const sortedActivePrivilegesInfo = activePrivileges ? [...activePrivileges].sort(sorting) : [];
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
@@ -60,7 +60,7 @@ function Privileges() {
                             columns={columns}
                             editMode="cell"
                             onRowClick={clicked => {
-                                navigate(`/authorisation/privileges/${clicked.row.id}`);
+                                navigate(utilities.getSelfHref(clicked.row));
                             }}
                             autoHeight
                             columnBuffer={8}

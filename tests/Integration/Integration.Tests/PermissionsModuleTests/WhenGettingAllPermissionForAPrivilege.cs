@@ -31,32 +31,7 @@
             this.group = new Group
                             {
                                 Id = 2,
-                                Name = "testing-get-group",
-                                Members = new List<Member>
-                                    {
-                                        new IndividualMember
-                                            {
-                                                Id = 4,
-                                                MemberUri = "/employees/1234"
-                                            },
-                                        new GroupMember
-                                            {
-                                                Id = 5,
-                                                Group = new Group
-                                                    {
-                                                        Id = 6,
-                                                        Name = "testing-get-group-2",
-                                                        Members = new List<Member>
-                                                            {
-                                                                new IndividualMember
-                                                                    {
-                                                                        Id = 6,
-                                                                        MemberUri = "/employees/5678"
-                                                                    }
-                                                            }
-                                                    }
-                                            }
-                                    }
+                                Name = "testing-get-group"
             };
 
             this.privilege = new Privilege { Id = 1, Name = "Test Privilege" };

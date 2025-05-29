@@ -10,6 +10,6 @@
 
         IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId, IEnumerable<string> userPrivileges = null);
 
-        IEnumerable<Permission> GetAllPermissionsForUser(string who, IEnumerable<string> userPrivileges = null);
+        IEnumerable<Permission> GetAllPermissionsForUser(string who);
     }
 }

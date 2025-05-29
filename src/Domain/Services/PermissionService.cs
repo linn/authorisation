@@ -38,13 +38,13 @@
                 return new List<Permission>();
             }
 
-            var adminDepartments = userPrivileges
+            var privilegesUserCanManage = userPrivileges
                 .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 
-            if (!adminDepartments.Any())
+            if (!privilegesUserCanManage.Any())
             {
                 return new List<Permission>();
             }
@@ -52,14 +52,14 @@
             var resultList = this.permissionRepository
                 .FindAll()
                 .AsEnumerable()
-                .Where(p => adminDepartments.Contains(
+                .Where(p => privilegesUserCanManage.Contains(
                                 p.Privilege.Name.Split('.')[0]) && p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name)
                 .ToList();
 
             return resultList;
         }
 
-        public IEnumerable<Permission> GetAllPermissionsForUser(string who, IEnumerable<string> userPrivileges = null)
+        public IEnumerable<Permission> GetAllPermissionsForUser(string who)
         {
             if (string.IsNullOrEmpty(who))
             {

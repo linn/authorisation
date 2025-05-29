@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { waitFor } from '@testing-library/react';
 import useInitialise from '../hooks/useInitialise';
 import render from '../test-utils';
 import Groups from '../components/Groups';
@@ -36,13 +35,12 @@ describe('When groups ', () => {
 
     test('orders groups alphabetically by name, rendering them as links', async () => {
         const { getAllByRole } = render(<Groups />);
-        await waitFor(() => {
-            const cells = getAllByRole('cell');
-            const GroupNames = cells
-                .filter(cell => cell.getAttribute('data-field') === 'name')
-                .map(cell => cell.textContent);
-            expect(GroupNames).toEqual(['a.group', 'b.group', 'd.group']);
-        });
+
+        const cells = getAllByRole('cell');
+        const GroupNames = cells
+            .filter(cell => cell.getAttribute('data-field') === 'name')
+            .map(cell => cell.textContent);
+        expect(GroupNames).toEqual(['a.group', 'b.group', 'd.group']);
     });
 
     test('does not render loading spinner', () => {

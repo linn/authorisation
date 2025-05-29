@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public class GroupResource
+    using Linn.Common.Resources;
+
+    public class GroupResource : HypermediaResource
     {
         public string Name { get; set; }
 
