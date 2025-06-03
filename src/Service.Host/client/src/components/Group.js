@@ -228,12 +228,6 @@ function Group({ creating }) {
                         size="small"
                         onClick={() => {
                             deletePermissionSend(params.row.id);
-                            setGroup(prevGroup => ({
-                                ...prevGroup,
-                                permissions: prevGroup.permissions.filter(
-                                    p => p.id !== params.row.Id
-                                )
-                            }));
                         }}
                     >
                         <DeleteIcon fontSize="inherit" />
@@ -242,6 +236,15 @@ function Group({ creating }) {
             )
         }
     ];
+
+    useEffect(() => {
+        if (deletePermissionResult && deletePermissionResult.id) {
+            setGroup(prevGroup => ({
+                ...prevGroup,
+                permissions: prevGroup.permissions.filter(p => p.id !== deletePermissionResult.id)
+            }));
+        }
+    }, [deletePermissionResult]);
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
