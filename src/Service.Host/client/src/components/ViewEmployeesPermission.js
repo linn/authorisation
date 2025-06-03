@@ -18,6 +18,7 @@ import Page from './Page';
 function ViewEmployeesPermission() {
     const [employeeInput, setEmployeeInput] = useState('');
     const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [permissions, setPermissions] = useState([]);
 
     const {
         send,
@@ -40,19 +41,31 @@ function ViewEmployeesPermission() {
     );
 
     useEffect(() => {
-        setSnackbarVisible(!!deleteResult);
-    }, [deleteResult]);
+        if (permissionsInfo && employees) {
+            setPermissions(
+                permissionsInfo.map(permission => {
+                    const addedByEmployee = employees?.items?.find(
+                        e => permission?.grantedByUri === e?.href
+                    );
+                    return {
+                        id: permission?.id,
+                        addedByEmployee: addedByEmployee?.fullName,
+                        privilege: permission?.privilege,
+                        groupName: permission?.groupName,
+                        dateGranted: permission?.dateGranted
+                    };
+                })
+            );
+        }
+    }, [permissionsInfo, employees]);
 
-    const permissions = permissionsInfo?.map(permission => {
-        const addedByEmployee = employees?.items?.find(e => permission?.grantedByUri === e?.href);
-        return {
-            id: permission?.id,
-            addedByEmployee: addedByEmployee?.fullName,
-            privilege: permission?.privilege,
-            groupName: permission?.groupName,
-            dateGranted: permission?.dateGranted
-        };
-    });
+    // Remove deleted permission from state
+    useEffect(() => {
+        if (deleteResult && deleteResult.id) {
+            setPermissions(prev => prev.filter(permission => permission.id !== deleteResult.id));
+            setSnackbarVisible(true);
+        }
+    }, [deleteResult]);
 
     const privilegeColumns = [
         {
