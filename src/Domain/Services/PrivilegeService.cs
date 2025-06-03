@@ -26,13 +26,13 @@
                 return new List<Privilege>();
             }
 
-            var adminDepartments = userPrivileges
+            var privilegesUserCanManage = userPrivileges
                 .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
                 .ToList();
 
-            if (!adminDepartments.Any())
+            if (!privilegesUserCanManage.Any())
             {
                 return new List<Privilege>();
             }
@@ -40,7 +40,7 @@
             var resultList = this.privilegeRepository
                 .FindAll()
                 .AsEnumerable()
-                .Where(p => adminDepartments.Contains(p.Name.Split('.')[0]))
+                .Where(p => privilegesUserCanManage.Contains(p.Name.Split('.')[0]))
                 .ToList();
 
 
@@ -51,7 +51,7 @@
         {
             if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
-                return this.privilegeRepository.FindById(privilegeId); ;
+                return this.privilegeRepository.FindById(privilegeId);
             }
 
             if (userPrivileges == null || !userPrivileges.Any())
@@ -59,7 +59,7 @@
                 throw new UnauthorisedActionException("You do not have any permissions");
             }
 
-            var adminDepartments = userPrivileges
+            var privilegesUserCanManage = userPrivileges
                 .Where(p => p.ToLower().Contains("auth-manager"))
                 .Select(p => p.Split('.')[0])
                 .Distinct()
@@ -68,13 +68,12 @@
             var result = this.privilegeRepository
                 .FindById(privilegeId);
 
-            if (adminDepartments.Contains(result.Name.Split(".")[0]))
+            if (privilegesUserCanManage.Contains(result.Name.Split(".")[0]))
             {
                 return result;
             }
 
             throw new UnauthorisedActionException("You do not have the permission to access this privilege");
         }
-
     }
 }

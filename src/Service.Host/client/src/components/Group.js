@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
+import moment from 'moment';
 import config from '../config';
 import usePut from '../hooks/usePut';
 import usePost from '../hooks/usePost';
@@ -57,10 +58,17 @@ function Group({ creating }) {
 
     const {
         send: deleteMemberSend,
-        isLoading: isDeleteLoading,
-        deleteResult,
-        errorMessage: deleteErrorMessage
+        isLoading: isDeleteMemberLoading,
+        deleteResult: deleteMemberResult,
+        errorMessage: deleteMemberErrorMessage
     } = useDelete(itemTypes.members.url, true);
+
+    const {
+        send: deletePermissionSend,
+        isLoading: isDeletePermissionLoading,
+        deleteResult: deletePermissionResult,
+        errorMessage: deletePermissionErrorMessage
+    } = useDelete(itemTypes.permissions.url, true);
 
     useEffect(() => {
         if (!creating && data) {
@@ -75,10 +83,18 @@ function Group({ creating }) {
             setErrorMessage(putErrorMessage);
         } else if (postErrorMessage) {
             setErrorMessage(postErrorMessage);
-        } else if (deleteErrorMessage) {
-            setErrorMessage(deleteErrorMessage);
+        } else if (deleteMemberErrorMessage) {
+            setErrorMessage(deleteMemberErrorMessage);
+        } else if (deletePermissionErrorMessage) {
+            setErrorMessage(deletePermissionErrorMessage);
         }
-    }, [putErrorMessage, postErrorMessage, getErrorMessage, deleteErrorMessage]);
+    }, [
+        putErrorMessage,
+        postErrorMessage,
+        getErrorMessage,
+        deleteMemberErrorMessage,
+        deletePermissionErrorMessage
+    ]);
 
     const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -87,10 +103,12 @@ function Group({ creating }) {
             setSnackbarVisible(!!putResult);
         } else if (postResult) {
             setSnackbarVisible(!!postResult);
-        } else if (deleteResult) {
-            setSnackbarVisible(!!deleteResult);
+        } else if (deletePermissionResult) {
+            setSnackbarVisible(!!deletePermissionResult);
+        } else if (deleteMemberResult) {
+            setSnackbarVisible(!!deleteMemberResult);
         }
-    }, [deleteResult, id, postResult, putResult]);
+    }, [deleteMemberResult, deletePermissionResult, id, postResult, putResult]);
 
     const handleActiveChange = (_, newValue) => {
         setGroup({ ...group, active: newValue });
@@ -101,10 +119,28 @@ function Group({ creating }) {
     };
 
     const groupMembers = group?.members?.map(member => {
-        const employee = employees?.items?.find(e => member?.memberUri === e?.href);
+        const employeeMember = employees?.items?.find(e => member?.memberUri === e?.href);
+
+        const addedByEmployee = employees?.items?.find(e => member?.addedByUri === e?.href);
         return {
-            ...employee,
-            groupMemberId: member?.id
+            employeeMemberId: employeeMember?.id,
+            employeeMember,
+            addedByEmployeeId: addedByEmployee?.id,
+            addedByEmployee,
+            groupMemberId: member?.id,
+            dateAdded: member?.dateAdded
+        };
+    });
+
+    const groupPermissions = group?.permissions?.map(permission => {
+        const addedByEmployee = employees?.items?.find(e => permission?.grantedByUri === e?.href);
+
+        return {
+            id: permission?.id,
+            privilege: permission?.privilege,
+            addedByEmployeeId: addedByEmployee?.id ? addedByEmployee?.id : null,
+            addedByEmployee,
+            dateGranted: permission?.dateGranted
         };
     });
 
@@ -115,9 +151,22 @@ function Group({ creating }) {
             width: 75
         },
         {
-            field: 'fullName',
+            field: 'employeeMemberId',
             headerName: 'Employee Name',
-            width: 150
+            width: 200,
+            valueGetter: params => params.row.employeeMember?.fullName || 'N/A'
+        },
+        {
+            field: 'addedByEmployee',
+            headerName: 'Added By',
+            width: 200,
+            valueGetter: params => params.row.addedByEmployee?.fullName || 'N/A'
+        },
+        {
+            field: 'dateAdded',
+            headerName: 'Date Granted',
+            width: 150,
+            valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
         },
         {
             field: 'delete',
@@ -147,7 +196,7 @@ function Group({ creating }) {
 
     const privilegeColumns = [
         {
-            field: 'privilegeId',
+            field: 'id',
             headerName: 'ID',
             width: 75
         },
@@ -155,8 +204,47 @@ function Group({ creating }) {
             field: 'privilege',
             headerName: 'Privilege Name',
             width: 350
+        },
+        {
+            field: 'addedByEmployeeId',
+            headerName: 'Added By',
+            width: 200,
+            valueGetter: params => params.row.addedByEmployee?.fullName || 'N/A'
+        },
+        {
+            field: 'dateGranted',
+            headerName: 'Date Granted',
+            width: 150,
+            valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
+        },
+        {
+            field: 'delete',
+            headerName: ' ',
+            width: 50,
+            renderCell: params => (
+                <Tooltip title="Delete">
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => {
+                            deletePermissionSend(params.row.id);
+                        }}
+                    >
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            )
         }
     ];
+
+    useEffect(() => {
+        if (deletePermissionResult && deletePermissionResult.id) {
+            setGroup(prevGroup => ({
+                ...prevGroup,
+                permissions: prevGroup.permissions.filter(p => p.id !== deletePermissionResult.id)
+            }));
+        }
+    }, [deletePermissionResult]);
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
@@ -166,7 +254,8 @@ function Group({ creating }) {
             <Grid item xs={12}>
                 {(isGetLoading ||
                     isPutLoading ||
-                    isDeleteLoading ||
+                    isDeleteMemberLoading ||
+                    isDeletePermissionLoading ||
                     isEmployeesLoading ||
                     isPostLoading) && <Loading />}
             </Grid>
@@ -207,7 +296,11 @@ function Group({ creating }) {
                 <SnackbarMessage
                     visible={snackbarVisible}
                     onClose={() => setSnackbarVisible(false)}
-                    message={deleteResult ? 'Delete Successful' : 'Save Successful'}
+                    message={
+                        deletePermissionResult || deleteMemberResult
+                            ? 'Delete Successful'
+                            : 'Save Successful'
+                    }
                 />
 
                 <Box mt={3} />
@@ -227,7 +320,7 @@ function Group({ creating }) {
                                         rows={
                                             groupMembers?.map(e => ({
                                                 ...e,
-                                                id: e?.id
+                                                id: e?.groupMemberId
                                             })) || []
                                         }
                                         columns={employeeColumns}
@@ -244,29 +337,29 @@ function Group({ creating }) {
 
                         <Grid item xs={12}>
                             <Typography variant="h5">Permissions</Typography>
-
-                            {group.permission?.length === 0 ? (
-                                <Typography color="primary">
-                                    {group.name} does not have any permissions
-                                </Typography>
-                            ) : (
-                                <Grid item xs={12}>
-                                    <DataGrid
-                                        rows={
-                                            group.permission?.map(e => ({
-                                                ...e,
-                                                id: e?.privilegeId
-                                            })) || []
-                                        }
-                                        columns={privilegeColumns}
-                                        density="comfortable"
-                                        rowHeight={34}
-                                        disableMultipleSelection
-                                        hideFooter
-                                    />
-                                </Grid>
-                            )}
                         </Grid>
+
+                        {group.permissions?.length === 0 ? (
+                            <Typography color="primary">
+                                {group.name} does not have any permissions
+                            </Typography>
+                        ) : (
+                            <Grid item xs={12}>
+                                <DataGrid
+                                    rows={
+                                        groupPermissions?.map(e => ({
+                                            ...e,
+                                            id: e?.id
+                                        })) || []
+                                    }
+                                    columns={privilegeColumns}
+                                    density="comfortable"
+                                    rowHeight={34}
+                                    disableMultipleSelection
+                                    hideFooter
+                                />
+                            </Grid>
+                        )}
                     </>
                 )}
             </Grid>

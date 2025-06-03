@@ -13,7 +13,13 @@
         {
             if (model is IndividualMember member)
             {
-                return new MemberResource { Id = member.Id, MemberUri = member.MemberUri };
+                return new MemberResource
+                {
+                    Id = member.Id,
+                    MemberUri = member.MemberUri,
+                    DateAdded = member.DateAdded.ToString("o"),
+                    AddedByUri = member.AddedByUri,
+                };
             }
 
             throw new NotImplementedException();
@@ -21,7 +27,7 @@
 
         public string GetLocation(Member model)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         object IBuilder<Member>.Build(Member model, IEnumerable<string> claims) => this.Build(model, claims);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import Typography from '@mui/material/Typography';
 import {
     Loading,
@@ -26,7 +25,7 @@ function CreateIndividualPermission() {
         true
     );
     const { data: employees, isGetLoading: isEmployeesLoading } = useInitialise(
-        itemTypes.employees.url
+        `${itemTypes.employees.url}?currentEmployees=true`
     );
 
     const { send, isPostLoading, errorMessage, postResult } = usePost(

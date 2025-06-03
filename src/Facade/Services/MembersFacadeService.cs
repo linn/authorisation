@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
 
+    using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
     using Linn.Authorisation.Resources;
+    using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
 
@@ -17,14 +19,18 @@
 
         private readonly ITransactionManager transactionManager;
 
+        private readonly IAuthorisationService authService;
+
         public MembersFacadeService(
             IRepository<Group, int> groupRepository,
             IRepository<Member, int> memberRepository,
-            ITransactionManager transactionManager)
+            ITransactionManager transactionManager,
+            IAuthorisationService authService)
         {
             this.transactionManager = transactionManager;
             this.groupRepository = groupRepository;
             this.memberRepository = memberRepository;
+            this.authService = authService;
         }
 
         public IResult<MemberResource> AddIndividualMember(MemberResource memberResource, string employeeUri, IEnumerable<string> userPrivileges = null)
@@ -47,8 +53,13 @@
             }
         }
 
-        public IResult<MemberResource> DeleteMember(int memberId)
+        public IResult<MemberResource> DeleteMember(int memberId, IEnumerable<string> userPrivileges = null)
         {
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
+            {
+                throw new UnauthorisedActionException("You do not have permission to delete a member");
+            }
+
             var member = this.memberRepository.FindById(memberId);
 
             this.memberRepository.Remove(member);

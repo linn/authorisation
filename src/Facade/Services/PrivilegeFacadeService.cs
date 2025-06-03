@@ -57,7 +57,7 @@ namespace Linn.Authorisation.Facade.Services
 
         protected override Privilege CreateFromResource(PrivilegeResource resource, IEnumerable<string> userPrivileges = null)
         {
-            if (!userPrivileges.Contains($"{resource.Name.Split('.')[0]}.auth-manager") && !this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges))
             {
                 throw new UnauthorisedActionException("You do not have permission to create this privilege");
             }
@@ -77,7 +77,12 @@ namespace Linn.Authorisation.Facade.Services
             Privilege entity,
             PrivilegeResource updateResource,
             IEnumerable<string> userPrivileges = null)
-            {
+        { 
+            if (!this.authService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, userPrivileges)) 
+            { 
+                throw new UnauthorisedActionException("You do not have permission to update this privilege");
+            }
+
             var privilegeList = this.repository.FilterBy(g => g.Id != entity.Id);
 
             entity.Update(updateResource.Name, updateResource.Active);

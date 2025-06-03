@@ -1,4 +1,4 @@
-namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
+﻿namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,42 +16,49 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
 
     using NUnit.Framework;
 
-    public class WhenGettingAllPermissionsForEmployee : ContextBase
+    public class WhenGettingAllPermissionForAPrivilege : ContextBase
     {
+        private Privilege privilege;
+
+        private Group group;
+
         [SetUp]
         public void SetUp()
         {
             this.AuthorisationService.HasPermissionFor(AuthorisedAction.AuthorisationAuthManager, Arg.Any<IEnumerable<string>>())
                 .Returns(true);
 
-            var group = new Group
-            {
-                Id = 2,
-                Name = "testing-get-group"
+            this.group = new Group
+                            {
+                                Id = 2,
+                                Name = "testing-get-group"
             };
 
-            this.DomainService.GetAllPermissionsForUser("/employees/1234").Returns(
+            this.privilege = new Privilege { Id = 1, Name = "Test Privilege" };
+
+            this.DomainService.GetAllPermissionsForPrivilege(this.privilege.Id, Arg.Any<IEnumerable<string>>()).Returns(
                 new List<Permission>
                     {
                         new IndividualPermission
                             {
-                                Privilege = new Privilege { Name = "1" },
+                                Id = 1,
+                                Privilege = this.privilege,
                                 GranteeUri = "/employees/1234"
                             },
                         new GroupPermission
                             {
-                                GranteeGroup = group,
-                                Privilege = new Privilege { Name = "2" },
+                                GranteeGroup = this.group,
+                                Privilege = this.privilege,
                                 Id = 2
                             }
                     }.AsQueryable());
 
             this.Response = this.Client.Get(
-                "/authorisation/permissions?who=/employees/1234",
+                "/authorisation/permissions/privilege?privilegeId=1",
                 with =>
-                {
-                    with.Accept("application/json");
-                }).Result;
+                    {
+                        with.Accept("application/json");
+                    }).Result;
         }
 
         [Test]
@@ -73,8 +80,8 @@ namespace Linn.Authorisation.Integration.Tests.PermissionsModuleTests
             var resources = this.Response.DeserializeBody<IEnumerable<PermissionResource>>()?.ToArray();
             resources.Should().HaveCount(2);
 
-            resources.Should().Contain(a => a.Privilege == "1");
-            resources.Should().Contain(a => a.Privilege == "2");
+            resources.Should().Contain(a => a.Id == 1);
+            resources.Should().Contain(a => a.Id == 2);
         }
     }
 }

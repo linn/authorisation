@@ -8,10 +8,8 @@
     {
         IEnumerable<Permission> GetImmediatePermissionsForGroup(int groupId);
 
-        IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId);
+        IEnumerable<Permission> GetAllPermissionsForPrivilege(int privilegeId, IEnumerable<string> userPrivileges = null);
 
         IEnumerable<Permission> GetAllPermissionsForUser(string who);
-
-        IList<string> GetAllGranteeUris(IEnumerable<Permission> permissions);
     }
 }

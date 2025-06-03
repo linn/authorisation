@@ -2,6 +2,7 @@
 import { Route, Routes } from 'react-router';
 import { Navigate, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import App from './App';
+import Navigation from '../containers/Navigation';
 import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
@@ -10,7 +11,7 @@ import Privileges from './Privileges';
 import Privilege from './Privilege';
 import CreateIndividualPermission from './CreateIndividualPermission';
 import CreateGroupPermission from './CreateGroupPermission';
-import ViewIndividualPermission from './ViewIndividualsPermission';
+import ViewEmployeesPermission from './ViewEmployeesPermission';
 import Groups from './Groups';
 import Group from './Group';
 import AddIndividualMember from './AddIndividualMember';
@@ -19,6 +20,7 @@ import ViewPermissionUsers from './ViewPermissionUsers';
 function Root() {
     return (
         <div>
+            <Navigation />
             <div className="padding-top-when-not-printing">
                 <div>
                     <HistoryRouter history={history}>
@@ -68,7 +70,7 @@ function Root() {
                             <Route
                                 exact
                                 path="/authorisation/view-individual-permission"
-                                element={<ViewIndividualPermission />}
+                                element={<ViewEmployeesPermission />}
                             />
                             <Route exact path="/authorisation/groups" element={<Groups />} />
                             <Route

@@ -76,10 +76,11 @@
 
         private async Task RemoveMember(
             HttpResponse res,
+            HttpRequest req,
             int id,
             IMembersFacadeService memberService)
         {
-            await res.Negotiate(memberService.DeleteMember(id));
+            await res.Negotiate(memberService.DeleteMember(id, req.HttpContext.GetPrivileges()));
         }
     }
 }

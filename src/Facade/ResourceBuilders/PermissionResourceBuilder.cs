@@ -20,7 +20,9 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
                     Privilege = model.Privilege.Name,
                     PrivilegeId = model.Privilege.Id,
                     Links = this.BuildLinks(model).ToArray(),
-                    Id = model.Id
+                    Id = model.Id,
+                    GrantedByUri = model.GrantedByUri,
+                    DateGranted = model.DateGranted.ToString("o")
                 };
             }
 
@@ -31,7 +33,9 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
                 Links = this.BuildLinks(model).ToArray(),
                 Id = model.Id,
                 GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,
-                GroupName = ((GroupPermission)model).GranteeGroup.Name
+                GroupName = ((GroupPermission)model).GranteeGroup.Name,
+                GrantedByUri = model.GrantedByUri,
+                DateGranted = model.DateGranted.ToString("o")
             };
         }
 
