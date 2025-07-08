@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Linn.Common.Persistence;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
+    using Linn.Common.Persistence;
 
     public class GroupService : IGroupService
     {
