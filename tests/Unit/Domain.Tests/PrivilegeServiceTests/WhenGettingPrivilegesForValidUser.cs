@@ -1,14 +1,9 @@
 ﻿namespace Linn.Authorisation.Domain.Tests.PrivilegeServiceTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
     using FluentAssertions;
-
-    using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Domain.Permissions;
 
     using NSubstitute;
 
@@ -26,7 +21,6 @@
                                       new Privilege("finance.auth-manager"),
                                       new Privilege("finance.do.stuuuff"),
                                       new Privilege("finance.do.hings"),
-                                      new Privilege("purchasing.do.hings"),
                                   };
 
             var userPrivileges = new List<string>

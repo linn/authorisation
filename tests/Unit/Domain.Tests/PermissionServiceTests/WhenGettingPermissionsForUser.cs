@@ -32,7 +32,7 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
                                  Members = new List<Member> { new IndividualMember("/employees/133", "/employees/20") }
                              };
 
-        var permissions = new List<Permission>
+            var permissions = new List<Permission>
                               {
                                   new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
                                   new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
