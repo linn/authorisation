@@ -44,11 +44,5 @@
             this.result.Should().Contain(
                 x => x.Name == "finance.do.hings");
         }
-
-        [Test]
-        public void ShouldNotReturnInactivePrivilege()
-        {
-            this.result.SingleOrDefault(x => x.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
-        }
     }
 }

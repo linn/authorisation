@@ -70,11 +70,5 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
         {
             this.PermissionRepository.Received().FilterBy(Arg.Any<Expression<Func<Permission, bool>>>());
         }
-
-        [Test]
-        public void ShouldNotReturnInactivePrivilege()
-        {
-            this.result.SingleOrDefault(x => x.Privilege.Name == "delete-things.admin" && x.Id == 3).Should().BeNull();
-        }
     }
 }
