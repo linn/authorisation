@@ -8,8 +8,8 @@
     using Linn.Authorisation.Domain;
     using Linn.Authorisation.Domain.Exceptions;
     using Linn.Authorisation.Domain.Groups;
-    using Linn.Authorisation.Resources;
     using Linn.Authorisation.Domain.Services;
+    using Linn.Authorisation.Resources;
     using Linn.Common.Authorisation;
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
