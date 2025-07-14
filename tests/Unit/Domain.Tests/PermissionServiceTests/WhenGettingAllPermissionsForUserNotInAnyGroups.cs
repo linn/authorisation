@@ -1,4 +1,4 @@
-namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
+﻿namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
 {
     using System;
     using System.Collections.Generic;
@@ -14,36 +14,26 @@ namespace Linn.Authorisation.Domain.Tests.PermissionServiceTests
 
     using NUnit.Framework;
 
-    public class WhenGettingPermissionsForUser : ContextBase
+    public class WhenGettingAllPermissionsForUserNotInAnyGroups : ContextBase
     {
         private readonly string privilegeName = "do.admin.stuuuff";
         private readonly string privilegeName2 = "do-someother-stuuuff";
         private readonly string privilegeName3 = "do-hings";
-        private Group group;
         private IEnumerable<Permission> result;
 
         [SetUp]
         public void SetUp()
         {
-            this.group = new Group
-                             {
-                                 Name = "adminz",
-                                 Active = true,
-                                 Members = new List<Member> { new IndividualMember("/employees/133", "/employees/20") }
-                             };
-
             var permissions = new List<Permission>
-                              {
-                                  new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
-                                  new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
-                                  new GroupPermission(this.group, new Privilege(this.privilegeName3), "/employees/7004"),
-                              };
+                                  {
+                                      new IndividualPermission("/employees/133", new Privilege(this.privilegeName), "/employees/7004"),
+                                      new IndividualPermission("/employees/3006", new Privilege(this.privilegeName2), "/employees/7004"),
+                                      new GroupPermission(new Group("adminz", true), new Privilege(this.privilegeName3), "/employees/7004"),
+                                  };
 
             this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
                 .Returns(permissions.AsQueryable());
-            this.PermissionRepository.FilterBy(Arg.Any<Expression<Func<Permission, bool>>>())
-                .Returns(permissions.AsQueryable());
-            this.GroupRepository.FindAll().Returns(new List<Group>{this.group}.AsQueryable());
+            this.GroupRepository.FindAll().Returns(new List<Group>().AsQueryable());
             this.result = this.Sut.GetAllPermissionsForUser("/employees/133");
         }
 

@@ -164,6 +164,7 @@ namespace Linn.Authorisation.Facade.Services
             {
                 throw new UnauthorisedActionException("You do not have permission to delete this permission");
             }
+
             var permission = this.permissionsRepository.FindById(permissionId);
 
             if (permission == null)
