@@ -112,11 +112,6 @@ namespace Linn.Authorisation.Facade.Services
                 return new CreatedResult<PermissionResource>(result);
             }
 
-            if (privilege.Active == false)
-            {
-                return new BadRequestResult<PermissionResource>("The grantee has already been granted this privilege, but it’s currently inactive.");
-            }
-
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
         }
 
@@ -158,11 +153,6 @@ namespace Linn.Authorisation.Facade.Services
                                      };
                     return new CreatedResult<PermissionResource>(result);
                 }
-            }
-
-            if (privilege.Active == false)
-            {
-                return new BadRequestResult<PermissionResource>("The grantee has already been granted this privilege, but it’s currently inactive.");
             }
 
             return new BadRequestResult<PermissionResource>("Grantee already has privilege");
