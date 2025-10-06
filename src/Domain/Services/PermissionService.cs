@@ -30,7 +30,7 @@
         {
             if (userPrivileges.Contains(AuthorisedAction.AuthorisationAuthManager))
             {
-                return this.permissionRepository.FilterBy(p => p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
+                return this.permissionRepository.FilterBy(p => p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name);
             }
 
             if (userPrivileges == null || !userPrivileges.Any())
@@ -53,7 +53,7 @@
                 .FindAll()
                 .AsEnumerable()
                 .Where(p => privilegesUserCanManage.Contains(
-                                p.Privilege.Name.Split('.')[0]) && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name)
+                                p.Privilege.Name.Split('.')[0]) && p.Privilege.Active && p.Privilege.Id == privilegeId).OrderBy(p => p.Privilege.Name)
                 .ToList();
 
             return resultList;

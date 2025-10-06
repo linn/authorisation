@@ -138,7 +138,7 @@ function ViewPermissionUsers() {
                     propertyName="privilege choice"
                     items={privileges?.map(privilege => ({
                         id: privilege.id,
-                        displayText: `${privilege?.name} ${privilege?.active === false ? ' - Inactive' : ''}`
+                        displayText: privilege?.name
                     }))}
                     required
                     label="Choose a Privilege"
