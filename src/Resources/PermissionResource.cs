@@ -8,6 +8,8 @@ namespace Linn.Authorisation.Resources
 
         public int PrivilegeId { get; set; }
 
+        public bool PrivilegeActive { get; set; }
+
         public string GrantedByUri { get; set; }
 
         public string GranteeUri { get; set; }
