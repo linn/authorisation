@@ -19,7 +19,6 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
                     GranteeUri = ((IndividualPermission)model).GranteeUri,
                     Privilege = model.Privilege.Name,
                     PrivilegeId = model.Privilege.Id,
-                    PrivilegeActive = model.Privilege.Active,
                     Links = this.BuildLinks(model).ToArray(),
                     Id = model.Id,
                     GrantedByUri = model.GrantedByUri,
@@ -31,7 +30,6 @@ namespace Linn.Authorisation.Facade.ResourceBuilders
             {
                 Privilege = model.Privilege.Name,
                 PrivilegeId = model.Privilege.Id,
-                PrivilegeActive = model.Privilege.Active,
                 Links = this.BuildLinks(model).ToArray(),
                 Id = model.Id,
                 GranteeGroupId = ((GroupPermission)model).GranteeGroup.Id,

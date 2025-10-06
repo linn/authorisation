@@ -80,7 +80,7 @@
                 p => p is GroupPermission && ((GroupPermission)p).GranteeGroup.IsMemberOf(who));
             permissions.AddRange(groupPermissions);
 
-            return permissions.Distinct().OrderBy(p => p.Privilege.Name);
+            return permissions.Where(p => p.Privilege.Active).Distinct().OrderBy(p => p.Privilege.Name);
         }
     }
 }
