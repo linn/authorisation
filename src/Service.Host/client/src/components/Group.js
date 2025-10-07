@@ -138,6 +138,7 @@ function Group({ creating }) {
         return {
             id: permission?.id,
             privilege: permission?.privilege,
+            privilegeActive: permission?.privilegeActive ? 'Yes' : 'No',
             addedByEmployeeId: addedByEmployee?.id ? addedByEmployee?.id : null,
             addedByEmployee,
             dateGranted: permission?.dateGranted
@@ -204,6 +205,11 @@ function Group({ creating }) {
             field: 'privilege',
             headerName: 'Privilege Name',
             width: 350
+        },
+        {
+            field: 'privilegeActive',
+            headerName: 'Privilege Active',
+            width: 150
         },
         {
             field: 'addedByEmployeeId',

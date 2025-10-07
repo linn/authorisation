@@ -51,6 +51,7 @@ function ViewEmployeesPermission() {
                         id: permission?.id,
                         addedByEmployee: addedByEmployee?.fullName,
                         privilege: permission?.privilege,
+                        privilegeActive: permission?.privilegeActive ? 'Yes' : 'No',
                         groupName: permission?.groupName,
                         dateGranted: permission?.dateGranted
                     };
@@ -59,7 +60,6 @@ function ViewEmployeesPermission() {
         }
     }, [permissionsInfo, employees]);
 
-    // Remove deleted permission from state
     useEffect(() => {
         if (deleteResult && deleteResult.id) {
             setPermissions(prev => prev.filter(permission => permission.id !== deleteResult.id));
@@ -77,6 +77,11 @@ function ViewEmployeesPermission() {
             field: 'privilege',
             headerName: 'Privilege Name',
             width: 350
+        },
+        {
+            field: 'privilegeActive',
+            headerName: 'Privilege Active',
+            width: 150
         },
         {
             field: 'addedByEmployeeId',
