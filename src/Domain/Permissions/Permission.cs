@@ -1,6 +1,9 @@
 namespace Linn.Authorisation.Domain.Permissions
 {
     using System;
+    using System.Collections.Generic;
+
+    using Linn.Authorisation.Domain.Exceptions;
 
     public abstract class Permission : Entity
     {
@@ -21,5 +24,15 @@ namespace Linn.Authorisation.Domain.Permissions
         public DateTime DateGranted { get; set; }
 
         public string GrantedByUri { get; set; }
+
+        public bool CheckActive()
+        {
+            if (this.Privilege.Active == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
